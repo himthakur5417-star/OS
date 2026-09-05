@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Officium Supremum — Mentorship for Future Officers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --ink:        #121212;
+    --paper:      #FFFFFF;
+    --paper-2:    #F4F3EF;
+    --line:       #E1DFD8;
+    --line-strong:#121212;
+    --muted:      #6B6A64;
+    --muted-2:    #9C9A92;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,h4{
+    margin:0;
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+  }
+
+  .label{
+    font-family:'Oswald', sans-serif;
+    font-weight:500;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+  }
+
+  a{ color:inherit; }
+  img,svg{ display:block; max-width:100%; }
+
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 40px; }
+
+  /* ---------- Monogram lockup (vector recreation of client logo) ---------- */
+  .lockup { display: block; height: 44px; width: auto; }
+  .lockup .ring-a { fill: var(--ink); }
+  .lockup .ring-b { fill: var(--paper); }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1040px; margin:0 auto; padding:16px 40px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .topnav{ display:flex; gap:28px; }
+  .topnav a{
+    font-family:'Oswald', sans-serif; font-size:0.72rem; letter-spacing:0.1em;
+    text-transform:uppercase; text-decoration:none; color:var(--muted);
+    border-bottom:1px solid transparent; padding-bottom:3px;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .topnav a:hover{ color:var(--ink); border-color:var(--ink); }
+  @media (max-width:760px){ .topnav{ display:none; } }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:var(--paper);
+    padding:100px 0 84px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .hero-rule{ display:flex; align-items:center; gap:18px; margin-bottom:30px; }
+  .hero-rule .ln{ height:1px; background:var(--line-strong); flex:1; }
+  .hero-rule .label{ color:var(--muted); white-space:nowrap; }
+
+  .hero-grid{ display:grid; grid-template-columns:1.4fr 1fr; gap:56px; align-items:end; }
+  @media (max-width:840px){ .hero-grid{ grid-template-columns:1fr; } }
+
+  .hero h1{ font-size:clamp(2.5rem, 5.4vw, 4.1rem); line-height:1.06; font-weight:500; color:var(--ink); }
+  .hero h1 em{ font-style:italic; font-weight:400; }
+
+  .hero-side{ border-left:1px solid var(--line-strong); padding-left:28px; }
+  .hero-side p{ color:var(--muted); font-size:1.02rem; margin:0 0 22px; }
+  .hero-exams{ display:flex; gap:10px; flex-wrap:wrap; }
+  .hero-exams span{
+    font-family:'Oswald',sans-serif; font-size:0.7rem; letter-spacing:0.1em;
+    border:1px solid var(--line-strong); color:var(--ink);
+    padding:6px 12px; text-transform:uppercase;
+  }
+
+  .cta-row{ margin-top:46px; display:flex; gap:16px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Oswald',sans-serif; font-size:0.78rem; letter-spacing:0.08em;
+    text-transform:uppercase; text-decoration:none; padding:15px 26px;
+    display:inline-block; transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .btn-primary{ background:var(--ink); color:#fff; border:1px solid var(--ink); font-weight:600; }
+  .btn-primary:hover{ background:#000; }
+  .btn-ghost{ color:var(--ink); border:1px solid var(--line-strong); }
+  .btn-ghost:hover{ background:var(--ink); color:#fff; }
+
+  /* ---------- Section scaffolding ---------- */
+  section{ padding:88px 0; }
+  .section-paper{ background:var(--paper); border-bottom:1px solid var(--line); }
+  .section-tint{ background:var(--paper-2); border-bottom:1px solid var(--line); }
+
+  .kicker{ display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+  .kicker .num{ font-family:'Oswald',sans-serif; font-weight:600; font-size:0.78rem; color:var(--ink); border:1px solid var(--ink); padding:4px 9px; }
+  .kicker .label{ color:var(--muted); }
+
+  h2.h-title{ font-size:clamp(1.7rem, 3vw, 2.35rem); font-weight:500; margin-bottom:18px; }
+  .lede{ font-size:1.08rem; color:var(--muted); max-width:640px; }
+
+  /* ---------- Mission ---------- */
+  .mission-quote{
+    font-size:clamp(1.4rem, 2.6vw, 1.85rem); font-weight:400; font-style:italic; line-height:1.5;
+    border-left:2px solid var(--ink); padding-left:28px; max-width:760px;
+  }
+  .mission-foot{ margin-top:26px; display:flex; gap:30px; flex-wrap:wrap; }
+  .mission-foot div{ font-family:'Oswald',sans-serif; font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+  .mission-foot strong{ display:block; font-family:'Fraunces',serif; font-size:1.5rem; color:var(--ink); font-weight:500; letter-spacing:0; text-transform:none; margin-bottom:2px; }
+
+  /* ---------- Exam insignia cards ---------- */
+  .exam-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-strong); border:1px solid var(--line-strong); margin-top:44px; }
+  @media (max-width:700px){ .exam-grid{ grid-template-columns:1fr; } }
+  .exam-card{ background:var(--paper); padding:34px 28px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .exam-card:hover{ transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+  .exam-card .icon{ width:26px; height:26px; margin-bottom:18px; }
+  .exam-card .icon svg{ width:100%; height:100%; fill:none; stroke:var(--ink); stroke-width:1.2; }
+  .exam-card h3{ font-size:1.05rem; font-weight:600; margin-bottom:8px; }
+  .exam-card .full{ font-family:'Oswald',sans-serif; font-size:0.72rem; letter-spacing:0.06em; color:var(--muted); text-transform:uppercase; }
+
+  /* ---------- Pillars ---------- */
+  .pillars{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line-strong); border:1px solid var(--line-strong); margin-top:50px; }
+  @media (max-width:760px){ .pillars{ grid-template-columns:1fr; } }
+  .pillar{ background:var(--paper); padding:34px 32px; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; }
+  .pillar:hover{ transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); z-index: 1; }
+  .pillar-head{ display:flex; align-items:flex-start; gap:16px; margin-bottom:14px; }
+  .pillar-icon{ width:30px; height:30px; flex-shrink:0; color:var(--ink); margin-top:2px; }
+  .pillar-icon svg{ width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.2; }
+  .pillar h4{ font-size:1.08rem; font-weight:500; color:var(--ink); }
+  .pillar-index{ font-family:'Oswald',sans-serif; font-size:0.68rem; color:var(--muted-2); letter-spacing:0.1em; display:block; margin-bottom:4px; }
+  .pillar p{ color:var(--muted); font-size:0.95rem; margin:0; }
+  .pillar ul{ margin:12px 0 0; padding-left:18px; color:var(--muted); font-size:0.92rem; }
+  .pillar li{ margin-bottom:4px; }
+
+  /* ---------- Batch monitoring ---------- */
+  .monitor-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; margin-top:40px; }
+  @media (max-width:760px){ .monitor-grid{ grid-template-columns:1fr; gap:36px; } }
+  .monitor-list{ list-style:none; margin:0; padding:0; }
+  .monitor-list li{ display:flex; gap:14px; padding:14px 0; border-top:1px solid var(--line); font-size:0.98rem; }
+  .monitor-list li:last-child{ border-bottom:1px solid var(--line); }
+  .monitor-list .dot{ width:6px; height:6px; background:var(--ink); border-radius:50%; margin-top:9px; flex-shrink:0; }
+
+  .maxim{ background:var(--paper-2); border:1px solid var(--line-strong); padding:36px 32px; font-style:italic; font-size:1.2rem; line-height:1.55; }
+
+  .maxim cite{ display:block; margin-top:18px; font-style:normal; font-family:'Oswald',sans-serif; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+
+  /* ---------- Juniors ---------- */
+  .juniors{ border:1px solid var(--line-strong); }
+  .juniors-head{ background:var(--ink); color:#fff; padding:26px 34px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  .juniors-head .label{ color:#D8D6CE; }
+  .juniors-head h3{ font-size:1.3rem; font-weight:600; color:#fff; }
+  .juniors-body{ padding:38px 34px; display:grid; grid-template-columns:1fr 1fr; gap:44px; background:var(--paper); }
+  @media (max-width:760px){ .juniors-body{ grid-template-columns:1fr; } }
+  .juniors-body h4{ font-family:'Oswald',sans-serif; font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); margin-bottom:14px; }
+  .juniors-body ul{ margin:0; padding-left:18px; }
+  .juniors-body li{ margin-bottom:8px; font-size:0.97rem; }
+  .juniors-body p{ font-size:0.97rem; color:var(--muted); margin:0 0 14px; }
+
+  /* ---------- Why section ---------- */
+  .why-list{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:44px; }
+  @media (max-width:700px){ .why-list{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:480px){ .why-list{ grid-template-columns:1fr; } }
+  .why-item{ border-top:2px solid var(--ink); padding-top:14px; }
+  .why-item .n{ font-family:'Oswald',sans-serif; font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; }
+  .why-item h4{ font-size:1.05rem; font-weight:500; margin:6px 0 0; }
+
+  .tagline-block{ margin-top:64px; padding-top:44px; border-top:1px solid var(--line); }
+  .tagline-block .big{ font-size:clamp(1.6rem,3.4vw,2.4rem); font-style:italic; font-weight:400; max-width:680px; }
+
+  /* ---------- Testimonials ---------- */
+  .test-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-strong); border:1px solid var(--line-strong); margin-top:44px; }
+  @media (max-width:760px){ .test-grid{ grid-template-columns:1fr; } }
+  .test-card{ background:var(--paper); padding:30px 26px; display:flex; flex-direction:column; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .test-card:hover{ transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+  .test-card .quote-mark{ color:var(--ink); font-size:2.2rem; font-family:'Fraunces',serif; line-height:1; margin-bottom:10px; }
+  .test-card p{ color:var(--muted); font-size:0.96rem; flex:1; margin:0 0 18px; }
+  .test-card .who{ font-family:'Oswald',sans-serif; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink); border-top:1px solid var(--line); padding-top:12px; }
+  .test-card .placeholder-tag{ font-size:0.68rem; color:var(--muted-2); margin-top:4px; letter-spacing:0.06em; }
+
+  /* ---------- Enrollment / CTA ---------- */
+  .enroll{ background:var(--paper-2); }
+  .enroll-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line-strong); border:1px solid var(--line-strong); margin-top:46px; }
+  @media (max-width:760px){ .enroll-grid{ grid-template-columns:1fr; } }
+  .enroll-card{ background:var(--paper); padding:36px 34px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .enroll-card:hover{ transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+  .enroll-card .label{ color:var(--muted); margin-bottom:16px; display:block; }
+  .enroll-card h3{ font-size:1.4rem; color:var(--ink); font-weight:500; margin-bottom:14px; }
+  .enroll-card p{ color:var(--muted); font-size:0.96rem; margin:0 0 24px; }
+
+  .steps{ list-style:none; margin:0 0 30px; padding:0; counter-reset:step; }
+  .steps li{ counter-increment:step; display:flex; gap:14px; padding:12px 0; border-top:1px solid var(--line); font-size:0.94rem; color:var(--muted); }
+  .steps li:last-child{ border-bottom:1px solid var(--line); }
+  .steps li::before{ content:counter(step,decimal-leading-zero); font-family:'Oswald',sans-serif; font-size:0.78rem; color:var(--ink); flex-shrink:0; }
+
+  .contact-block{ margin-top:60px; padding-top:34px; border-top:1px solid var(--line-strong); display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; }
+  .contact-block .label{ color:var(--muted); margin-bottom:8px; display:block; }
+  .contact-block .val{ font-size:1.02rem; }
+
+  /* ---------- Footer ---------- */
+  footer{ background:var(--paper); color:var(--muted); padding:34px 0; border-top:1px solid var(--line); }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; }
+  .footer-inner .fine{ font-family:'Oswald',sans-serif; font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+
+  /* ---------- Entrance (single orchestrated hero reveal only) ---------- */
+  @media (prefers-reduced-motion: no-preference){
+    .hero-anim{ animation:riseIn .8s ease both; }
+    .hero-anim.d1{ animation-delay:.05s; }
+    .hero-anim.d2{ animation-delay:.16s; }
+    .hero-anim.d3{ animation-delay:.27s; }
+    @keyframes riseIn{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:translateY(0); } }
+  }
+
+  /* ---------- Creative Touches ---------- */
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .relative-section { position: relative; overflow: hidden; }
+
+  .floating-wa {
+    position: fixed;
+    bottom: 30px; right: 30px;
+    background: #25D366;
+    color: white;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+    z-index: 100;
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .floating-wa:hover { transform: scale(1.1) rotate(5deg); }
+  .floating-wa svg { width: 34px; height: 34px; fill: currentColor; }
+
+  /* ---------- Print ---------- */
+  @media print{
+    .topbar{ display:none; }
+    section{ padding:48px 0; break-inside:avoid; }
+    .wrap{ padding:0 32px; }
+  }
+
+  @media (max-width:600px){
+    .wrap{ padding:0 22px; }
+    section{ padding:64px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOP BAR ===================== -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <svg class="lockup" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+      <circle cx="50" cy="50" r="45" class="ring-a" />
+      <circle cx="80" cy="50" r="26" class="ring-b" />
+      <circle cx="80" cy="50" r="10" class="ring-a" />
+      <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" class="ring-a">s.</text>
+      <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" class="ring-a">OFFICIUM SUPREMUM</text>
+    </svg>
+    <nav class="topnav">
+      <a href="#program">Programme</a>
+      <a href="#pillars">Method</a>
+      <a href="#juniors">Juniors</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#enroll">Enrol</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="wrap">
+    <svg class="lockup hero-anim" style="height: 80px; margin-bottom: 34px;" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+      <circle cx="50" cy="50" r="45" class="ring-a" />
+      <circle cx="80" cy="50" r="26" class="ring-b" />
+      <circle cx="80" cy="50" r="10" class="ring-a" />
+      <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" class="ring-a">s.</text>
+      <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" class="ring-a">OFFICIUM SUPREMUM</text>
+    </svg>
+    <div class="hero-rule hero-anim">
+      <span class="label">A Mentorship Ecosystem for Defense Aspirants</span>
+      <span class="ln"></span>
+    </div>
+    <div class="hero-grid">
+      <h1 class="hero-anim d1">Transforming aspirants<br>into <em>future officers.</em></h1>
+      <div class="hero-side hero-anim d2">
+        <p>Success in NDA, CDS and AFCAT is not decided by how much a student studies — but by how well they recall, apply and execute under pressure. Officium Supremum is built around that single idea.</p>
+        <div class="hero-exams">
+          <span>NDA</span><span>CDS</span><span>AFCAT</span>
+        </div>
+      </div>
+    </div>
+    <div class="cta-row hero-anim d3">
+      <a href="#enroll" class="btn btn-primary">Begin the Assessment</a>
+      <a href="#program" class="btn btn-ghost">A Note for Parents</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== MISSION ===================== -->
+<section class="section-paper relative-section" id="program">
+  <svg class="watermark" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+    <circle cx="50" cy="50" r="45" fill="var(--ink)" />
+    <circle cx="80" cy="50" r="26" fill="var(--paper)" />
+    <circle cx="80" cy="50" r="10" fill="var(--ink)" />
+    <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="var(--ink)">s.</text>
+  </svg>
+  <div class="wrap" style="position:relative; z-index:1;">
+    <div class="kicker"><span class="num">01</span><span class="label">Our Position</span></div>
+    <p class="mission-quote">"Success in defense examinations is not determined by how much a student studies, but by how effectively they can recall, apply, and execute what they have learned — under pressure."</p>
+    <div class="mission-foot">
+      <div><strong>Revision</strong>Systems, not sessions</div>
+      <div><strong>Recall</strong>Trained, not assumed</div>
+      <div><strong>Discipline</strong>Daily, not seasonal</div>
+      <div><strong>OLQs</strong>Built, not memorised</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EXAMS COVERED ===================== -->
+<section class="section-tint">
+  <div class="wrap">
+    <div class="kicker"><span class="num">02</span><span class="label">Examinations Covered</span></div>
+    <h2 class="h-title">One mentorship. Three routes into service.</h2>
+    <p class="lede">Officium Supremum is a complete transformation ecosystem — not a coaching class — built to prepare students for entry through any of the three principal defense examination routes.</p>
+    <div class="exam-grid">
+      <div class="exam-card">
+        <span class="icon"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14"/><path d="M9 20 L17 9 L25 20 Z"/></svg></span>
+        <h3>NDA</h3>
+        <div class="full">National Defence Academy</div>
+      </div>
+      <div class="exam-card">
+        <span class="icon"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14"/><path d="M11 22 L17 10 L23 22"/><path d="M13 18 L21 18"/></svg></span>
+        <h3>CDS</h3>
+        <div class="full">Combined Defence Services</div>
+      </div>
+      <div class="exam-card">
+        <span class="icon"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14"/><path d="M9 12 L25 12 L17 24 Z"/></svg></span>
+        <h3>AFCAT</h3>
+        <div class="full">Air Force Common Admission Test</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THE 8 PILLARS ===================== -->
+<section class="section-paper" id="pillars">
+  <div class="wrap">
+    <div class="kicker"><span class="num">03</span><span class="label">What Every Student Receives</span></div>
+    <h2 class="h-title">Eight systems. One standard of execution.</h2>
+    <p class="lede">Every element of the programme exists to close the gap between studying and performing — under the same pressure a student will face on examination day.</p>
+
+    <div class="pillars">
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-icon"><svg viewBox="0 0 30 30"><path d="M4 26 L4 6 L20 6 L26 12 L26 26 Z"/><path d="M20 6 L20 12 L26 12"/><path d="M9 16 L21 16 M9 20 L21 20"/></svg></div>
+          <div>
+            <span class="pillar-index">Section 01</span>
+            <h4>Complete Mentorship Roadmap</h4>
+          </div>
+        </div>
+        <p>A personalised roadmap for every student — no generic plans issued.</p>
+        <ul>
+          <li>Daily tasks and weekly goals</li>
+          <li>Monthly targets and subject-wise planning</li>
+          <li>Ongoing performance tracking</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-icon"><svg viewBox="0 0 30 30"><circle cx="15" cy="10" r="5"/><path d="M5 26 C5 18 11 15 15 15 C19 15 25 18 25 26"/></svg></div>
+          <div>
+            <span class="pillar-index">Section 02</span>
+            <h4>Personal Mentorship &amp; Planning</h4>
+          </div>
+        </div>
+        <p>Guided the way a personal assistant would guide a future officer.</p>
+        <ul>
+          <li>Individual study planning and progress tracking</li>
+          <li>Personalised improvement suggestions</li>
+          <li>Time management and execution monitoring</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-icon"><svg viewBox="0 0 30 30"><rect x="6" y="5" width="18" height="22" rx="1"/><path d="M11 3 L19 3 L19 7 L11 7 Z"/><path d="M10 13 L20 13 M10 17 L20 17 M10 21 L16 21"/></svg></div>
+          <div>
+            <span class="pillar-index">Section 03</span>
+            <h4>Daily Accountability System</h4>
+          </div>
+        </div>
+        <p>A nightly report keeps preparation honest and consistent.</p>
+        <ul>
+          <li>Hours invested and topics completed</li>
+          <li>Revision done and challenges faced</li>
+          <li>Goals set for the next day</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-icon"><svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="11"/><path d="M15 8 v7 l5 3"/></svg></div>
+          <div>
+            <span class="pillar-index">Section 04</span>
+            <h4>Revision &amp; Recall Framework</h4>
+          </div>
+        </div>
+        <p>Most students fail to recall, not fail to study. We train the difference.</p>
+        <ul>
+          <li>Daily revision schedules and recall exercises</li>
+          <li>Memory reinforcement techniques</li>
+          <li>Short-note methods and active learning systems</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-icon"><svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="11"/><circle cx="15" cy="15" r="6"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/></svg></div>
+          <div>
+            <span class="pillar-index">Section 05</span>
+            <h4>Mock Test Ecosystem</h4>
+          </div>
+        </div>
+        <p>Full-length simulations under monitored, exam-real conditions.</p>
+        <ul>
+          <li>Scheduled and full-length mock examinations</li>
+          <li>Performance analysis and weakness identification</li>
+          <li>Targeted improvement strategies</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-icon"><svg viewBox="0 0 30 30"><path d="M15 4 L18 11 L26 12 L20 17 L22 25 L15 21 L8 25 L10 17 L4 12 L12 11 Z"/></svg></div>
+          <div>
+            <span class="pillar-index">Section 06</span>
+            <h4>Officer-Like Qualities</h4>
+          </div>
+        </div>
+        <p>The 15 OLQs, built into daily life — not memorised for an interview.</p>
+        <ul>
+          <li>Leadership and decision-making exercises</li>
+          <li>Communication and responsibility-based tasks</li>
+          <li>Confidence-building sessions</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-icon"><svg viewBox="0 0 30 30"><circle cx="15" cy="9" r="4"/><path d="M15 15 v11 M9 21 l6 -6 6 6"/></svg></div>
+          <div>
+            <span class="pillar-index">Section 07</span>
+            <h4>Academy-Inspired Routine</h4>
+          </div>
+        </div>
+        <p><em>"To become great, you must first act great."</em></p>
+        <ul>
+          <li>Mandatory physical exercise</li>
+          <li>Discipline-building, time-bound execution</li>
+          <li>Productivity systems and consistency tracking</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="pillar-icon"><svg viewBox="0 0 30 30"><path d="M4 15 q4 -8 7 0 q4 -8 7 0 q4 -8 8 0"/><path d="M4 21 q4 -8 7 0 q4 -8 7 0 q4 -8 8 0" opacity="0.5"/></svg></div>
+          <div>
+            <span class="pillar-index">Section 08</span>
+            <h4>Weekly Mind Sessions</h4>
+          </div>
+        </div>
+        <p>A distinguishing feature of the programme — training the mind that carries the plan.</p>
+        <ul>
+          <li>Mental resilience and focus building</li>
+          <li>Discipline psychology and stress management</li>
+          <li>Sustained motivation across the full journey</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BATCH MONITORING ===================== -->
+<section class="section-tint">
+  <div class="wrap">
+    <div class="kicker"><span class="num">04</span><span class="label">Oversight, Not Just Instruction</span></div>
+    <h2 class="h-title">Batch Monitoring System</h2>
+    <p class="lede">Teaching alone does not build officers — implementation does. Every batch is continuously observed, reviewed and corrected.</p>
+
+    <div class="monitor-grid">
+      <ul class="monitor-list">
+        <li><span class="dot"></span>Group mentorship sessions</li>
+        <li><span class="dot"></span>Live GMeet interactions</li>
+        <li><span class="dot"></span>Performance reviews</li>
+        <li><span class="dot"></span>Progress evaluations</li>
+        <li><span class="dot"></span>Mentor feedback sessions</li>
+      </ul>
+      <div class="maxim">
+        <svg class="lockup" style="height: 28px; margin-bottom: 16px;" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+          <circle cx="50" cy="50" r="45" class="ring-a" />
+          <circle cx="80" cy="50" r="26" class="ring-b" />
+          <circle cx="80" cy="50" r="10" class="ring-a" />
+          <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" class="ring-a">s.</text>
+          <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" class="ring-a">OFFICIUM SUPREMUM</text>
+        </svg>
+        The objective is not merely to clear an examination — it is to become worthy of wearing the uniform.
+        <cite>Officium Supremum, Programme Standard</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== JUNIORS ===================== -->
+<section class="section-paper" id="juniors">
+  <div class="wrap">
+    <div class="kicker"><span class="num">05</span><span class="label">Introducing</span></div>
+    <h2 class="h-title" style="margin-bottom:36px;">Officium Supremum Juniors — the Future Leaders Programme</h2>
+
+    <div class="juniors">
+      <div class="juniors-head">
+        <h3>For students, Class 7 onward</h3>
+        <span class="label">Early Advantage Track</span>
+      </div>
+      <div class="juniors-body">
+        <div>
+          <h4>What Juniors Receive</h4>
+          <p>A dedicated mentorship track for school students who want a head start in academics, competitive exams and personal development — before their peers have started thinking about either.</p>
+          <ul>
+            <li>Study discipline and daily productive habits</li>
+            <li>Reading habits and communication skills</li>
+            <li>Confidence building and goal setting</li>
+            <li>Career guidance and academic planning</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Early Career Exposure</h4>
+          <p>If a student already knows their direction — NEET, JEE, NDA, UPSC, or Commerce &amp; Management — we begin preparing them for that environment early, placing them years ahead of their competition.</p>
+          <ul>
+            <li>NEET · JEE · NDA · UPSC · Commerce &amp; Management</li>
+            <li>Habits and mindset most students discover far too late</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHY OFFICIUM SUPREMUM ===================== -->
+<section class="section-tint">
+  <div class="wrap">
+    <div class="kicker"><span class="num">06</span><span class="label">Why Officium Supremum</span></div>
+    <h2 class="h-title">Success is not made in the final months. It is built daily.</h2>
+    <p class="lede">We do not simply prepare students to pass an examination. We prepare them for a standard of excellence they will carry into command.</p>
+
+    <div class="why-list">
+      <div class="why-item"><div class="n">One</div><h4>Discipline</h4></div>
+      <div class="why-item"><div class="n">Two</div><h4>Consistency</h4></div>
+      <div class="why-item"><div class="n">Three</div><h4>Accountability</h4></div>
+      <div class="why-item"><div class="n">Four</div><h4>Revision</h4></div>
+      <div class="why-item"><div class="n">Five</div><h4>Leadership</h4></div>
+      <div class="why-item"><div class="n">Six</div><h4>Execution</h4></div>
+    </div>
+
+    <div class="tagline-block">
+      <p class="big">"Discipline today. Leadership tomorrow."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="section-paper" id="testimonials">
+  <div class="wrap">
+    <div class="kicker"><span class="num">07</span><span class="label">From the Batch</span></div>
+    <h2 class="h-title">Testimonials</h2>
+    <p class="lede">Space reserved for verified accounts from serving cadets, selected candidates, and parents. Replace each placeholder with a real name, photo and result once available.</p>
+
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="quote-mark">&ldquo;</div>
+        <p>[ Placeholder — student testimonial on the daily accountability system and how it changed their preparation. ]</p>
+        <div class="who">Name, Examination Cleared</div>
+        <div class="placeholder-tag">Awaiting submission</div>
+      </div>
+      <div class="test-card">
+        <div class="quote-mark">&ldquo;</div>
+        <p>[ Placeholder — parent testimonial on visible discipline, confidence and communication growth in their child. ]</p>
+        <div class="who">Parent Name, City</div>
+        <div class="placeholder-tag">Awaiting submission</div>
+      </div>
+      <div class="test-card">
+        <div class="quote-mark">&ldquo;</div>
+        <p>[ Placeholder — Juniors programme testimonial on early habit and academic development. ]</p>
+        <div class="who">Parent / Student Name</div>
+        <div class="placeholder-tag">Awaiting submission</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ENROLLMENT / CTA ===================== -->
+<section class="enroll" id="enroll">
+  <div class="wrap">
+    <div class="kicker"><span class="num">08</span><span class="label">Enrolment</span></div>
+    <h2 class="h-title">Two ways in — one standard for both.</h2>
+    <p class="lede">Whether you are the aspirant or the parent making the decision on their behalf, the next step is the same: a conversation to assess fit before enrolment.</p>
+
+    <div class="enroll-grid">
+      <div class="enroll-card">
+        <span class="label">For Aspirants</span>
+        <h3>Start with an assessment call</h3>
+        <p>We review your target examination, current preparation stage and availability before recommending a track.</p>
+        <ol class="steps">
+          <li>Submit the enquiry form or call the admissions line</li>
+          <li>Attend a short assessment conversation</li>
+          <li>Receive your personalised roadmap and start date</li>
+        </ol>
+        <a href="#" class="btn btn-primary">Request a Callback</a>
+      </div>
+      <div class="enroll-card">
+        <span class="label">For Parents</span>
+        <h3>Understand the system before you enrol</h3>
+        <p>A separate orientation call walks parents through the daily accountability system, batch monitoring and how progress is reported.</p>
+        <ol class="steps">
+          <li>Book a parent orientation session</li>
+          <li>Review reporting formats and fee structure</li>
+          <li>Confirm enrolment and onboarding date</li>
+        </ol>
+        <a href="#" class="btn btn-ghost">Book Parent Orientation</a>
+      </div>
+    </div>
+
+    <div class="contact-block">
+      <div>
+        <span class="label">Admissions & WhatsApp</span>
+        <div class="val">+91 8969634656</div>
+      </div>
+      <div>
+        <span class="label">Enquiries</span>
+        <div class="val">osupremum@gmail.com</div>
+      </div>
+      <div>
+        <span class="label">Mentorship Mode</span>
+        <div class="val">Online & Direct Assessment</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap footer-inner">
+    <svg class="lockup" style="height: 32px;" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+      <circle cx="50" cy="50" r="45" class="ring-a" />
+      <circle cx="80" cy="50" r="26" class="ring-b" />
+      <circle cx="80" cy="50" r="10" class="ring-a" />
+      <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" class="ring-a">s.</text>
+      <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" class="ring-a">OFFICIUM SUPREMUM</text>
+    </svg>
+    <div class="fine">Beyond Preparation. Towards Excellence.</div>
+  </div>
+</footer>
+
+<!-- ===================== FLOATING WHATSAPP ===================== -->
+<a href="https://wa.me/918969634656" class="floating-wa" target="_blank" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.66-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+</body>
+</html>
