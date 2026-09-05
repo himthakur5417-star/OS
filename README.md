@@ -29,6 +29,8 @@ A strict, accountability-driven mentorship ecosystem designed to transform aspir
 | `post-main.html` | One-pager post — Defence Mentorship (dark charcoal + gold) |
 | `post-juniors.html` | One-pager post — Juniors Programme (dark navy + blue) |
 | `poster-overall.html` | Combined poster — Both tracks side-by-side |
+| `post-mentorship-report.html` | "The 2% Report" — Classified dossier style shock-stat post |
+| `post-what-is-mentorship.html` | "Coaching vs Mentorship" — Provocative comparison post |
 
 ---
 
