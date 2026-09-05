@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Military SOP Dispatch — Officium Supremum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #0f1012;
+    --paper-tint: #16171a;
+    --paper-border: #26282e;
+    --ink-primary: #ece8df;
+    --ink-secondary: #a9a499;
+    --ink-muted: #6f6b62;
+    --accent-brass: #c5a059;
+    --accent-red: #8f2d2d;
+    --accent-olive: #5d6d54;
+    --hairline: 1px solid rgba(236, 232, 223, 0.12);
+    --hairline-brass: 1px solid rgba(197, 160, 89, 0.35);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--ink-primary);
+    font-family: 'EB Garamond', Georgia, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 4:5 Aspect Ratio Container (1080x1350) */
+  .canvas {
+    width: 100%;
+    max-width: 864px; /* Scaled down 1080 for web viewing */
+    aspect-ratio: 4 / 5;
+    background: #141518;
+    border: 1px solid #2e3037;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 44px 50px 38px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 0 100px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+
+  /* Authentic subtle print paper texture */
+  .canvas::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(#ffffff 0.4px, transparent 0.4px);
+    background-size: 16px 16px;
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Top Masthead Header (The Ken / Broadhseet Style) */
+  .masthead {
+    border-bottom: 2px solid var(--ink-primary);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+    border-bottom: var(--hairline);
+    padding-bottom: 6px;
+  }
+
+  .meta-top span.classified {
+    color: var(--accent-brass);
+    font-weight: 600;
+  }
+
+  .publication-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .publication-name {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    color: var(--ink-primary);
+  }
+
+  .dispatch-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--accent-brass);
+    color: var(--accent-brass);
+  }
+
+  /* Headline & Dek */
+  .headline-section {
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .headline {
+    font-family: 'Newsreader', 'EB Garamond', Georgia, serif;
+    font-size: 34px;
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: #f5f2ea;
+    margin-bottom: 12px;
+  }
+
+  .headline em {
+    font-style: italic;
+    font-family: 'EB Garamond', serif;
+    color: var(--accent-brass);
+    font-weight: 400;
+  }
+
+  .dek {
+    font-size: 15.5px;
+    line-height: 1.45;
+    color: var(--ink-secondary);
+    font-style: italic;
+    border-left: 2px solid var(--accent-brass);
+    padding-left: 14px;
+    margin-bottom: 16px;
+  }
+
+  /* Split Content Columns (Editorial Layout) */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    flex-grow: 1;
+    position: relative;
+    z-index: 2;
+    border-top: var(--hairline);
+    padding-top: 18px;
+  }
+
+  /* Column Vertical Divider */
+  .content-grid::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    bottom: 0;
+    left: calc(50% - 0.5px);
+    width: 1px;
+    background: rgba(236, 232, 223, 0.1);
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-secondary);
+  }
+
+  .column-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-brass);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .column-label::before {
+    content: "§";
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  .lead-para::first-letter {
+    font-family: 'Cinzel', serif;
+    font-size: 42px;
+    float: left;
+    line-height: 0.85;
+    margin-right: 8px;
+    margin-top: 4px;
+    color: var(--accent-brass);
+  }
+
+  .para {
+    margin-bottom: 14px;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Editorial Pull Quote Box (The Ken / Hindu Style) */
+  .editorial-callout {
+    background: #191b1f;
+    border-top: 1px solid var(--ink-primary);
+    border-bottom: 1px solid var(--ink-primary);
+    padding: 14px 16px;
+    margin: 10px 0 16px;
+  }
+
+  .callout-quote {
+    font-family: 'Newsreader', serif;
+    font-size: 16.5px;
+    line-height: 1.35;
+    font-style: italic;
+    color: #f5f2ea;
+    margin-bottom: 6px;
+  }
+
+  .callout-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* Minimalist Technical SOP Table */
+  .sop-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: auto;
+    font-size: 12px;
+    border-top: var(--hairline);
+  }
+
+  .sop-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 6px 0;
+    color: var(--ink-muted);
+    border-bottom: 1px solid rgba(236, 232, 223, 0.15);
+  }
+
+  .sop-table td {
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(236, 232, 223, 0.06);
+    vertical-align: top;
+  }
+
+  .sop-table td.protocol {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #f5f2ea;
+    font-weight: 500;
+  }
+
+  .sop-table td.failure {
+    color: #b08888;
+  }
+
+  .sop-table td.sop-action {
+    color: #a3b899;
+  }
+
+  /* Minimalist Archival Footer */
+  .footer {
+    border-top: 1px solid var(--ink-primary);
+    padding-top: 12px;
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-sig {
+    color: var(--ink-secondary);
+  }
+
+  .footer-sig strong {
+    color: var(--ink-primary);
+  }
+
+  .footer-num {
+    letter-spacing: 0.2em;
+  }
+</style>
+</head>
+<body>
+
+<div class="canvas">
+  <!-- Top Masthead Header -->
+  <header class="masthead">
+    <div class="meta-top">
+      <span>OFFICIUM SUPREMUM // FIELD MEMORANDUM</span>
+      <span class="classified">CONFIDENTIAL STUDY // NO. 018</span>
+      <span>FOR ASPIRANTS & PARENTS</span>
+    </div>
+    <div class="publication-row">
+      <div class="publication-name">OFFICIUM SUPREMUM</div>
+      <div class="dispatch-badge">DISPATCH 01 // 2025</div>
+    </div>
+  </header>
+
+  <!-- Editorial Headline & Dek -->
+  <section class="headline-section">
+    <h1 class="headline">The Anatomy of Selection: Why 98% of Aspirants Fail at the Stage <em>They Never Prepared For</em></h1>
+    <p class="dek">Every year, 300,000 students complete syllabi, fill notebooks, and attend 8-hour coaching lectures. Yet, the Services Selection Board does not measure memorised knowledge. It measures psychological operational discipline.</p>
+  </section>
+
+  <!-- Two-Column Editorial Grid -->
+  <div class="content-grid">
+    <!-- Left Column -->
+    <div class="column">
+      <div class="column-label">Part I: The Coaching Fallacy</div>
+      <p class="para lead-para">The fundamental flaw in modern competitive preparation is the commercialisation of passive listening. When an aspirant sits in a lecture hall of 400 peers, dopamine is released through the illusion of progress. A topic was explained; therefore, the mind assumes the topic was mastered.</p>
+      
+      <p class="para">Cognitive psychology proves otherwise. Without active retrieval and high-stress simulated recall, retention decays by 70% within 48 hours. The student enters the exam hall with familiarity, but zero operational clarity.</p>
+
+      <div class="editorial-callout">
+        <div class="callout-quote">"Coaching creates an audience. Mentorship creates an operator."</div>
+        <div class="callout-source">— OFFICIUM SUPREMUM TACTICAL AUDIT</div>
+      </div>
+
+      <p class="para">In military selection, familiarity fails under time pressure. Only instinctive discipline survives.</p>
+    </div>
+
+    <!-- Right Column -->
+    <div class="column">
+      <div class="column-label">Part II: The Standard Operating Procedure (SOP)</div>
+      <p class="para">True mentorship does not sell more questions. It institutes a non-negotiable Standard Operating Procedure into the aspirant’s biological and intellectual routine.</p>
+
+      <!-- Clean Data SOP Table -->
+      <table class="sop-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>The Common Failure</th>
+            <th>The Mentorship SOP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="protocol">Routine</td>
+            <td class="failure">12-hr erratic binges</td>
+            <td class="sop-action">05:30 disciplined block</td>
+          </tr>
+          <tr>
+            <td class="protocol">Revision</td>
+            <td class="failure">Re-reading old notes</td>
+            <td class="sop-action">Spaced active recall</td>
+          </tr>
+          <tr>
+            <td class="protocol">Mock Audit</td>
+            <td class="failure">Checking raw score</td>
+            <td class="sop-action">Error-log diagnosis</td>
+          </tr>
+          <tr>
+            <td class="protocol">SSB Prep</td>
+            <td class="failure">Coached answers</td>
+            <td class="sop-action">Lived character (OLQs)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="para" style="margin-top: 14px; font-size: 13.5px;">
+        An officer is not made in the week of the exam. An officer is the sum total of unobserved daily standards maintained over months of deliberate mentorship.
+      </p>
+    </div>
+  </div>
+
+  <!-- Minimalist Archival Footer -->
+  <footer class="footer">
+    <div class="footer-sig">Published by <strong>Officium Supremum Mentorship</strong></div>
+    <div>NEW DELHI // DEFENCE DIVISION</div>
+    <div class="footer-num">PAGE 01 // 01</div>
+  </footer>
+</div>
+
+</body>
+</html>

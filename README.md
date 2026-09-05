@@ -33,6 +33,8 @@ A strict, accountability-driven mentorship ecosystem designed to transform aspir
 | `post-what-is-mentorship.html` | "Coaching vs Mentorship" — Provocative comparison post |
 | `post-role-of-mentor.html` | "The Role of a Mentor" — Pure value educational post backed by Stanford, Harvard & Gartner research |
 | `post-student-reality.html` | "The Student Reality" — Research-backed study on student struggles, forgetting curve & mentorship |
+| `post-editorial-sop.html` | **Style B (Dark SOP)** — "The Anatomy of Selection" (*The Ken / Military SOP* investigative broadsheet) |
+| `post-editorial-paper.html` | **Style B (Paper Newsprint)** — "The Illusion of Motivation" (Authentic cadet field manual & protocol checklist) |
 
 ---
 

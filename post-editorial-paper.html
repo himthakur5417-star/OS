@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Manual — The Illusion of Motivation | Officium Supremum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #0a0b0d;
+    --paper-bg: #f5f2eb;
+    --paper-border: #dcd6c8;
+    --ink-black: #111215;
+    --ink-dark: #2a2c31;
+    --ink-muted: #6b6e76;
+    --ink-faint: #9ea1a9;
+    --accent-crimson: #8f2323;
+    --accent-olive: #3f4d3b;
+    --accent-ochre: #9e7328;
+    --hairline: 1px solid rgba(17, 18, 21, 0.15);
+    --hairline-heavy: 2px solid #111215;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--ink-black);
+    font-family: 'EB Garamond', Georgia, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 4:5 Social Graphic Container (1080x1350 scaled) */
+  .canvas {
+    width: 100%;
+    max-width: 864px;
+    aspect-ratio: 4 / 5;
+    background: var(--paper-bg);
+    border: 1px solid #2a2b30;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 44px 52px 40px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+    overflow: hidden;
+  }
+
+  /* Authentic subtle newsprint grain */
+  .canvas::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(#000000 0.5px, transparent 0.5px);
+    background-size: 14px 14px;
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Header Masthead */
+  .masthead {
+    border-bottom: var(--hairline-heavy);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .masthead-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+    border-bottom: var(--hairline);
+    padding-bottom: 6px;
+  }
+
+  .meta-alert {
+    color: var(--accent-crimson);
+    font-weight: 700;
+  }
+
+  .masthead-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .journal-name {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    color: var(--ink-black);
+    line-height: 1;
+  }
+
+  .journal-issue {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-olive);
+    font-weight: 600;
+  }
+
+  /* Headline & Lead */
+  .lead-section {
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-crimson);
+    margin-bottom: 8px;
+    display: inline-block;
+    font-weight: 700;
+  }
+
+  .main-headline {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 34px;
+    line-height: 1.15;
+    font-weight: 500;
+    color: var(--ink-black);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .main-headline em {
+    font-style: italic;
+    color: var(--accent-crimson);
+    font-family: 'EB Garamond', serif;
+  }
+
+  .dek-statement {
+    font-size: 15.5px;
+    line-height: 1.45;
+    color: var(--ink-dark);
+    font-style: italic;
+    border-left: 2.5px solid var(--accent-olive);
+    padding-left: 14px;
+  }
+
+  /* Broadsheet 2-Column Grid */
+  .grid-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 32px;
+    flex-grow: 1;
+    position: relative;
+    z-index: 2;
+    border-top: var(--hairline);
+    padding-top: 18px;
+  }
+
+  /* Center Rule */
+  .grid-layout::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    bottom: 0;
+    left: calc(55% - 0.5px);
+    width: 1px;
+    background: rgba(17, 18, 21, 0.12);
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 1.58;
+    color: var(--ink-dark);
+  }
+
+  .col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+    border-bottom: 1px dashed rgba(17, 18, 21, 0.2);
+    padding-bottom: 4px;
+  }
+
+  .drop-cap::first-letter {
+    font-family: 'Cinzel', serif;
+    font-size: 40px;
+    float: left;
+    line-height: 0.8;
+    margin-right: 8px;
+    margin-top: 4px;
+    color: var(--accent-crimson);
+    font-weight: 700;
+  }
+
+  .text-block {
+    margin-bottom: 12px;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Broadsheet Field Note Box */
+  .field-note-card {
+    background: #ebe6dc;
+    border: 1px solid #d4cdbf;
+    padding: 14px 16px;
+    margin: 12px 0 16px;
+    position: relative;
+  }
+
+  .field-note-card::before {
+    content: "FIELD OBSERVATION";
+    position: absolute;
+    top: -7px;
+    left: 14px;
+    background: var(--paper-bg);
+    padding: 0 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    color: var(--accent-olive);
+    font-weight: 700;
+  }
+
+  .field-note-quote {
+    font-size: 14.5px;
+    line-height: 1.4;
+    font-style: italic;
+    color: var(--ink-black);
+  }
+
+  /* The 4-Step Operational Checklist */
+  .protocol-list {
+    list-style: none;
+    margin-top: auto;
+    border-top: var(--hairline);
+    padding-top: 10px;
+  }
+
+  .protocol-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: baseline;
+  }
+
+  .protocol-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-crimson);
+  }
+
+  .protocol-text {
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+
+  .protocol-text strong {
+    color: var(--ink-black);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Footer Section */
+  .footer-row {
+    border-top: var(--hairline-heavy);
+    padding-top: 12px;
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    position: relative;
+    z-index: 2;
+  }
+
+  .stamp {
+    border: 1.5px solid var(--accent-crimson);
+    color: var(--accent-crimson);
+    padding: 2px 7px;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<div class="canvas">
+  <!-- Masthead -->
+  <header class="masthead">
+    <div class="masthead-meta">
+      <span>OFFICIUM SUPREMUM // THE DEFENCE PAPERS</span>
+      <span class="meta-alert">RESTRICTED MEMO // ARCHIVAL SERIES</span>
+      <span>EST. NEW DELHI</span>
+    </div>
+    <div class="masthead-title-row">
+      <div class="journal-name">THE CADET DISPATCH</div>
+      <div class="journal-issue">VOL. I // ISSUE 03 // 2025</div>
+    </div>
+  </header>
+
+  <!-- Lead Header -->
+  <section class="lead-section">
+    <span class="section-tag">§ FIELD ESSAY // COGNITIVE PERFORMANCE</span>
+    <h1 class="main-headline">The Illusion of Motivation: Why <em>Discipline</em> is the Only Currency the Academy Accepts</h1>
+    <p class="dek-statement">Every aspirant begins with patriotic zeal and high energy. But neurological studies reveal motivation has a half-life of 14 days. What carries a candidate through the SSB is not passion—it is programmed habit.</p>
+  </section>
+
+  <!-- Broadsheet Grid -->
+  <div class="grid-layout">
+    <!-- Column 1 -->
+    <div class="col">
+      <div class="col-title">01 / The Dopamine Trap</div>
+      <p class="text-block drop-cap">Motivation is an emotional state, and emotional states are chemically volatile. When an aspirant watches motivational reels or parades, cortisol drops and dopamine surges. For 48 hours, they wake up at 5:00 AM. By Day 12, the emotional baseline returns to neutral, and the routine collapses.</p>
+      
+      <p class="text-block">The Indian Military Academy does not run on how a cadet "feels" on a rainy Tuesday morning. It runs on an institutional standard operating procedure that removes personal permission from the equation.</p>
+
+      <div class="field-note-card">
+        <p class="field-note-quote">"Don't seek inspiration to begin studying. Build an accountability system so rigid that studying happens regardless of your mood."</p>
+      </div>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="col">
+      <div class="col-title">02 / The Mentorship Doctrine</div>
+      <p class="text-block">Mentorship replaces emotional reliance with structural accountability. Below are the 4 non-negotiable protocols instituted in our cadet programmes:</p>
+
+      <!-- Tactical Protocol Checklist -->
+      <div class="protocol-list">
+        <div class="protocol-item">
+          <span class="protocol-num">[01]</span>
+          <div class="protocol-text">
+            <strong>THE FIXED ANCHOR HOUR:</strong> Waking and studying at the exact hour every day, training the nervous system to perform on demand.
+          </div>
+        </div>
+
+        <div class="protocol-item">
+          <span class="protocol-num">[02]</span>
+          <div class="protocol-text">
+            <strong>ERROR LOG AUDITING:</strong> Documenting every mistake in mocks like a flight recorder rather than moving on passively.
+          </div>
+        </div>
+
+        <div class="protocol-item">
+          <span class="protocol-num">[03]</span>
+          <div class="protocol-text">
+            <strong>EXTERNAL ACCOUNTABILITY:</strong> Reporting daily metrics to a mentor who detects cognitive drift before it becomes burnout.
+          </div>
+        </div>
+
+        <div class="protocol-item">
+          <span class="protocol-num">[04]</span>
+          <div class="protocol-text">
+            <strong>OLQ INTERNALISATION:</strong> Practising officer-like honesty, punctuality, and composure in ordinary life, not just during SSB week.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Row -->
+  <footer class="footer-row">
+    <div>OFFICIUM SUPREMUM // ACADEMIC & DEFENCE RESEARCH</div>
+    <div class="stamp">OFFICIAL DOCTRINE</div>
+    <div>PAGE 01 // 01</div>
+  </footer>
+</div>
+
+</body>
+</html>
