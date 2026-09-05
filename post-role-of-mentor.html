@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Role of a Mentor — Officium Supremum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #FFFFFF;
+    --muted: #6e6e6e;
+    --muted-light: #8e8e8e;
+    --accent-gold: #c8a84e;
+    --accent-gold-dim: rgba(200,168,78,0.1);
+    --accent-olive: #2c3e2c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Fraunces', serif;
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .poster {
+    width: 1080px;
+    max-width: 100%;
+    aspect-ratio: 4 / 5;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--paper);
+  }
+
+  /* Background atmosphere */
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(200,168,78,0.04) 0%, transparent 45%),
+      radial-gradient(ellipse at 0% 100%, rgba(44,62,44,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 50%, rgba(200,168,78,0.03) 0%, transparent 40%);
+    z-index: 0;
+  }
+  .poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Watermark */
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 130%;
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Accent lines */
+  .accent-top { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); z-index: 3; }
+  .accent-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); z-index: 3; }
+
+  /* Side stripe */
+  .side-stripe {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--accent-gold), var(--accent-olive), var(--accent-gold));
+    z-index: 3;
+  }
+
+  /* Corner brackets */
+  .corner { position: absolute; width: 32px; height: 32px; z-index: 2; pointer-events: none; }
+  .corner-tl { top: 40px; left: 48px; border-top: 1px solid rgba(200,168,78,0.18); border-left: 1px solid rgba(200,168,78,0.18); }
+  .corner-br { bottom: 40px; right: 48px; border-bottom: 1px solid rgba(200,168,78,0.18); border-right: 1px solid rgba(200,168,78,0.18); }
+
+  .content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; padding: 48px 56px; }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .logo-svg { height: 40px; width: auto; }
+  .series-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(200,168,78,0.2);
+    padding: 4px 12px;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(200,168,78,0.25), transparent);
+    margin: 10px 0;
+  }
+  .divider-full {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,168,78,0.15), transparent);
+    margin: 14px 0;
+  }
+
+  /* Topic label */
+  .topic-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topic-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(200,168,78,0.12);
+  }
+
+  /* Headline */
+  .headline {
+    font-size: clamp(2.5rem, 4.8vw, 3.8rem);
+    font-weight: 500;
+    line-height: 1.06;
+    margin-bottom: 10px;
+  }
+  .headline em {
+    font-style: italic;
+    font-weight: 400;
+    background: linear-gradient(90deg, var(--accent-gold), #e0c87a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .headline-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 85%;
+    margin-bottom: 8px;
+  }
+
+  /* Data Evidence Section */
+  .evidence-section {
+    margin-top: 8px;
+  }
+  .evidence-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .evidence-label .dot {
+    width: 4px; height: 4px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Stat cards grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(200,168,78,0.08);
+    padding: 18px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-gold), transparent);
+  }
+  .stat-number {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent-gold);
+    margin-bottom: 4px;
+  }
+  .stat-unit {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+  }
+  .stat-desc {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+  .stat-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.48rem;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    opacity: 0.7;
+  }
+
+  /* The 5 roles section */
+  .roles-section {
+    margin-top: 4px;
+  }
+  .roles-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .roles-label .dot {
+    width: 4px; height: 4px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .roles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+  }
+  .role-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .role-icon {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+    opacity: 0.35;
+  }
+  .role-text h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--paper);
+    margin-bottom: 2px;
+  }
+  .role-text p {
+    font-size: 0.76rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* Famous mentors section */
+  .mentors-strip {
+    margin-top: auto;
+    padding: 14px 0;
+    border-top: 1px solid rgba(200,168,78,0.08);
+    border-bottom: 1px solid rgba(200,168,78,0.08);
+  }
+  .mentors-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .mentors-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .mentor-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(200,168,78,0.05);
+    border: 1px solid rgba(200,168,78,0.1);
+    padding: 5px 14px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+  }
+  .mentor-chip .arrow { color: var(--accent-gold); font-size: 0.7rem; opacity: 0.6; }
+  .mentor-chip .name { color: var(--accent-gold); font-weight: 600; }
+
+  /* Quote at bottom */
+  .closing-quote {
+    margin-top: 14px;
+    text-align: center;
+    padding: 8px 0;
+  }
+  .closing-quote blockquote {
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.35;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 6px;
+  }
+  .closing-quote blockquote strong {
+    font-weight: 600;
+    font-style: normal;
+    color: var(--accent-gold);
+  }
+  .closing-quote .attr {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* Footer — just branding, no CTA */
+  .footer {
+    padding-top: 12px;
+    border-top: 1px solid rgba(200,168,78,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+  .footer-brand {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .footer-brand strong { color: var(--accent-gold); }
+  .footer-page {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.5rem;
+    color: rgba(200,168,78,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 600px) {
+    .content { padding: 30px 24px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .roles-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; gap: 8px; }
+    .mentors-row { flex-direction: column; }
+    .headline { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="poster">
+  <div class="accent-top"></div>
+  <div class="accent-bottom"></div>
+  <div class="side-stripe"></div>
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- Watermark -->
+  <svg class="watermark" viewBox="0 0 220 100" preserveAspectRatio="xMidYMid meet">
+    <circle cx="50" cy="50" r="45" fill="#fff" />
+    <circle cx="80" cy="50" r="26" fill="#000" />
+    <circle cx="80" cy="50" r="10" fill="#fff" />
+    <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#fff">s.</text>
+  </svg>
+
+  <div class="content">
+    <!-- Header -->
+    <div class="header">
+      <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+        <circle cx="50" cy="50" r="45" fill="#FFFFFF" />
+        <circle cx="80" cy="50" r="26" fill="#0a0a0a" />
+        <circle cx="80" cy="50" r="10" fill="#FFFFFF" />
+        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#FFFFFF">s.</text>
+        <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#FFFFFF">OFFICIUM SUPREMUM</text>
+      </svg>
+      <div class="series-tag">Knowledge // Value Post</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Topic -->
+    <div class="topic-label">The Mentorship Briefing</div>
+
+    <!-- Headline -->
+    <h1 class="headline">The role of a <em>Mentor</em> in your life.</h1>
+    <p class="headline-sub">Behind every great achiever, there is someone who believed in them before they believed in themselves. Here's what the data says.</p>
+
+    <div class="divider-full"></div>
+
+    <!-- Evidence / Stats Section -->
+    <div class="evidence-section">
+      <div class="evidence-label">
+        <span class="dot"></span>
+        What research proves about mentorship
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div><span class="stat-number">5</span><span class="stat-unit">×</span></div>
+          <div class="stat-desc">More likely to be promoted than those without a mentor</div>
+          <div class="stat-source">— Sun Microsystems / Gartner Study</div>
+        </div>
+        <div class="stat-card">
+          <div><span class="stat-number">91</span><span class="stat-unit">%</span></div>
+          <div class="stat-desc">Of mentored employees report higher job satisfaction</div>
+          <div class="stat-source">— CNBC / Forbes Workplace Survey</div>
+        </div>
+        <div class="stat-card">
+          <div><span class="stat-number">10‑15</span><span class="stat-unit">%</span></div>
+          <div class="stat-desc">Higher college retention & graduation with one-on-one coaching</div>
+          <div class="stat-source">— Stanford University Study (13,500+ students)</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div><span class="stat-number">18</span><span class="stat-unit">%</span></div>
+          <div class="stat-desc">Higher productivity in mentored employees vs non-mentored</div>
+          <div class="stat-source">— Harvard Business School Research</div>
+        </div>
+        <div class="stat-card">
+          <div><span class="stat-number">72</span><span class="stat-unit">%</span></div>
+          <div class="stat-desc">Retention rate for mentees vs 49% for non-participants</div>
+          <div class="stat-source">— Deloitte / SHRM Report</div>
+        </div>
+        <div class="stat-card">
+          <div><span class="stat-number">97.5</span><span class="stat-unit">%</span></div>
+          <div class="stat-desc">Of Fortune 500 companies run formal mentorship programs</div>
+          <div class="stat-source">— Fortune / MentorcliQ Data</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-full"></div>
+
+    <!-- 5 Roles of a Mentor -->
+    <div class="roles-section">
+      <div class="roles-label">
+        <span class="dot"></span>
+        Five roles a mentor plays in your life
+      </div>
+
+      <div class="roles-grid">
+        <div class="role-item">
+          <div class="role-icon">01</div>
+          <div class="role-text">
+            <h4>The Mirror</h4>
+            <p>Shows you who you really are — your blind spots, strengths, and the gap between where you are and where you think you are.</p>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon">02</div>
+          <div class="role-text">
+            <h4>The Compass</h4>
+            <p>Gives you direction when you're overwhelmed. Cuts through noise and tells you exactly what to focus on — and what to ignore.</p>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon">03</div>
+          <div class="role-text">
+            <h4>The Anchor</h4>
+            <p>Holds you steady during failure, self-doubt, and the months where nothing seems to work. Their belief keeps you moving.</p>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon">04</div>
+          <div class="role-text">
+            <h4>The Accelerator</h4>
+            <p>Compresses years of trial-and-error into weeks. Their experience becomes your shortcut — you skip mistakes they already made.</p>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon">05</div>
+          <div class="role-text">
+            <h4>The Standard</h4>
+            <p>Raises the bar of what you consider "enough." A mentor doesn't accept your excuses — they hold you to a version of yourself you haven't met yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Famous mentors strip -->
+    <div class="mentors-strip">
+      <div class="mentors-label">Every great leader had a mentor</div>
+      <div class="mentors-row">
+        <div class="mentor-chip">Oprah Winfrey <span class="arrow">←</span> <span class="name">Maya Angelou</span></div>
+        <div class="mentor-chip">Bill Gates <span class="arrow">←</span> <span class="name">Warren Buffett</span></div>
+        <div class="mentor-chip">Steve Jobs <span class="arrow">←</span> <span class="name">Robert Noyce</span></div>
+        <div class="mentor-chip">Zuckerberg <span class="arrow">←</span> <span class="name">Steve Jobs</span></div>
+        <div class="mentor-chip">MLK Jr. <span class="arrow">←</span> <span class="name">Dr. Benjamin Mays</span></div>
+      </div>
+    </div>
+
+    <!-- Closing quote -->
+    <div class="closing-quote">
+      <blockquote>"If your actions inspire others to dream more, learn more, do more and become more, <strong>you are a leader.</strong>"</blockquote>
+      <div class="attr">— John Quincy Adams</div>
+    </div>
+
+    <!-- Footer — branding only, no CTA -->
+    <div class="footer">
+      <div class="footer-brand">A knowledge post by <strong>Officium Supremum</strong></div>
+      <div class="footer-page">OS // KNOWLEDGE // 003</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
