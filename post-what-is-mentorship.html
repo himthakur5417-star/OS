@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — What Is Mentorship</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #FFFFFF;
+    --muted: #6a6a6a;
+    --accent-gold: #c8a84e;
+    --accent-olive: #2c3e2c;
+    --accent-red: #c0392b;
+    --accent-green: #27ae60;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Fraunces', serif;
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .poster {
+    width: 1080px;
+    max-width: 100%;
+    aspect-ratio: 4 / 5;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--paper);
+  }
+
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(200,168,78,0.05) 0%, transparent 40%),
+      radial-gradient(ellipse at 0% 100%, rgba(44,62,44,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(32,43,54,0.06) 0%, transparent 50%);
+    z-index: 0;
+  }
+  .poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 130%;
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Dramatic side stripe */
+  .side-stripe {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    background: linear-gradient(180deg, var(--accent-gold), var(--accent-olive), var(--accent-gold));
+    z-index: 3;
+  }
+  .accent-top { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent-gold), transparent 40%); z-index: 3; }
+  .accent-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent-gold), transparent 40%); z-index: 3; }
+
+  /* Decorative corner brackets */
+  .corner-tl, .corner-br {
+    position: absolute;
+    width: 40px; height: 40px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .corner-tl {
+    top: 44px; left: 44px;
+    border-top: 1px solid rgba(200,168,78,0.2);
+    border-left: 1px solid rgba(200,168,78,0.2);
+  }
+  .corner-br {
+    bottom: 44px; right: 44px;
+    border-bottom: 1px solid rgba(200,168,78,0.2);
+    border-right: 1px solid rgba(200,168,78,0.2);
+  }
+
+  .content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; padding: 50px 60px; }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .logo-svg { height: 42px; width: auto; }
+  .series-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(200,168,78,0.25);
+    padding: 5px 14px;
+    text-transform: uppercase;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(200,168,78,0.3), transparent);
+    margin: 12px 0;
+  }
+
+  /* The provocative hook */
+  .hook {
+    margin: 10px 0 6px;
+  }
+  .hook-question {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hook-question::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(200,168,78,0.15);
+  }
+  .hook h1 {
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 500;
+    line-height: 1.04;
+    margin-bottom: 8px;
+  }
+  .hook h1 .strikethrough {
+    text-decoration: line-through;
+    color: rgba(255,255,255,0.2);
+    text-decoration-color: var(--accent-red);
+    text-decoration-thickness: 3px;
+  }
+  .hook h1 .gold {
+    background: linear-gradient(90deg, var(--accent-gold), #e0c87a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .hook-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.55;
+    max-width: 80%;
+  }
+
+  /* The definition blocks */
+  .definitions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .def-block {
+    padding: 20px 24px;
+    position: relative;
+  }
+  .def-coaching {
+    background: rgba(192,57,43,0.04);
+    border-left: 3px solid var(--accent-red);
+  }
+  .def-mentorship {
+    background: rgba(200,168,78,0.04);
+    border-left: 3px solid var(--accent-gold);
+  }
+
+  .def-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .def-coaching .def-label { color: var(--accent-red); }
+  .def-mentorship .def-label { color: var(--accent-gold); }
+  .def-label .def-icon { font-size: 0.8rem; }
+
+  .def-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+  .def-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  .def-coaching .def-item {
+    color: rgba(255,255,255,0.4);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    text-decoration: line-through;
+    text-decoration-color: rgba(192,57,43,0.3);
+  }
+  .def-mentorship .def-item {
+    color: rgba(255,255,255,0.85);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .def-bullet { flex-shrink: 0; margin-top: 1px; font-size: 0.7rem; }
+  .def-coaching .def-bullet { color: rgba(192,57,43,0.4); }
+  .def-mentorship .def-bullet { color: var(--accent-gold); }
+
+  /* The truth statement */
+  .truth {
+    background: rgba(200,168,78,0.04);
+    border: 1px solid rgba(200,168,78,0.1);
+    padding: 24px 28px;
+    text-align: center;
+    margin-top: 12px;
+  }
+  .truth-quote {
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .truth-quote strong {
+    font-weight: 600;
+    font-style: normal;
+    color: var(--accent-gold);
+  }
+  .truth-attr {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* CTA band */
+  .cta-band {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid rgba(200,168,78,0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cta-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .cta-item {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cta-item strong { color: var(--accent-gold); font-weight: 600; }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 30px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, var(--accent-gold), #e0c87a);
+    color: var(--ink);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .cta-btn:hover { transform: scale(1.04); }
+  .cta-btn:hover::before { transform: translateX(100%); }
+
+  /* Animated pulse ring */
+  .pulse-ring {
+    position: absolute;
+    bottom: 20%;
+    right: 40px;
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .pulse-ring::before, .pulse-ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(200,168,78,0.06);
+    border-radius: 50%;
+    animation: pulseRing 3s ease-in-out infinite;
+  }
+  .pulse-ring::after { animation-delay: 1.5s; }
+  @keyframes pulseRing {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  @media (max-width: 600px) {
+    .content { padding: 30px 24px; }
+    .def-content { grid-template-columns: 1fr; }
+    .header { flex-direction: column; gap: 8px; }
+    .cta-band { flex-direction: column; gap: 14px; text-align: center; }
+    .cta-left { flex-direction: column; gap: 6px; }
+    .hook h1 { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="poster">
+  <div class="side-stripe"></div>
+  <div class="accent-top"></div>
+  <div class="accent-bottom"></div>
+  <div class="corner-tl"></div>
+  <div class="corner-br"></div>
+  <div class="pulse-ring"></div>
+
+  <!-- Watermark -->
+  <svg class="watermark" viewBox="0 0 220 100" preserveAspectRatio="xMidYMid meet">
+    <circle cx="50" cy="50" r="45" fill="#fff" />
+    <circle cx="80" cy="50" r="26" fill="#000" />
+    <circle cx="80" cy="50" r="10" fill="#fff" />
+    <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#fff">s.</text>
+  </svg>
+
+  <div class="content">
+    <!-- Header -->
+    <div class="header">
+      <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+        <circle cx="50" cy="50" r="45" fill="#FFFFFF" />
+        <circle cx="80" cy="50" r="26" fill="#0a0a0a" />
+        <circle cx="80" cy="50" r="10" fill="#FFFFFF" />
+        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#FFFFFF">s.</text>
+        <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#FFFFFF">OFFICIUM SUPREMUM</text>
+      </svg>
+      <div class="series-tag">OS // Content Series #002</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- The hook -->
+    <div class="hook">
+      <div class="hook-question">The Real Question</div>
+      <h1>You don't need more <span class="strikethrough">coaching.</span><br>You need <span class="gold">mentorship.</span></h1>
+      <p class="hook-sub">They sound similar. They are worlds apart. One gives you lectures. The other gives you a life worth wearing the uniform for.</p>
+    </div>
+
+    <!-- Definitions -->
+    <div class="definitions">
+      <!-- What coaching is (strikethrough, faded) -->
+      <div class="def-block def-coaching">
+        <div class="def-label"><span class="def-icon">✕</span> What Coaching Gives You</div>
+        <div class="def-content">
+          <div class="def-item"><span class="def-bullet">—</span>Pre-recorded video lectures</div>
+          <div class="def-item"><span class="def-bullet">—</span>One syllabus for everyone</div>
+          <div class="def-item"><span class="def-bullet">—</span>PDF notes collection</div>
+          <div class="def-item"><span class="def-bullet">—</span>WhatsApp group "motivation"</div>
+          <div class="def-item"><span class="def-bullet">—</span>Generic test series</div>
+          <div class="def-item"><span class="def-bullet">—</span>No one checks if you studied</div>
+        </div>
+      </div>
+
+      <!-- What mentorship is (highlighted, powerful) -->
+      <div class="def-block def-mentorship">
+        <div class="def-label"><span class="def-icon">◆</span> What Mentorship Gives You</div>
+        <div class="def-content">
+          <div class="def-item"><span class="def-bullet">▸</span>Personalised daily battle plan</div>
+          <div class="def-item"><span class="def-bullet">▸</span>Your own roadmap, your pace</div>
+          <div class="def-item"><span class="def-bullet">▸</span>Active recall & revision systems</div>
+          <div class="def-item"><span class="def-bullet">▸</span>Mandatory daily accountability</div>
+          <div class="def-item"><span class="def-bullet">▸</span>Exam-real mock simulations</div>
+          <div class="def-item"><span class="def-bullet">▸</span>OLQs built. Discipline enforced.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The truth -->
+    <div class="truth">
+      <div class="truth-quote">"Coaching prepares you for a paper.<br><strong>Mentorship prepares you for the uniform.</strong>"</div>
+      <div class="truth-attr">— Officium Supremum</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-band">
+      <div class="cta-left">
+        <div class="cta-item"><strong>WhatsApp:</strong> +91 8969634656</div>
+        <div class="cta-item"><strong>Email:</strong> osupremum@gmail.com</div>
+      </div>
+      <a href="https://wa.me/918969634656" class="cta-btn" target="_blank">
+        Choose Mentorship →
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

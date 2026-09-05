@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — The 2% Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0c0c0c;
+    --paper: #FFFFFF;
+    --muted: #6a6a6a;
+    --accent-gold: #c8a84e;
+    --accent-red: #c0392b;
+    --accent-green: #27ae60;
+    --accent-olive: #2c3e2c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Fraunces', serif;
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .poster {
+    width: 1080px;
+    max-width: 100%;
+    aspect-ratio: 4 / 5;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--paper);
+  }
+
+  /* Atmosphere */
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(192,57,43,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(44,62,44,0.1) 0%, transparent 50%);
+    z-index: 0;
+  }
+  .poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Watermark */
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 130%;
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Scan lines effect */
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.008) 2px,
+      rgba(255,255,255,0.008) 4px
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Accent lines */
+  .accent-top { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--accent-red), var(--accent-gold), var(--accent-olive)); z-index: 3; }
+  .accent-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--accent-olive), var(--accent-gold), var(--accent-red)); z-index: 3; }
+
+  /* CLASSIFIED stamp */
+  .classified-stamp {
+    position: absolute;
+    top: 120px;
+    right: 30px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: rgba(192,57,43,0.12);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transform: rotate(-12deg);
+    border: 4px solid rgba(192,57,43,0.1);
+    padding: 4px 24px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; padding: 48px 56px; }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .logo-svg { height: 44px; width: auto; }
+  .doc-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-align: right;
+    line-height: 1.6;
+  }
+  .doc-id .highlight { color: var(--accent-red); font-weight: 700; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,168,78,0.2), transparent);
+    margin: 12px 0;
+  }
+  .divider-hard {
+    height: 1px;
+    background: rgba(200,168,78,0.12);
+    margin: 16px 0;
+  }
+
+  /* Dossier label */
+  .dossier-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .dossier-label .line { flex: 1; height: 1px; background: rgba(200,168,78,0.15); }
+  .dossier-label span {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Big shock stat */
+  .shock-section {
+    text-align: center;
+    padding: 18px 0 14px;
+  }
+  .shock-stat {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10rem;
+    font-weight: 700;
+    line-height: 0.85;
+    background: linear-gradient(180deg, var(--accent-red) 0%, rgba(192,57,43,0.4) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+  }
+  .shock-unit {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-red);
+    letter-spacing: 0.02em;
+    vertical-align: super;
+  }
+  .shock-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .shock-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.5;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Comparison table */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 14px;
+    border: 1px solid rgba(200,168,78,0.1);
+  }
+  .comp-header {
+    padding: 12px 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .comp-header-fail {
+    background: rgba(192,57,43,0.1);
+    color: var(--accent-red);
+    border-bottom: 2px solid rgba(192,57,43,0.2);
+    border-right: 1px solid rgba(200,168,78,0.08);
+  }
+  .comp-header-pass {
+    background: rgba(39,174,96,0.08);
+    color: var(--accent-green);
+    border-bottom: 2px solid rgba(39,174,96,0.15);
+  }
+  .comp-cell {
+    padding: 11px 20px;
+    font-size: 0.82rem;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.04em;
+    font-weight: 400;
+  }
+  .comp-cell:nth-child(odd) {
+    border-right: 1px solid rgba(200,168,78,0.08);
+  }
+  .comp-fail { color: rgba(255,255,255,0.5); }
+  .comp-pass { color: rgba(255,255,255,0.85); }
+  .comp-icon { font-size: 0.7rem; flex-shrink: 0; }
+  .comp-fail .comp-icon { color: var(--accent-red); }
+  .comp-pass .comp-icon { color: var(--accent-green); }
+
+  /* The punchline */
+  .punchline {
+    text-align: center;
+    padding: 24px 0 10px;
+  }
+  .punchline h2 {
+    font-size: 2rem;
+    line-height: 1.15;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .punchline em {
+    font-style: italic;
+    font-weight: 400;
+    background: linear-gradient(90deg, var(--accent-gold), #e0c87a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .punchline p {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Bottom CTA */
+  .bottom-bar {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(200,168,78,0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .bottom-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .bottom-item {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .bottom-item strong { color: var(--accent-gold); font-weight: 600; }
+  .bottom-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 28px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--accent-gold);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  .bottom-cta:hover { transform: scale(1.04); }
+
+  /* Redacted text effect */
+  .redacted {
+    background: rgba(255,255,255,0.12);
+    color: transparent;
+    padding: 1px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    user-select: none;
+  }
+
+  @media (max-width: 600px) {
+    .content { padding: 30px 22px; }
+    .shock-stat { font-size: 6rem; }
+    .comparison { grid-template-columns: 1fr; }
+    .comp-header-fail { border-right: none; }
+    .comp-cell:nth-child(odd) { border-right: none; }
+    .header { flex-direction: column; gap: 8px; }
+    .bottom-bar { flex-direction: column; gap: 12px; text-align: center; }
+    .bottom-left { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="poster">
+  <div class="accent-top"></div>
+  <div class="accent-bottom"></div>
+  <div class="scanlines"></div>
+  <div class="classified-stamp">CLASSIFIED</div>
+
+  <!-- Watermark -->
+  <svg class="watermark" viewBox="0 0 220 100" preserveAspectRatio="xMidYMid meet">
+    <circle cx="50" cy="50" r="45" fill="#fff" />
+    <circle cx="80" cy="50" r="26" fill="#000" />
+    <circle cx="80" cy="50" r="10" fill="#fff" />
+    <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#fff">s.</text>
+  </svg>
+
+  <div class="content">
+    <!-- Header -->
+    <div class="header">
+      <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+        <circle cx="50" cy="50" r="45" fill="#FFFFFF" />
+        <circle cx="80" cy="50" r="26" fill="#0c0c0c" />
+        <circle cx="80" cy="50" r="10" fill="#FFFFFF" />
+        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#FFFFFF">s.</text>
+        <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#FFFFFF">OFFICIUM SUPREMUM</text>
+      </svg>
+      <div class="doc-id">
+        FILE: OS/INTEL/<span class="highlight">2025</span>/MR-001<br>
+        STATUS: <span class="highlight">DECLASSIFIED</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Dossier label -->
+    <div class="dossier-label">
+      <div class="line"></div>
+      <span>⬢ Intelligence Briefing — The Mentorship Report</span>
+      <div class="line"></div>
+    </div>
+
+    <!-- Big shock stat -->
+    <div class="shock-section">
+      <div>
+        <span class="shock-stat">98</span><span class="shock-unit">%</span>
+      </div>
+      <div class="shock-label">of NDA aspirants fail. Every single year.</div>
+      <p class="shock-sub">They don't fail because they didn't study. They fail because they studied <strong style="color:#fff;">without a system.</strong> No accountability. No recall. No execution strategy.</p>
+    </div>
+
+    <div class="divider-hard"></div>
+
+    <!-- Comparison: Without vs With Mentorship -->
+    <div class="comparison">
+      <div class="comp-header comp-header-fail">✕ Without Mentorship</div>
+      <div class="comp-header comp-header-pass">✓ With Mentorship</div>
+
+      <div class="comp-cell comp-fail"><span class="comp-icon">✕</span> Studies 10 hours. Remembers nothing.</div>
+      <div class="comp-cell comp-pass"><span class="comp-icon">▸</span> Studies 5 hours. Recalls everything.</div>
+
+      <div class="comp-cell comp-fail"><span class="comp-icon">✕</span> Random YouTube lectures daily.</div>
+      <div class="comp-cell comp-pass"><span class="comp-icon">▸</span> Personalised daily roadmap.</div>
+
+      <div class="comp-cell comp-fail"><span class="comp-icon">✕</span> No one checks if you actually studied.</div>
+      <div class="comp-cell comp-pass"><span class="comp-icon">▸</span> Mandatory nightly accountability report.</div>
+
+      <div class="comp-cell comp-fail"><span class="comp-icon">✕</span> Prepares SSB answers from a book.</div>
+      <div class="comp-cell comp-pass"><span class="comp-icon">▸</span> OLQs built through daily practice.</div>
+
+      <div class="comp-cell comp-fail"><span class="comp-icon">✕</span> Gives up after first failure.</div>
+      <div class="comp-cell comp-pass"><span class="comp-icon">▸</span> Mental resilience trained weekly.</div>
+
+      <div class="comp-cell comp-fail"><span class="comp-icon">✕</span> Motivation-dependent. Inconsistent.</div>
+      <div class="comp-cell comp-pass"><span class="comp-icon">▸</span> System-dependent. Unstoppable.</div>
+    </div>
+
+    <!-- Punchline -->
+    <div class="punchline">
+      <h2>The difference isn't talent.<br>It's <em>mentorship.</em></h2>
+      <p>Coaching gives you information. Mentorship gives you transformation.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="bottom-bar">
+      <div class="bottom-left">
+        <div class="bottom-item"><strong>WhatsApp:</strong> +91 8969634656</div>
+        <div class="bottom-item"><strong>Email:</strong> osupremum@gmail.com</div>
+        <div class="bottom-item"><span class="redacted">████████</span></div>
+      </div>
+      <a href="https://wa.me/918969634656" class="bottom-cta" target="_blank">Get Mentored →</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
