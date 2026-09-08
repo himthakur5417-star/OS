@@ -6,13 +6,13 @@
 <title>Officium Supremum — Instagram Slide 04</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Oswald:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #14171a;
-    --paper: #FFFFFF;
-    --accent-blue: #366088;
-    --accent-gold: #c8a84e;
+    --ink-primary: #0a1017;
+    --ink-secondary: #1e293b;
+    --accent-gold: #8c6517;
+    --accent-navy: #162a3f;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -35,61 +35,20 @@
     background-image: url('post_slide4_bg.jpg');
     background-size: cover;
     background-position: center;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.55);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 56px 64px 60px;
+    justify-content: flex-end;
+    padding: 60px 64px 64px;
   }
 
-  /* Top Bar with Logo & Slide Indicator */
-  .top-bar {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-  }
-
-  .top-spacer {
-    width: 220px; /* balances the slide badge on the right so the logo is perfectly centered */
-  }
-
-  .logo-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .logo-svg {
-    height: 64px;
-    width: auto;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.22));
-  }
-
-  .slide-badge {
-    font-family: 'Oswald', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #ffffff;
-    background: rgba(26, 45, 66, 0.45);
-    backdrop-filter: blur(12px);
-    padding: 7px 18px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  }
-
-  /* Center spacer: preserves exact original image artwork ("TRUST THE PROCESS") */
+  /* Center artwork space: keeps user's original image completely untouched */
   .center-artwork-space {
     flex: 1;
     pointer-events: none;
   }
 
-  /* Bottom Bar with User's Email ID & Contact */
+  /* Bottom Area with User's Email ID & Contact - Pure text, NO boxes */
   .bottom-bar {
     position: relative;
     z-index: 10;
@@ -97,51 +56,42 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    text-align: center;
   }
 
-  .contact-pill {
+  .contact-text-line {
     display: flex;
     align-items: center;
-    gap: 28px;
-    background: rgba(18, 32, 48, 0.65);
-    backdrop-filter: blur(16px);
-    padding: 14px 36px;
-    border-radius: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-  }
-
-  .contact-item {
+    justify-content: center;
+    gap: 20px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    color: #f0f4f8;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink-primary);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
   }
-  .contact-item strong {
+  .contact-text-line strong {
     font-family: 'Oswald', sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--accent-gold);
-    font-weight: 600;
+    font-weight: 700;
   }
-  .contact-divider {
-    width: 1px;
-    height: 18px;
-    background: rgba(255, 255, 255, 0.25);
+  .contact-text-line span.dot {
+    color: var(--accent-gold);
+    font-size: 22px;
   }
 
   .enrollment-note {
     font-family: 'Oswald', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.22em;
+    font-size: 13px;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.75);
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    color: #1e293b;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
   }
 </style>
 </head>
@@ -149,37 +99,18 @@
 
 <div class="slide-container" id="slide4">
   
-  <!-- Top Bar with Official Logo Centered -->
-  <div class="top-bar">
-    <div class="top-spacer"></div>
-    <div class="logo-wrapper">
-      <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
-        <circle cx="50" cy="50" r="45" fill="#FFFFFF" />
-        <circle cx="80" cy="50" r="26" fill="#14171a" />
-        <circle cx="80" cy="50" r="10" fill="#FFFFFF" />
-        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#FFFFFF">s.</text>
-        <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#FFFFFF">OFFICIUM SUPREMUM</text>
-      </svg>
-    </div>
-    <div class="slide-badge">Slide 04 / 04</div>
-  </div>
-
-  <!-- Space preserving original "TRUST THE PROCESS" artwork untouched -->
+  <!-- Artwork space: preserves original "WORDS OF WISDOM" and "TRUST THE PROCESS" untouched -->
   <div class="center-artwork-space"></div>
 
-  <!-- Bottom Bar with Email ID -->
+  <!-- Bottom Bar: Pure text directly on template, NO boxes -->
   <div class="bottom-bar">
-    <div class="contact-pill">
-      <div class="contact-item">
-        <strong>Email:</strong> osupremum@gmail.com
-      </div>
-      <div class="contact-divider"></div>
-      <div class="contact-item">
-        <strong>WhatsApp:</strong> +91 8969634656
-      </div>
+    <div class="contact-text-line">
+      <span><strong>Email:</strong> osupremum@gmail.com</span>
+      <span class="dot">·</span>
+      <span><strong>WhatsApp:</strong> +91 8969634656</span>
     </div>
     <div class="enrollment-note">
-      Admissions & Mentorship Inquiries · Direct Mentor Access
+      Admissions & Mentorship Inquiries · Officium Supremum
     </div>
   </div>
 

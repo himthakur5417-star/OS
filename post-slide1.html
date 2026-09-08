@@ -1,295 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Officium Supremum — Instagram Slide 01</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --ink: #14171a;
-      --ink-dark: #0a0b0d;
-      --paper-tint: #f6f3eb;
-      --accent-gold: #c8a84e;
-      --accent-gold-dark: #9e7f2f;
-      --accent-navy: #1a2530;
-      --accent-olive: #2c3e2c;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — Instagram Slide 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Oswald:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e141a;
+    --ink-dark: #0a0b0d;
+    --accent-gold: #8c6517;
+    --accent-navy: #142536;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d0f12;
+    font-family: 'Fraunces', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 10px;
+    -webkit-font-smoothing: antialiased;
+  }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  .slide-container {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    background-color: #f7f5f0;
+    background-image: url('post_slide1_bg.png');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+  }
 
-    body {
-      background: #0d0f12;
-      font-family: 'Fraunces', serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 30px 10px;
-      -webkit-font-smoothing: antialiased;
-    }
+  /* Main content area bounded over the torn paper sheet */
+  .paper-content {
+    position: absolute;
+    top: 320px;
+    left: 100px;
+    right: 170px; /* leaves room for paper clip */
+    bottom: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 5;
+    padding: 0 20px;
+  }
 
-    .slide-container {
-      width: 1080px;
-      height: 1350px;
-      position: relative;
-      overflow: hidden;
-      background-color: #f7f5f0;
-      background-image: url('post_slide1_bg.png');
-      background-size: cover;
-      background-position: center;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
-      display: flex;
-      flex-direction: column;
-    }
+  /* Logo styling for light textured paper */
+  .logo-wrapper {
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .logo-svg {
+    width: 230px;
+    height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
+  }
 
-    /* Slide index indicator badge */
-    .slide-badge {
-      position: absolute;
-      top: 50px;
-      left: 56px;
-      font-family: 'Oswald', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #4a5d6e;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      padding: 7px 16px;
-      border-radius: 20px;
-      border: 1px solid rgba(74, 93, 110, 0.2);
-      z-index: 10;
-    }
+  /* Pre-title tag */
+  .pre-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .pre-title::before, .pre-title::after {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1.5px;
+    background: var(--accent-gold);
+    opacity: 0.6;
+  }
 
-    .slide-curation {
-      position: absolute;
-      top: 50px;
-      right: 56px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #4a5d6e;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      padding: 7px 16px;
-      border-radius: 20px;
-      border: 1px solid rgba(74, 93, 110, 0.2);
-      z-index: 10;
-    }
+  /* Main Titles */
+  .main-title {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.06;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
 
-    /* Main content area bounded over the torn paper sheet */
-    .paper-content {
-      position: absolute;
-      top: 410px;
-      left: 120px;
-      right: 170px;
-      /* leaves room for paper clip */
-      bottom: 270px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      z-index: 5;
-      padding: 0 20px;
-    }
+  .sub-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: #1e293b;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    position: relative;
+    display: inline-block;
+  }
+  .sub-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2.5px;
+    background: var(--accent-gold);
+  }
 
-    /* Logo styling for light textured paper */
-    .logo-wrapper {
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  .tagline-para {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #334155;
+    max-width: 640px;
+    margin-top: 10px;
+    margin-bottom: 22px;
+  }
 
-    .logo-svg {
-      width: 240px;
-      height: auto;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06));
-    }
+  /* Exam Names - Clean typography with interpuncts (NO boxes) */
+  .exam-text-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .exam-text-row span.bullet {
+    color: var(--accent-gold);
+    font-size: 18px;
+  }
 
-    /* Pre-title tag */
-    .pre-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--accent-gold-dark);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .pre-title::before,
-    .pre-title::after {
-      content: '';
-      display: inline-block;
-      width: 32px;
-      height: 1.5px;
-      background: var(--accent-gold-dark);
-      opacity: 0.6;
-    }
-
-    /* Main Titles */
-    .main-title {
-      font-family: 'Fraunces', serif;
-      font-size: 58px;
-      font-weight: 700;
-      line-height: 1.08;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-    }
-
-    .main-title em {
-      font-style: italic;
-      font-weight: 500;
-      color: #273746;
-    }
-
-    .sub-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 34px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      color: #222b35;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      position: relative;
-      display: inline-block;
-    }
-
-    .sub-title::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90px;
-      height: 2.5px;
-      background: var(--accent-gold);
-    }
-
-    .tagline-para {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 17.5px;
-      font-weight: 500;
-      line-height: 1.55;
-      color: #4a4f55;
-      max-width: 650px;
-      margin-top: 14px;
-      margin-bottom: 28px;
-    }
-
-    /* Bottom Swipe Prompt on the lavender sky */
-    .bottom-prompt {
-      position: absolute;
-      bottom: 54px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .swipe-cta {
-      font-family: 'Oswald', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #3b4e60;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(8px);
-      padding: 8px 24px;
-      border-radius: 30px;
-      border: 1px solid rgba(59, 78, 96, 0.18);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .swipe-cta span {
-      display: inline-block;
-      animation: swipeBounce 1.8s infinite ease-in-out;
-    }
-
-    @keyframes swipeBounce {
-
-      0%,
-      100% {
-        transform: translateX(0);
-      }
-
-      50% {
-        transform: translateX(6px);
-      }
-    }
-  </style>
+  /* Bottom Swipe Prompt on the lavender sky - Clean text, NO box */
+  .bottom-prompt {
+    position: absolute;
+    bottom: 56px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .swipe-cta {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #1e2d3d;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>
 </head>
-
 <body>
 
-  <div class="slide-container" id="slide1">
-    <div class="slide-badge">Slide 01 / 04</div>
-    <div class="slide-curation">Official Carousel</div>
+<div class="slide-container" id="slide1">
 
-    <!-- Content positioned directly on the natural torn paper sheet -->
-    <div class="paper-content">
-
-      <!-- Official Logo Inverted for Light Paper -->
-      <div class="logo-wrapper">
-        <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
-          <circle cx="50" cy="50" r="45" fill="#14171a" />
-          <circle cx="80" cy="50" r="26" fill="#f6f3eb" />
-          <circle cx="80" cy="50" r="10" fill="#14171a" />
-          <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46"
-            fill="#14171a">s.</text>
-          <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12"
-            letter-spacing="0.05em" fill="#14171a">OFFICIUM SUPREMUM</text>
-        </svg>
-      </div>
-
-      <div class="pre-title">Exclusive Mentorship</div>
-
-      <h1 class="main-title">OFFICIUM<br>SUPREMUM</h1>
-
-      <div class="sub-title">Mentorship Program</div>
-
-      <p class="tagline-para">
-        Transforming defense aspirants into future military officers through personalized strategy, daily
-        accountability, and academy-grade discipline.
-      </p>
-
-
+  <!-- Content positioned directly on the natural torn paper sheet -->
+  <div class="paper-content">
+    
+    <!-- Official Logo Inverted for Light Paper -->
+    <div class="logo-wrapper">
+      <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+        <circle cx="50" cy="50" r="45" fill="#0e141a" />
+        <circle cx="80" cy="50" r="26" fill="#f6f3eb" />
+        <circle cx="80" cy="50" r="10" fill="#0e141a" />
+        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#0e141a">s.</text>
+        <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#0e141a">OFFICIUM SUPREMUM</text>
+      </svg>
     </div>
 
-    <!-- Bottom CTA -->
-    <div class="bottom-prompt">
-      <div class="swipe-cta">
-        Swipe for Blueprint <span>→</span>
-      </div>
+    <div class="pre-title">Exclusive Defense Mentorship</div>
+    
+    <h1 class="main-title">OFFICIUM<br>SUPREMUM</h1>
+    
+    <div class="sub-title">Mentorship Program</div>
+
+    <p class="tagline-para">
+      Transforming defense aspirants into future military officers through personalized strategy, daily accountability, and academy-grade discipline.
+    </p>
+
+    <!-- Clean exam tags without boxes -->
+    <div class="exam-text-row">
+      <span>NDA / NA</span>
+      <span class="bullet">·</span>
+      <span>CDS / OTA</span>
+      <span class="bullet">·</span>
+      <span>AFCAT</span>
+      <span class="bullet">·</span>
+      <span>SSB MENTORSHIP</span>
     </div>
+
   </div>
 
-</body>
+  <!-- Bottom CTA (Clean Text, No Box) -->
+  <div class="bottom-prompt">
+    <div class="swipe-cta">
+      Swipe for Blueprint →
+    </div>
+  </div>
+</div>
 
+</body>
 </html>
