@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — Instagram Slide 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #101316;
+    --paper: #FFFFFF;
+    --muted: #9aa7b5;
+    --accent-navy: #192532;
+    --accent-blue: #4a7fb5;
+    --accent-blue-light: #70a4dc;
+    --accent-gold: #c8a84e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Fraunces', serif;
+    background: #080a0c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 10px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .poster {
+    width: 1080px;
+    height: 1350px;
+    background: var(--accent-navy);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--paper);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.55);
+  }
+
+  /* Atmospheric gradients */
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 15%, rgba(74,127,181,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse at 85% 85%, rgba(44,62,44,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 50%, rgba(25,37,50,0.7) 0%, transparent 85%);
+    z-index: 0;
+  }
+  .poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Decorative rings */
+  .shape-ring {
+    position: absolute;
+    width: 420px; height: 420px;
+    border: 1px solid rgba(74,127,181,0.08);
+    border-radius: 50%;
+    top: -100px; right: -100px;
+    z-index: 0;
+  }
+  .shape-ring-2 {
+    position: absolute;
+    width: 300px; height: 300px;
+    border: 1px solid rgba(74,127,181,0.06);
+    border-radius: 50%;
+    bottom: 80px; left: -120px;
+    z-index: 0;
+  }
+
+  /* Watermark */
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 130%;
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Accent lines */
+  .accent-line-top {
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+    z-index: 2;
+  }
+  .accent-line-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+    z-index: 2;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 56px 64px 48px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .logo-svg { height: 50px; width: auto; }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .slide-badge {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--accent-blue-light);
+    background: rgba(74, 127, 181, 0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(74, 127, 181, 0.35);
+  }
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-blue-light);
+    background: rgba(74,127,181,0.1);
+    border: 1px solid rgba(74,127,181,0.25);
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--accent-blue-light);
+    border-radius: 50%;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(74,127,181,0.5), rgba(255,255,255,0.08), transparent);
+    margin-bottom: 22px;
+  }
+
+  /* Tags */
+  .tags-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .tag {
+    display: inline-block;
+    border: 1px solid rgba(74,127,181,0.35);
+    color: var(--accent-blue-light);
+    background: rgba(74,127,181,0.06);
+    padding: 5px 14px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 2px;
+  }
+
+  /* Headings */
+  .subtitle-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-blue-light);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .headline {
+    font-size: 46px;
+    line-height: 1.1;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+  .headline em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent-blue-light);
+  }
+  .sub-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 820px;
+    margin-bottom: 26px;
+    font-weight: 400;
+  }
+
+  /* Core Philosophy Badges */
+  .core-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .core-badge {
+    flex: 1;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(74,127,181,0.18);
+    border-radius: 4px;
+    padding: 16px 20px;
+  }
+  .core-badge h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent-blue-light);
+    margin-bottom: 6px;
+  }
+  .core-badge p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  /* 6 Pillars 3x2 Grid */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px 24px;
+    flex: 1;
+  }
+  .pillar {
+    border-top: 1px solid rgba(74,127,181,0.25);
+    padding-top: 14px;
+  }
+  .pillar-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    color: var(--accent-blue-light);
+    margin-bottom: 4px;
+    font-weight: 600;
+    opacity: 0.85;
+  }
+  .pillar h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--paper);
+  }
+  .pillar p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  /* Footer */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(74,127,181,0.2);
+    padding-top: 22px;
+    margin-top: 24px;
+  }
+  .footer-contact { display: flex; gap: 32px; align-items: center; }
+  .footer-item {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .footer-item strong {
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.08em;
+    color: var(--accent-blue-light);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .footer-cta {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--accent-blue);
+    padding: 10px 22px;
+    border-radius: 3px;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="poster" id="slide3">
+  <div class="accent-line-top"></div>
+  <div class="accent-line-bottom"></div>
+  <div class="shape-ring"></div>
+  <div class="shape-ring-2"></div>
+
+  <!-- Watermark -->
+  <svg class="watermark" viewBox="0 0 220 100" preserveAspectRatio="xMidYMid meet">
+    <circle cx="50" cy="50" r="45" fill="#fff" />
+    <circle cx="80" cy="50" r="26" fill="#000" />
+    <circle cx="80" cy="50" r="10" fill="#fff" />
+    <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#fff">s.</text>
+  </svg>
+
+  <div class="content">
+    <!-- Header -->
+    <div class="header">
+      <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+        <circle cx="50" cy="50" r="45" fill="#FFFFFF" />
+        <circle cx="80" cy="50" r="26" fill="#192532" />
+        <circle cx="80" cy="50" r="10" fill="#FFFFFF" />
+        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#FFFFFF">s.</text>
+        <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#FFFFFF">OFFICIUM SUPREMUM</text>
+      </svg>
+      <div class="header-right">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Juniors Programme
+        </div>
+        <div class="slide-badge">Slide 03 / 04</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Tags -->
+    <div class="tags-row">
+      <span class="tag">Class 7 & Above</span>
+      <span class="tag">NDA Foundation</span>
+      <span class="tag">JEE / NEET Prep</span>
+      <span class="tag">UPSC / CLAT Base</span>
+    </div>
+
+    <!-- Main content -->
+    <div class="subtitle-tag">The Future Leaders Programme</div>
+    <h1 class="headline">The <em>Early Advantage</em> Track</h1>
+    <p class="sub-desc">A dedicated mentorship track for school students who want a massive head start in academics, competitive exams, and personal development.</p>
+
+    <!-- Core Philosophy -->
+    <div class="core-row">
+      <div class="core-badge">
+        <h4>Habits First</h4>
+        <p>Discipline is the prerequisite to intelligence. We conquer daily routines before syllabus.</p>
+      </div>
+      <div class="core-badge">
+        <h4>Early Exposure</h4>
+        <p>Standards of defence, civil services, and top-tier academics instilled from day one.</p>
+      </div>
+    </div>
+
+    <!-- 6 Pillars -->
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <h3>Study Discipline</h3>
+        <p>Building daily productive routines and mastering time management early.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <h3>Reading & Communication</h3>
+        <p>Strong reading habits and articulate communication for future leadership.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <h3>Confidence & Goals</h3>
+        <p>Setting long-term goals and breaking them into daily actionable tasks.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <h3>Academic Planning</h3>
+        <p>Personalised career guidance aligning with competitive exam targets.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">05</div>
+        <h3>Personalised Journals</h3>
+        <p>Custom daily planners tailored to each student's temperament.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">06</div>
+        <h3>Mind Sessions</h3>
+        <p>Building mental resilience, emotional intelligence, and laser focus.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-contact">
+        <div class="footer-item"><strong>WhatsApp:</strong> +91 8969634656</div>
+        <div class="footer-item"><strong>Email:</strong> osupremum@gmail.com</div>
+      </div>
+      <div class="footer-nav">
+        <div class="footer-cta">SWIPE FOR FINAL WORD →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

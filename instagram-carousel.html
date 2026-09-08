@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — Instagram 4-Page Carousel Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<style>
+  :root {
+    --bg-dark: #080a0c;
+    --card-bg: #11151a;
+    --accent-gold: #c8a84e;
+    --accent-gold-glow: rgba(200, 168, 78, 0.25);
+    --accent-blue: #4a7fb5;
+    --text-primary: #f0f4f8;
+    --text-muted: #8e9baa;
+    --border-subtle: rgba(255, 255, 255, 0.09);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* Header Bar */
+  header {
+    background: rgba(14, 18, 22, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 18px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .brand-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .brand-logo-svg {
+    height: 38px;
+    width: auto;
+  }
+  .brand-info h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  .brand-info span {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .btn-outline {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+  }
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .btn-outline.active {
+    background: rgba(200, 168, 78, 0.12);
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+  }
+
+  .btn-primary {
+    background: var(--accent-gold);
+    color: #0b0d10;
+  }
+  .btn-primary:hover {
+    background: #deb958;
+    box-shadow: 0 4px 18px var(--accent-gold-glow);
+    transform: translateY(-1px);
+  }
+
+  /* Main Container */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 20px 60px;
+  }
+
+  /* Carousel Section */
+  .carousel-wrapper {
+    width: 100%;
+    max-width: 1240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stage-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+
+  /* Phone Mockup Frame */
+  .device-mockup {
+    width: 540px;
+    height: 675px; /* exact 4:5 ratio */
+    background: #000;
+    border-radius: 28px;
+    padding: 10px;
+    box-shadow: 0 35px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slides-track {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+  }
+
+  .slide-item {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(0.96) translateX(40px);
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  .slide-item.active {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .slide-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Nav Arrows */
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgba(18, 24, 30, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 22px;
+    transition: all 0.2s ease;
+    z-index: 10;
+  }
+  .nav-arrow:hover {
+    background: var(--accent-gold);
+    color: #000;
+    border-color: var(--accent-gold);
+    box-shadow: 0 4px 18px var(--accent-gold-glow);
+  }
+  .nav-arrow.prev { left: 40px; }
+  .nav-arrow.next { right: 40px; }
+
+  /* Carousel Controls Bar */
+  .carousel-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+
+  .dots-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .dot-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .dot-btn.active {
+    width: 32px;
+    border-radius: 6px;
+    background: var(--accent-gold);
+    box-shadow: 0 0 10px var(--accent-gold-glow);
+  }
+
+  .slide-info-pill {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 6px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  /* Grid Overview Section */
+  .grid-section {
+    width: 100%;
+    max-width: 1360px;
+    margin-top: 40px;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 48px;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .section-header p {
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+
+  .slides-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .grid-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .grid-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(200, 168, 78, 0.4);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+
+  .card-preview {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+  }
+  .card-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .grid-card:hover .card-preview img {
+    transform: scale(1.03);
+  }
+
+  .card-body {
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .card-title-group h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+  .card-title-group span {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .card-actions .btn {
+    flex: 1;
+    font-size: 11.5px;
+    padding: 8px 12px;
+    justify-content: center;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 28px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    background: rgba(14, 18, 22, 0.5);
+  }
+  footer a {
+    color: var(--accent-gold);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand-left">
+    <svg class="brand-logo-svg" viewBox="0 0 220 100">
+      <circle cx="50" cy="50" r="45" fill="#FFFFFF" />
+      <circle cx="80" cy="50" r="26" fill="#11151a" />
+      <circle cx="80" cy="50" r="10" fill="#FFFFFF" />
+      <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#FFFFFF">s.</text>
+      <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#FFFFFF">OFFICIUM SUPREMUM</text>
+    </svg>
+    <div class="brand-info">
+      <h1>Officium Supremum Mentorship</h1>
+      <span>4-Page Instagram Carousel Blueprint (1080 × 1350)</span>
+    </div>
+  </div>
+
+  <div class="nav-actions">
+    <button class="btn btn-outline" id="viewModeBtn" onclick="scrollToGrid()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All 4 Slides
+    </button>
+    <button class="btn btn-primary" onclick="downloadAllZip()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download All Slides (.ZIP)
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- Carousel Stage -->
+  <div class="carousel-wrapper">
+    
+    <div class="stage-container">
+      <button class="nav-arrow prev" onclick="prevSlide()" aria-label="Previous Slide">‹</button>
+      
+      <div class="device-mockup">
+        <div class="slides-track">
+          
+          <div class="slide-item active" id="slide-0">
+            <img src="instagram-post/slide-01-cover.png" alt="Slide 1 - Officium Supremum Mentorship Program">
+          </div>
+          
+          <div class="slide-item" id="slide-1">
+            <img src="instagram-post/slide-02-main.png" alt="Slide 2 - Transforming Aspirants into Future Officers">
+          </div>
+          
+          <div class="slide-item" id="slide-2">
+            <img src="instagram-post/slide-03-juniors.png" alt="Slide 3 - The Early Advantage Track (Junior Wing)">
+          </div>
+          
+          <div class="slide-item" id="slide-3">
+            <img src="instagram-post/slide-04-closing.png" alt="Slide 4 - Trust The Process">
+          </div>
+
+        </div>
+      </div>
+
+      <button class="nav-arrow next" onclick="nextSlide()" aria-label="Next Slide">›</button>
+    </div>
+
+    <div class="carousel-controls">
+      <div class="dots-row">
+        <button class="dot-btn active" onclick="goToSlide(0)"></button>
+        <button class="dot-btn" onclick="goToSlide(1)"></button>
+        <button class="dot-btn" onclick="goToSlide(2)"></button>
+        <button class="dot-btn" onclick="goToSlide(3)"></button>
+      </div>
+      <div class="slide-info-pill" id="slideIndicator">Slide 01 of 04 · Cover Page</div>
+      
+      <div style="display:flex; gap:12px;">
+        <a class="btn btn-outline" id="currentDownloadBtn" href="instagram-post/slide-01-cover.png" download="slide-01-cover.png">
+          Download Current Slide (PNG)
+        </a>
+        <a class="btn btn-outline" id="openSourceBtn" href="post-slide1.html" target="_blank">
+          Open HTML Template ↗
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Grid Section -->
+  <div class="grid-section" id="gridSection">
+    <div class="section-header">
+      <h2>Complete 4-Page Carousel Set</h2>
+      <p>Formatted in native Instagram 4:5 portrait ratio (1080px × 1350px) ready for publishing.</p>
+    </div>
+
+    <div class="slides-grid">
+      
+      <!-- Card 1 -->
+      <div class="grid-card">
+        <div class="card-preview">
+          <img src="instagram-post/slide-01-cover.png" alt="Cover Slide">
+        </div>
+        <div class="card-body">
+          <div class="card-title-group">
+            <span>Slide 01 · Cover</span>
+            <h3>Officium Supremum Mentorship</h3>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="instagram-post/slide-01-cover.png" download="slide-01-cover.png">Download PNG</a>
+            <a class="btn btn-outline" href="post-slide1.html" target="_blank">HTML</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="grid-card">
+        <div class="card-preview">
+          <img src="instagram-post/slide-02-main.png" alt="Main Mentorship Slide">
+        </div>
+        <div class="card-body">
+          <div class="card-title-group">
+            <span>Slide 02 · Main Blueprint</span>
+            <h3>Transforming Future Officers</h3>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="instagram-post/slide-02-main.png" download="slide-02-main.png">Download PNG</a>
+            <a class="btn btn-outline" href="post-slide2.html" target="_blank">HTML</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="grid-card">
+        <div class="card-preview">
+          <img src="instagram-post/slide-03-juniors.png" alt="Juniors Slide">
+        </div>
+        <div class="card-body">
+          <div class="card-title-group">
+            <span>Slide 03 · Early Advantage</span>
+            <h3>The Junior Cadet Wing</h3>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="instagram-post/slide-03-juniors.png" download="slide-03-juniors.png">Download PNG</a>
+            <a class="btn btn-outline" href="post-slide3.html" target="_blank">HTML</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="grid-card">
+        <div class="card-preview">
+          <img src="instagram-post/slide-04-closing.png" alt="Closing Slide">
+        </div>
+        <div class="card-body">
+          <div class="card-title-group">
+            <span>Slide 04 · Closing & Contact</span>
+            <h3>Trust The Process</h3>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="instagram-post/slide-04-closing.png" download="slide-04-closing.png">Download PNG</a>
+            <a class="btn btn-outline" href="post-slide4.html" target="_blank">HTML</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Officium Supremum Mentorship Ecosystem · Contact: <a href="mailto:osupremum@gmail.com">osupremum@gmail.com</a> · WhatsApp: +91 8969634656
+</footer>
+
+<script>
+  let currentSlide = 0;
+  const totalSlides = 4;
+  const slideTitles = [
+    "Slide 01 of 04 · Cover Page",
+    "Slide 02 of 04 · Main Mentorship Blueprint",
+    "Slide 03 of 04 · The Junior Cadet Wing",
+    "Slide 04 of 04 · Trust The Process (Closing)"
+  ];
+  const slideFiles = [
+    "instagram-post/slide-01-cover.png",
+    "instagram-post/slide-02-main.png",
+    "instagram-post/slide-03-juniors.png",
+    "instagram-post/slide-04-closing.png"
+  ];
+  const htmlFiles = [
+    "post-slide1.html",
+    "post-slide2.html",
+    "post-slide3.html",
+    "post-slide4.html"
+  ];
+
+  function updateSlideView() {
+    for (let i = 0; i < totalSlides; i++) {
+      const el = document.getElementById(`slide-${i}`);
+      const dot = document.querySelectorAll('.dot-btn')[i];
+      if (i === currentSlide) {
+        el.classList.add('active');
+        dot.classList.add('active');
+      } else {
+        el.classList.remove('active');
+        dot.classList.remove('active');
+      }
+    }
+    document.getElementById('slideIndicator').textContent = slideTitles[currentSlide];
+    const dlBtn = document.getElementById('currentDownloadBtn');
+    dlBtn.href = slideFiles[currentSlide];
+    dlBtn.download = slideFiles[currentSlide].split('/').pop();
+
+    const htmlBtn = document.getElementById('openSourceBtn');
+    htmlBtn.href = htmlFiles[currentSlide];
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateSlideView();
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateSlideView();
+  }
+
+  function goToSlide(idx) {
+    currentSlide = idx;
+    updateSlideView();
+  }
+
+  function scrollToGrid() {
+    document.getElementById('gridSection').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // Download all as ZIP
+  async function downloadAllZip() {
+    const zip = new JSZip();
+    const folder = zip.folder("officium-supremum-carousel");
+
+    for (let i = 0; i < slideFiles.length; i++) {
+      const url = slideFiles[i];
+      const filename = url.split('/').pop();
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        folder.file(filename, blob);
+      } catch (err) {
+        console.error("Failed to fetch", url, err);
+      }
+    }
+
+    const content = await zip.generateAsync({ type: "blob" });
+    saveAs(content, "officium-supremum-instagram-carousel.zip");
+  }
+</script>
+
+</body>
+</html>
