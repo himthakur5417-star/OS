@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — NDA Mathematics Syllabus & Question Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text-color: #1a1a1a;
+    --paper-bg: #f7f9fa;
+    --grid-line: rgba(0, 32, 64, 0.065);
+    --border-color: #222222;
+    --gold: #c8a84e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #e5e9ec;
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 30px 15px;
+    display: flex;
+    justify-content: center;
+  }
+  .sheet {
+    width: 1000px;
+    max-width: 100%;
+    background-color: var(--paper-bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 22px 22px;
+    border: 1px solid #c8d0d6;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    position: relative;
+    padding: 36px 42px 50px;
+  }
+  .top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 16px;
+    margin-bottom: 26px;
+  }
+  .logo-svg { width: 140px; height: 56px; }
+  .header-meta {
+    text-align: right;
+  }
+  .header-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .header-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+  .chapter-card {
+    background: #ffffff;
+    border: 1px solid #c8d0d6;
+    border-left: 4px solid #111111;
+    padding: 18px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+  }
+  .chapter-card:hover {
+    border-left-color: var(--gold);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .ch-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .ch-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 4px 0 6px;
+  }
+  .ch-stats {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .ch-link {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed #ddd;
+    padding-top: 8px;
+  }
+  .sheet-footer {
+    margin-top: 36px;
+    padding: 10px 16px;
+    border: 2px solid var(--border-color);
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="top-header">
+    <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+      <circle cx="50" cy="50" r="45" fill="#111111" />
+      <circle cx="80" cy="50" r="26" fill="#f7f9fa" />
+      <circle cx="80" cy="50" r="10" fill="#111111" />
+      <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#111111">s.</text>
+      <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="700" font-size="11" letter-spacing="0.06em" fill="#111111">OFFICIUM SUPREMUM</text>
+    </svg>
+    <div class="header-meta">
+      <div class="header-tag">Cadet Mentorship Ecosystem · NDA Wing</div>
+      <div class="header-title">Mathematics Problem Archive</div>
+    </div>
+  </div>
+
+  <div class="chapters-grid">
+    <!-- Chapter 1 -->
+    <a href="chapter-01-logarithms.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 01</span>
+        <h3 class="ch-title">Logarithms</h3>
+        <p class="ch-stats">32 Cadet Drill Problems + 35 NDA PYQs (2011–2025) with full step-by-step Officer Solutions.</p>
+      </div>
+      <div class="ch-link"><span>67 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 2 -->
+    <a href="chapter-02-equations.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 02</span>
+        <h3 class="ch-title">Equations & Inequalities</h3>
+        <p class="ch-stats">40 Practice Drill Problems + 138 NDA PYQs (2011–2025) covering quadratic roots, symmetry, and bounds.</p>
+      </div>
+      <div class="ch-link"><span>178 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 3 -->
+    <a href="chapter-03-binary-numbers.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 03</span>
+        <h3 class="ch-title">Binary Numbers</h3>
+        <p class="ch-stats">20 Practice Drill Problems + 29 NDA PYQs (2011–2025) covering conversions, fractions, 2's complements & operations.</p>
+      </div>
+      <div class="ch-link"><span>49 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 4 -->
+    <a href="chapter-04-sets-relations.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 04</span>
+        <h3 class="ch-title">Set & Relation</h3>
+        <p class="ch-stats">26 Practice Drill Problems + 133 NDA PYQs (2011–2025) on Venn diagrams, equivalence relations, power sets & cardinality.</p>
+      </div>
+      <div class="ch-link"><span>159 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 5 -->
+    <a href="chapter-05-complex-numbers.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 05</span>
+        <h3 class="ch-title">Complex Number</h3>
+        <p class="ch-stats">50 Practice Drill Problems + 118 NDA PYQs (2011–2025) on cube roots of unity, modulus, arg & loci.</p>
+      </div>
+      <div class="ch-link"><span>168 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 6 -->
+    <a href="chapter-06-permutations-combinations.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 06</span>
+        <h3 class="ch-title">Permutation & Combination</h3>
+        <p class="ch-stats">26 Practice Drill Problems + 117 NDA PYQs (2011–2025) on arrangements, selections, rank, and polygon diagonals.</p>
+      </div>
+      <div class="ch-link"><span>143 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 7 -->
+    <a href="chapter-07-binomial-theorem.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 07</span>
+        <h3 class="ch-title">Binomial Theorem</h3>
+        <p class="ch-stats">22 Practice Drill Problems + 69 NDA PYQs (2011–2025) on general terms, middle terms, divisibility, and coefficients.</p>
+      </div>
+      <div class="ch-link"><span>91 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 8 -->
+    <a href="chapter-08-sequences-series.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 08</span>
+        <h3 class="ch-title">Sequences & Series</h3>
+        <p class="ch-stats">27 Practice Drill Problems + 126 NDA PYQs (2011–2025) on AP, GP, HP, AM-GM-HM relations & infinite series.</p>
+      </div>
+      <div class="ch-link"><span>153 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 9 -->
+    <a href="chapter-09-matrices.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 09</span>
+        <h3 class="ch-title">Matrices</h3>
+        <p class="ch-stats">28 Practice Drill Problems + 125 NDA PYQs (2011–2025) on matrix algebra, symmetric/skew-symmetric, adjoint & inverse.</p>
+      </div>
+      <div class="ch-link"><span>153 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 10 -->
+    <a href="chapter-10-determinants.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 10</span>
+        <h3 class="ch-title">Determinants</h3>
+        <p class="ch-stats">21 Practice Drill Problems + 131 NDA PYQs (2011–2025) on determinant properties, Cramer's rule & linear systems.</p>
+      </div>
+      <div class="ch-link"><span>152 Problems</span><span>Open &rarr;</span></div>
+    </a>
+
+    <!-- Chapter 11 -->
+    <a href="chapter-11-trigonometry.html" class="chapter-card">
+      <div>
+        <span class="ch-num">Chapter 11</span>
+        <h3 class="ch-title">Trigonometry</h3>
+        <p class="ch-stats">39 Practice Drill Problems + 258 NDA PYQs (2011–2025) on identities, compounds, multiples, equations, and ranges.</p>
+      </div>
+      <div class="ch-link"><span>297 Problems</span><span>Open &rarr;</span></div>
+    </a>
+  </div>
+
+  <div class="sheet-footer">
+    <span>OFFICIUM SUPREMUM · NDA WING</span>
+    <span>Discipline today. Leadership tomorrow. · Ph: +91 8969634656</span>
+  </div>
+</div>
+
+</body>
+</html>
