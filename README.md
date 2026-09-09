@@ -46,9 +46,9 @@ A strict, accountability-driven mentorship ecosystem designed to transform aspir
 
 ### 🌐 Root
 - `index.html`: Main landing page — Officium Supremum overview
-- `NDA mathematics/`: Rebranded 21-chapter NDA Mathematics archive (3,170+ solved drill problems & 2011–2025 PYQs under *Officium Supremum* identity).
+- `NDA mathematics/`: Rebranded 26-chapter NDA Mathematics archive (3,820+ solved drill problems & 2011–2025 PYQs under *Officium Supremum* identity).
   - `NDA mathematics/index.html`: Interactive chapter selector and PDF access portal
-  - Chapters 01 to 21 (Logarithms, Equations, Binary Numbers, Sets & Relations, Complex Numbers, P&C, Binomial Theorem, Sequences & Series, Matrices, Determinants, Trigonometry, Height & Distance, Inverse Trigonometry, Properties of Triangle, Point & Straight Line, Circle, Conic Section, Vectors, 3D Geometry, Probability, Statistics)
+  - Chapters 01 to 26 (Logarithms, Equations, Binary Numbers, Sets & Relations, Complex Numbers, P&C, Binomial Theorem, Sequences & Series, Matrices, Determinants, Trigonometry, Height & Distance, Inverse Trigonometry, Properties of Triangle, Point & Straight Line, Circle, Conic Section, Vectors, 3D Geometry, Probability, Statistics, Function, Limits, Continuity & Differentiability, Differentiation, Application of Derivatives)
 
 ---
 
