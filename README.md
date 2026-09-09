@@ -49,6 +49,7 @@ A strict, accountability-driven mentorship ecosystem designed to transform aspir
 - `NDA mathematics/`: Rebranded 30-chapter NDA Mathematics archive (4,330+ solved drill problems & 2011–2025 PYQs under *Officium Supremum* identity).
   - `NDA mathematics/index.html`: Interactive chapter selector and PDF access portal
   - Chapters 01 to 30 (Logarithms, Equations, Binary Numbers, Sets & Relations, Complex Numbers, P&C, Binomial Theorem, Sequences & Series, Matrices, Determinants, Trigonometry, Height & Distance, Inverse Trigonometry, Properties of Triangle, Point & Straight Line, Circle, Conic Section, Vectors, 3D Geometry, Probability, Statistics, Function, Limits, Continuity & Differentiability, Differentiation, Application of Derivatives, Indefinite Integration, Definite Integration, Area Bounded by Curve, Differential Equation)
+- `CDS mathematics/`: Rebranded 383-page CDS / AFCAT / CAPF Mathematics master volume (`CDS-Mathematics-Officium-Supremum.pdf`) covering 22 complete chapters (Arithmetic & Advanced Mathematics, 3,000+ curated problems, and 2017–2024 solved PYQs under *Officium Supremum* identity).
 
 ---
 
