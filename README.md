@@ -53,6 +53,14 @@ A strict, accountability-driven mentorship ecosystem designed to transform aspir
   - `CDS mathematics/index.html`: Interactive chapter selector, live search, section filter, and PDF portal
   - `CDS-Mathematics-Officium-Supremum.pdf`: Complete 383-page master volume (Arithmetic & Advance)
   - Chapters 01 to 22 (Ratio & Proportion, Average, Time & Work, Time & Distance, Percentage, Profit & Loss, Interest, Number System, Simplification, LCM & HCF, Equations, Algebra, LCM & HCF of Algebraic Factors, Sets, Logarithm, Geometry, Mensuration 2D, Mensuration 3D, Trigonometry, Height & Distance, Statistics, Miscellaneous & CAPF PYQs)
+- `NDA CDS English/`: Rebranded 34-chapter NDA & CDS English archive under *Officium Supremum* identity.
+  - `NDA CDS English/index.html`: Interactive chapter selector, live search, 3-section filter tabs (Grammar, Vocabulary, Reading), and PDF portal
+  - `NDA-CDS-English-Officium-Supremum.pdf`: Complete 396-page master volume with official answer keys
+  - Chapters 01 to 34 across Grammar (Noun, Pronoun, Verb, Modals, Tense, Adjective, Adverb, Article, Conjunction, Preposition, Question Tag, Miscellaneous, Parts of Speech, Passive Voice, Narration, Sentence Improvement, Sentence Completion), Vocabulary (Vocabulary Drill, Synonyms, Antonyms, Paired Words, Foreign Words, Spelling Correction, Word Meaning, Word Improvement, Correlating Sentences, Correct Use of Word in Sentences, Word Usage in Multiple Sentences), and Reading & Comprehension (Idioms & Phrases, Cloze Test, Comprehension, Jumbled Sentences, Jumbled Middle Sentences S1-S6, Fill in the Blanks)
+- `A2Z Vocabulary/`: Rebranded 26-module A to Z Vocabulary & Word Power archive under *Officium Supremum* identity.
+  - `A2Z Vocabulary/index.html`: Interactive alphabetical module selector, live search, group filter tabs (A–F, G–L, M–R, S–Z), and direct PDF access portal
+  - `A2Z-Vocabulary-Officium-Supremum.pdf`: Complete 126-page master study volume featuring 1,200+ high-frequency exam words with contextual Hindi meanings, synonyms, idioms & phrases, one-word substitutions, foreign words, and 9 Officium Supremum academy editorial briefings
+  - Modules A to Z (`letter-a.pdf` through `letter-z.pdf`): 26 standalone letter modules with localized single-line cadet footers and clean watermark-free layouts
 
 ---
 

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — NDA & CDS English Syllabus & Question Bank</title>
+<meta name="description" content="Complete 34-chapter NDA & CDS English Archive under the Officium Supremum Cadet Mentorship Ecosystem. 15 Years Solved PYQs, Practice Sheets, Vocabulary & Reading Comprehension.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text-color: #1a1a1a;
+    --paper-bg: #f7f9fa;
+    --grid-line: rgba(0, 32, 64, 0.065);
+    --border-color: #222222;
+    --gold: #c8a84e;
+    --navy: #1b2838;
+    --accent-blue: #2c4d75;
+    --card-bg: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #e5e9ec;
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 30px 15px;
+    display: flex;
+    justify-content: center;
+  }
+  .sheet {
+    width: 1060px;
+    max-width: 100%;
+    background-color: var(--paper-bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 22px 22px;
+    border: 1px solid #c8d0d6;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+    position: relative;
+    padding: 36px 42px 50px;
+  }
+  .top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .logo-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-svg { width: 140px; height: 56px; }
+  .header-meta {
+    text-align: right;
+  }
+  .header-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #444;
+  }
+  .header-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #111;
+  }
+  .header-subtitle {
+    font-size: 0.8rem;
+    color: #555;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Master Volume Hero Banner */
+  .master-banner {
+    background: #ffffff;
+    border: 1px solid #1e2d3d;
+    border-left: 6px solid var(--gold);
+    padding: 22px 26px;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .master-info h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .master-badge {
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+  }
+  .master-info p {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 6px;
+    line-height: 1.45;
+  }
+  .btn-master {
+    background: var(--navy);
+    color: #ffffff;
+    padding: 12px 24px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #111;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn-master:hover {
+    background: #111;
+    color: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  /* Controls & Filter Bar */
+  .filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: #ffffff;
+    border: 1px solid #c8d0d6;
+    padding: 8px 16px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--navy);
+    color: #ffffff;
+    border-color: var(--navy);
+  }
+  .search-box {
+    padding: 8px 14px;
+    border: 1px solid #c8d0d6;
+    background: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    width: 250px;
+    outline: none;
+  }
+  .search-box:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 2px rgba(27, 40, 56, 0.1);
+  }
+
+  /* Section Title */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 30px 0 16px;
+  }
+  .section-divider h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+  .section-divider::after {
+    content: "";
+    flex-grow: 1;
+    height: 1px;
+    background: #c8d0d6;
+  }
+
+  /* Chapters Grid */
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid #c8d0d6;
+    border-left: 4px solid var(--navy);
+    padding: 18px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+  }
+  .chapter-card:hover {
+    border-left-color: var(--gold);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.09);
+    transform: translateY(-2px);
+  }
+  .ch-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .ch-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .ch-tag {
+    font-size: 0.65rem;
+    background: #eef2f6;
+    color: var(--navy);
+    padding: 2px 7px;
+    border-radius: 2px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .ch-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #111;
+    margin: 4px 0 8px;
+    line-height: 1.25;
+  }
+  .ch-stats {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.45;
+    margin-bottom: 14px;
+  }
+  .ch-link {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed #ddd;
+    padding-top: 10px;
+  }
+  .chapter-card:hover .ch-link {
+    color: var(--navy);
+  }
+
+  /* Footer */
+  .sheet-footer {
+    margin-top: 40px;
+    padding: 12px 18px;
+    border: 2px solid var(--border-color);
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer-left { font-weight: 700; color: #111; }
+  .footer-center { color: #555; }
+  .footer-right { font-weight: 700; color: #111; }
+
+  @media (max-width: 768px) {
+    .sheet { padding: 24px 18px 36px; }
+    .top-header { flex-direction: column; align-items: flex-start; text-align: left; }
+    .header-meta { text-align: left; }
+    .filter-bar { flex-direction: column; align-items: stretch; }
+    .search-box { width: 100%; }
+    .sheet-footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <!-- Top Cadet Header -->
+  <div class="top-header">
+    <div class="logo-group">
+      <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+        <circle cx="50" cy="50" r="45" fill="#111111" />
+        <circle cx="80" cy="50" r="26" fill="#f7f9fa" />
+        <circle cx="80" cy="50" r="10" fill="#111111" />
+        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#111111">s.</text>
+        <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="700" font-size="11" letter-spacing="0.06em" fill="#111111">OFFICIUM SUPREMUM</text>
+      </svg>
+    </div>
+    <div class="header-meta">
+      <div class="header-tag">Cadet Mentorship Ecosystem · NDA & CDS Wing</div>
+      <div class="header-title">NDA & CDS English Archive</div>
+      <div class="header-subtitle">34 Modules · Grammar, Vocabulary & Reading Comprehension · 15 Years Solved PYQs</div>
+    </div>
+  </div>
+
+  <!-- Master Volume Download Hero Banner -->
+  <div class="master-banner">
+    <div class="master-info">
+      <h2>Master Volume · Complete English Syllabus <span class="master-badge">396 Pages · Master Book</span></h2>
+      <p>Official unified edition containing all 34 chapters across Grammar, Vocabulary drills, Idioms, Cloze tests, Comprehension passages, Jumbled sentences, and NDA/CDS PYQs with official answer keys.</p>
+    </div>
+    <a href="NDA-CDS-English-Officium-Supremum.pdf" class="btn-master" download>
+      <span>&#11015;</span> Download Master Volume (3.7 MB)
+    </a>
+  </div>
+
+  <!-- Filter Tabs & Real-Time Search -->
+  <div class="filter-bar">
+    <div class="filter-tabs">
+      <button class="tab-btn active" onclick="filterSection('all')">All Chapters (34)</button>
+      <button class="tab-btn" onclick="filterSection('grammar')">Grammar (Ch 01–17)</button>
+      <button class="tab-btn" onclick="filterSection('vocab')">Vocabulary (Ch 18–28)</button>
+      <button class="tab-btn" onclick="filterSection('reading')">Reading & Comprehension (Ch 29–34)</button>
+    </div>
+    <input type="text" id="chapterSearch" class="search-box" placeholder="Search chapter or topic..." onkeyup="searchChapters()" oninput="searchChapters()">
+  </div>
+
+  <!-- Section A: Grammar -->
+  <div id="section-grammar">
+    <div class="section-divider">
+      <h3>Section A — English Grammar (Chapters 01–17)</h3>
+    </div>
+    <div class="chapters-grid">
+      <!-- Chapter 01 -->
+      <a href="chapter-01-noun.pdf" class="chapter-card" data-section="grammar" data-title="noun noun collective singular plural gender possessive case practice sheet pyq">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 01</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Noun</h3>
+          <p class="ch-stats">Practice Sheets 1 & 2 + 15 Years NDA & CDS Solved PYQs on countable/uncountable nouns, collective nouns, rules of pluralization & matching questions.</p>
+        </div>
+        <div class="ch-link"><span>8 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 02 -->
+      <a href="chapter-02-pronoun.pdf" class="chapter-card" data-section="grammar" data-title="pronoun pronoun relative personal reflexive demonstrative antecedent error spotting">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 02</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Pronoun</h3>
+          <p class="ch-stats">Targeted Practice Sheets + NDA/CDS PYQs covering personal, relative, demonstrative, reflexive & reciprocal pronouns with error spotting.</p>
+        </div>
+        <div class="ch-link"><span>7 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 03 -->
+      <a href="chapter-03-verb.pdf" class="chapter-card" data-section="grammar" data-title="verb & subject-verb agreement verb subject verb agreement concord gerund participle infinitive auxiliary">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 03</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Verb & Subject-Verb Agreement</h3>
+          <p class="ch-stats">Comprehensive rules on transitive/intransitive verbs, subject-verb agreement, gerunds, infinitives & 15-year NDA/CDS PYQ drills.</p>
+        </div>
+        <div class="ch-link"><span>11 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 04 -->
+      <a href="chapter-04-modals.pdf" class="chapter-card" data-section="grammar" data-title="modals modals auxiliary can could may might should must ought to would permission obligation">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 04</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Modals</h3>
+          <p class="ch-stats">Targeted practice drills and past exam questions on modal auxiliaries (can, could, may, might, should, must, ought to, would).</p>
+        </div>
+        <div class="ch-link"><span>3 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 05 -->
+      <a href="chapter-05-tense.pdf" class="chapter-card" data-section="grammar" data-title="tense tense present past future conditional clauses perfect continuous sequence of tenses">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 05</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Tense</h3>
+          <p class="ch-stats">Master drills on simple, continuous, perfect & perfect continuous tenses, conditional time clauses & NDA/CDS past year sentence analysis.</p>
+        </div>
+        <div class="ch-link"><span>10 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 06 -->
+      <a href="chapter-06-adjective.pdf" class="chapter-card" data-section="grammar" data-title="adjective adjective degrees of comparison comparative superlative order of adjectives modifiers">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 06</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Adjective</h3>
+          <p class="ch-stats">Degrees of comparison, order of adjectives, qualitative/quantitative modifiers & NDA/CDS error spotting question sets.</p>
+        </div>
+        <div class="ch-link"><span>5 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 07 -->
+      <a href="chapter-07-adverb.pdf" class="chapter-card" data-section="grammar" data-title="adverb adverb inversion position frequency manner degree hardly scarcely seldom">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 07</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Adverb</h3>
+          <p class="ch-stats">Adverb positioning, inversion rules, frequency adverbs, modifiers of degree & NDA/CDS targeted exam exercises.</p>
+        </div>
+        <div class="ch-link"><span>4 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 08 -->
+      <a href="chapter-08-article.pdf" class="chapter-card" data-section="grammar" data-title="article article definite indefinite a an the omission of articles determiners">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 08</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Article</h3>
+          <p class="ch-stats">Definite and indefinite articles (a, an, the), omission of articles, special geographical uses & CDS/NDA PYQ question bank.</p>
+        </div>
+        <div class="ch-link"><span>6 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 09 -->
+      <a href="chapter-09-conjunction.pdf" class="chapter-card" data-section="grammar" data-title="conjunction conjunction coordinating subordinating correlative neither nor either or not only but also lest">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 09</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Conjunction</h3>
+          <p class="ch-stats">Coordinating, subordinating & correlative conjunctions (neither-nor, either-or, not only-but also) with past examination drills.</p>
+        </div>
+        <div class="ch-link"><span>5 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 10 -->
+      <a href="chapter-10-preposition.pdf" class="chapter-card" data-section="grammar" data-title="preposition & fixed prepositions preposition fixed prepositions phrasal verbs direction place time in on at with by">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 10</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Preposition & Fixed Prepositions</h3>
+          <p class="ch-stats">Prepositions of time/place/direction + master table of fixed prepositions and phrasal collocations with NDA/CDS PYQs.</p>
+        </div>
+        <div class="ch-link"><span>10 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 11 -->
+      <a href="chapter-11-question-tag.pdf" class="chapter-card" data-section="grammar" data-title="question tag question tag auxiliary verb imperative statement negative positive">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 11</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Question Tag</h3>
+          <p class="ch-stats">Rules for positive/negative question tags, imperative tags, exceptional auxiliary tags & solved defence questions.</p>
+        </div>
+        <div class="ch-link"><span>2 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 12 -->
+      <a href="chapter-12-miscellaneous-grammar.pdf" class="chapter-card" data-section="grammar" data-title="miscellaneous grammar miscellaneous error spotting mixed rules parallelism grammar drills">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 12</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Miscellaneous Grammar</h3>
+          <p class="ch-stats">Mixed error spotting drills, unusual grammatical constructions, parallelism & combined defence exam revision problems.</p>
+        </div>
+        <div class="ch-link"><span>3 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 13 -->
+      <a href="chapter-13-parts-of-speech.pdf" class="chapter-card" data-section="grammar" data-title="identification of parts of speech parts of speech identification underlined word noun pronoun verb adjective adverb cds nda">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 13</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Identification of Parts of Speech</h3>
+          <p class="ch-stats">CDS & NDA official syllabus module: Identifying underlined parts of speech (noun, pronoun, adjective, adverb, preposition, conjunction).</p>
+        </div>
+        <div class="ch-link"><span>9 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 14 -->
+      <a href="chapter-14-passive-voice.pdf" class="chapter-card" data-section="grammar" data-title="active & passive voice voice active passive transformation agent by object subject imperative interrogative">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 14</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Active & Passive Voice</h3>
+          <p class="ch-stats">Voice transformation rules across all tenses, interrogative sentences, imperative orders & solved CDS/AFCAT exercises.</p>
+        </div>
+        <div class="ch-link"><span>7 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 15 -->
+      <a href="chapter-15-narration.pdf" class="chapter-card" data-section="grammar" data-title="direct & indirect speech narration direct indirect speech reported speech tense backshift reporting verb dialogue">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 15</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Direct & Indirect Speech</h3>
+          <p class="ch-stats">Narration change rules, reported speech reporting verbs, pronouns/tenses backshift, wh-questions & exclamatory sentences.</p>
+        </div>
+        <div class="ch-link"><span>10 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 16 -->
+      <a href="chapter-16-sentence-improvement.pdf" class="chapter-card" data-section="grammar" data-title="sentence improvement sentence improvement phrase replacement error correction nda cds pyq">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 16</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Sentence Improvement</h3>
+          <p class="ch-stats">High-frequency NDA & CDS PYQ sentence improvement sets with official keys and structured grammatical explanations.</p>
+        </div>
+        <div class="ch-link"><span>12 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 17 -->
+      <a href="chapter-17-sentence-completion.pdf" class="chapter-card" data-section="grammar" data-title="sentence completion sentence completion connectors clauses fill blank syntax grammar">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 17</span>
+            <span class="ch-tag">Grammar</span>
+          </div>
+          <h3 class="ch-title">Sentence Completion</h3>
+          <p class="ch-stats">Grammar-based sentence completion and connector clause selection for NDA & CDS examinations.</p>
+        </div>
+        <div class="ch-link"><span>8 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Section B: Vocabulary -->
+  <div id="section-vocab">
+    <div class="section-divider">
+      <h3>Section B — Vocabulary & Word Usage (Chapters 18–28)</h3>
+    </div>
+    <div class="chapters-grid">
+      <!-- Chapter 18 -->
+      <a href="chapter-18-vocabulary-drill.pdf" class="chapter-card" data-section="vocab" data-title="vocabulary drill & word lists vocabulary word list roots definitions contextual examples drill">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 18</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Vocabulary Drill & Word Lists</h3>
+          <p class="ch-stats">Root words, high-frequency defence vocabulary lists, definitions, contextual examples, and introductory drills.</p>
+        </div>
+        <div class="ch-link"><span>9 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 19 -->
+      <a href="chapter-19-synonyms.pdf" class="chapter-card" data-section="vocab" data-title="synonyms master archive synonyms similar words meaning vocabulary nda cds pyq 2011 2025">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 19</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Synonyms Master Archive</h3>
+          <p class="ch-stats">2011–2025 NDA & CDS past year synonyms archive with contextual sentences, word connotations & answer keys.</p>
+        </div>
+        <div class="ch-link"><span>25 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 20 -->
+      <a href="chapter-20-antonyms.pdf" class="chapter-card" data-section="vocab" data-title="antonyms master archive antonyms opposite words vocabulary contrasting nda cds pyq">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 20</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Antonyms Master Archive</h3>
+          <p class="ch-stats">2011–2025 NDA & CDS past year antonyms archive covering exact opposite meanings, prefixes & contrasting sentence drills.</p>
+        </div>
+        <div class="ch-link"><span>22 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 21 -->
+      <a href="chapter-21-paired-words.pdf" class="chapter-card" data-section="vocab" data-title="paired words & confusing words paired words confusing words homophones homonyms semantic distinction usage">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 21</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Paired Words & Confusing Words</h3>
+          <p class="ch-stats">Homophones, commonly confused word pairs, semantic distinctions, and targeted multiple-choice tests.</p>
+        </div>
+        <div class="ch-link"><span>15 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 22 -->
+      <a href="chapter-22-foreign-words.pdf" class="chapter-card" data-section="vocab" data-title="foreign words & phrases foreign words latin french phrases military defence ad hoc status quo de facto">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 22</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Foreign Words & Phrases</h3>
+          <p class="ch-stats">Latin, French & Greek legal and military expressions (ad hoc, de facto, status quo, bona fide, caveat emptor) with CDS PYQs.</p>
+        </div>
+        <div class="ch-link"><span>4 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 23 -->
+      <a href="chapter-23-spelling-correction.pdf" class="chapter-card" data-section="vocab" data-title="spelling correction spelling correction misspelled words orthography rules">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 23</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Spelling Correction</h3>
+          <p class="ch-stats">Commonly misspelled words in defence exams, double consonant rules, silent letters & practice questions.</p>
+        </div>
+        <div class="ch-link"><span>1 Page</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 24 -->
+      <a href="chapter-24-word-meaning.pdf" class="chapter-card" data-section="vocab" data-title="word meaning in context word meaning context denotation connotation nuance definition">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 24</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Word Meaning in Context</h3>
+          <p class="ch-stats">Contextual word meanings, denotations vs. connotations, shades of meaning, and CDS vocabulary exercises.</p>
+        </div>
+        <div class="ch-link"><span>5 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 25 -->
+      <a href="chapter-25-word-improvement.pdf" class="chapter-card" data-section="vocab" data-title="word improvement word improvement diction word choice precision substitution">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 25</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Word Improvement</h3>
+          <p class="ch-stats">Precision in word choice, single word substitution, and contextually appropriate diction drills.</p>
+        </div>
+        <div class="ch-link"><span>2 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 26 -->
+      <a href="chapter-26-correlating-sentences.pdf" class="chapter-card" data-section="vocab" data-title="correlating sentences correlating sentences logical relationship transition connector semantics">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 26</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Correlating Sentences</h3>
+          <p class="ch-stats">Connecting paired thoughts, logical sentence relationships, semantic transitions & official CDS questions.</p>
+        </div>
+        <div class="ch-link"><span>5 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 27 -->
+      <a href="chapter-27-correct-use-of-words.pdf" class="chapter-card" data-section="vocab" data-title="correct use of word in sentences correct use of word sentence pattern cds new pattern context grammar">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 27</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Correct Use of Word in Sentences</h3>
+          <p class="ch-stats">CDS new pattern: Testing whether a specified word is correctly used across multiple alternative sentences.</p>
+        </div>
+        <div class="ch-link"><span>5 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 28 -->
+      <a href="chapter-28-correct-use-multiple-sentences.pdf" class="chapter-card" data-section="vocab" data-title="word usage in multiple sentences word usage multiple sentences polysemy advanced cds questions">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 28</span>
+            <span class="ch-tag">Vocabulary</span>
+          </div>
+          <h3 class="ch-title">Word Usage in Multiple Sentences</h3>
+          <p class="ch-stats">Advanced CDS pattern testing multi-sentence polysemy and idiomatic word correctness.</p>
+        </div>
+        <div class="ch-link"><span>3 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Section C: Reading & Comprehension -->
+  <div id="section-reading">
+    <div class="section-divider">
+      <h3>Section C — Reading Comprehension & Sentence Logic (Chapters 29–34)</h3>
+    </div>
+    <div class="chapters-grid">
+      <!-- Chapter 29 -->
+      <a href="chapter-29-idioms-phrases.pdf" class="chapter-card" data-section="reading" data-title="idioms & phrasal expressions idioms phrases phrasal expressions hindi meaning nda cds pyq master compendium">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 29</span>
+            <span class="ch-tag">Reading</span>
+          </div>
+          <h3 class="ch-title">Idioms & Phrasal Expressions</h3>
+          <p class="ch-stats">37-page master compendium of defence idioms, Hindi meanings, origin notes, and comprehensive 15-year NDA/CDS PYQs.</p>
+        </div>
+        <div class="ch-link"><span>37 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 30 -->
+      <a href="chapter-30-cloze-test.pdf" class="chapter-card" data-section="reading" data-title="cloze test master module cloze test passage gap fill coherence vocabulary context nda cds pyq">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 30</span>
+            <span class="ch-tag">Reading</span>
+          </div>
+          <h3 class="ch-title">Cloze Test Master Module</h3>
+          <p class="ch-stats">Passage-level gap filling testing integrated grammar, vocabulary & contextual coherence across 2013–2025 NDA/CDS exams.</p>
+        </div>
+        <div class="ch-link"><span>19 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 31 -->
+      <a href="chapter-31-comprehension.pdf" class="chapter-card" data-section="reading" data-title="reading comprehension passages comprehension reading passages inference central theme fact vocabulary tone nda cds">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 31</span>
+            <span class="ch-tag">Reading</span>
+          </div>
+          <h3 class="ch-title">Reading Comprehension Passages</h3>
+          <p class="ch-stats">Diverse passages (philosophy, defence, science, history, current affairs) with fact-based & inferential question banks.</p>
+        </div>
+        <div class="ch-link"><span>35 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 32 -->
+      <a href="chapter-32-jumbled-sentences.pdf" class="chapter-card" data-section="reading" data-title="ordering of words in a sentence (pqrs) jumbled sentences pqrs ordering of words syntax arrangement sentence structure">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 32</span>
+            <span class="ch-tag">Reading</span>
+          </div>
+          <h3 class="ch-title">Ordering of Words in a Sentence (PQRS)</h3>
+          <p class="ch-stats">Ordering of words into meaningful sentences (P, Q, R, S technique), grammar cues, pronoun links & 2013–2025 solved PYQs.</p>
+        </div>
+        <div class="ch-link"><span>29 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 33 -->
+      <a href="chapter-33-jumbled-middle-sentences.pdf" class="chapter-card" data-section="reading" data-title="ordering of sentences (s1 – s6) jumbled middle sentences s1 s6 paragraph ordering coherent paragraph transition logic">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 33</span>
+            <span class="ch-tag">Reading</span>
+          </div>
+          <h3 class="ch-title">Ordering of Sentences (S1 – S6)</h3>
+          <p class="ch-stats">Advanced CDS paragraph rearrangement: Fixed opening (S1) and closing (S6) with four intermediate sentences (P, Q, R, S).</p>
+        </div>
+        <div class="ch-link"><span>32 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 34 -->
+      <a href="chapter-34-fill-in-the-blanks.pdf" class="chapter-card" data-section="reading" data-title="fill in the blanks master archive fill in the blanks sentence completion grammar prepositions vocabulary answer key nda cds pyq">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 34</span>
+            <span class="ch-tag">Reading</span>
+          </div>
+          <h3 class="ch-title">Fill in the Blanks Master Archive</h3>
+          <p class="ch-stats">18 pages of 160+ CDS & NDA fill-in-the-blank questions testing grammar, prepositions, phrasal verbs & official answer keys.</p>
+        </div>
+        <div class="ch-link"><span>18 Pages</span><span>Open PDF &rarr;</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom Cadet Bar -->
+  <div class="sheet-footer">
+    <div class="footer-left">OFFICIUM SUPREMUM · NDA & CDS WING</div>
+    <div class="footer-center">DISCIPLINE TODAY. LEADERSHIP TOMORROW.</div>
+    <div class="footer-right">MENTORSHIP: +91 8969634656</div>
+  </div>
+</div>
+
+<script>
+  function filterSection(type) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    const secGrammar = document.getElementById('section-grammar');
+    const secVocab = document.getElementById('section-vocab');
+    const secReading = document.getElementById('section-reading');
+
+    if (type === 'all') {
+      secGrammar.style.display = 'block';
+      secVocab.style.display = 'block';
+      secReading.style.display = 'block';
+    } else if (type === 'grammar') {
+      secGrammar.style.display = 'block';
+      secVocab.style.display = 'none';
+      secReading.style.display = 'none';
+    } else if (type === 'vocab') {
+      secGrammar.style.display = 'none';
+      secVocab.style.display = 'block';
+      secReading.style.display = 'none';
+    } else if (type === 'reading') {
+      secGrammar.style.display = 'none';
+      secVocab.style.display = 'none';
+      secReading.style.display = 'block';
+    }
+  }
+
+  function searchChapters() {
+    const q = document.getElementById('chapterSearch').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    
+    cards.forEach(card => {
+      const title = card.getAttribute('data-title') || '';
+      const text = card.innerText.toLowerCase();
+      if (!q || title.includes(q) || text.includes(q)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
