@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remembering Captain Vikram Batra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Oswald:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text-light: #f7f5f0;
+    --accent-gold: #d4af37;
+    --accent-gold-dark: #b5952f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d0f12;
+    font-family: 'Fraunces', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 10px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .slide-container {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    background-color: #5c1116; /* Fallback for red leather */
+    background-image: url('../templates/red_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Top Subtle Header Backdrop - purely for logo contrast, stops well above photo */
+  .slide-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background: linear-gradient(to bottom, rgba(15, 2, 4, 0.45) 0%, transparent 100%);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  /* Bottom Vignette for text readability */
+  .slide-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 52%;
+    background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.7) 42%, transparent 100%);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  /* Top Gold Accent Line */
+  .accent-line-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 15%, var(--accent-gold) 50%, transparent 85%);
+    z-index: 10;
+  }
+
+  /* Top Section: Logo */
+  .header {
+    position: absolute;
+    top: 36px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+
+  .logo-svg {
+    width: 155px;
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7));
+  }
+
+  /* Middle Section: Photo */
+  .hero-image-wrapper {
+    position: absolute;
+    top: 165px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 71%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    /* Soft 5% top feathering eliminates the hard cut-line while keeping face 100% opaque */
+    -webkit-mask-image: linear-gradient(to bottom, 
+      transparent 0%, 
+      rgba(0,0,0,0.4) 3%, 
+      rgba(0,0,0,0.85) 6%, 
+      black 9%, 
+      black 80%, 
+      rgba(0,0,0,0.4) 92%, 
+      transparent 100%);
+    mask-image: linear-gradient(to bottom, 
+      transparent 0%, 
+      rgba(0,0,0,0.4) 3%, 
+      rgba(0,0,0,0.85) 6%, 
+      black 9%, 
+      black 80%, 
+      rgba(0,0,0,0.4) 92%, 
+      transparent 100%);
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 8%;
+    /* Enhancements: crisp contrast, rich colors, enhanced clarity */
+    filter: contrast(1.15) saturate(1.1) brightness(1.02);
+    /* Broad radial feathering fades mountain edges smoothly into the red leather */
+    -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, black 50%, rgba(0,0,0,0.85) 68%, transparent 88%);
+    mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, black 50%, rgba(0,0,0,0.85) 68%, transparent 88%);
+    opacity: 0.98;
+  }
+
+  /* Bottom Section: Text Content */
+  .text-content {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+    padding: 0 60px;
+  }
+
+  .pre-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  .pre-title::before, .pre-title::after {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 2px;
+    background: var(--accent-gold);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .main-title {
+    font-family: 'Fraunces', serif;
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-light);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+  }
+
+  .sub-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: #e2dcd0;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  }
+
+  .date-badge {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-light);
+    background: rgba(212, 175, 55, 0.2);
+    border: 1px solid var(--accent-gold);
+    padding: 8px 24px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    backdrop-filter: blur(4px);
+  }
+
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+  <!-- Subtle Gold Accent Line at Top -->
+  <div class="accent-line-top"></div>
+
+  <!-- Logo at the top -->
+  <div class="header">
+    <svg class="logo-svg" viewBox="0 0 230 100" preserveAspectRatio="xMinYMid meet">
+      <defs>
+        <mask id="logo-crescent-cut">
+          <rect x="0" y="0" width="230" height="100" fill="#ffffff" />
+          <circle cx="80" cy="50" r="26" fill="#000000" />
+        </mask>
+      </defs>
+      <!-- Outer circular emblem with transparent cutout -->
+      <circle cx="50" cy="50" r="45" fill="#f7f5f0" mask="url(#logo-crescent-cut)" />
+      <!-- Inner pupil dot -->
+      <circle cx="80" cy="50" r="10" fill="#f7f5f0" />
+      <!-- Brand Typographic Elements -->
+      <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#f7f5f0">s.</text>
+      <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#d4af37">OFFICIUM SUPREMUM</text>
+    </svg>
+  </div>
+
+  <!-- Hero Image of Captain Vikram Batra -->
+  <div class="hero-image-wrapper">
+    <img src="vikram_batra_full.jpg" alt="Captain Vikram Batra" class="hero-image">
+  </div>
+
+  <!-- Text Content at the Bottom -->
+  <div class="text-content">
+    <div class="pre-title">Remembering</div>
+    <h1 class="main-title">Capt. Vikram Batra</h1>
+    <div class="sub-title">Param Vir Chakra</div>
+    <div class="date-badge">On His Birth Anniversary</div>
+  </div>
+
+</div>
+
+</body>
+</html>

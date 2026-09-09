@@ -12,29 +12,41 @@ A strict, accountability-driven mentorship ecosystem designed to transform aspir
 
 ---
 
-## 📂 What's Inside
+## 📂 Repository Structure
 
-### Brochures
-
-| File | Description |
-|---|---|
-| `index.html` | Main landing page — Officium Supremum overview |
-| `brochure-main.html` | Defence Mentorship Brochure (NDA / CDS / AFCAT) |
-| `brochure-juniors.html` | Juniors Programme Brochure (Class 7+ Early Advantage Track) |
-
-### Social Media Posts & Posters
+### 📁 `templates/` — Brochures & Background Templates
 
 | File | Description |
 |---|---|
-| `post-main.html` | One-pager post — Defence Mentorship (dark charcoal + gold) |
-| `post-juniors.html` | One-pager post — Juniors Programme (dark navy + blue) |
-| `poster-overall.html` | Combined poster — Both tracks side-by-side |
-| `post-mentorship-report.html` | "The 2% Report" — Classified dossier style shock-stat post |
-| `post-what-is-mentorship.html` | "Coaching vs Mentorship" — Provocative comparison post |
-| `post-role-of-mentor.html` | "The Role of a Mentor" — Pure value educational post backed by Stanford, Harvard & Gartner research |
-| `post-student-reality.html` | "The Student Reality" — Research-backed study on student struggles, forgetting curve & mentorship |
-| `post-editorial-sop.html` | **Style B (Dark SOP)** — "The Anatomy of Selection" (*The Ken / Military SOP* investigative broadsheet) |
-| `post-editorial-paper.html` | **Style B (Paper Newsprint)** — "The Illusion of Motivation" (Authentic cadet field manual & protocol checklist) |
+| `templates/brochure-main.html` | Defence Mentorship Brochure (NDA / CDS / AFCAT) |
+| `templates/brochure-juniors.html` | Juniors Programme Brochure (Class 7+ Early Advantage Track) |
+| `templates/red_bg.jpg` | Royal Red Leather Template Background |
+| `templates/slide_bg_sky.jpg` | Editorial Sky & Clouds Template Background |
+| `templates/post_slide1_bg.png` | Torn Paper Sheet Cover Template Asset |
+| `templates/post_slide4_bg.jpg` | Closing Slide Background Asset |
+
+### 📁 `posts/` — Social Media Posts, Posters & Tribute Graphics
+
+| File | Description |
+|---|---|
+| `posts/post-vikram-batra.html` | Tribute Graphic — Captain Vikram Batra (Param Vir Chakra) |
+| `posts/post-vikram-batra.jpg` | High-res exported JPG tribute graphic |
+| `posts/instagram-carousel.html` | Interactive 4-slide Instagram Carousel & Exporter Hub |
+| `posts/instagram-post/` | Exported high-res PNG carousel slides (01 to 04) |
+| `posts/post-main.html` | One-pager post — Defence Mentorship (dark charcoal + gold) |
+| `posts/post-juniors.html` | One-pager post — Juniors Programme (dark navy + blue) |
+| `posts/poster-overall.html` | Combined poster — Both tracks side-by-side |
+| `posts/post-mentorship-report.html` | "The 2% Report" — Classified dossier style shock-stat post |
+| `posts/post-what-is-mentorship.html` | "Coaching vs Mentorship" — Provocative comparison post |
+| `posts/post-role-of-mentor.html` | "The Role of a Mentor" — Research-backed value post |
+| `posts/post-student-reality.html` | "The Student Reality" — Forgetting curve & mentorship study |
+| `posts/post-editorial-sop.html` | **Style B (Dark SOP)** — "The Anatomy of Selection" |
+| `posts/post-editorial-paper.html` | **Style B (Paper Newsprint)** — "The Illusion of Motivation" |
+| `posts/post-slide1.html` – `post-slide4.html` | Individual carousel slides (HTML source) |
+
+### 🌐 Root
+- `index.html`: Main landing page — Officium Supremum overview
+- `NDA mathematics/`: Rebranded PDF chapters and study materials
 
 ---
 

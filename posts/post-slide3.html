@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Officium Supremum — Instagram Slide 02</title>
+<title>Officium Supremum — Instagram Slide 03</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Oswald:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,8 +12,8 @@
     --ink-primary: #0a1017;
     --ink-secondary: #1e293b;
     --ink-muted: #334155;
+    --accent-blue: #1e4b7a;
     --accent-gold: #8c6517;
-    --accent-navy: #162a3f;
     --rule-color: rgba(14, 26, 38, 0.18);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +32,7 @@
     width: 1080px;
     height: 1350px;
     background-color: #8da5b8;
-    background-image: url('slide_bg_sky.jpg');
+    background-image: url('../templates/slide_bg_sky.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -57,35 +57,46 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
   .logo-svg {
     height: 52px;
     width: auto;
   }
-  .exam-text-row {
-    display: flex;
-    gap: 14px;
-    align-items: center;
+  .header-tag {
     font-family: 'Oswald', sans-serif;
     font-size: 15px;
-    font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--ink-primary);
-  }
-  .exam-text-row span.dot {
-    color: var(--accent-gold);
-    font-size: 18px;
+    color: var(--accent-blue);
+    font-weight: 600;
   }
 
   .divider {
     height: 1.5px;
-    background: linear-gradient(90deg, var(--accent-gold), var(--rule-color), transparent);
-    margin-bottom: 28px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--rule-color), transparent);
+    margin-bottom: 24px;
   }
 
-  /* Main Headings */
+  /* Tags Row - Clean text with dots, NO boxes */
+  .tags-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 16px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-primary);
+  }
+  .tags-row span.dot {
+    color: var(--accent-gold);
+    font-size: 18px;
+  }
+
+  /* Headings */
   .subtitle-tag {
     font-family: 'Oswald', sans-serif;
     font-size: 15px;
@@ -97,8 +108,8 @@
   }
   .headline {
     font-size: 48px;
-    font-weight: 700;
     line-height: 1.1;
+    font-weight: 700;
     margin-bottom: 14px;
     color: var(--ink-primary);
     letter-spacing: -0.015em;
@@ -106,24 +117,50 @@
   .headline em {
     font-style: italic;
     font-weight: 500;
-    color: var(--accent-gold);
+    color: var(--accent-blue);
   }
   .sub-desc {
     font-family: 'Montserrat', sans-serif;
     font-size: 16.5px;
-    line-height: 1.55;
     color: var(--ink-muted);
+    line-height: 1.55;
     max-width: 860px;
-    margin-bottom: 36px;
+    margin-bottom: 30px;
     font-weight: 500;
   }
 
-  /* 8 Pillars Grid - Completely Box-Free, Pure Editorial Columns */
+  /* Core Philosophy - Two Clean Editorial Columns, NO boxes */
+  .core-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 34px;
+    border-top: 1.5px solid var(--rule-color);
+    border-bottom: 1.5px solid var(--rule-color);
+    padding: 18px 0;
+  }
+  .core-col h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 6px;
+  }
+  .core-col p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14.5px;
+    color: var(--ink-secondary);
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  /* 6 Pillars 3x2 Grid - Pure Editorial Columns, NO boxes */
   .pillars {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto auto;
-    gap: 28px 24px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 30px;
     flex: 1;
   }
   .pillar {
@@ -131,33 +168,33 @@
     padding-top: 14px;
     display: flex;
     flex-direction: column;
-    position: relative;
   }
   .pillar-num {
     font-family: 'Oswald', sans-serif;
-    font-size: 26px;
+    font-size: 24px;
+    letter-spacing: 0.12em;
+    color: var(--accent-blue);
+    margin-bottom: 6px;
     font-weight: 700;
-    color: var(--accent-gold);
-    line-height: 1;
-    margin-bottom: 10px;
   }
   .pillar h3 {
-    font-family: 'Fraunces', serif;
+    font-family: 'Oswald', sans-serif;
     font-size: 17.5px;
     font-weight: 600;
-    line-height: 1.25;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     margin-bottom: 8px;
     color: var(--ink-primary);
   }
   .pillar p {
     font-family: 'Montserrat', sans-serif;
     font-size: 13.5px;
-    line-height: 1.48;
     color: var(--ink-secondary);
+    line-height: 1.48;
     font-weight: 500;
   }
 
-  /* Footer - Pure text directly pasted on template, NO boxes */
+  /* Footer - Pure text directly on template, NO boxes */
   .footer {
     display: flex;
     justify-content: space-between;
@@ -181,7 +218,7 @@
     font-family: 'Oswald', sans-serif;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--accent-gold);
+    color: var(--accent-blue);
     font-weight: 600;
     margin-right: 6px;
   }
@@ -200,10 +237,10 @@
 </head>
 <body>
 
-<div class="poster" id="slide2">
+<div class="poster" id="slide3">
 
   <div class="content">
-    <!-- Header: Logo & Exam names (NO boxes) -->
+    <!-- Header: Logo & Programme tag (NO boxes) -->
     <div class="header">
       <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
         <circle cx="50" cy="50" r="45" fill="#0a1017" />
@@ -212,74 +249,83 @@
         <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#0a1017">s.</text>
         <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12" letter-spacing="0.05em" fill="#0a1017">OFFICIUM SUPREMUM</text>
       </svg>
-      <div class="exam-text-row">
-        <span>NDA</span>
-        <span class="dot">·</span>
-        <span>CDS</span>
-        <span class="dot">·</span>
-        <span>AFCAT</span>
+      <div class="header-tag">
+        Juniors Programme
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- Main content -->
-    <div class="subtitle-tag">Defense Mentorship Ecosystem</div>
-    <h1 class="headline">Transforming aspirants into <em>future officers.</em></h1>
-    <p class="sub-desc">Success is not determined by how much you study — but by how well you execute under pressure. We build systems, not sessions.</p>
+    <!-- Tags: Clean text row, NO boxes -->
+    <div class="tags-row">
+      <span>Class 7 & Above</span>
+      <span class="dot">·</span>
+      <span>NDA Foundation</span>
+      <span class="dot">·</span>
+      <span>JEE / NEET Prep</span>
+      <span class="dot">·</span>
+      <span>UPSC / CLAT Base</span>
+    </div>
 
-    <!-- 8 Pillars Grid (Directly pasted on template, NO boxes) -->
-    <div class="pillars">
-      <div class="pillar">
-        <div class="pillar-num">01</div>
-        <h3>Complete Mentorship Roadmap</h3>
-        <p>Personalised daily tasks, weekly goals, and subject-wise targets — no generic plans.</p>
+    <!-- Main content -->
+    <div class="subtitle-tag">The Future Leaders Programme</div>
+    <h1 class="headline">The <em>Early Advantage</em> Track</h1>
+    <p class="sub-desc">A dedicated mentorship track for school students who want a massive head start in academics, competitive exams, and personal development.</p>
+
+    <!-- Core Philosophy: 2 clean columns, NO boxes -->
+    <div class="core-row">
+      <div class="core-col">
+        <h4>Habits First</h4>
+        <p>Discipline is the prerequisite to intelligence. We conquer daily routines before syllabus.</p>
       </div>
-      <div class="pillar">
-        <div class="pillar-num">02</div>
-        <h3>Personal Guidance</h3>
-        <p>Guided the way a personal assistant would guide a future officer.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">03</div>
-        <h3>Daily Accountability</h3>
-        <p>Mandatory nightly report to keep your preparation honest and consistent.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">04</div>
-        <h3>Revision & Recall Framework</h3>
-        <p>Active recall systems and memory reinforcement techniques.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">05</div>
-        <h3>Mock Test Ecosystem</h3>
-        <p>Full-length simulations evaluated under exam-real conditions.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">06</div>
-        <h3>OLQ Development</h3>
-        <p>Decision-making exercises and confidence-building for SSB.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">07</div>
-        <h3>Academy-Inspired Routine</h3>
-        <p>Mandatory physical exercise and time-bound productivity tracking.</p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">08</div>
-        <h3>Weekly Mind Sessions</h3>
-        <p>Mental resilience, discipline psychology, and sustained focus training.</p>
+      <div class="core-col">
+        <h4>Early Exposure</h4>
+        <p>Standards of defence, civil services, and top-tier academics instilled from day one.</p>
       </div>
     </div>
 
-    <!-- Footer (Directly on template, NO boxes) -->
+    <!-- 6 Pillars Grid: Pure editorial columns, NO boxes -->
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <h3>Study Discipline</h3>
+        <p>Building daily productive routines and mastering time management early.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <h3>Reading & Communication</h3>
+        <p>Strong reading habits and articulate communication for future leadership.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <h3>Confidence & Goals</h3>
+        <p>Setting long-term goals and breaking them into daily actionable tasks.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <h3>Academic Planning</h3>
+        <p>Personalised career guidance aligning with competitive exam targets.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">05</div>
+        <h3>Personalised Journals</h3>
+        <p>Custom daily planners tailored to each student's temperament.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">06</div>
+        <h3>Mind Sessions</h3>
+        <p>Building mental resilience, emotional intelligence, and laser focus.</p>
+      </div>
+    </div>
+
+    <!-- Footer: Direct text on template, NO boxes -->
     <div class="footer">
       <div class="footer-contact">
         <div class="footer-item"><strong>WhatsApp:</strong> +91 8969634656</div>
         <div class="footer-item"><strong>Email:</strong> osupremum@gmail.com</div>
       </div>
       <div class="footer-cta">
-        SWIPE FOR JUNIOR WING →
+        SWIPE FOR FINAL WORD →
       </div>
     </div>
   </div>
