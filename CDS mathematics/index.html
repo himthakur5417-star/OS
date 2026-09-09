@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — CDS Mathematics Syllabus & Question Bank</title>
+<meta name="description" content="Complete 22-chapter CDS, AFCAT & CAPF Mathematics Archive under the Officium Supremum Cadet Mentorship Ecosystem. 3,000+ curated problems, practice sheets, and 2017–2024 solved PYQs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text-color: #1a1a1a;
+    --paper-bg: #f7f9fa;
+    --grid-line: rgba(0, 32, 64, 0.065);
+    --border-color: #222222;
+    --gold: #c8a84e;
+    --navy: #1b2838;
+    --accent-blue: #2c4d75;
+    --card-bg: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #e5e9ec;
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 30px 15px;
+    display: flex;
+    justify-content: center;
+  }
+  .sheet {
+    width: 1060px;
+    max-width: 100%;
+    background-color: var(--paper-bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 22px 22px;
+    border: 1px solid #c8d0d6;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+    position: relative;
+    padding: 36px 42px 50px;
+  }
+  .top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .logo-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-svg { width: 140px; height: 56px; }
+  .header-meta {
+    text-align: right;
+  }
+  .header-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #444;
+  }
+  .header-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #111;
+  }
+  .header-subtitle {
+    font-size: 0.8rem;
+    color: #555;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Master Volume Hero Banner */
+  .master-banner {
+    background: #ffffff;
+    border: 1px solid #1e2d3d;
+    border-left: 6px solid var(--gold);
+    padding: 22px 26px;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .master-info h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .master-badge {
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+  }
+  .master-info p {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 6px;
+    line-height: 1.45;
+  }
+  .btn-master {
+    background: var(--navy);
+    color: #ffffff;
+    padding: 12px 24px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #111;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn-master:hover {
+    background: #111;
+    color: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  /* Controls & Filter Bar */
+  .filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+  }
+  .tab-btn {
+    background: #ffffff;
+    border: 1px solid #c8d0d6;
+    padding: 8px 16px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--navy);
+    color: #ffffff;
+    border-color: var(--navy);
+  }
+  .search-box {
+    padding: 8px 14px;
+    border: 1px solid #c8d0d6;
+    background: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    width: 250px;
+    outline: none;
+  }
+  .search-box:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 2px rgba(27, 40, 56, 0.1);
+  }
+
+  /* Section Title */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 30px 0 16px;
+  }
+  .section-divider h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+  .section-divider::after {
+    content: "";
+    flex-grow: 1;
+    height: 1px;
+    background: #c8d0d6;
+  }
+
+  /* Chapters Grid */
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid #c8d0d6;
+    border-left: 4px solid var(--navy);
+    padding: 18px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+  }
+  .chapter-card:hover {
+    border-left-color: var(--gold);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.09);
+    transform: translateY(-2px);
+  }
+  .ch-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .ch-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .ch-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    background: #edf2f7;
+    color: #334e68;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .ch-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.18rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 4px 0 6px;
+    color: #111;
+  }
+  .ch-stats {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.42;
+    margin-bottom: 14px;
+  }
+  .ch-link {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed #ddd;
+    padding-top: 10px;
+  }
+  .chapter-card:hover .ch-link {
+    color: var(--navy);
+  }
+
+  /* Footer */
+  .sheet-footer {
+    margin-top: 40px;
+    padding: 12px 18px;
+    border: 2px solid var(--border-color);
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer-left { font-weight: 700; color: #111; }
+  .footer-center { color: #555; }
+  .footer-right { font-weight: 700; color: #111; }
+
+  @media (max-width: 768px) {
+    .sheet { padding: 24px 18px 36px; }
+    .top-header { flex-direction: column; align-items: flex-start; text-align: left; }
+    .header-meta { text-align: left; }
+    .filter-bar { flex-direction: column; align-items: stretch; }
+    .search-box { width: 100%; }
+    .sheet-footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <!-- Top Cadet Header -->
+  <div class="top-header">
+    <div class="logo-group">
+      <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet" aria-label="Officium Supremum Logo">
+        <circle cx="50" cy="50" r="45" fill="#111111" />
+        <circle cx="80" cy="50" r="26" fill="#f7f9fa" />
+        <circle cx="80" cy="50" r="10" fill="#111111" />
+        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#111111">s.</text>
+        <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="700" font-size="11" letter-spacing="0.06em" fill="#111111">OFFICIUM SUPREMUM</text>
+      </svg>
+    </div>
+    <div class="header-meta">
+      <div class="header-tag">Cadet Mentorship Ecosystem · CDS Wing</div>
+      <div class="header-title">CDS Mathematics Problem Archive</div>
+      <div class="header-subtitle">22 Complete Chapters · 3,000+ Curated Problems (2017–2024 Solved PYQs)</div>
+    </div>
+  </div>
+
+  <!-- Master Volume Hero Banner -->
+  <div class="master-banner">
+    <div class="master-info">
+      <h2>
+        Complete CDS Mathematics Master Volume
+        <span class="master-badge">383 Pages</span>
+      </h2>
+      <p>Download the complete official 383-page master volume encompassing all 22 chapters across Arithmetic and Advance Mathematics with full question distributions, practice sheets, and officer solutions.</p>
+    </div>
+    <a href="CDS-Mathematics-Officium-Supremum.pdf" class="btn-master" id="btn-master-download">
+      <span>Download Master PDF (11.4 MB)</span>
+      <span>&darr;</span>
+    </a>
+  </div>
+
+  <!-- Controls / Filter -->
+  <div class="filter-bar">
+    <div class="filter-tabs">
+      <button class="tab-btn active" onclick="filterSection('all')">All Chapters (22)</button>
+      <button class="tab-btn" onclick="filterSection('arithmetic')">Arithmetic (Ch 01–10)</button>
+      <button class="tab-btn" onclick="filterSection('advance')">Advance (Ch 11–22)</button>
+    </div>
+    <input type="text" id="chapterSearch" class="search-box" placeholder="Search chapter or topic..." onkeyup="searchChapters()" oninput="searchChapters()">
+  </div>
+
+  <!-- Section A: Arithmetic Maths -->
+  <div id="section-arithmetic" class="section-group">
+    <div class="section-divider">
+      <h3>Section A — CDS Arithmetic Mathematics (Chapters 01 – 10)</h3>
+    </div>
+    <div class="chapters-grid">
+      <!-- Chapter 01 -->
+      <a href="chapter-01-ratio-proportion.pdf" class="chapter-card" data-section="arithmetic" data-title="ratio and proportion mixtures partnership">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 01</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Ratio and Proportion</h3>
+          <p class="ch-stats">5 Practice Sheets + CDS PYQs covering proportional parts, compound ratios, milk-water mixtures, and partnership allocations.</p>
+        </div>
+        <div class="ch-link"><span>17 Pages · 56+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 02 -->
+      <a href="chapter-02-average.pdf" class="chapter-card" data-section="arithmetic" data-title="average consecutive numbers weighted mean">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 02</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Average</h3>
+          <p class="ch-stats">3 Practice Sheets + CDS PYQs on consecutive odd/even series, replacement rules, bowling averages, and batting stats.</p>
+        </div>
+        <div class="ch-link"><span>12 Pages · 43+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 03 -->
+      <a href="chapter-03-time-work.pdf" class="chapter-card" data-section="arithmetic" data-title="time and work pipes cisterns efficiency">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 03</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Time and Work</h3>
+          <p class="ch-stats">4 Practice Sheets + CDS PYQs on unitary methods, alternate days, pipe-and-cistern inlet/leak rates, and efficiency ratios.</p>
+        </div>
+        <div class="ch-link"><span>16 Pages · 67+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 04 -->
+      <a href="chapter-04-time-distance.pdf" class="chapter-card" data-section="arithmetic" data-title="time distance speed trains boats streams relative">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 04</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Time and Distance</h3>
+          <p class="ch-stats">4 Practice Sheets + CDS PYQs on relative speed, train crossings, circular tracks, and upstream/downstream boat problems.</p>
+        </div>
+        <div class="ch-link"><span>18 Pages · 89+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 05 -->
+      <a href="chapter-05-percentage.pdf" class="chapter-card" data-section="arithmetic" data-title="percentage successive change population voting election">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 05</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Percentage</h3>
+          <p class="ch-stats">5 Practice Sheets + CDS PYQs covering successive percentage increments, election ballots, consumption-price adjustments & Venn models.</p>
+        </div>
+        <div class="ch-link"><span>14 Pages · 31+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 06 -->
+      <a href="chapter-06-profit-loss.pdf" class="chapter-card" data-section="arithmetic" data-title="profit and loss discount marked price false weight">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 06</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Profit and Loss</h3>
+          <p class="ch-stats">5 Practice Sheets + CDS PYQs on marked price, successive trade discounts, deceptive weights & dishonest dealer markups.</p>
+        </div>
+        <div class="ch-link"><span>15 Pages · 36+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 07 -->
+      <a href="chapter-07-interest.pdf" class="chapter-card" data-section="arithmetic" data-title="interest simple compound difference annual quarterly installment">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 07</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Interest (SI & CI)</h3>
+          <p class="ch-stats">Comprehensive drill sheets & CDS PYQs on Simple & Compound Interest, semi-annual compounding, SI-CI differences & installment loans.</p>
+        </div>
+        <div class="ch-link"><span>15 Pages · 36+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 08 -->
+      <a href="chapter-08-number-system.pdf" class="chapter-card" data-section="arithmetic" data-title="number system divisibility unit digit remainder theorem factors prime">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 08</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Number System</h3>
+          <p class="ch-stats">5 Practice Sheets + CDS PYQs on Euler remainder theorem, unit digits, number of zeroes, factorials & divisibility rules.</p>
+        </div>
+        <div class="ch-link"><span>29 Pages · 205+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 09 -->
+      <a href="chapter-09-simplification.pdf" class="chapter-card" data-section="arithmetic" data-title="simplification surds indices bodmas recurring decimals fractions">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 09</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">Simplification</h3>
+          <p class="ch-stats">2 Practice Sheets + CDS PYQs on surds & indices, nested radicals, recurring decimals, BODMAS order, and continued fractions.</p>
+        </div>
+        <div class="ch-link"><span>7 Pages · 40+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 10 -->
+      <a href="chapter-10-lcm-hcf.pdf" class="chapter-card" data-section="arithmetic" data-title="lcm and hcf bells tolling greatest measure remainder">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 10</span>
+            <span class="ch-tag">Arithmetic</span>
+          </div>
+          <h3 class="ch-title">LCM and HCF</h3>
+          <p class="ch-stats">2 Practice Sheets + CDS PYQs on co-prime products, simultaneous tolling bells, fractional LCM/HCF, and remainder constraints.</p>
+        </div>
+        <div class="ch-link"><span>9 Pages · 46+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Section B: Advance Maths -->
+  <div id="section-advance" class="section-group">
+    <div class="section-divider">
+      <h3>Section B — CDS Advance Mathematics (Chapters 11 – 22)</h3>
+    </div>
+    <div class="chapters-grid">
+      <!-- Chapter 11 -->
+      <a href="chapter-11-equations.pdf" class="chapter-card" data-section="advance" data-title="equations linear quadratic roots discriminant nature">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 11</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Equations</h3>
+          <p class="ch-stats">Drill sets & CDS PYQs on linear system consistency, quadratic roots, Vieta formulas, signs of roots, and real polynomial bounds.</p>
+        </div>
+        <div class="ch-link"><span>23 Pages · 161+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 12 -->
+      <a href="chapter-12-algebra.pdf" class="chapter-card" data-section="advance" data-title="algebra polynomials identities cyclic symmetric expressions">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 12</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Algebra</h3>
+          <p class="ch-stats">Extensive drill questions & CDS PYQs on algebraic identities, symmetric polynomials, cyclic factoring, and minimum/maximum expressions.</p>
+        </div>
+        <div class="ch-link"><span>23 Pages · 205+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 13 -->
+      <a href="chapter-13-lcm-hcf-algebraic-factors.pdf" class="chapter-card" data-section="advance" data-title="lcm hcf algebraic factors polynomials factorization">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 13</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">LCM & HCF of Algebraic Factors</h3>
+          <p class="ch-stats">Targeted practice sheet + CDS PYQs on polynomial common divisors, highest common factors, and cyclic expression factorization.</p>
+        </div>
+        <div class="ch-link"><span>4 Pages · 27+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 14 -->
+      <a href="chapter-14-sets.pdf" class="chapter-card" data-section="advance" data-title="sets venn diagram subsets power set union intersection">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 14</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Sets</h3>
+          <p class="ch-stats">Drill problems & CDS PYQs on Venn diagrams, cardinality equations, inclusion-exclusion, Cartesian products, and power sets.</p>
+        </div>
+        <div class="ch-link"><span>7 Pages · 34+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 15 -->
+      <a href="chapter-15-logarithm.pdf" class="chapter-card" data-section="advance" data-title="logarithm characteristic mantissa base change equations">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 15</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Logarithm</h3>
+          <p class="ch-stats">Targeted practice sheet + CDS PYQs on logarithmic laws, base changes, characteristics, mantissas, and exponential-log systems.</p>
+        </div>
+        <div class="ch-link"><span>4 Pages · 30+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 16 -->
+      <a href="chapter-16-geometry.pdf" class="chapter-card" data-section="advance" data-title="geometry triangles circles tangents quadrilaterals polygons chords">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 16</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Geometry</h3>
+          <p class="ch-stats">Comprehensive 46-page master archive of 348+ CDS PYQs covering triangle centers, Apollonius theorem, cyclic quads, and tangents.</p>
+        </div>
+        <div class="ch-link"><span>46 Pages · 348+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 17 -->
+      <a href="chapter-17-mensuration-2d.pdf" class="chapter-card" data-section="advance" data-title="mensuration 2d perimeter area circle triangle polygon rhombus">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 17</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Mensuration 2D</h3>
+          <p class="ch-stats">206+ CDS PYQs on rectilinear perimeters, polygon areas, shaded circular segments, inscribed circles, and wire-bending transformations.</p>
+        </div>
+        <div class="ch-link"><span>25 Pages · 206+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 18 -->
+      <a href="chapter-18-mensuration-3d.pdf" class="chapter-card" data-section="advance" data-title="mensuration 3d sphere cone cylinder prism pyramid surface area volume">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 18</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Mensuration 3D</h3>
+          <p class="ch-stats">203+ CDS PYQs on total surface area, hollow cylinders, frustum of cones, melted spheres, spherical shells, and pyramid geometry.</p>
+        </div>
+        <div class="ch-link"><span>23 Pages · 203+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 19 -->
+      <a href="chapter-19-trigonometry.pdf" class="chapter-card" data-section="advance" data-title="trigonometry circular measure identities minimum maximum values ratios">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 19</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Trigonometry</h3>
+          <p class="ch-stats">247+ CDS PYQs covering circular measures, compound angles, reciprocal identities, and minimax values of trigonometric expressions.</p>
+        </div>
+        <div class="ch-link"><span>31 Pages · 247+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 20 -->
+      <a href="chapter-20-height-distance.pdf" class="chapter-card" data-section="advance" data-title="height and distance elevation depression shadow pole lighthouse tower">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 20</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Height and Distance</h3>
+          <p class="ch-stats">Practice sheet + 51+ CDS PYQs covering angle of elevation & depression, cloudy reflections, towers, flagstaffs, and moving ships.</p>
+        </div>
+        <div class="ch-link"><span>9 Pages · 51+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 21 -->
+      <a href="chapter-21-statistics.pdf" class="chapter-card" data-section="advance" data-title="statistics mean median mode standard deviation variance ogive histogram">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 21</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Statistics</h3>
+          <p class="ch-stats">150+ CDS PYQs covering frequency distributions, step deviation mean, cumulative ogives, mode, variance, and standard deviation formulas.</p>
+        </div>
+        <div class="ch-link"><span>28 Pages · 150+ Problems</span><span>Open PDF &rarr;</span></div>
+      </a>
+
+      <!-- Chapter 22 -->
+      <a href="chapter-22-miscellaneous.pdf" class="chapter-card" data-section="advance" data-title="miscellaneous capf pyq probability arrangements">
+        <div>
+          <div class="ch-meta">
+            <span class="ch-num">Chapter 22</span>
+            <span class="ch-tag">Advance</span>
+          </div>
+          <h3 class="ch-title">Miscellaneous & CAPF PYQs</h3>
+          <p class="ch-stats">Targeted CAPF past year examination questions with official keys covering combined permutations, couples seating, and dice coin tosses.</p>
+        </div>
+        <div class="ch-link"><span>1 Page · CAPF PYQs</span><span>Open PDF &rarr;</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom Cadet Bar -->
+  <div class="sheet-footer">
+    <div class="footer-left">OFFICIUM SUPREMUM · CDS WING</div>
+    <div class="footer-center">DISCIPLINE TODAY. LEADERSHIP TOMORROW.</div>
+    <div class="footer-right">MENTORSHIP: +91 8969634656</div>
+  </div>
+</div>
+
+<script>
+  function filterSection(type) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    const secArith = document.getElementById('section-arithmetic');
+    const secAdv = document.getElementById('section-advance');
+
+    if (type === 'all') {
+      secArith.style.display = 'block';
+      secAdv.style.display = 'block';
+    } else if (type === 'arithmetic') {
+      secArith.style.display = 'block';
+      secAdv.style.display = 'none';
+    } else if (type === 'advance') {
+      secArith.style.display = 'none';
+      secAdv.style.display = 'block';
+    }
+  }
+
+  function searchChapters() {
+    const q = document.getElementById('chapterSearch').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.chapter-card');
+    
+    cards.forEach(card => {
+      const title = card.getAttribute('data-title') || '';
+      const text = card.innerText.toLowerCase();
+      if (!q || title.includes(q) || text.includes(q)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
