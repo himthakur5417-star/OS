@@ -61,6 +61,9 @@ A strict, accountability-driven mentorship ecosystem designed to transform aspir
   - `A2Z Vocabulary/index.html`: Interactive alphabetical module selector, live search, group filter tabs (A–F, G–L, M–R, S–Z), and direct PDF access portal
   - `A2Z-Vocabulary-Officium-Supremum.pdf`: Complete 126-page master study volume featuring 1,200+ high-frequency exam words with contextual Hindi meanings, synonyms, idioms & phrases, one-word substitutions, foreign words, and 9 Officium Supremum academy editorial briefings
   - Modules A to Z (`letter-a.pdf` through `letter-z.pdf`): 26 standalone letter modules with localized single-line cadet footers and clean watermark-free layouts
+- `PYQ/`: Previous Year Question papers archive organized by exam and year under *Officium Supremum* identity.
+  - `NDA-PYQ/`: NDA & NA official question papers (2020–2026) organized by year, featuring both Mathematics and General Ability Test (GAT) papers.
+  - `CDS-PYQ/`: CDS question papers repository.
 
 ---
 
