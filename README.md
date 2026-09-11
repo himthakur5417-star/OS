@@ -63,7 +63,7 @@ A strict, accountability-driven mentorship ecosystem designed to transform aspir
   - Modules A to Z (`letter-a.pdf` through `letter-z.pdf`): 26 standalone letter modules with localized single-line cadet footers and clean watermark-free layouts
 - `PYQ/`: Previous Year Question papers archive organized by exam and year under *Officium Supremum* identity.
   - `NDA-PYQ/`: NDA & NA official question papers (2020–2026) organized by year, featuring both Mathematics and General Ability Test (GAT) papers.
-  - `CDS-PYQ/`: CDS question papers repository.
+  - `CDS-PYQ/`: CDS official question papers (2020–2026) organized by year, featuring English, Mathematics, and General Knowledge papers.
 
 ---
 

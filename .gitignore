@@ -1,4 +1,6 @@
 *.zip
+*.tar.gz
+jcode*
 .DS_Store
 __MACOSX/
 venv/
