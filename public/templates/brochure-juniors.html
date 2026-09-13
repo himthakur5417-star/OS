@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Officium Supremum Juniors - Brochure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Oswald:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #121212;
+      --paper: #FFFFFF;
+      --paper-2: #F4F3EF;
+      --muted: #6B6A64;
+      --accent: #202b36;
+      /* A sleek navy accent for juniors */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Fraunces', serif;
+      background: #e9e9e9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .brochure {
+      max-width: 800px;
+      width: 100%;
+      background: var(--paper);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      border-bottom: 2px solid #eaeaea;
+    }
+
+    .page-dark {
+      background: var(--ink);
+      color: var(--paper);
+      border-bottom: none;
+    }
+
+    .page-accent {
+      background: var(--accent);
+      color: var(--paper);
+      border-bottom: none;
+    }
+
+    .page-dark .muted,
+    .page-accent .muted {
+      color: #a0a0a0;
+    }
+
+    .oswald {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      line-height: 1.05;
+      margin: 0 0 20px;
+      font-weight: 500;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      line-height: 1.15;
+      margin: 0 0 24px;
+      font-weight: 500;
+    }
+
+    p {
+      font-size: 1.25rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 20px;
+    }
+
+    .page-dark p,
+    .page-accent p {
+      color: #d8d8d8;
+    }
+
+    .logo-svg {
+      width: 100%;
+      max-width: 180px;
+      margin-bottom: 40px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 50px;
+    }
+
+    .pillar {
+      border-top: 2px solid var(--ink);
+      padding-top: 24px;
+    }
+
+    .page-dark .pillar,
+    .page-accent .pillar {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .pillar h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      margin: 0 0 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .pillar p {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .contact-box {
+      background: var(--paper-2);
+      padding: 50px;
+      text-align: center;
+      margin-top: 60px;
+      border: 1px solid #dcdcdc;
+    }
+
+    .contact-box h3 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      color: var(--ink);
+    }
+
+    .contact-box p {
+      font-size: 1.1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 32px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: white;
+      border: 2px solid var(--ink);
+    }
+
+    .btn-wa {
+      background: #25D366;
+      color: white;
+      border: 2px solid #25D366;
+    }
+
+    .watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150%;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .content-relative {
+      position: relative;
+      z-index: 1;
+    }
+
+    .label-tag {
+      display: inline-block;
+      border: 1px solid currentColor;
+      padding: 6px 14px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .page {
+        padding: 60px 30px;
+        min-height: auto;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .contact-box {
+        padding: 40px 20px;
+      }
+    }
+
+    /* Print Optimization for PDF Export */
+    @media print {
+      body {
+        background: white;
+        display: block;
+        align-items: stretch;
+      }
+
+      .brochure {
+        box-shadow: none;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .page {
+        min-height: 297mm;
+        height: 297mm;
+        page-break-after: always;
+        border: none;
+        justify-content: flex-start;
+        padding: 20mm;
+      }
+
+      .page-dark,
+      .page-accent {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .btn-group {
+        display: none;
+      }
+
+      .print-only {
+        display: block;
+      }
+
+      .web-only {
+        display: none;
+      }
+    }
+
+    .print-only {
+      display: none;
+      margin-top: 20px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+    }
+
+    @media print {
+      .print-only {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="brochure">
+
+    <!-- PAGE 1: COVER -->
+    <div class="page page-dark" style="justify-content: center; overflow: hidden;">
+      <svg class="watermark" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet" style="opacity: 0.05;">
+        <circle cx="50" cy="50" r="45" fill="#fff" />
+        <circle cx="80" cy="50" r="26" fill="#000" />
+        <circle cx="80" cy="50" r="10" fill="#fff" />
+        <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46" fill="#fff">s.</text>
+      </svg>
+
+      <div class="content-relative">
+        <svg class="logo-svg" viewBox="0 0 220 100" preserveAspectRatio="xMinYMid meet">
+          <circle cx="50" cy="50" r="45" fill="var(--paper)" />
+          <circle cx="80" cy="50" r="26" fill="var(--ink)" />
+          <circle cx="80" cy="50" r="10" fill="var(--paper)" />
+          <text x="108" y="66" font-family="'Oswald', sans-serif" font-weight="700" font-size="46"
+            fill="var(--paper)">s.</text>
+          <text x="88" y="86" font-family="'Oswald', sans-serif" font-weight="600" font-size="12"
+            letter-spacing="0.05em" fill="var(--paper)">OFFICIUM SUPREMUM</text>
+        </svg>
+
+        <div class="oswald" style="color:var(--paper); opacity:0.7; margin-bottom:14px;">The Future Leaders Programme
+        </div>
+        <h1>The Early Advantage Track</h1>
+        <p style="font-size: 1.4rem; max-width: 600px;">A dedicated mentorship track for school students (Class 7
+          onward) who want a massive head start in academics, competitive exams, and personal development.</p>
+
+        <div style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 10px;">
+          <span class="label-tag" style="margin:0;">Class 7 & Above</span>
+          <span class="label-tag" style="margin:0;">NDA Foundation</span>
+          <span class="label-tag" style="margin:0;">JEE / NEET / UPSC / CLAT / CAT / NIFT </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: PHILOSOPHY -->
+    <div class="page">
+      <div class="oswald" style="color:var(--ink); margin-bottom:20px; opacity: 0.6;">01 // The Core Advantage</div>
+      <h2>Success is not built in the final months. It is built daily, over years.</h2>
+      <p>By the time most students start preparing for competitive examinations in Class 11 or 12, they have already
+        lost the battle of habits. They lack focus, discipline, and the ability to study effectively.</p>
+      <p><strong>Officium Supremum Juniors</strong> is designed to build these habits years before the competition even
+        starts thinking about them. We don't basically teach subjects; we build the mindset that masters subjects.</p>
+
+      <div class="grid-2" style="margin-top:30px;">
+        <div class="pillar">
+          <h3>Habits First</h3>
+          <p class="muted">Before we conquer the syllabus, we conquer the routine. Discipline is the prerequisite to
+            intelligence.</p>
+        </div>
+        <div class="pillar">
+          <h3>Early Exposure</h3>
+          <p class="muted">Exposure to the standards of defense, civil services, and top-tier academics early on.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: WHAT JUNIORS RECEIVE -->
+    <div class="page page-accent">
+      <div class="oswald" style="margin-bottom:20px; opacity: 0.6;">02 // The Curriculum</div>
+      <h2>What Juniors Receive</h2>
+      <p>A rigorous yet nurturing environment that transforms a school student into a focused, highly capable aspirant.
+      </p>
+
+      <div class="grid-2" style="margin-top: 40px;">
+        <div class="pillar">
+          <h3>1. Study Discipline</h3>
+          <p class="muted">Building daily productive routines, eliminating distractions, and mastering time management
+            early.</p>
+        </div>
+        <div class="pillar">
+          <h3>2. Reading & Communication</h3>
+          <p class="muted">Cultivating strong reading habits and articulate communication—critical for future interviews
+            and leadership roles.</p>
+        </div>
+        <div class="pillar">
+          <h3>3. Confidence & Goal Setting</h3>
+          <p class="muted">Learning how to set long-term goals and break them down into daily, actionable tasks.</p>
+        </div>
+        <div class="pillar">
+          <h3>4. Academic Planning</h3>
+          <p class="muted">Personalised career guidance aligning with their future targets: NEET, JEE, NDA, UPSC, or
+            Management.</p>
+        </div>
+        <div class="pillar">
+          <h3>5. Personalised Journals</h3>
+          <p class="muted">Custom-designed daily planners tailored to each student's psychology for tracking progress and building accountability.</p>
+        </div>
+        <div class="pillar">
+          <h3>6. Bi-Monthly Mind Sessions</h3>
+          <p class="muted">Interactive sessions conducted twice a month to build mental resilience, emotional intelligence, and sustained focus.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: ACTION -->
+    <div class="page" style="justify-content: flex-start; padding-top: 100px;">
+      <div class="oswald" style="color:var(--ink); margin-bottom:20px; opacity: 0.6;">03 // Enrolment</div>
+      <h2 style="font-size: 3.5rem;">Secure their future today.</h2>
+      <p>Parental involvement is crucial. The first step is a joint orientation call to understand the student's current
+        level and align on goals before beginning the mentorship track.</p>
+
+      <div class="contact-box">
+        <h3>Book Parent Orientation</h3>
+        <p style="margin-bottom:10px;">Contact us to discuss your child's roadmap and review the daily accountability
+          structure.</p>
+
+        <!-- Interactive Web CTA -->
+        <div class="btn-group web-only">
+          <a href="https://wa.me/918969634656" class="btn btn-wa" target="_blank">WhatsApp Us</a>
+          <a href="tel:+918969634656" class="btn btn-primary">Call Now</a>
+        </div>
+
+        <!-- Static Print CTA (Only visible when exported to PDF) -->
+        <div class="print-only">
+          <div style="margin-bottom: 10px;"><strong>PHONE / WHATSAPP:</strong> +91 8969634656</div>
+          <div style="margin-bottom: 10px;"><strong>EMAIL:</strong> osupremum@gmail.com</div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
