@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — Mentorship Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .poster {
+    width: 1080px;
+    height: 1350px; /* 4:5 Aspect Ratio for Instagram / WhatsApp */
+    background: 
+      radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 1) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, rgba(0, 31, 128, 0.08) 0%, transparent 60%),
+      linear-gradient(135deg, #e0e0e0, #f8f8f8, #cccccc);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 80px;
+    color: #1a1a1a;
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.1);
+  }
+
+  /* Tactical Grid Pattern Overlay */
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0, 31, 128, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 31, 128, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Heavy Noise/Grain overlay */
+  .poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+  
+  /* Top Center Logo */
+  .logo-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .logo-container svg {
+    height: 70px;
+    width: auto;
+    /* Translate slightly to perfectly center the visual mass since the 's.' adds width */
+    transform: translateX(-10px);
+  }
+
+  /* Main Title */
+  .title-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .title-line-1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 65px;
+    font-weight: 900;
+    color: #001f80; /* Deep blue */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    transform: scaleX(1.1);
+  }
+
+  .title-line-2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 45px;
+    font-weight: 900;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 10px;
+    transform: scaleX(1.1);
+  }
+
+  /* Branches Layout (Two Columns) */
+  .branches-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    padding: 20px 0;
+  }
+
+  .branch {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vertical-divider {
+    width: 2px;
+    background: rgba(0, 31, 128, 0.2); /* Faded deep blue */
+    margin: 0 20px;
+  }
+
+  .branch-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #001f80;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  .branch-subtitle {
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: #4a4a4a;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #001f80;
+    padding-bottom: 15px;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .features-list {
+    list-style: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .features-list li {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .features-list li::before {
+    content: '>';
+    color: #001f80;
+    margin-right: 15px;
+    font-weight: 900;
+    font-size: 22px;
+    line-height: 1.1;
+  }
+
+  .features-list li span {
+    text-transform: uppercase;
+  }
+
+  /* Footer Section */
+  .footer {
+    position: relative;
+    z-index: 2;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid rgba(0, 31, 128, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .contact-info {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #001f80;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contact-info span {
+    color: #1a1a1a;
+  }
+
+  .motto {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 6px;
+    opacity: 0.5;
+    margin-top: 15px;
+    text-transform: uppercase;
+  }
+  
+  /* Large faint background watermark */
+  .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    opacity: 0.02;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="poster">
+  
+  <div class="logo-container">
+    <svg viewBox="0 0 160 100">
+      <circle cx="50" cy="50" r="45" fill="#000" />
+      <circle cx="80" cy="50" r="26" fill="#f4f4f4" />
+      <circle cx="80" cy="50" r="10" fill="#000" />
+      <text x="108" y="66" font-family="'Montserrat', sans-serif" font-weight="900" font-size="46" fill="#000">s.</text>
+    </svg>
+  </div>
+
+  <div class="title-container">
+    <div class="title-line-1">OFFICIUM SUPREMUM</div>
+    <div class="title-line-2">MENTORSHIP PROGRAM</div>
+  </div>
+
+  <div class="branches-container">
+    
+    <!-- Defence Branch -->
+    <div class="branch">
+      <h2 class="branch-title">DEFENCE</h2>
+      <div class="branch-subtitle">NDA • CDS • AFCAT</div>
+      <ul class="features-list">
+        <li><span>Complete Mentorship Roadmap</span></li>
+        <li><span>Personal Guidance</span></li>
+        <li><span>Daily Accountability System</span></li>
+        <li><span>Revision & Recall Framework</span></li>
+        <li><span>Mock Test Ecosystem</span></li>
+        <li><span>Officer-Like Qualities (OLQs)</span></li>
+        <li><span>Academy-Inspired Routine</span></li>
+        <li><span>Weekly Mind Sessions</span></li>
+      </ul>
+    </div>
+
+    <div class="vertical-divider"></div>
+
+    <!-- Juniors Branch -->
+    <div class="branch">
+      <h2 class="branch-title">JUNIORS</h2>
+      <div class="branch-subtitle">CLASS 7+ • EARLY ADVANTAGE</div>
+      <ul class="features-list">
+        <li><span>Study Discipline</span></li>
+        <li><span>Reading & Communication</span></li>
+        <li><span>Confidence & Goal Setting</span></li>
+        <li><span>Academic Planning</span></li>
+        <li><span>Personalised Journals</span></li>
+        <li><span>Bi-Monthly Mind Sessions</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="contact-info">
+      <div>📞 <span>+91 8969634656</span> &nbsp;|&nbsp; <span>+91 9608857292</span></div>
+      <div>✉️ <span>osupremum@gmail.com</span></div>
+    </div>
+    <div class="motto">Discipline Today. Leadership Tomorrow.</div>
+  </div>
+
+  <!-- Center Watermark -->
+  <svg class="watermark" viewBox="0 0 160 100">
+    <circle cx="50" cy="50" r="45" fill="#000" />
+    <circle cx="80" cy="50" r="26" fill="#f4f4f4" />
+    <circle cx="80" cy="50" r="10" fill="#000" />
+    <text x="108" y="66" font-family="'Montserrat', sans-serif" font-weight="900" font-size="46" fill="#000">s.</text>
+  </svg>
+
+</div>
+
+</body>
+</html>
