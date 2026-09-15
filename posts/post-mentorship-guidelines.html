@@ -34,17 +34,18 @@
     box-shadow: inset 0 0 100px rgba(0,0,0,0.1);
   }
 
-  /* Tactical Grid Pattern Overlay */
+  /* Blurry Dot Matrix Pattern Overlay */
   .poster::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: 
-      linear-gradient(rgba(0, 31, 128, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 31, 128, 0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
+    /* Creating a soft, slightly blurry dot pattern */
+    background-image: radial-gradient(rgba(0, 31, 128, 0.15) 2.5px, transparent 4px);
+    background-size: 24px 24px;
     z-index: 0;
     pointer-events: none;
+    /* Optional slight blur to match the 'blurry types' reference */
+    filter: blur(0.5px);
   }
 
   /* Heavy Noise/Grain overlay */
