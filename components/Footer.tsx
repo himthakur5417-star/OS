@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import { Logo } from "./Logo";
 
 export function Footer() {
@@ -117,10 +117,6 @@ export function Footer() {
                 <Mail className="w-3.5 h-3.5 text-[#C8A84E]" />
                 <span>osupremum@gmail.com</span>
               </a>
-              <div className="flex items-start gap-2 text-slate-500">
-                <MapPin className="w-3.5 h-3.5 text-[#C8A84E] shrink-0 mt-0.5" />
-                <span>Mentorship Headquarters &amp; Live Digital Assessment</span>
-              </div>
             </div>
           </div>
         </div>
