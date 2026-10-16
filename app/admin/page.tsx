@@ -75,6 +75,19 @@ interface Stats {
   totalScholars: number;
   totalJuniors: number;
   recentLoginsCount: number;
+  totalPageViews?: number;
+  recentPageViews?: number;
+}
+
+interface TrafficLog {
+  id: string;
+  path: string;
+  userEmail?: string;
+  role?: string;
+  ip?: string;
+  userAgent?: string;
+  referrer?: string;
+  timestamp: string;
 }
 
 export default function AdminDashboardPage() {
@@ -85,6 +98,8 @@ export default function AdminDashboardPage() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [users, setUsers] = useState<UserAccount[]>([]);
   const [logs, setLogs] = useState<LoginLog[]>([]);
+  const [trafficLogs, setTrafficLogs] = useState<TrafficLog[]>([]);
+  const [logSubTab, setLogSubTab] = useState<"logins" | "traffic">("logins");
 
   // Active Tab
   const [activeTab, setActiveTab] = useState<"enquiries" | "users" | "logs" | "new-lead">("enquiries");
@@ -93,6 +108,7 @@ export default function AdminDashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [programFilter, setProgramFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [logFilter, setLogFilter] = useState<"all" | "admin" | "user" | "failed">("all");
 
   // Editing Note Modal
   const [editingNoteEnquiry, setEditingNoteEnquiry] = useState<Enquiry | null>(null);
@@ -163,6 +179,15 @@ export default function AdminDashboardPage() {
       if (logsRes.ok) {
         const logsData = await logsRes.json();
         setLogs(logsData.logs || []);
+      }
+
+      // 6. Fetch Traffic
+      const trfRes = await fetch("/api/admin/traffic?limit=100", {
+        headers: getAdminHeaders(),
+      });
+      if (trfRes.ok) {
+        const trfData = await trfRes.json();
+        setTrafficLogs(trfData.traffic || []);
       }
 
       setLoading(false);
@@ -502,7 +527,7 @@ export default function AdminDashboardPage() {
                 <span className="text-xs text-slate-400">events</span>
               </div>
               <div className="text-[11px] text-slate-500">
-                Real-time security log active
+                {stats.totalPageViews ? `${stats.totalPageViews} total pageviews recorded` : "Real-time security log active"}
               </div>
             </div>
           </div>
@@ -846,71 +871,224 @@ export default function AdminDashboardPage() {
         )}
 
         {/* ========================================================================= */}
-        {/* 7. TAB 3: LOGIN SECURITY AUDIT LOGS                                       */}
+        {/* 7. TAB 3: LOGIN SECURITY AUDIT & TRAFFIC LOGS                             */}
         {/* ========================================================================= */}
         {activeTab === "logs" && (
           <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+            {/* Top Toolbar with Export Buttons */}
+            <div className="p-4 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h3 className="font-heading font-semibold text-base text-[#0B192C]">
-                  Security &amp; Login Audit Trail
-                </h3>
-                <p className="text-xs text-slate-500 font-label uppercase tracking-wider">
-                  Authentication history and device verification
+                <div className="flex items-center gap-3">
+                  <h3 className="font-heading font-semibold text-base text-[#0B192C]">
+                    Security, Logins &amp; Traffic Hub
+                  </h3>
+                  <span className="text-[10px] font-label uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Auto-Sync to SQL &amp; CSV
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 font-label uppercase tracking-wider mt-0.5">
+                  Automatically logged in local folder: data/traffic_and_logins.sql
                 </p>
               </div>
-              <span className="text-xs font-label uppercase font-bold text-emerald-700 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Live Audit Active
-              </span>
+
+              {/* Action Buttons: Export SQL & CSV */}
+              <div className="flex items-center gap-2">
+                <a
+                  href="/api/admin/export?format=sql"
+                  download="traffic_and_logins.sql"
+                  className="px-3.5 py-1.5 bg-[#0B192C] hover:bg-[#1E293B] text-white rounded-xl text-xs font-label uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 shadow-xs"
+                >
+                  <Download className="w-3.5 h-3.5 text-[#C8A84E]" />
+                  <span>Download .SQL</span>
+                </a>
+                <a
+                  href="/api/admin/export?format=csv"
+                  download="traffic_and_logins.csv"
+                  className="px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-label uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 shadow-xs"
+                >
+                  <Download className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Download .CSV</span>
+                </a>
+              </div>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 border-b border-slate-200 font-label uppercase tracking-wider text-slate-500">
-                  <tr>
-                    <th className="py-3 px-4 font-semibold">Timestamp</th>
-                    <th className="py-3 px-4 font-semibold">Account Email</th>
-                    <th className="py-3 px-4 font-semibold">Role</th>
-                    <th className="py-3 px-4 font-semibold">Authentication Status</th>
-                    <th className="py-3 px-4 font-semibold">Client / Device Details</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {logs.map((log) => (
-                    <tr key={log.id} className="hover:bg-slate-50/60 font-mono text-[11px]">
-                      <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
-                        {new Date(log.timestamp).toLocaleString()}
-                      </td>
-                      <td className="py-3 px-4 font-semibold text-slate-800">
-                        {log.email}
-                      </td>
-                      <td className="py-3 px-4 uppercase text-[10px] text-slate-600">
-                        {log.role}
-                      </td>
-                      <td className="py-3 px-4 whitespace-nowrap">
-                        {log.status === "success" ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-semibold text-[10px]">
-                            <CheckCircle2 className="w-3 h-3" />
-                            SUCCESS
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 font-semibold text-[10px]">
-                            <AlertCircle className="w-3 h-3" />
-                            FAILED
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3 px-4 text-slate-500 font-sans text-[11px] truncate max-w-sm">
-                        {log.userAgent || "Web Client"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            {/* Sub-Tabs: Login Logs vs Website Traffic */}
+            <div className="px-4 pt-3 pb-2 bg-slate-50/70 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setLogSubTab("logins")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-label uppercase tracking-wider transition-all ${
+                    logSubTab === "logins"
+                      ? "bg-white text-[#0B192C] font-bold shadow-xs border border-slate-200"
+                      : "text-slate-500 hover:text-slate-900"
+                  }`}
+                >
+                  🔐 Login History ({logs.length})
+                </button>
+                <button
+                  onClick={() => setLogSubTab("traffic")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-label uppercase tracking-wider transition-all ${
+                    logSubTab === "traffic"
+                      ? "bg-white text-[#0B192C] font-bold shadow-xs border border-slate-200"
+                      : "text-slate-500 hover:text-slate-900"
+                  }`}
+                >
+                  🌐 Page Views &amp; Traffic ({trafficLogs.length})
+                </button>
+              </div>
+
+              {logSubTab === "logins" && (
+                <div className="flex items-center gap-1 p-0.5 bg-slate-200/60 rounded-lg text-[11px] font-label uppercase tracking-wider">
+                  <button
+                    onClick={() => setLogFilter("all")}
+                    className={`px-2.5 py-1 rounded-md transition-all ${
+                      logFilter === "all" ? "bg-white text-[#0B192C] font-bold shadow-2xs" : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    All ({logs.length})
+                  </button>
+                  <button
+                    onClick={() => setLogFilter("admin")}
+                    className={`px-2.5 py-1 rounded-md transition-all ${
+                      logFilter === "admin" ? "bg-amber-100 text-amber-900 font-bold shadow-2xs" : "text-slate-600 hover:text-amber-800"
+                    }`}
+                  >
+                    Admins ({logs.filter((l) => l.role === "admin").length})
+                  </button>
+                  <button
+                    onClick={() => setLogFilter("user")}
+                    className={`px-2.5 py-1 rounded-md transition-all ${
+                      logFilter === "user" ? "bg-white text-indigo-900 font-bold shadow-2xs" : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    Users ({logs.filter((l) => l.role !== "admin").length})
+                  </button>
+                </div>
+              )}
             </div>
+
+            {/* TAB CONTENT: 1. LOGINS */}
+            {logSubTab === "logins" && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 border-b border-slate-200 font-label uppercase tracking-wider text-slate-500">
+                    <tr>
+                      <th className="py-3 px-4 font-semibold">Timestamp</th>
+                      <th className="py-3 px-4 font-semibold">Account Email</th>
+                      <th className="py-3 px-4 font-semibold">Role Access</th>
+                      <th className="py-3 px-4 font-semibold">Status</th>
+                      <th className="py-3 px-4 font-semibold">Client / Device Details</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {logs
+                      .filter((log) => {
+                        if (logFilter === "admin") return log.role === "admin";
+                        if (logFilter === "user") return log.role !== "admin";
+                        if (logFilter === "failed") return log.status === "failed";
+                        return true;
+                      })
+                      .map((log) => (
+                        <tr key={log.id} className="hover:bg-slate-50/60 font-mono text-[11px]">
+                          <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
+                            {new Date(log.timestamp).toLocaleString()}
+                          </td>
+                          <td className="py-3 px-4 font-semibold text-slate-800">
+                            {log.email}
+                          </td>
+                          <td className="py-3 px-4 whitespace-nowrap">
+                            {log.role === "admin" ? (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[10px] tracking-wider">
+                                <Shield className="w-3 h-3 text-amber-700" />
+                                ADMIN
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium text-[10px] tracking-wider">
+                                USER
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 whitespace-nowrap">
+                            {log.status === "success" ? (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-semibold text-[10px]">
+                                <CheckCircle2 className="w-3 h-3" />
+                                SUCCESS
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 font-semibold text-[10px]">
+                                <AlertCircle className="w-3 h-3" />
+                                FAILED
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-slate-500 font-sans text-[11px] truncate max-w-sm">
+                            {log.userAgent || "Web Client"}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* TAB CONTENT: 2. WEBSITE TRAFFIC */}
+            {logSubTab === "traffic" && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 border-b border-slate-200 font-label uppercase tracking-wider text-slate-500">
+                    <tr>
+                      <th className="py-3 px-4 font-semibold">Timestamp</th>
+                      <th className="py-3 px-4 font-semibold">Page Path</th>
+                      <th className="py-3 px-4 font-semibold">Visitor / Account</th>
+                      <th className="py-3 px-4 font-semibold">Referrer</th>
+                      <th className="py-3 px-4 font-semibold">IP &amp; Device</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {trafficLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="py-8 text-center text-slate-400 font-sans text-xs">
+                          No page views recorded yet. Traffic will appear in real time as visitors browse the site.
+                        </td>
+                      </tr>
+                    ) : (
+                      trafficLogs.map((item) => (
+                        <tr key={item.id} className="hover:bg-slate-50/60 font-mono text-[11px]">
+                          <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
+                            {new Date(item.timestamp).toLocaleString()}
+                          </td>
+                          <td className="py-3 px-4 font-semibold text-[#0B192C]">
+                            <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 font-mono text-[11px]">
+                              {item.path}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 whitespace-nowrap">
+                            {item.userEmail ? (
+                              <span className="text-slate-800 font-sans text-[11px]">
+                                {item.userEmail} {item.role === "admin" && <span className="text-amber-700 font-bold text-[9px]">(Admin)</span>}
+                              </span>
+                            ) : (
+                              <span className="text-slate-400 font-sans text-[11px]">Anonymous Visitor</span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-slate-500 font-sans text-[11px]">
+                            {item.referrer || "Direct"}
+                          </td>
+                          <td className="py-3 px-4 text-slate-500 font-sans text-[11px] truncate max-w-xs">
+                            {item.ip ? `${item.ip} • ` : ""}{item.userAgent || "Browser Client"}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
+
+
 
         {/* ========================================================================= */}
         {/* 8. TAB 4: MANUAL LEAD ENTRY FORM                                          */}

@@ -134,7 +134,6 @@ export function Footer() {
             <Link href="/about" className="hover:text-slate-900">Charter</Link>
             <Link href="/contact" className="hover:text-slate-900">Admissions</Link>
             <Link href="/resources" className="hover:text-slate-900">Study Vault</Link>
-            <Link href="/dashboard" className="hover:text-slate-900">Cadet Portal</Link>
             <Link href="/admin/login" className="text-slate-400 hover:text-[#C8A84E] transition-colors">Admin</Link>
           </div>
         </div>

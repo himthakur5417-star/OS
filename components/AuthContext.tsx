@@ -17,8 +17,8 @@ export interface CustomUser {
   uid: string;
   email: string | null;
   displayName: string | null;
-  role: "cadet" | "scholar" | "junior" | "parent";
-  rollNumber: string;
+  role: "admin" | "user" | "cadet" | "scholar" | "junior" | "parent";
+  rollNumber?: string;
   isDemo?: boolean;
 }
 
@@ -31,8 +31,8 @@ interface AuthContextType {
   authRedirectPath: string | null;
   openAuthModal: (mode?: "signin" | "signup", redirectPath?: string) => void;
   closeAuthModal: () => void;
-  signInEmail: (email: string, pass: string) => Promise<void>;
-  signUpEmail: (email: string, pass: string, name: string, role: "cadet" | "scholar" | "junior" | "parent") => Promise<void>;
+  signInEmail: (email: string, pass: string) => Promise<{ role: string; redirectTo: string }>;
+  signUpEmail: (email: string, pass: string, name: string) => Promise<{ role: string; redirectTo: string }>;
   signInGoogle: () => Promise<void>;
   loginDemo: (role?: "cadet" | "scholar" | "parent") => void;
   logout: () => Promise<void>;
@@ -48,15 +48,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authRedirectPath, setAuthRedirectPath] = useState<string | null>(null);
   const router = useRouter();
 
-  // Load local demo or Firebase user
+  // Load local session or verify admin/user
   useEffect(() => {
-    // Check local storage for demo session first
-    const localDemo = localStorage.getItem("os_demo_user");
-    if (localDemo) {
+    const localUser = localStorage.getItem("os_active_user") || localStorage.getItem("os_demo_user");
+    if (localUser) {
       try {
-        setUser(JSON.parse(localDemo));
+        setUser(JSON.parse(localUser));
         setLoading(false);
       } catch (e) {
+        localStorage.removeItem("os_active_user");
         localStorage.removeItem("os_demo_user");
       }
     }
@@ -64,14 +64,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
         if (firebaseUser) {
-          setUser({
+          const userObj: CustomUser = {
             uid: firebaseUser.uid,
             email: firebaseUser.email,
-            displayName: firebaseUser.displayName || (firebaseUser.email ? firebaseUser.email.split("@")[0] : "Cadet"),
-            role: "cadet",
-            rollNumber: `OS-NDA-${firebaseUser.uid.slice(0, 4).toUpperCase()}`,
-          });
-        } else if (!localStorage.getItem("os_demo_user")) {
+            displayName: firebaseUser.displayName || (firebaseUser.email ? firebaseUser.email.split("@")[0] : "Member"),
+            role: "user",
+          };
+          setUser(userObj);
+          localStorage.setItem("os_active_user", JSON.stringify(userObj));
+        } else if (!localStorage.getItem("os_active_user") && !localStorage.getItem("os_demo_user")) {
           setUser(null);
         }
         setLoading(false);
@@ -92,150 +93,110 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsAuthModalOpen(false);
   };
 
-  const checkRedirect = () => {
-    if (authRedirectPath) {
-      const path = authRedirectPath;
-      setAuthRedirectPath(null);
-      router.push(path);
-    }
-  };
-
-  const recordAuthActivity = (
-    email: string,
-    role: string,
-    status: "success" | "failed",
-    userDetails?: any
-  ) => {
-    try {
-      fetch("/api/auth/log", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, role, status, userDetails }),
-      }).catch(() => {});
-    } catch (e) {}
+  const checkRedirect = (defaultPath = "/") => {
+    const target = authRedirectPath || defaultPath;
+    setAuthRedirectPath(null);
+    router.push(target);
   };
 
   const signInEmail = async (email: string, pass: string) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, pass);
-      recordAuthActivity(email, "cadet", "success", {
-        uid: "fb-" + email,
-        email,
-        displayName: email.split("@")[0],
-        role: "cadet",
-      });
-      closeAuthModal();
-      checkRedirect();
-    } catch (error: any) {
-      // If Firebase fails (e.g. invalid credentials or dummy keys), fallback to simulated success for smooth demo
-      if (error?.code === "auth/invalid-credential" || error?.message?.includes("API key")) {
-        const dummyUser: CustomUser = {
-          uid: "demo-" + Math.random().toString(36).substr(2, 9),
-          email,
-          displayName: email.split("@")[0],
-          role: "cadet",
-          rollNumber: `OS-NDA-2025`,
-        };
-        setUser(dummyUser);
-        localStorage.setItem("os_demo_user", JSON.stringify(dummyUser));
-        recordAuthActivity(email, "cadet", "success", dummyUser);
-        closeAuthModal();
-        checkRedirect();
-      } else {
-        recordAuthActivity(email, "cadet", "failed");
-        throw error;
-      }
+    const res = await fetch("/api/auth/unified", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password: pass, isSignUp: false }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Authentication failed. Please check credentials.");
     }
+
+    setUser(data.user);
+    localStorage.setItem("os_active_user", JSON.stringify(data.user));
+    closeAuthModal();
+
+    if (data.role === "admin") {
+      router.push("/admin");
+    } else {
+      checkRedirect(data.redirectTo || "/");
+    }
+
+    return { role: data.role, redirectTo: data.redirectTo };
   };
 
-  const signUpEmail = async (
-    email: string,
-    pass: string,
-    name: string,
-    role: "cadet" | "scholar" | "junior" | "parent"
-  ) => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, pass);
-      const newUser: CustomUser = {
-        uid: "user-" + Math.random().toString(36).substr(2, 9),
-        email,
-        displayName: name,
-        role,
-        rollNumber: `OS-${role.slice(0, 3).toUpperCase()}-2025`,
-      };
-      setUser(newUser);
-      localStorage.setItem("os_demo_user", JSON.stringify(newUser));
-      recordAuthActivity(email, role, "success", newUser);
-      closeAuthModal();
-      checkRedirect();
-    } catch (error: any) {
-      // If Firebase key is not configured, still grant graceful access
-      const newUser: CustomUser = {
-        uid: "user-" + Math.random().toString(36).substr(2, 9),
-        email,
-        displayName: name,
-        role,
-        rollNumber: `OS-${role.slice(0, 3).toUpperCase()}-2025`,
-      };
-      setUser(newUser);
-      localStorage.setItem("os_demo_user", JSON.stringify(newUser));
-      recordAuthActivity(email, role, "success", newUser);
-      closeAuthModal();
-      checkRedirect();
+  const signUpEmail = async (email: string, pass: string, name: string) => {
+    const res = await fetch("/api/auth/unified", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password: pass, name, isSignUp: true }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Registration failed. Please check credentials.");
     }
+
+    setUser(data.user);
+    localStorage.setItem("os_active_user", JSON.stringify(data.user));
+    closeAuthModal();
+
+    if (data.role === "admin") {
+      router.push("/admin");
+    } else {
+      checkRedirect(data.redirectTo || "/");
+    }
+
+    return { role: data.role, redirectTo: data.redirectTo };
   };
 
   const signInGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
       closeAuthModal();
-      checkRedirect();
+      checkRedirect("/");
     } catch (error) {
       // Mock Google sign-in fallback
       const googleMock: CustomUser = {
-        uid: "google-cadet-001",
-        email: "cadet.vikram@gmail.com",
-        displayName: "Cadet Vikram Singh",
-        role: "cadet",
-        rollNumber: "OS-NDA-2025",
-        isDemo: true,
+        uid: "google-usr-001",
+        email: "user@officium.academy",
+        displayName: "Academy Member",
+        role: "user",
       };
       setUser(googleMock);
-      localStorage.setItem("os_demo_user", JSON.stringify(googleMock));
-      recordAuthActivity(googleMock.email || "google-user", "cadet", "success", googleMock);
+      localStorage.setItem("os_active_user", JSON.stringify(googleMock));
       closeAuthModal();
-      checkRedirect();
+      checkRedirect("/");
     }
   };
 
   const loginDemo = (role: "cadet" | "scholar" | "parent" = "cadet") => {
     const demoUser: CustomUser = {
-      uid: "demo-" + role,
-      email: `${role}@officium.academy`,
-      displayName:
-        role === "cadet"
-          ? "Cadet Rohit Deshmukh"
-          : role === "scholar"
-          ? "Aarav Sharma"
-          : "Dr. Rajesh Sharma (Parent)",
-      role,
-      rollNumber: role === "cadet" ? "OS-NDA-2025" : "OS-SCH-4019",
+      uid: "demo-usr",
+      email: "user@officium.academy",
+      displayName: "Academy Member",
+      role: "user",
       isDemo: true,
     };
     setUser(demoUser);
-    localStorage.setItem("os_demo_user", JSON.stringify(demoUser));
-    recordAuthActivity(demoUser.email || `${role}@officium.academy`, role, "success", demoUser);
+    localStorage.setItem("os_active_user", JSON.stringify(demoUser));
     closeAuthModal();
-    checkRedirect();
+    checkRedirect("/");
   };
 
   const logout = async () => {
     try {
+      await fetch("/api/admin/auth", { method: "DELETE" });
+    } catch (e) {}
+    try {
       await firebaseSignOut(auth);
     } catch (e) {}
+    localStorage.removeItem("os_active_user");
     localStorage.removeItem("os_demo_user");
+    localStorage.removeItem("os_admin_token");
     setUser(null);
+    router.push("/");
   };
+
 
   return (
     <AuthContext.Provider

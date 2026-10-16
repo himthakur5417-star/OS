@@ -36,134 +36,38 @@ export interface LoginLog {
   timestamp: string;
 }
 
+export interface TrafficLog {
+  id: string;
+  path: string;
+  userEmail?: string;
+  role?: string;
+  ip?: string;
+  userAgent?: string;
+  referrer?: string;
+  timestamp: string;
+}
+
 export interface DatabaseSchema {
   enquiries: Enquiry[];
   users: UserAccount[];
   login_logs: LoginLog[];
+  traffic_logs?: TrafficLog[];
 }
 
 const DB_DIR = path.join(process.cwd(), "data");
 const DB_FILE = path.join(DB_DIR, "database.json");
+const SQL_FILE = path.join(DB_DIR, "traffic_and_logins.sql");
+const CSV_FILE = path.join(DB_DIR, "traffic_and_logins.csv");
 
-// Initial seed data so the administrator has immediate demonstration data
+// Initial schema structure (clean with zero dummy data)
 const initialData: DatabaseSchema = {
-  enquiries: [
-    {
-      id: "ENQ-2025-001",
-      name: "Abhinav Pratap Singh",
-      phone: "+91 9876543210",
-      email: "abhinav.pratap@gmail.com",
-      program: "defense",
-      source: "orientation_modal",
-      message: "Aspirant for NDA-1 2026. Looking for daily structured mathematics and active recall mentorship.",
-      status: "new",
-      notes: "High potential. Class 12 PCM student. Needs NDA mathematics diagnostics.",
-      createdAt: new Date(Date.now() - 3600 * 1000 * 3).toISOString(),
-    },
-    {
-      id: "ENQ-2025-002",
-      name: "Rhea Deshmukh",
-      phone: "+91 9823456781",
-      email: "rhea.deshmukh@yahoo.com",
-      program: "scholars",
-      source: "contact_page",
-      message: "Class 11 CBSE student. Seeking study rhythm architecture and active recall routine to balance school exams with competitive track.",
-      status: "contacted",
-      notes: "Spoke with father. Orientation diagnostic scheduled for Tuesday 5 PM.",
-      createdAt: new Date(Date.now() - 3600 * 1000 * 14).toISOString(),
-    },
-    {
-      id: "ENQ-2025-003",
-      name: "Vikramaditya Chouhan",
-      phone: "+91 9711223344",
-      email: "vikram.chouhan@gmail.com",
-      program: "defense",
-      source: "assessment_call",
-      message: "CDS 2025 aspirant. Need specialized focus on General Knowledge and English syllabus mastery.",
-      status: "enrolled",
-      notes: "Enrolled in CDS Wing. Roll number OS-CDS-0482 assigned.",
-      createdAt: new Date(Date.now() - 3600 * 1000 * 28).toISOString(),
-    },
-    {
-      id: "ENQ-2025-004",
-      name: "Col. Suresh Verma (Parent)",
-      phone: "+91 9415012345",
-      email: "suresh.verma@army.mil.in",
-      program: "juniors",
-      source: "contact_page",
-      message: "Inquiring for son in Class 8. Want to instill daily reading habit, discipline routines, and early foundation for RIMC / NDA.",
-      status: "in_progress",
-      notes: "Shared Juniors charter brochure. Follow up on Thursday.",
-      createdAt: new Date(Date.now() - 3600 * 1000 * 48).toISOString(),
-    }
-  ],
-  users: [
-    {
-      uid: "user-admin-001",
-      email: "admin@officium.academy",
-      displayName: "Academy Director",
-      role: "admin",
-      rollNumber: "OS-DIR-001",
-      createdAt: new Date(Date.now() - 3600 * 1000 * 240).toISOString(),
-      lastLogin: new Date().toISOString(),
-    },
-    {
-      uid: "user-cadet-001",
-      email: "cadet.rohit@officium.academy",
-      displayName: "Cadet Rohit Deshmukh",
-      role: "cadet",
-      rollNumber: "OS-NDA-2025",
-      targetExam: "NDA-1 2025",
-      phone: "+91 8969634656",
-      createdAt: new Date(Date.now() - 3600 * 1000 * 72).toISOString(),
-      lastLogin: new Date(Date.now() - 3600 * 1000 * 2).toISOString(),
-    },
-    {
-      uid: "user-scholar-001",
-      email: "aarav.sharma@officium.academy",
-      displayName: "Aarav Sharma",
-      role: "scholar",
-      rollNumber: "OS-SCH-4019",
-      targetExam: "Class 12 Boards & CUET",
-      createdAt: new Date(Date.now() - 3600 * 1000 * 120).toISOString(),
-      lastLogin: new Date(Date.now() - 3600 * 1000 * 5).toISOString(),
-    }
-  ],
-  login_logs: [
-    {
-      id: "log-1",
-      email: "admin@officium.academy",
-      role: "admin",
-      status: "success",
-      userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: "log-2",
-      email: "cadet.rohit@officium.academy",
-      role: "cadet",
-      status: "success",
-      userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4)",
-      timestamp: new Date(Date.now() - 3600 * 1000 * 2).toISOString(),
-    },
-    {
-      id: "log-3",
-      email: "aarav.sharma@officium.academy",
-      role: "scholar",
-      status: "success",
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-      timestamp: new Date(Date.now() - 3600 * 1000 * 5).toISOString(),
-    },
-    {
-      id: "log-4",
-      email: "unknown@gmail.com",
-      role: "cadet",
-      status: "failed",
-      userAgent: "Mozilla/5.0 (Android 14; Mobile)",
-      timestamp: new Date(Date.now() - 3600 * 1000 * 8).toISOString(),
-    }
-  ]
+  enquiries: [],
+  users: [],
+  login_logs: [],
+  traffic_logs: []
 };
+
+
 
 // Ensure data directory and file exist
 function initDB(): DatabaseSchema {
@@ -185,6 +89,92 @@ function initDB(): DatabaseSchema {
   }
 }
 
+function escapeSql(val: any): string {
+  if (val === null || val === undefined) return "NULL";
+  return `'${String(val).replace(/'/g, "''")}'`;
+}
+
+function escapeCsv(val: any): string {
+  if (val === null || val === undefined) return '""';
+  const str = String(val).replace(/"/g, '""');
+  return `"${str}"`;
+}
+
+function syncSqlAndCsvFiles(data: DatabaseSchema): void {
+  try {
+    // 1. Generate SQL File
+    let sql = `-- =========================================================================\n` +
+      `-- OFFICIUM SUPREMUM: CENTRAL AUDIT & TRAFFIC DATABASE AUTO-EXPORT\n` +
+      `-- File: data/traffic_and_logins.sql\n` +
+      `-- Generated at: ${new Date().toISOString()}\n` +
+      `-- =========================================================================\n\n` +
+      `CREATE TABLE IF NOT EXISTS users (\n` +
+      `  uid VARCHAR(255) PRIMARY KEY,\n` +
+      `  email VARCHAR(255),\n` +
+      `  display_name VARCHAR(255),\n` +
+      `  role VARCHAR(50),\n` +
+      `  roll_number VARCHAR(100),\n` +
+      `  created_at TIMESTAMP,\n` +
+      `  last_login TIMESTAMP\n` +
+      `);\n\n` +
+      `CREATE TABLE IF NOT EXISTS login_logs (\n` +
+      `  id VARCHAR(255) PRIMARY KEY,\n` +
+      `  email VARCHAR(255),\n` +
+      `  role VARCHAR(50),\n` +
+      `  status VARCHAR(50),\n` +
+      `  ip VARCHAR(100),\n` +
+      `  user_agent TEXT,\n` +
+      `  timestamp TIMESTAMP\n` +
+      `);\n\n` +
+      `CREATE TABLE IF NOT EXISTS traffic_logs (\n` +
+      `  id VARCHAR(255) PRIMARY KEY,\n` +
+      `  path VARCHAR(255),\n` +
+      `  user_email VARCHAR(255),\n` +
+      `  role VARCHAR(50),\n` +
+      `  ip VARCHAR(100),\n` +
+      `  user_agent TEXT,\n` +
+      `  referrer VARCHAR(255),\n` +
+      `  timestamp TIMESTAMP\n` +
+      `);\n\n` +
+      `-- USER DIRECTORY\n`;
+
+    for (const u of data.users || []) {
+      sql += `INSERT INTO users (uid, email, display_name, role, roll_number, created_at, last_login) ` +
+        `VALUES (${escapeSql(u.uid)}, ${escapeSql(u.email)}, ${escapeSql(u.displayName)}, ${escapeSql(u.role)}, ${escapeSql(u.rollNumber)}, ${escapeSql(u.createdAt)}, ${escapeSql(u.lastLogin)}) ` +
+        `ON CONFLICT (uid) DO UPDATE SET last_login = EXCLUDED.last_login;\n`;
+    }
+
+    sql += `\n-- LOGIN & SECURITY AUDIT LOGS\n`;
+    for (const l of data.login_logs || []) {
+      sql += `INSERT INTO login_logs (id, email, role, status, ip, user_agent, timestamp) ` +
+        `VALUES (${escapeSql(l.id)}, ${escapeSql(l.email)}, ${escapeSql(l.role)}, ${escapeSql(l.status)}, ${escapeSql(l.ip)}, ${escapeSql(l.userAgent)}, ${escapeSql(l.timestamp)});\n`;
+    }
+
+    sql += `\n-- WEBSITE TRAFFIC & VISITOR ACTIVITY\n`;
+    for (const t of data.traffic_logs || []) {
+      sql += `INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) ` +
+        `VALUES (${escapeSql(t.id)}, ${escapeSql(t.path)}, ${escapeSql(t.userEmail)}, ${escapeSql(t.role)}, ${escapeSql(t.ip)}, ${escapeSql(t.userAgent)}, ${escapeSql(t.referrer)}, ${escapeSql(t.timestamp)});\n`;
+    }
+
+    fs.writeFileSync(SQL_FILE, sql, "utf-8");
+
+    // 2. Generate CSV File
+    let csv = `Record_Type,ID,Timestamp,Account_Email,Role_or_Page,Status_or_Referrer,IP_Address,Client_Device\n`;
+
+    for (const l of data.login_logs || []) {
+      csv += `${escapeCsv("LOGIN")},${escapeCsv(l.id)},${escapeCsv(l.timestamp)},${escapeCsv(l.email)},${escapeCsv(l.role)},${escapeCsv(l.status)},${escapeCsv(l.ip)},${escapeCsv(l.userAgent)}\n`;
+    }
+
+    for (const t of data.traffic_logs || []) {
+      csv += `${escapeCsv("TRAFFIC")},${escapeCsv(t.id)},${escapeCsv(t.timestamp)},${escapeCsv(t.userEmail || "Anonymous Visitor")},${escapeCsv(t.path)},${escapeCsv(t.referrer || "Direct Visit")},${escapeCsv(t.ip)},${escapeCsv(t.userAgent)}\n`;
+    }
+
+    fs.writeFileSync(CSV_FILE, csv, "utf-8");
+  } catch (err) {
+    console.error("SQL/CSV export sync error:", err);
+  }
+}
+
 // Thread-safe write helper
 function writeDB(data: DatabaseSchema): void {
   if (!fs.existsSync(DB_DIR)) {
@@ -193,7 +183,11 @@ function writeDB(data: DatabaseSchema): void {
   const tempFile = `${DB_FILE}.tmp.${Date.now()}`;
   fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf-8");
   fs.renameSync(tempFile, DB_FILE);
+
+  // Automatically sync to local SQL and CSV files
+  syncSqlAndCsvFiles(data);
 }
+
 
 // --- Enquiry Repository Methods ---
 
@@ -349,6 +343,42 @@ export function logLoginActivity(entry: {
   return newLog;
 }
 
+// --- Website Traffic Repository Methods ---
+
+export function logTraffic(entry: {
+  path: string;
+  ip?: string;
+  userAgent?: string;
+  referrer?: string;
+  userEmail?: string;
+  role?: string;
+}): TrafficLog {
+  const db = initDB();
+  const newLog: TrafficLog = {
+    id: `trf-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+    ...entry,
+    timestamp: new Date().toISOString(),
+  };
+
+  if (!db.traffic_logs) db.traffic_logs = [];
+  db.traffic_logs.unshift(newLog);
+
+  // Keep latest 1000 traffic records max
+  if (db.traffic_logs.length > 1000) {
+    db.traffic_logs = db.traffic_logs.slice(0, 1000);
+  }
+
+  writeDB(db);
+  return newLog;
+}
+
+export function getTrafficLogs(limit = 100): TrafficLog[] {
+  const db = initDB();
+  return (db.traffic_logs || [])
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    .slice(0, limit);
+}
+
 // --- Dashboard KPI Stats ---
 
 export function getAcademyStats() {
@@ -356,6 +386,7 @@ export function getAcademyStats() {
   const enquiries = db.enquiries || [];
   const users = db.users || [];
   const logs = db.login_logs || [];
+  const traffic = db.traffic_logs || [];
 
   const newEnquiries = enquiries.filter((e) => e.status === "new").length;
   const contactedEnquiries = enquiries.filter((e) => e.status === "contacted" || e.status === "in_progress").length;
@@ -372,6 +403,11 @@ export function getAcademyStats() {
     (l) => new Date(l.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
   ).length;
 
+  const totalPageViews = traffic.length;
+  const recentPageViews = traffic.filter(
+    (t) => new Date(t.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
+  ).length;
+
   return {
     totalEnquiries: enquiries.length,
     newEnquiries,
@@ -384,5 +420,8 @@ export function getAcademyStats() {
     totalScholars,
     totalJuniors,
     recentLoginsCount,
+    totalPageViews,
+    recentPageViews,
   };
 }
+

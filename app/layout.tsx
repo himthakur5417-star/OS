@@ -6,9 +6,8 @@ import { Footer } from "@/components/Footer";
 import { ModalProvider } from "@/components/ModalContext";
 import { AuthProvider } from "@/components/AuthContext";
 import { AuthModal } from "@/components/AuthModal";
-import { LoginModal } from "@/components/LoginModal";
-import { AIAssistantModal } from "@/components/AIAssistantModal";
 import { OrientationModal } from "@/components/OrientationModal";
+import { TrafficTracker } from "@/components/TrafficTracker";
 
 
 const fraunces = Fraunces({
@@ -59,9 +58,8 @@ export default function RootLayout({
             <main className="flex-grow">{children}</main>
             <Footer />
             <AuthModal />
-            <LoginModal />
-            <AIAssistantModal />
             <OrientationModal />
+            <TrafficTracker />
 
           </ModalProvider>
         </AuthProvider>

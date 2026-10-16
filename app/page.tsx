@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useModals } from "@/components/ModalContext";
 import { useAuth } from "@/components/AuthContext";
 import { FloatingSymbols } from "@/components/FloatingSymbols";
-import { Floating3DBooks } from "@/components/Floating3DBooks";
+import { Logo } from "@/components/Logo";
 import { 
   ArrowRight, 
   Sparkles, 
@@ -18,17 +18,14 @@ import {
   ChevronDown, 
   Award, 
   Layers, 
-  Bot, 
-  ArrowUpRight, 
-  Flame,
-  FileCheck,
-  Compass,
-  Quote
+  Flame, 
+  FileCheck, 
+  Compass
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
-  const { openOrientation, openAi } = useModals();
+  const { openOrientation } = useModals();
   const { openAuthModal } = useAuth();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
@@ -109,22 +106,6 @@ export default function HomePage() {
               >
                 Explore Programs
               </a>
-            </motion.div>
-
-            {/* AI Assistant Quick Pill */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="pt-4"
-            >
-              <button
-                onClick={() => openAi("syllabus")}
-                className="inline-flex items-center gap-2 text-xs text-slate-600 hover:text-sky-700 transition-colors py-1.5 px-3.5 rounded-full bg-white/80 border border-slate-200/80 shadow-sm"
-              >
-                <Bot className="w-3.5 h-3.5 text-[#C8A84E]" />
-                <span>Explore exam syllabus &amp; study timetable with <strong>Officium AI &rarr;</strong></span>
-              </button>
             </motion.div>
           </div>
 
@@ -379,117 +360,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* 4. RESOURCE LIBRARY & 3D FLOATING BOOKS SECTION                          */}
-      {/* ========================================================================= */}
-      <section className="py-24 bg-gradient-to-b from-[#FAF7F2] via-white to-[#FAF7F2] border-b border-slate-200/60 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-8 space-y-3">
-            <div className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold">
-              The Digital Arsenal
-            </div>
-            <h2 className="font-heading text-3xl sm:text-5xl font-medium tracking-tight text-[#0B192C]">
-              Interactive 3D Study Volumes
-            </h2>
-            <p className="text-sm text-slate-600 font-sans max-w-xl mx-auto">
-              Hover over our official master volumes to inspect chapters, problem drills, and past year examination blueprints.
-            </p>
-          </div>
-
-          {/* Interactive 3D Floating Books */}
-          <Floating3DBooks />
-
-          <div className="mt-8 text-center">
-            <Link
-              href="/resources"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 font-label text-xs uppercase tracking-wider font-semibold text-[#0B192C] shadow-sm hover:shadow transition-all"
-            >
-              <span>Explore All 30 Mathematics &amp; 34 English Chapters in Vault</span>
-              <ArrowUpRight className="w-4 h-4 text-[#C8A84E]" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 5. SUCCESS STORIES & TESTIMONIALS (Apple/Notion Editorial style)          */}
-      {/* ========================================================================= */}
-      <section className="py-24 bg-white border-b border-slate-200/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <div className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold">
-              Verified Results
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#0B192C]">
-              Voices of Transformation
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-sans">
-              Verified accounts from parents, academy scholars, and recommended defense candidates.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            {/* Testimonial 1 */}
-            <div className="p-8 rounded-3xl bg-[#FAFAF9] border border-slate-200/80 flex flex-col justify-between shadow-sm">
-              <div className="space-y-4">
-                <Quote className="w-7 h-7 text-amber-300/80" />
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans italic">
-                  "The daily accountability log was the game-changer for me. Earlier, I would study 8 hours on Monday and barely 1 hour on Wednesday. Officium Supremum eliminated the peaks and valleys. I cleared CDS on my very first attempt."
-                </p>
-              </div>
-              <div className="border-t border-slate-200/60 pt-4 flex items-center gap-3 mt-6">
-                <div className="w-9 h-9 rounded-full bg-slate-900 text-[#C8A84E] font-label font-bold text-xs flex items-center justify-center">
-                  RD
-                </div>
-                <div>
-                  <div className="font-heading font-semibold text-sm text-[#0B192C]">Cadet Rohit Deshmukh</div>
-                  <div className="text-[11px] font-label uppercase text-slate-500">CDS (IMA) Recommended</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonial 2 */}
-            <div className="p-8 rounded-3xl bg-[#FAFAF9] border border-slate-200/80 flex flex-col justify-between shadow-sm">
-              <div className="space-y-4">
-                <Quote className="w-7 h-7 text-sky-300/80" />
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans italic">
-                  "As parents, our biggest worry was our son's screen time and lack of structured study routine. The Juniors Program mentors gave him a clear daily journal. His reading speed and public speaking confidence have noticeably transformed."
-                </p>
-              </div>
-              <div className="border-t border-slate-200/60 pt-4 flex items-center gap-3 mt-6">
-                <div className="w-9 h-9 rounded-full bg-sky-100 text-sky-700 font-label font-bold text-xs flex items-center justify-center">
-                  SM
-                </div>
-                <div>
-                  <div className="font-heading font-semibold text-sm text-[#0B192C]">Mrs. Shalini Mehta</div>
-                  <div className="text-[11px] font-label uppercase text-slate-500">Mother of Class 9 Scholar</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonial 3 */}
-            <div className="p-8 rounded-3xl bg-[#FAFAF9] border border-slate-200/80 flex flex-col justify-between shadow-sm">
-              <div className="space-y-4">
-                <Quote className="w-7 h-7 text-rose-300/80" />
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans italic">
-                  "The 30-chapter Mathematics problem vault and active recall tests made sure formulas stayed in long-term memory. During the actual NDA exam, there was no panic — everything felt like standard operating procedure."
-                </p>
-              </div>
-              <div className="border-t border-slate-200/60 pt-4 flex items-center gap-3 mt-6">
-                <div className="w-9 h-9 rounded-full bg-slate-900 text-[#C8A84E] font-label font-bold text-xs flex items-center justify-center">
-                  AK
-                </div>
-                <div>
-                  <div className="font-heading font-semibold text-sm text-[#0B192C]">Cadet Aman Khurana</div>
-                  <div className="text-[11px] font-label uppercase text-slate-500">NDA Written &amp; SSB Qualified</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
 
       {/* ========================================================================= */}
       {/* 6. FOUNDER STORY & CHARTER                                               */}
@@ -589,8 +459,8 @@ export default function HomePage() {
       {/* ========================================================================= */}
       <section className="py-24 bg-gradient-to-b from-white to-[#F5F0E6] relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
-          <div className="w-12 h-12 rounded-2xl border border-amber-300/80 flex items-center justify-center bg-white text-[#C8A84E] mx-auto font-label font-bold text-xl shadow-sm">
-            s.
+          <div className="w-14 h-14 rounded-2xl border border-amber-200/90 bg-white flex items-center justify-center mx-auto shadow-sm">
+            <Logo showText={false} size="sm" variant="gold" />
           </div>
 
           <h2 className="font-heading text-3xl sm:text-5xl font-medium tracking-tight text-[#0B192C] leading-tight">

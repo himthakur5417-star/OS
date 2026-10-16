@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logLoginActivity } from "@/lib/db";
-import { ADMIN_EMAIL, ADMIN_PASSWORD, SESSION_COOKIE_NAME, verifyAdminSession } from "@/lib/adminAuth";
+import { ADMIN_PASSWORD, SESSION_COOKIE_NAME, verifyAdminSession, isAdminEmail } from "@/lib/adminAuth";
 
 // Check current admin session
 export async function GET(req: NextRequest) {
@@ -9,11 +9,23 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ authenticated: false }, { status: 401 });
   }
 
+  const cookie = req.cookies.get(SESSION_COOKIE_NAME);
+  const authHeader = req.headers.get("authorization")?.replace("Bearer ", "") || req.headers.get("x-admin-token");
+  const token = cookie?.value || authHeader;
+  let adminEmail = "admin@officium.academy";
+
+  if (token) {
+    try {
+      const data = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
+      if (data.email) adminEmail = data.email;
+    } catch (e) {}
+  }
+
   return NextResponse.json({
     authenticated: true,
     admin: {
-      email: ADMIN_EMAIL,
-      displayName: "Academy Director",
+      email: adminEmail,
+      displayName: adminEmail.split("@")[0].toUpperCase() + " (Admin)",
       role: "admin",
     },
   });
@@ -29,12 +41,12 @@ export async function POST(req: NextRequest) {
     const trimmedPass = String(password || "").trim();
 
     if (
-      normalizedEmail === ADMIN_EMAIL.toLowerCase() &&
+      isAdminEmail(normalizedEmail) &&
       trimmedPass === ADMIN_PASSWORD
     ) {
       // Log successful admin login
       logLoginActivity({
-        email: ADMIN_EMAIL,
+        email: normalizedEmail,
         role: "admin",
         status: "success",
         userAgent: req.headers.get("user-agent") || undefined,
@@ -43,7 +55,7 @@ export async function POST(req: NextRequest) {
 
       // 7-day session token
       const sessionData = {
-        email: ADMIN_EMAIL,
+        email: normalizedEmail,
         role: "admin",
         exp: Date.now() + 7 * 24 * 3600 * 1000,
       };
@@ -54,10 +66,11 @@ export async function POST(req: NextRequest) {
         message: "Admin authentication successful",
         token,
         admin: {
-          email: ADMIN_EMAIL,
-          displayName: "Academy Director",
+          email: normalizedEmail,
+          displayName: normalizedEmail.split("@")[0].toUpperCase(),
           role: "admin",
         },
+
       });
 
       const host = req.headers.get("host") || "";

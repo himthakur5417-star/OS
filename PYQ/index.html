@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officium Supremum — Official UPSC PYQ Archive (NDA &amp; CDS 2020–2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text-color: #0f172a;
+    --paper-bg: #fcfbf9;
+    --border-color: #e2e8f0;
+    --gold: #c8a84e;
+    --navy: #0b192c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f1f5f9;
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 30px 15px;
+    display: flex;
+    justify-content: center;
+  }
+  .sheet {
+    width: 1080px;
+    max-width: 100%;
+    background-color: var(--paper-bg);
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+    border-radius: 24px;
+    padding: 40px 48px;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--navy);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+  .badge {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 4px;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 6px;
+  }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--navy);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 12px;
+    transition: background 0.2s;
+  }
+  .back-btn:hover { background: #1e293b; }
+  
+  .tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+  }
+  .tab-btn {
+    all: unset;
+    cursor: pointer;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #64748b;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .tab-btn:hover:not(.active) {
+    background: #f1f5f9;
+    color: var(--navy);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .year-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .year-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(15,23,42,0.08);
+    border-color: var(--gold);
+  }
+  .year-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+  .year-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .year-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    background: #fefce8;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid #fef08a;
+  }
+  .paper-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .paper-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    color: #334155;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .paper-link:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: var(--navy);
+    padding-left: 15px;
+  }
+  .paper-link span:last-child {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    color: var(--gold);
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="header">
+    <div>
+      <div class="badge">Officium Supremum • Official Archive</div>
+      <h1 class="h1">UPSC PYQ Examination Vault</h1>
+      <p class="subtitle">Complete question papers from 2020 through 2026 for NDA and CDS aspirants.</p>
+    </div>
+    <a href="/resources" class="back-btn">&larr; Back to Resources</a>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchSection('nda')">1. NDA PYQ (2020–2026)</button>
+    <button class="tab-btn" onclick="switchSection('cds')">2. CDS PYQ (2020–2026)</button>
+  </div>
+
+  <!-- NDA SECTION -->
+  <div id="section-nda">
+    <div class="grid">
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">NDA 2026</div>
+          <div class="year-tag">Latest Session</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2026" target="_blank"><span>NDA (I) &amp; (II) Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2026" target="_blank"><span>NDA (I) &amp; (II) General Ability</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">NDA 2025</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2025" target="_blank"><span>NDA (I) &amp; (II) Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2025" target="_blank"><span>NDA (I) &amp; (II) General Ability</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">NDA 2024</div>
+          <div class="year-tag">Solved Available</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2024/NDA-1-%202024%20-%20Mathematics%20-%20OS.pdf" target="_blank"><span>NDA 1 2024 Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2024/NDA-1-%202024%20-%20GAT%20-%20OS.pdf" target="_blank"><span>NDA 1 2024 General Ability (GAT)</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2024/NDA-2-%202024%20-%20Mathematics%20-%20OS.pdf" target="_blank"><span>NDA 2 2024 Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2024/NDA-2-%202024%20-%20GAT%20-%20OS.pdf" target="_blank"><span>NDA 2 2024 General Ability (GAT)</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">NDA 2023</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2023" target="_blank"><span>NDA (I) &amp; (II) Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2023" target="_blank"><span>NDA (I) &amp; (II) General Ability</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">NDA 2022</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2022" target="_blank"><span>NDA (I) &amp; (II) Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2022" target="_blank"><span>NDA (I) &amp; (II) General Ability</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">NDA 2021</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2021" target="_blank"><span>NDA (I) &amp; (II) Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2021" target="_blank"><span>NDA (I) &amp; (II) General Ability</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">NDA 2020</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2020" target="_blank"><span>NDA (I) &amp; (II) Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/NDA-PYQ/2020" target="_blank"><span>NDA (I) &amp; (II) General Ability</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CDS SECTION -->
+  <div id="section-cds" style="display: none;">
+    <div class="grid">
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">CDS 2026</div>
+          <div class="year-tag">Latest Session</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2026" target="_blank"><span>CDS English Paper</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2026" target="_blank"><span>CDS Elementary Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2026" target="_blank"><span>CDS General Knowledge</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">CDS 2025</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2025" target="_blank"><span>CDS English Paper</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2025" target="_blank"><span>CDS Elementary Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2025" target="_blank"><span>CDS General Knowledge</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">CDS 2024</div>
+          <div class="year-tag">Solved Available</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2024/CDS-1-%202024%20-%20English%20-%20OS.pdf" target="_blank"><span>CDS 1 2024 English</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2024/CDS-1-%202024%20-%20Mathematics%20-%20OS.pdf" target="_blank"><span>CDS 1 2024 Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2024/CDS-1-%202024%20-%20General%20Knowledge%20-%20OS.pdf" target="_blank"><span>CDS 1 2024 General Knowledge</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2024/CDS-2-%202024%20-%20English%20-%20OS.pdf" target="_blank"><span>CDS 2 2024 English</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2024/CDS-2-%202024%20-%20Mathematics%20-%20OS.pdf" target="_blank"><span>CDS 2 2024 Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2024/CDS-2-%202024%20-%20General%20Knowledge%20-%20OS.pdf" target="_blank"><span>CDS 2 2024 General Knowledge</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">CDS 2023</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2023" target="_blank"><span>CDS English Paper</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2023" target="_blank"><span>CDS Elementary Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2023" target="_blank"><span>CDS General Knowledge</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">CDS 2022</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2022" target="_blank"><span>CDS English Paper</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2022" target="_blank"><span>CDS Elementary Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2022" target="_blank"><span>CDS General Knowledge</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">CDS 2021</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2021" target="_blank"><span>CDS English Paper</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2021" target="_blank"><span>CDS Elementary Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2021" target="_blank"><span>CDS General Knowledge</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="year-card">
+        <div class="year-head">
+          <div class="year-title">CDS 2020</div>
+          <div class="year-tag">Official Archive</div>
+        </div>
+        <ul class="paper-list">
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2020" target="_blank"><span>CDS English Paper</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2020" target="_blank"><span>CDS Elementary Mathematics</span><span>PDF &rarr;</span></a></li>
+          <li><a class="paper-link" href="/PYQ/CDS-PYQ/2020" target="_blank"><span>CDS General Knowledge</span><span>PDF &rarr;</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchSection(sec) {
+  const ndaSec = document.getElementById('section-nda');
+  const cdsSec = document.getElementById('section-cds');
+  const btns = document.querySelectorAll('.tab-btn');
+  
+  if (sec === 'nda') {
+    ndaSec.style.display = 'block';
+    cdsSec.style.display = 'none';
+    btns[0].classList.add('active');
+    btns[1].classList.remove('active');
+  } else {
+    ndaSec.style.display = 'none';
+    cdsSec.style.display = 'block';
+    btns[0].classList.remove('active');
+    btns[1].classList.add('active');
+  }
+}
+</script>
+</body>
+</html>

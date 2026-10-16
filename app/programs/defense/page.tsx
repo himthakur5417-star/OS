@@ -19,7 +19,7 @@ import {
 import { motion } from "framer-motion";
 
 export default function DefenseProgramPage() {
-  const { openOrientation, openAi } = useModals();
+  const { openOrientation } = useModals();
 
   return (
     <div className="defense-camo-bg text-zinc-100 min-h-screen relative overflow-hidden">
@@ -65,12 +65,12 @@ export default function DefenseProgramPage() {
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <button
-                onClick={() => openAi("syllabus")}
+              <Link
+                href="/resources"
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-label font-semibold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2"
               >
                 <span>Inspect Defense Syllabus</span>
-              </button>
+              </Link>
             </div>
 
             {/* Academy Maxim Banner with Soft Glassmorphism */}

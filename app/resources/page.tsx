@@ -2,178 +2,236 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useModals } from "@/components/ModalContext";
 import { useAuth } from "@/components/AuthContext";
-import { 
-  Search, 
-  BookOpen, 
-  FileText, 
-  Lock, 
-  ArrowRight, 
-  ArrowUpRight, 
-  Bot, 
-  CheckCircle2,
-  Sparkles
-} from "lucide-react";
+import GlassFolder, { ArtPreset } from "@/components/GlassFolder";
+import AcademicVaultViewer, { VaultTab } from "@/components/AcademicVaultViewer";
+import { BookOpen, Lock } from "lucide-react";
 
-interface ResourceItem {
+interface BookFolderData {
   id: string;
-  category: "nda-maths" | "cds-maths" | "english" | "vocab" | "pyq";
-  title: string;
-  volume: string;
-  description: string;
-  linkText: string;
-  href: string;
-  tag: string;
-  isProtected?: boolean;
+  tab: VaultTab;
+  label: string;
+  meta: string;
+  tone: "light" | "dark";
+  art: ArtPreset;
+  seed: number;
+  files: {
+    name: string;
+    meta?: string;
+    art?: ArtPreset;
+    pdf?: string;
+  }[];
 }
 
-const RESOURCES_DATA: ResourceItem[] = [
-  // NDA Mathematics
+const AVAILABLE_BOOKS: BookFolderData[] = [
   {
-    id: "nda-math-01",
-    category: "nda-maths",
-    title: "Trigonometry & Inverse Trig (Chapters 11, 12, 13)",
-    volume: "Volume II",
-    description: "Angles, identities, height & distance, inverse functions, and 180+ solved NDA drill questions.",
-    linkText: "Open Chapter PDF",
-    href: "/NDA%20mathematics/index.html",
-    tag: "High Yield (15-20 Qs)",
-    isProtected: true,
+    id: "nda-maths-book",
+    tab: "nda-maths",
+    label: "NDA Mathematics",
+    meta: "30 Chapters · 4,330+ Qs",
+    tone: "light",
+    art: "ember",
+    seed: 14,
+    files: [
+      {
+        name: "30-Chapter Drill Vault",
+        meta: "4,330+ Qs",
+        art: "ember",
+      },
+      {
+        name: "Trigonometry & Inv",
+        meta: "Ch 11-13 · 67 Qs",
+        art: "aurora",
+        pdf: "/NDA mathematics/chapter-11-trigonometry.pdf",
+      },
+      {
+        name: "Matrices & Det",
+        meta: "Ch 09-10 · 54 Qs",
+        pdf: "/NDA mathematics/chapter-09-matrices.pdf",
+      },
+      {
+        name: "Calculus & Limits",
+        meta: "Ch 23-26 · 89 Qs",
+        pdf: "/NDA mathematics/chapter-25-differentiation.pdf",
+      },
+    ],
   },
   {
-    id: "nda-math-02",
-    category: "nda-maths",
-    title: "Matrices & Determinants (Chapters 09, 10)",
-    volume: "Volume I",
-    description: "Properties of matrices, adjoint, inverse, Cramer's rule, and past 10 years NDA solutions.",
-    linkText: "Open Chapter PDF",
-    href: "/NDA%20mathematics/index.html",
-    tag: "Essential Core",
-    isProtected: true,
+    id: "cds-maths-book",
+    tab: "cds-maths",
+    label: "CDS Mathematics",
+    meta: "22 Chapters · 383 Pages",
+    tone: "light",
+    art: "glacier",
+    seed: 28,
+    files: [
+      {
+        name: "CDS Master Volume",
+        meta: "383-Page Vol",
+        art: "glacier",
+        pdf: "/CDS mathematics/CDS-Mathematics-Officium-Supremum.pdf",
+      },
+      {
+        name: "Arithmetic & Numbers",
+        meta: "Ch 01-08 · 42 Pgs",
+        art: "aurora",
+        pdf: "/CDS mathematics/chapter-08-number-system.pdf",
+      },
+      {
+        name: "Geometry & Mensuration",
+        meta: "Ch 16-18 · 56 Pgs",
+        art: "aurora",
+        pdf: "/CDS mathematics/chapter-16-geometry.pdf",
+      },
+      {
+        name: "CDS Curriculum Index",
+        meta: "22 Ch · 383 Pgs",
+      },
+    ],
   },
   {
-    id: "nda-math-03",
-    category: "nda-maths",
-    title: "Complete 30-Chapter NDA Maths Drill Archive",
-    volume: "Master Archive",
-    description: "Complete repository of all 30 chapters with 4,330+ solved drill problems (2011–2025).",
-    linkText: "Unlock 30-Chapter Vault",
-    href: "/NDA%20mathematics/index.html",
-    tag: "Complete 4,330+ Archive",
-    isProtected: true,
-  },
-
-  // CDS Mathematics
-  {
-    id: "cds-math-01",
-    category: "cds-maths",
-    title: "CDS Mathematics 383-Page Master Study Volume",
-    volume: "Complete Master Vol",
-    description: "Curated 383-page master volume covering Arithmetic, Algebra, Geometry, Mensuration 2D & 3D, and Statistics.",
-    linkText: "Access 383-Page Master PDF",
-    href: "/CDS%20mathematics/index.html",
-    tag: "Master Volume",
-    isProtected: true,
-  },
-  {
-    id: "cds-math-02",
-    category: "cds-maths",
-    title: "Geometry & 2D/3D Mensuration (Chapters 16, 17, 18)",
-    volume: "Volume III",
-    description: "Triangles, circles, polygons, cylinders, spheres, cones, and surface area & volume proofs.",
-    linkText: "Open CDS Archive",
-    href: "/CDS%20mathematics/index.html",
-    tag: "Advance Math",
-    isProtected: true,
-  },
-
-  // NDA & CDS English
-  {
-    id: "english-01",
-    category: "english",
-    title: "NDA & CDS English 396-Page Master Volume",
-    volume: "Master Volume",
-    description: "34 chapters spanning comprehensive Grammar, Vocabulary drills, Idioms, and Reading Comprehension.",
-    linkText: "Open 396-Page English Archive",
-    href: "/NDA%20CDS%20English/index.html",
-    tag: "Complete English Archive",
-    isProtected: true,
+    id: "english-book",
+    tab: "english",
+    label: "NDA & CDS English",
+    meta: "34 Chapters · 396 Pages",
+    tone: "light",
+    art: "dusk",
+    seed: 42,
+    files: [
+      {
+        name: "English Master Vol",
+        meta: "396-Page Vol",
+        art: "dusk",
+        pdf: "/NDA CDS English/NDA-CDS-English-Officium-Supremum.pdf",
+      },
+      {
+        name: "Grammar Core Drills",
+        meta: "Ch 01-17 · Grammar",
+        art: "ember",
+        pdf: "/NDA CDS English/chapter-10-preposition.pdf",
+      },
+      {
+        name: "Comprehension & Cloze",
+        meta: "Ch 29-34 · Reading",
+        pdf: "/NDA CDS English/chapter-31-comprehension.pdf",
+      },
+      {
+        name: "English Curriculum Index",
+        meta: "34 Chapters · Full",
+      },
+    ],
   },
   {
-    id: "english-02",
-    category: "english",
-    title: "Grammar & Error Detection (Chapters 01 to 17)",
-    volume: "Part I",
-    description: "Parts of speech, subject-verb agreement, prepositions, tenses, conditionals, and sentence correction.",
-    linkText: "Open Grammar Portal",
-    href: "/NDA%20CDS%20English/index.html",
-    tag: "Grammar Core",
-    isProtected: true,
-  },
-
-  // A2Z Vocabulary
-  {
-    id: "vocab-01",
-    category: "vocab",
-    title: "A to Z Vocabulary & Word Power (126-Page Volume)",
-    volume: "26 Modules (A-Z)",
-    description: "1,200+ high-frequency exam words with contextual Hindi meanings, antonyms, and academy editorial briefings.",
-    linkText: "Open A to Z Vocab Portal",
-    href: "/A2Z%20Vocabulary/index.html",
-    tag: "1,200+ Core Words",
-    isProtected: true,
-  },
-
-  // PYQ
-  {
-    id: "pyq-01",
-    category: "pyq",
-    title: "Official NDA Question Papers (2020–2026)",
-    volume: "UPSC Official",
-    description: "Mathematics and General Ability Test (GAT) question papers organized year-by-year.",
-    linkText: "Open NDA PYQ Papers",
-    href: "/PYQ/index.html",
-    tag: "NDA 2020–2026",
-    isProtected: true,
+    id: "pyq-vault-book",
+    tab: "pyq",
+    label: "PYQ Archives",
+    meta: "NDA & CDS · 2020–2026",
+    tone: "light",
+    art: "aurora",
+    seed: 71,
+    files: [
+      {
+        name: "NDA PYQ (2020–2026)",
+        meta: "Maths & GAT · 7 Yrs",
+        art: "ember",
+      },
+      {
+        name: "CDS PYQ (2020–2026)",
+        meta: "Eng, Math & GK · 7 Yrs",
+        art: "glacier",
+      },
+      {
+        name: "NDA 2024 Solved Papers",
+        meta: "Maths + GAT Solved",
+        pdf: "/PYQ/NDA-PYQ/2024/NDA-1- 2024 - Mathematics - OS.pdf",
+      },
+      {
+        name: "CDS 2024 Solved Papers",
+        meta: "Maths + GK Solved",
+        pdf: "/PYQ/CDS-PYQ/2024/CDS-1- 2024 - Mathematics - OS.pdf",
+      },
+    ],
   },
   {
-    id: "pyq-02",
-    category: "pyq",
-    title: "Official CDS Question Papers (2020–2026)",
-    volume: "UPSC Official",
-    description: "English, Elementary Mathematics, and General Knowledge official exam papers.",
-    linkText: "Open CDS PYQ Papers",
-    href: "/PYQ/index.html",
-    tag: "CDS 2020–2026",
-    isProtected: true,
-  }
+    id: "syllabus-vault-book",
+    tab: "syllabus",
+    label: "Syllabus Blueprint",
+    meta: "NDA & CDS · UPSC Pattern",
+    tone: "light",
+    art: "verdant",
+    seed: 88,
+    files: [
+      {
+        name: "NDA Syllabus Blueprint",
+        meta: "10+2 Cadet Entry",
+        art: "verdant",
+      },
+      {
+        name: "CDS Syllabus (2025)",
+        meta: "IMA, INA, AFA & OTA",
+        art: "glacier",
+      },
+      {
+        name: "CDS Mathematics Topics",
+        meta: "Topics & Weightage",
+        art: "ember",
+      },
+      {
+        name: "CDS SSB Interview Pattern",
+        meta: "5-Day OLQ · 300 Marks",
+        art: "dusk",
+      },
+    ],
+  },
 ];
 
 export default function ResourcesPage() {
-  const { openAi } = useModals();
   const { user, openAuthModal } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState<string>("all");
+  const [openFolderId, setOpenFolderId] = useState<string | null>(null);
+  const [isVaultOpen, setIsVaultOpen] = useState<boolean>(false);
+  const [activeVaultTab, setActiveVaultTab] = useState<VaultTab>("nda-maths");
+  const [selectedDocPdf, setSelectedDocPdf] = useState<string | null>(null);
+  const [selectedDocTitle, setSelectedDocTitle] = useState<string | null>(null);
 
-  const handleAccessResource = (res: ResourceItem) => {
-    if (!user && res.isProtected) {
-      openAuthModal("signin", "/resources");
+  const handleOpenFolder = (book: BookFolderData, docPdf?: string, docTitle?: string) => {
+    setOpenFolderId(book.id);
+    setActiveVaultTab(book.tab);
+    setIsVaultOpen(true);
+
+    if (docPdf) {
+      setSelectedDocPdf(docPdf);
+      setSelectedDocTitle(docTitle || book.label);
     } else {
-      window.open(res.href, "_blank");
+      setSelectedDocPdf(null);
+      setSelectedDocTitle(null);
+    }
+
+    setTimeout(() => {
+      const el = document.getElementById("academic-vault-viewer");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 80);
+  };
+
+  const handleCloseFolder = () => {
+    setIsVaultOpen(false);
+    setOpenFolderId(null);
+    setSelectedDocPdf(null);
+    setSelectedDocTitle(null);
+    const showcase = document.getElementById("folders-showcase");
+    if (showcase) {
+      showcase.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  const filteredResources = RESOURCES_DATA.filter((res) => {
-    const matchesSearch =
-      res.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      res.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      res.tag.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesFilter = selectedFilter === "all" || res.category === selectedFilter;
-
-    return matchesSearch && matchesFilter;
-  });
+  const handleTabChange = (newTab: VaultTab) => {
+    setActiveVaultTab(newTab);
+    const match = AVAILABLE_BOOKS.find((b) => b.tab === newTab);
+    if (match) {
+      setOpenFolderId(match.id);
+    }
+  };
 
   return (
     <div className="bg-[#FAFAF9] text-[#0F172A] min-h-screen">
@@ -191,20 +249,11 @@ export default function ResourcesPage() {
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 font-sans leading-relaxed">
-              Direct access to our 30-chapter Mathematics archives, 396-page English master volume, 26-module A2Z vocabulary sets, and official 2020–2026 UPSC papers.
+              Explore our 30-chapter Mathematics archives, 396-page English master volume, official 2020–2026 UPSC papers, and comprehensive NDA &amp; CDS syllabi.
             </p>
 
-            {/* AI Assistant Banner */}
-            <div className="pt-2 flex items-center gap-3">
-              <button
-                onClick={() => openAi("syllabus")}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-xs font-label uppercase tracking-wider text-slate-800 transition-colors shadow-sm"
-              >
-                <Bot className="w-4 h-4 text-[#C8A84E]" />
-                <span>Need chapter breakdown? Ask Officium AI &rarr;</span>
-              </button>
-
-              {!user && (
+            {!user && (
+              <div className="pt-2">
                 <button
                   onClick={() => openAuthModal("signin", "/resources")}
                   className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-label uppercase tracking-wider text-sky-700 hover:underline"
@@ -212,114 +261,94 @@ export default function ResourcesPage() {
                   <Lock className="w-3.5 h-3.5 text-[#C8A84E]" />
                   <span>Cadet Sign In</span>
                 </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Filter & Search Bar */}
-      <section className="py-6 bg-white/90 border-b border-slate-200/60 sticky top-[69px] z-30 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          
-          {/* Category Tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 text-xs font-label uppercase tracking-wider">
-            {[
-              { id: "all", label: "All Vault Materials" },
-              { id: "nda-maths", label: "NDA Maths (30 Ch)" },
-              { id: "cds-maths", label: "CDS Maths (22 Ch)" },
-              { id: "english", label: "English (34 Ch)" },
-              { id: "vocab", label: "A2Z Vocab (26 Mod)" },
-              { id: "pyq", label: "PYQ Papers" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedFilter(tab.id)}
-                className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-colors border ${
-                  selectedFilter === tab.id
-                    ? "bg-[#0B192C] text-white font-bold border-[#0B192C] shadow-sm"
-                    : "bg-slate-50 text-slate-600 hover:text-slate-900 border-slate-200/80"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Search Input */}
-          <div className="relative w-full md:w-72">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search chapters, topics, PYQs..."
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-colors"
-            />
-          </div>
-
-        </div>
-      </section>
-
-      {/* Grid of Resources */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-            {filteredResources.map((res) => (
-              <div
-                key={res.id}
-                className="p-8 rounded-3xl bg-white border border-slate-200/80 hover:border-[#C8A84E]/70 transition-all flex flex-col justify-between group shadow-sm hover:shadow-md"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className="text-[10px] font-label uppercase tracking-widest px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200/70 font-semibold">
-                      {res.tag}
-                    </span>
-                    <span className="text-xs text-slate-400 font-label uppercase">
-                      {res.volume}
-                    </span>
-                  </div>
-
-                  <h3 className="font-heading font-semibold text-xl text-[#0B192C] group-hover:text-sky-700 transition-colors mb-2">
-                    {res.title}
-                  </h3>
-
-                  <p className="text-xs text-slate-600 leading-relaxed font-sans mb-6">
-                    {res.description}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-slate-100">
-                  <button
-                    onClick={() => handleAccessResource(res)}
-                    className="w-full py-2.5 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-label uppercase tracking-wider text-slate-800 flex items-center justify-center gap-2 transition-all group-hover:border-[#C8A84E]/60 shadow-sm"
-                  >
-                    {!user && res.isProtected ? (
-                      <>
-                        <Lock className="w-3.5 h-3.5 text-[#C8A84E]" />
-                        <span>Sign In to Unlock PDF</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>{res.linkText}</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-[#C8A84E]" />
-                      </>
-                    )}
-                  </button>
-                </div>
               </div>
-            ))}
+            )}
           </div>
-
-          {filteredResources.length === 0 && (
-            <div className="text-center py-20 space-y-3">
-              <BookOpen className="w-10 h-10 text-slate-400 mx-auto" />
-              <div className="font-heading text-lg text-slate-800">No materials matched your search</div>
-              <p className="text-xs text-slate-500">Try searching for "Trigonometry", "Grammar", or "2024".</p>
-            </div>
-          )}
         </div>
       </section>
+
+      {/* ========================================================================= */}
+      {/* BOOK-WISE GLASS FOLDERS SHOWCASE                                          */}
+      {/* ========================================================================= */}
+      <section id="folders-showcase" className="pt-16 pb-16 bg-gradient-to-b from-[#FAF7F2] via-white to-[#FAF7F2]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14">
+            <div>
+              <div className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold mb-1">
+                Official Book Volumes ({AVAILABLE_BOOKS.length} Dedicated Folders)
+              </div>
+              <h2 className="font-heading text-2xl sm:text-4xl font-semibold tracking-tight text-[#0B192C]">
+                Interactive Book Archives
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 font-sans max-w-md">
+              Click any folder to inspect its complete curriculum and study material.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-8 lg:gap-10">
+            {AVAILABLE_BOOKS.map((book, idx) => (
+              <GlassFolder
+                key={book.id}
+                label={book.label}
+                meta={book.meta}
+                tone={book.tone}
+                art={book.art}
+                seed={book.seed}
+                files={book.files}
+                action="more"
+                width={280}
+                open={openFolderId === book.id}
+                closeOnClickOutside={false}
+                appearDelay={idx * 100}
+                onOpenChange={(isOpen) => {
+                  if (isOpen) {
+                    handleOpenFolder(book);
+                  } else {
+                    if (openFolderId === book.id) {
+                      handleCloseFolder();
+                    }
+                  }
+                }}
+                onFileSelect={(file) => {
+                  handleOpenFolder(book, file.pdf, file.name);
+                }}
+                menu={[
+                  {
+                    label: `Open ${book.label}`,
+                    onSelect: () => handleOpenFolder(book),
+                  },
+                ]}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SPECIFIC FOLDER VIEWER (Opens only on click of specific folder)           */}
+      {/* ========================================================================= */}
+      {isVaultOpen ? (
+        <section className="pb-32 sm:pb-40 px-4 sm:px-6 lg:px-8 bg-[#FAF7F2] animate-fadeIn">
+          <AcademicVaultViewer
+            activeTab={activeVaultTab}
+            onTabChange={handleTabChange}
+            onClose={handleCloseFolder}
+            selectedDocPdf={selectedDocPdf}
+            selectedDocTitle={selectedDocTitle}
+            onClearDoc={() => {
+              setSelectedDocPdf(null);
+              setSelectedDocTitle(null);
+            }}
+          />
+        </section>
+      ) : (
+        <section className="pb-24 px-4 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-xs font-label uppercase tracking-widest text-slate-400 shadow-sm">
+            <span>Select any folder above to open and inspect its volume</span>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

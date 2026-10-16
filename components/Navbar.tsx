@@ -14,9 +14,7 @@ import {
   X,
   ChevronDown,
   LogIn,
-  Bot,
   User,
-  LayoutDashboard,
   LogOut,
   BookOpen,
   ArrowRight,
@@ -24,7 +22,7 @@ import {
 
 export function Navbar() {
   const pathname = usePathname();
-  const { openOrientation, openAi } = useModals();
+  const { openOrientation } = useModals();
   const { user, openAuthModal, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -124,7 +122,7 @@ export function Navbar() {
             </button>
 
             {programsDropdownOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[420px] bg-white/98 backdrop-blur-2xl border border-slate-200/80 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.12)] p-2 z-50 mt-1">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[420px] bg-white border border-slate-200/90 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] p-2 z-50 mt-1">
                 {/* Mega Menu Header */}
                 <div className="px-4 pt-3 pb-2 border-b border-slate-100/80 mb-1">
                   <div className="flex items-center gap-2">
@@ -185,19 +183,6 @@ export function Navbar() {
             Resources
           </Link>
 
-          {/* Student Dashboard link if logged in */}
-          {user && (
-            <Link
-              href="/dashboard"
-              className={`font-label text-xs tracking-widest uppercase transition-colors hover:text-[#C8A84E] flex items-center gap-1 ${
-                pathname === "/dashboard" ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
-              }`}
-            >
-              <span>Dashboard</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            </Link>
-          )}
-
           <Link
             href="/about"
             className={`font-label text-xs tracking-widest uppercase transition-colors hover:text-[#C8A84E] ${
@@ -219,16 +204,6 @@ export function Navbar() {
 
         {/* Action Controls */}
         <div className="hidden lg:flex items-center gap-3">
-          {/* AI Copilot Quick Trigger — in navbar only, no floating */}
-          <button
-            onClick={() => openAi()}
-            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 text-slate-700 text-xs font-label uppercase tracking-wider transition-all shadow-sm group"
-            title="Officium AI: Syllabus Explorer & Daily Planner"
-          >
-            <Bot className="w-4 h-4 text-[#C8A84E] group-hover:scale-110 transition-transform" />
-            <span>AI Copilot</span>
-          </button>
-
           {/* Authentication State */}
           {user ? (
             <div className="relative" ref={userDropdownRef}>
@@ -248,17 +223,21 @@ export function Navbar() {
               {userDropdownOpen && (
                 <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 z-50 text-xs space-y-1">
                   <div className="px-3 py-2 border-b border-slate-100">
-                    <div className="font-heading font-semibold text-slate-900">{user.displayName}</div>
-                    <div className="text-[10px] text-slate-500 font-label uppercase">{user.rollNumber}</div>
+                    <div className="font-heading font-semibold text-slate-900">{user.displayName || "Account"}</div>
+                    <div className="text-[10px] text-slate-500 font-label uppercase">
+                      {user.role === "admin" ? "Academy Administrator" : (user.email || "Member")}
+                    </div>
                   </div>
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setUserDropdownOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors font-label uppercase tracking-wider"
-                  >
-                    <LayoutDashboard className="w-3.5 h-3.5 text-[#C8A84E]" />
-                    <span>Cadet Dashboard</span>
-                  </Link>
+                  {user.role === "admin" && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-[#0B192C] font-semibold hover:bg-amber-50/80 rounded-lg transition-colors font-label uppercase tracking-wider"
+                    >
+                      <Shield className="w-3.5 h-3.5 text-[#C8A84E]" />
+                      <span>Admin Dashboard</span>
+                    </Link>
+                  )}
                   <button
                     onClick={() => {
                       setUserDropdownOpen(false);
@@ -278,7 +257,7 @@ export function Navbar() {
               className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-label uppercase tracking-wider text-slate-700 hover:text-[#0B192C] border border-slate-200/80 hover:bg-slate-50 rounded-xl transition-all shadow-sm"
             >
               <LogIn className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Cadet Portal</span>
+              <span>Sign In</span>
             </button>
           )}
 
@@ -345,16 +324,6 @@ export function Navbar() {
               Resource Library
             </Link>
 
-            {user && (
-              <Link
-                href="/dashboard"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-[#C8A84E] py-1 border-b border-slate-100 font-semibold text-emerald-700"
-              >
-                Cadet Dashboard
-              </Link>
-            )}
-
             <Link
               href="/about"
               onClick={() => setMobileMenuOpen(false)}
@@ -372,22 +341,21 @@ export function Navbar() {
           </div>
 
           <div className="pt-2 flex flex-col gap-2.5">
-            {/* Mobile AI Copilot */}
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                openAi();
-              }}
-              className="w-full py-2.5 text-center text-xs font-label uppercase tracking-wider text-[#C8A84E] border border-[#C8A84E]/30 rounded-xl hover:bg-amber-50/50 flex items-center justify-center gap-2"
-            >
-              <Bot className="w-4 h-4" />
-              AI Copilot
-            </button>
-
             {user ? (
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
-                <span className="text-xs text-slate-700 font-heading">Logged in as {user.displayName}</span>
-                <button onClick={logout} className="text-xs text-rose-600 font-label uppercase">Sign Out</button>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-700 font-heading">Logged in as {user.displayName}</span>
+                  <button onClick={logout} className="text-xs text-rose-600 font-label uppercase">Sign Out</button>
+                </div>
+                {user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block text-center py-2 bg-amber-100/70 text-[#0B192C] font-semibold text-xs rounded-lg font-label uppercase tracking-wider"
+                  >
+                    Go to Admin Dashboard
+                  </Link>
+                )}
               </div>
             ) : (
               <button
@@ -397,7 +365,7 @@ export function Navbar() {
                 }}
                 className="w-full py-2.5 text-center text-xs font-label uppercase tracking-wider text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50"
               >
-                Cadet Portal Sign In
+                Sign In
               </button>
             )}
 

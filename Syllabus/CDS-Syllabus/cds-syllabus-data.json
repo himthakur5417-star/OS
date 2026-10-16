@@ -1,0 +1,351 @@
+{
+  "title": "CDS Syllabus 2025: Subject Wise Syllabus and Exam Pattern",
+  "exam_name": "Combined Defence Services Examination (CDS 1 & CDS 2 2025)",
+  "conducting_body": "Union Public Service Commission (UPSC)",
+  "academies": [
+    "Indian Military Academy (IMA)",
+    "Indian Naval Academy (INA)",
+    "Air Force Academy (AFA)",
+    "Officers Training Academy (OTA)"
+  ],
+  "exam_format": "Pen-and-paper (Offline written test)",
+  "exam_patterns": {
+    "ima_ina_afa": {
+      "total_marks": 300,
+      "subjects": [
+        {
+          "name": "English",
+          "duration": "2 Hours",
+          "marks": 100
+        },
+        {
+          "name": "General Knowledge",
+          "duration": "2 Hours",
+          "marks": 100
+        },
+        {
+          "name": "Mathematics",
+          "duration": "2 Hours",
+          "marks": 100
+        }
+      ],
+      "ssb_interview": {
+        "duration": "5 Days",
+        "marks": 300
+      }
+    },
+    "ota": {
+      "total_marks": 200,
+      "note": "Mathematics paper is excluded for OTA candidates.",
+      "subjects": [
+        {
+          "name": "English",
+          "duration": "2 Hours",
+          "marks": 100
+        },
+        {
+          "name": "General Knowledge",
+          "duration": "2 Hours",
+          "marks": 100
+        }
+      ],
+      "ssb_interview": {
+        "duration": "5 Days",
+        "marks": 300
+      }
+    }
+  },
+  "english_syllabus": {
+    "overview": "To boost performance, candidates should adopt the habit of daily newspaper reading to enhance vocabulary and comprehension skills. The English section evaluates language proficiency and professional usage.",
+    "sections": [
+      {
+        "section": "Vocabulary",
+        "description": "Tests candidate's knowledge of English vocabulary.",
+        "topics": [
+          "Basic Grammar",
+          "Idioms & Phrases",
+          "Synonyms & Antonyms",
+          "Sentence Completion, etc."
+        ]
+      },
+      {
+        "section": "Reading Passage",
+        "description": "Tests candidate's ability to understand and interpret written English.",
+        "topics": [
+          "Reading Comprehension Solving",
+          "Para Jumbles",
+          "Understanding main idea & supporting details",
+          "Answering questions based on passage, etc."
+        ]
+      },
+      {
+        "section": "Grammar",
+        "description": "Tests candidate's knowledge of English grammar.",
+        "topics": [
+          "Error Spotting",
+          "Sentence Improvement",
+          "Cloze test",
+          "Active and passive voice",
+          "Direct and indirect speech",
+          "Transformation of sentences, etc."
+        ]
+      }
+    ],
+    "ota_specific_topics": [
+      "Sentence arrangement",
+      "Spotting Error",
+      "Selecting words",
+      "Synonyms and Antonyms",
+      "Comprehension",
+      "Ordering of Sentence",
+      "Ordering of words",
+      "Idioms and Phrases",
+      "Fill in the blanks"
+    ]
+  },
+  "mathematics_syllabus": {
+    "overview": "The Mathematics syllabus for CDS 1 2025 encompasses arithmetic, trigonometry, geometry, measurements, and statistics. Balance between accuracy and speed within allotted time is crucial.",
+    "weightage": [
+      {
+        "topic": "Number System",
+        "questions": "20\u201322 questions"
+      },
+      {
+        "topic": "Mensuration",
+        "questions": "14\u201316 questions"
+      },
+      {
+        "topic": "Geometry",
+        "questions": "10\u201312 questions"
+      },
+      {
+        "topic": "Trigonometry",
+        "questions": "10\u201312 questions"
+      },
+      {
+        "topic": "Algebra",
+        "questions": "10\u201311 questions"
+      }
+    ],
+    "topics": [
+      {
+        "topic": "Number System",
+        "sub_topics": [
+          "Natural numbers",
+          "Integers",
+          "Rational and real numbers",
+          "Fundamental operations (addition, subtraction, multiplication, division)",
+          "Square roots",
+          "Decimal fractions",
+          "Unitary method",
+          "Time and distance",
+          "Time and work",
+          "Percentages",
+          "Applications to simple and compound interest",
+          "Profit and loss",
+          "Ratio and proportion",
+          "Variation"
+        ]
+      },
+      {
+        "topic": "Elementary Number Theory",
+        "sub_topics": [
+          "Division algorithm",
+          "Prime and composite numbers",
+          "Tests of divisibility by 2, 3, 4, 5, 9, and 11",
+          "Multiples and factors",
+          "Factorization theorem",
+          "H.C.F. and L.C.M.",
+          "Euclidean algorithm",
+          "Logarithms to base 10, laws of logarithms",
+          "Use of logarithmic tables"
+        ]
+      },
+      {
+        "topic": "Algebra",
+        "sub_topics": [
+          "Basic operations",
+          "Simple factors",
+          "Remainder theorem",
+          "HCF & LCM",
+          "Theory of polynomials",
+          "Solutions of quadratic equations",
+          "Relations between roots and coefficients",
+          "Simultaneous linear equations (analytical and graphical solutions)",
+          "Simultaneous linear inequations in two variables and their solutions",
+          "Practical problems involving equations and inequalities",
+          "Inequalities in two variables, or quadratic equations in one variable",
+          "Set notation and set language",
+          "Rational expressions and conditional identities",
+          "Laws of indices"
+        ]
+      },
+      {
+        "topic": "Trigonometry",
+        "sub_topics": [
+          "Sine x, cosine x, Tan x when 0\u00b0 < x < 90\u00b0",
+          "Values of sin x, cos x & tan x for x = 0\u00b0, 30\u00b0, 45\u00b0, 60\u00b0 & 90\u00b0",
+          "Simple trigonometric identities",
+          "Use of trigonometric tables",
+          "Simple cases of heights and distances"
+        ]
+      },
+      {
+        "topic": "Geometry",
+        "sub_topics": [
+          "Lines and angles",
+          "Plane and plane figures",
+          "Theorems on properties of angles at a point",
+          "Parallel lines",
+          "Sides and angles of a triangle",
+          "Congruency of triangles",
+          "Similar triangles",
+          "Concurrence of medians and altitudes",
+          "Properties of angles",
+          "Sides and diagonals of parallelograms, rectangles, and squares",
+          "Circles and their properties including tangents, normals, and loci"
+        ]
+      },
+      {
+        "topic": "Mensuration",
+        "sub_topics": [
+          "Areas of parallelograms, squares, rectangles, triangles and circles",
+          "Areas of figures that can be split up into these figures (Field Book)",
+          "Lateral surface and volume of right circular cones and cylinders",
+          "Surface area and volume of cuboids",
+          "Surface area and volume of spheres"
+        ]
+      },
+      {
+        "topic": "Statistics",
+        "sub_topics": [
+          "Collection and tabulation of statistical data",
+          "Graphical representation: frequency polygons",
+          "Histograms",
+          "Bar charts",
+          "Pie charts, etc.",
+          "Measures of central tendency (mean, median, mode)"
+        ]
+      }
+    ]
+  },
+  "general_knowledge_syllabus": {
+    "overview": "Encompasses current affairs, daily observations and experiences, fundamental scientific concepts, geography, and Indian history without specialized technical training.",
+    "modules": [
+      {
+        "subject": "Current Affairs",
+        "sub_topics": [
+          "Events of national and international importance",
+          "Sports, awards and honours",
+          "Books and authors",
+          "Major developments in politics, economics, and social issues"
+        ]
+      },
+      {
+        "subject": "History",
+        "sub_topics": [
+          "Ancient Indian history",
+          "Medieval Indian history",
+          "Modern Indian history",
+          "Indian national movement",
+          "Growth of nationalism"
+        ]
+      },
+      {
+        "subject": "Geography",
+        "sub_topics": [
+          "Physical, Social and economic aspects of geography",
+          "Indian geography and world geography"
+        ]
+      },
+      {
+        "subject": "Indian Polity and Governance",
+        "sub_topics": [
+          "Constitution of India",
+          "Political system",
+          "Panchayati Raj",
+          "Public Policy",
+          "Rights Issues, etc."
+        ]
+      },
+      {
+        "subject": "Economic and Social Development",
+        "sub_topics": [
+          "Sustainable Development",
+          "Poverty and Inclusion",
+          "Demographics",
+          "Social Sector Initiatives, etc."
+        ]
+      },
+      {
+        "subject": "Science and Technology",
+        "sub_topics": [
+          "Developments in the field of science and technology",
+          "Space technology",
+          "Biotechnology",
+          "Computer technology"
+        ]
+      },
+      {
+        "subject": "Environmental Ecology and Biodiversity",
+        "sub_topics": [
+          "Conservation",
+          "Environmental pollution and degradation",
+          "Environmental impact assessment",
+          "Climate change"
+        ]
+      },
+      {
+        "subject": "Defence and Security Issues",
+        "sub_topics": [
+          "Current events related to national security",
+          "Internal and external threats",
+          "Role of Armed Forces",
+          "Defence Related Awards"
+        ]
+      }
+    ],
+    "ota_general_awareness_list": [
+      "Current Affairs",
+      "Physics",
+      "Chemistry",
+      "Biology",
+      "Geography",
+      "History",
+      "Politics",
+      "Sociology",
+      "Economics",
+      "Defence Related Awards",
+      "Sports and Culture",
+      "Environmental Science"
+    ]
+  },
+  "ssb_syllabus": {
+    "overview": "Five-day evaluation worth 300 marks. Designed to identify Officer Like Qualities (OLQ) and trainability. Three assessors: Interviewing Officer (IO), Group Testing Officer (GTO), and Psychologist.",
+    "stages": [
+      {
+        "stage": "Stage 1 (Screening Test)",
+        "tests": [
+          "Officer Intelligence Rating (OIR)",
+          "Picture Perception and Description Test (PPDT)"
+        ]
+      },
+      {
+        "stage": "Stage 2 (Main Assessment)",
+        "tests": [
+          "Personal Interview with IO",
+          "Group Testing Officer (GTO) Indoor & Outdoor Tasks",
+          "Psychology Test (TAT, WAT, SRT, SD)",
+          "Board Conference"
+        ]
+      },
+      {
+        "stage": "Group Discussion & Interaction",
+        "tests": [
+          "Group Discussion (GD)",
+          "Military Planning Exercise (GPE)"
+        ]
+      }
+    ]
+  }
+}

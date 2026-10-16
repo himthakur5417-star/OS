@@ -2,24 +2,174 @@
   "enquiries": [],
   "users": [
     {
-      "uid": "user-admin-001",
-      "email": "admin@officium.academy",
-      "displayName": "Academy Director",
+      "uid": "admin-palakjha82@gmail.com",
+      "email": "palakjha82@gmail.com",
+      "displayName": "Palak Jha",
       "role": "admin",
-      "rollNumber": "OS-DIR-001",
-      "createdAt": "2026-09-03T05:57:21.458Z",
-      "lastLogin": "2026-09-13T05:57:21.458Z"
+      "rollNumber": "OS-ADMIN",
+      "createdAt": "2026-10-16T18:07:25.685Z",
+      "lastLogin": "2026-10-16T18:07:25.685Z"
+    },
+    {
+      "uid": "admin-shiwangit78@gmail.com",
+      "email": "shiwangit78@gmail.com",
+      "displayName": "Shiwangi",
+      "role": "admin",
+      "rollNumber": "OS-ADMIN",
+      "createdAt": "2026-10-16T18:04:38.169Z",
+      "lastLogin": "2026-10-16T18:04:38.169Z"
+    },
+    {
+      "uid": "admin-osupremum@gmail.com",
+      "email": "osupremum@gmail.com",
+      "displayName": "Officium Supremum",
+      "role": "admin",
+      "rollNumber": "OS-ADMIN",
+      "createdAt": "2026-10-16T18:04:31.839Z",
+      "lastLogin": "2026-10-16T18:04:31.839Z"
+    },
+    {
+      "uid": "admin-himthakur5417@gmail.com",
+      "email": "himthakur5417@gmail.com",
+      "displayName": "Himanshu Thakur",
+      "role": "admin",
+      "rollNumber": "OS-ADMIN",
+      "createdAt": "2026-10-16T18:04:25.526Z",
+      "lastLogin": "2026-10-16T18:04:25.526Z"
     }
   ],
   "login_logs": [
     {
-      "id": "log-1789317223225-p54ys",
-      "email": "admin@officium.academy",
+      "id": "log-1792175245675-3x71j",
+      "email": "osupremum@gmail.com",
       "role": "admin",
       "status": "success",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
       "ip": "::1",
-      "timestamp": "2026-09-13T16:33:43.225Z"
+      "timestamp": "2026-10-16T18:27:25.675Z"
+    },
+    {
+      "id": "log-1792174045684-t8hlc",
+      "email": "palakjha82@gmail.com",
+      "role": "admin",
+      "status": "success",
+      "ip": "::1",
+      "userAgent": "Web Client",
+      "timestamp": "2026-10-16T18:07:25.684Z"
+    },
+    {
+      "id": "log-1792173878168-5w33c",
+      "email": "shiwangit78@gmail.com",
+      "role": "admin",
+      "status": "success",
+      "ip": "::1",
+      "userAgent": "Web Client",
+      "timestamp": "2026-10-16T18:04:38.168Z"
+    },
+    {
+      "id": "log-1792173871838-oiub4",
+      "email": "osupremum@gmail.com",
+      "role": "admin",
+      "status": "success",
+      "ip": "::1",
+      "userAgent": "Web Client",
+      "timestamp": "2026-10-16T18:04:31.838Z"
+    },
+    {
+      "id": "log-1792173865526-7288a",
+      "email": "himthakur5417@gmail.com",
+      "role": "admin",
+      "status": "success",
+      "ip": "::1",
+      "userAgent": "Web Client",
+      "timestamp": "2026-10-16T18:04:25.526Z"
+    }
+  ],
+  "traffic_logs": [
+    {
+      "id": "trf-1792175359093-d4s3y",
+      "path": "/contact",
+      "role": "guest",
+      "referrer": "http://localhost:3000/admin",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:29:19.093Z"
+    },
+    {
+      "id": "trf-1792175345569-52x39",
+      "path": "/",
+      "role": "guest",
+      "referrer": "http://localhost:3000/admin",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:29:05.569Z"
+    },
+    {
+      "id": "trf-1792175245714-ao5ww",
+      "path": "/admin",
+      "role": "guest",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:27:25.714Z"
+    },
+    {
+      "id": "trf-1792175218741-ma2z2",
+      "path": "/admin/login",
+      "role": "guest",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:26:58.741Z"
+    },
+    {
+      "id": "trf-1792175215819-91lcb",
+      "path": "/",
+      "role": "guest",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:26:55.819Z"
+    },
+    {
+      "id": "trf-1792175210930-xo004",
+      "path": "/",
+      "userEmail": "user@officium.academy",
+      "role": "user",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:26:50.930Z"
+    },
+    {
+      "id": "trf-1792175190443-d0378",
+      "path": "/",
+      "role": "guest",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:26:30.443Z"
+    },
+    {
+      "id": "trf-1792175179394-72x6q",
+      "path": "/admin/login",
+      "role": "guest",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:26:19.394Z"
+    },
+    {
+      "id": "trf-1792175179283-yole8",
+      "path": "/admin",
+      "role": "guest",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-16T18:26:19.283Z"
+    },
+    {
+      "id": "trf-1792174955393-yvosl",
+      "path": "/",
+      "userEmail": "himthakur5417@gmail.com",
+      "role": "admin",
+      "referrer": "direct",
+      "ip": "::1",
+      "userAgent": "curl/8.7.1",
+      "timestamp": "2026-10-16T18:22:35.393Z"
     }
   ]
 }

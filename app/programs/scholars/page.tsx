@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 export default function ScholarsProgramPage() {
-  const { openOrientation, openAi } = useModals();
+  const { openOrientation } = useModals();
 
   return (
     <div className="bg-[#FAF7F2] text-[#3B2F20] min-h-screen">
@@ -58,12 +58,12 @@ export default function ScholarsProgramPage() {
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <button
-                onClick={() => openAi("planner")}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-[#FFFDF8] border border-[#D4C4A8]/80 text-[#5A4A35] font-label font-semibold text-xs uppercase tracking-widest transition-all shadow-soft-sm hover:shadow-soft-md"
+              <Link
+                href="/resources"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-[#FFFDF8] border border-[#D4C4A8]/80 text-[#5A4A35] font-label font-semibold text-xs uppercase tracking-widest transition-all shadow-soft-sm hover:shadow-soft-md text-center"
               >
-                <span>Plan Today&apos;s 5-Hour Schedule</span>
-              </button>
+                <span>Explore Study Syllabus</span>
+              </Link>
             </div>
 
             <div className="pt-4 flex items-center gap-6 text-xs text-[#8B7A5E] font-label uppercase tracking-wider">

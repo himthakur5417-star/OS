@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Overlay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Using Montserrat for headers and Inter for features to look coordinated and modern -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@500;700&family=Oswald:wght@600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1080px;
+    height: 1350px;
+    margin: 0;
+  }
+
+  .poster {
+    width: 1080px;
+    height: 1350px; /* 4:5 Aspect Ratio */
+    background: transparent;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 60px 40px 60px; /* Reduced padding drastically */
+    color: #fff; /* Changed default to white */
+  }
+
+  /* Top Center Logo */
+  .logo-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .logo-container img {
+    height: 90px; /* Smaller logo */
+    width: auto;
+    border-radius: 50%;
+    mix-blend-mode: multiply; 
+  }
+
+  /* Main Title */
+  .title-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-bottom: 30px; /* Reduced margin */
+  }
+
+  .title-line-1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 52px; /* Smaller font to prevent wrapping */
+    font-weight: 900;
+    color: #111; 
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+  }
+
+  /* Branches Layout (Two Columns) */
+  .branches-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    padding: 10px 0;
+  }
+
+  .branch {
+    width: 48%; /* Slightly wider */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vertical-divider {
+    width: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    margin: 0 10px;
+  }
+
+  .branch-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px; /* Smaller */
+    font-weight: 900;
+    color: #111;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  .branch-subtitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 20px; /* Reduced */
+    border-bottom: 2px solid #111;
+    padding-bottom: 10px;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .features-list {
+    list-style: none;
+    font-family: 'Inter', sans-serif; 
+    font-size: 17px; /* Smaller text */
+    font-weight: 700;
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Greatly reduced gap */
+    color: #111; 
+  }
+
+  .features-list li {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .features-list li::before {
+    content: '❯';
+    color: #111;
+    margin-right: 10px;
+    font-weight: 900;
+    font-size: 15px;
+    line-height: 1.2;
+    margin-top: 3px;
+  }
+
+  /* Footer Section */
+  .footer {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.4); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,0,0, 0.3); /* Stronger background overlay for the footer */
+    margin-left: -60px; /* Stretch across the poster */
+    margin-right: -60px;
+    margin-bottom: -40px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-bottom: 25px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .motto {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #fff; /* White */
+    margin-bottom: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.9); /* Strong drop shadow */
+  }
+
+  .contact-info {
+    font-family: 'Inter', sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    color: #fff; /* White */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.9); 
+  }
+
+</style>
+</head>
+<body>
+
+<div class="poster">
+  
+  <div class="logo-container">
+    <img src="OS - LOGO.jpg" alt="Logo" />
+  </div>
+
+  <div class="title-container">
+    <div class="title-line-1">OFFICIUM SUPREMUM</div>
+  </div>
+
+  <div class="branches-container">
+    
+    <!-- Defence Branch -->
+    <div class="branch">
+      <h2 class="branch-title">DEFENCE</h2>
+      <div class="branch-subtitle">NDA • CDS • AFCAT</div>
+      <ul class="features-list">
+        <li><span>Complete Mentorship Roadmap</span></li>
+        <li><span>Personal Guidance</span></li>
+        <li><span>Daily Accountability System</span></li>
+        <li><span>Revision & Recall Framework</span></li>
+        <li><span>Mock Test Ecosystem</span></li>
+        <li><span>Officer-Like Qualities (OLQs)</span></li>
+        <li><span>Academy-Inspired Routine</span></li>
+        <li><span>Weekly Mind Sessions</span></li>
+      </ul>
+    </div>
+
+    <div class="vertical-divider"></div>
+
+    <!-- Juniors Branch -->
+    <div class="branch">
+      <h2 class="branch-title">JUNIORS</h2>
+      <div class="branch-subtitle">CLASS 7+ • EARLY ADVANTAGE</div>
+      <ul class="features-list">
+        <li><span>Study Discipline</span></li>
+        <li><span>Reading & Communication</span></li>
+        <li><span>Confidence & Goal Setting</span></li>
+        <li><span>Academic Planning</span></li>
+        <li><span>Personalised Journals</span></li>
+        <li><span>Bi-Monthly Mind Sessions</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="motto">"Triumph is not guaranteed, and setbacks are not final; it is the relentless drive to push forward that defines a true leader."</div>
+    <div class="contact-info">
+      <div>📞 +91 8969634656 &nbsp;|&nbsp; +91 9608857292</div>
+      <div>✉️ osupremum@gmail.com</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

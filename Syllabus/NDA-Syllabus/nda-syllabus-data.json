@@ -1,0 +1,259 @@
+{
+  "source_url": "https://princendaacademy.com/NDA-Syllabus",
+  "title": "NDA Syllabus \u2013 Latest Subject-wise Syllabus & Exam Pattern",
+  "exam_name": "National Defence Academy & Naval Academy Examination (NDA & NA)",
+  "conducting_body": "Union Public Service Commission (UPSC)",
+  "exam_frequency": "Two times a year (NDA 1 & NDA 2)",
+  "overview": "The NDA syllabus is divided into Maths and General Ability Test (GAT). A total of 120 questions are asked from the Maths section (300 marks) and 150 questions from the GAT paper (600 marks). Level of syllabus is Class 10, 11, and 12 standards. Written test is followed by the SSB Interview for candidates qualifying the cut-off marks.",
+  "highlights": [
+    {
+      "parameter": "Name of the Exam",
+      "details": "NDA (National Defence Academy & Naval Academy)"
+    },
+    {
+      "parameter": "Exam Conducting Body",
+      "details": "Union Public Service Commission (UPSC)"
+    },
+    {
+      "parameter": "Frequency of NDA Exam",
+      "details": "Two times a year (NDA 1 & NDA 2)"
+    },
+    {
+      "parameter": "Selection Process",
+      "details": "Written Test (900 Marks) + Intelligence & Personality Test / SSB Interview (900 Marks)"
+    },
+    {
+      "parameter": "Eligibility / Gender",
+      "details": "Unmarried Female and Male Candidates"
+    },
+    {
+      "parameter": "Age Limit",
+      "details": "16.5 to 19.5 years"
+    },
+    {
+      "parameter": "Educational Qualification (Army Wing)",
+      "details": "Passed or appearing in Class 12 standard of Higher Secondary Education or equivalent"
+    },
+    {
+      "parameter": "Educational Qualification (Air Force & Naval Wings)",
+      "details": "Passed or appearing in Class 12 with Physics, Chemistry, and Mathematics (PCM)"
+    },
+    {
+      "parameter": "Physical Standards",
+      "details": "Measured as per official UPSC height, weight, and medical standards for Armed Forces"
+    },
+    {
+      "parameter": "Total Written Marks",
+      "details": "900 Marks (Maths: 300, GAT: 600)"
+    },
+    {
+      "parameter": "Negative Marking",
+      "details": "Mathematics: -0.83 marks per incorrect answer | GAT: -1.33 marks per incorrect answer"
+    },
+    {
+      "parameter": "Exam Duration",
+      "details": "Mathematics: 2 Hours 30 Minutes | GAT: 2 Hours 30 Minutes (Total: 5 Hours)"
+    }
+  ],
+  "papers": [
+    {
+      "paper_id": 1,
+      "name": "Paper 1: Mathematics",
+      "total_marks": 300,
+      "total_questions": 120,
+      "marks_per_correct": 2.5,
+      "negative_marks": -0.83,
+      "duration": "2 Hours 30 Minutes",
+      "standard": "Class 11 and Class 12 NCERT Level",
+      "question_distribution": [
+        {
+          "topic": "Calculus (Differential & Integral)",
+          "questions": "20\u201325"
+        },
+        {
+          "topic": "Matrices & Determinants",
+          "questions": "30"
+        },
+        {
+          "topic": "Trigonometry",
+          "questions": "30"
+        },
+        {
+          "topic": "Quadratic Equations & Algebra",
+          "questions": "15\u201320"
+        },
+        {
+          "topic": "Complex Numbers",
+          "questions": "10\u201315"
+        },
+        {
+          "topic": "Probability & Statistics",
+          "questions": "10"
+        }
+      ],
+      "syllabus_topics": [
+        {
+          "topic": "Algebra",
+          "sub_topics": "Sets, Venn diagrams, De Morgan laws, Cartesian product, relation, equivalence relation. Real numbers, Complex numbers, Modulus, Cube roots, Conversion of a number in a Binary system to Decimals, and vice-versa. Arithmetic, Geometric, and Harmonic progressions. Quadratic equations, Linear inequations, Permutation and Combination, Binomial theorem, and Logarithms."
+        },
+        {
+          "topic": "Calculus",
+          "sub_topics": "Concept of a real-valued function, domain, range, and graph of a function. Composite functions, one-to-one, onto, and inverse functions. The notion of limit, Standard limits, Continuity of functions, algebraic operations on continuous functions. Derivative of function at a point, geometrical and physical interpretation of a derivative-application. Derivatives of sum, product, and quotient of functions, derivative of a function concerning another function, derivative of a composite function. Second-order derivatives. Increasing and decreasing functions. Application of derivatives in problems of maxima and minima."
+        },
+        {
+          "topic": "Matrices and Determinants",
+          "sub_topics": "Types of matrices, operations on matrices. Determinant of a matrix, basic properties of determinants. Adjoint and inverse of a square matrix, Applications-Solution of a system of linear equations in two or three unknowns by Cramer\u2019s rule and by Matrix Method."
+        },
+        {
+          "topic": "Integral Calculus and Differential Equations",
+          "sub_topics": "Integration as inverse of differentiation, integration by substitution and by parts, standard integrals involving algebraic expressions, trigonometric, exponential, and hyperbolic functions. Evaluation of definite integrals\u2014determination of areas of plane regions bounded by curves-applications. Definition of order and degree of a differential equation, formation of a differential equation by examples. General and particular solutions of differential equations, solution of first order and first-degree differential equations of various types\u2014examples. Application in problems of growth and decay."
+        },
+        {
+          "topic": "Trigonometry",
+          "sub_topics": "Angles and their measures in degrees and radians. Trigonometric ratios. Trigonometric identities Sum and difference formulae. Multiple and Sub-multiple angles. Inverse trigonometric functions. Applications-Height and distance, properties of triangles."
+        },
+        {
+          "topic": "Vector Algebra",
+          "sub_topics": "Vectors in two and three dimensions, magnitude, and direction of a vector. Unit and null vectors, the addition of vectors, scalar multiplication of a vector, scalar product, or dot product of two vectors. Vector product or cross product of two vectors. Applications\u2014work done by a force and moment of a force and in geometrical problems."
+        },
+        {
+          "topic": "Analytical Geometry of Two and Three Dimensions",
+          "sub_topics": "Rectangular Cartesian Coordinate system, Distance formula, Equation of a line in various forms. The angle between two lines. Distance of a point from a line. Equation of a circle in standard and in a general form. Standard forms of parabola, ellipse, and hyperbola. Eccentricity and axis of a conic. Point in a three-dimensional space, the distance between two points. Direction Cosines and direction ratios. Equation of a plane and a line in various forms. The angle between two lines and angle between two planes. Equation of a sphere."
+        },
+        {
+          "topic": "Statistics and Probability",
+          "sub_topics": "Probability: Random experiment, outcomes, and associated sample space, events, mutually exclusive and exhaustive events, impossible and certain events. Union and Intersection of events. Complementary, elementary, and composite events. Definition of probability\u2014classical and statistical\u2014examples. Elementary theorems on probability-simple problems. Conditional probability, Bayes\u2019 theorem\u2014simple problems. Random variable as function on a sample space. Binomial distribution, examples of random experiments giving rise to Binomial distribution."
+        }
+      ]
+    },
+    {
+      "paper_id": 2,
+      "name": "Paper 2: General Ability Test (GAT)",
+      "total_marks": 600,
+      "total_questions": 150,
+      "marks_per_correct": 4.0,
+      "negative_marks": -1.33,
+      "duration": "2 Hours 30 Minutes",
+      "sections": [
+        {
+          "section_name": "Part A: English",
+          "questions": 50,
+          "marks": 200,
+          "description": "Tests basic proficiency in English language, understanding of nuances, syntax, grammar, and reading comprehension.",
+          "topics": [
+            "Grammar & usage",
+            "Comprehension & cohesion",
+            "Spotting of errors",
+            "Para Jumbling",
+            "Fill in the blanks",
+            "Synonyms & Antonyms",
+            "Vocabulary",
+            "Cloze Test",
+            "Idioms & Proverbs",
+            "Completion of Sentence & Para",
+            "Sentence Correction & Improvement"
+          ]
+        },
+        {
+          "section_name": "Part B: General Knowledge & Science",
+          "questions": 100,
+          "marks": 400,
+          "description": "Covers Physics, Chemistry, General Science, Social Studies / History, Geography, and Current Events.",
+          "subsections": [
+            {
+              "subject": "Physics",
+              "weightage": "~23\u201325 Questions (~100 Marks)",
+              "topics": [
+                "Physical Properties and States of Matter",
+                "Modes of Transference of Heat",
+                "Mass, Weight, Volume, Density and Specific Gravity",
+                "Sound waves and their properties",
+                "Principle of Archimedes, Pressure Barometer",
+                "Motion of objects, Velocity and Acceleration, Newton\u2019s Laws of Motion",
+                "Force and Momentum, Parallelogram of Forces, Stability and Equilibrium of bodies",
+                "Gravitation, Elementary ideas of work, Power and Energy",
+                "Effects of Heat, Measurement of Temperature and Heat",
+                "Rectilinear propagation of Light, Reflection and refraction, Spherical mirrors and Lenses, Human Eye",
+                "Natural and Artificial Magnets, Properties of a Magnet, Earth as a Magnet",
+                "Static and Current Electricity, Conductors and Non-conductors, Ohm\u2019s Law, Simple Electrical Circuits",
+                "Heating, Lighting, and Magnetic Effects of Current, Measurement of Electrical Power, Primary and Secondary Cells",
+                "Use of X-rays, General Principles in the working of: Simple Pendulum, Simple Pulleys, Siphons, Levers, Balloons, Pumps, Hydrometer, Pressure Cooker, Thermos Flask, Gramophone, Telegraphs, Telephone, Periscope, Telescope, Microscope, Mariner\u2019s Compass, Lightning Conductors, Safety Fuses."
+              ]
+            },
+            {
+              "subject": "Chemistry",
+              "weightage": "Class 12 Level (~15 Questions / ~60 Marks)",
+              "topics": [
+                "Physical and Chemical Changes",
+                "Elements, Mixtures and Compounds",
+                "Symbols, Formulae, and simple Chemical Equations",
+                "Law of Chemical Combination (excluding problems)",
+                "Properties of Air and Water",
+                "Preparation and Properties of Hydrogen, Oxygen, Nitrogen and Carbon Dioxide",
+                "Oxidation and Reduction",
+                "Acids, bases, and salts",
+                "Carbon\u2014different forms",
+                "Fertilizers\u2014Natural and Artificial",
+                "Material used in preparation of: Soap, Glass, Ink, Paper, Cement, Paints, Safety Matches and Gunpowder",
+                "Elementary ideas about the structure of Atom, Atomic Equivalent and Molecular Weights, Valency"
+              ]
+            },
+            {
+              "subject": "General Science",
+              "weightage": "~10\u201312 Questions (~40 Marks)",
+              "topics": [
+                "Difference between the living and non-living",
+                "Food-Source of Energy for man, Constituents of food, Balanced Diet",
+                "Growth and Reproduction in Plants and Animals",
+                "Elementary knowledge of the Human Body and its important organs",
+                "Common Epidemics, their causes, and prevention"
+              ]
+            },
+            {
+              "subject": "History & Freedom Movement",
+              "weightage": "~20 Questions (~80 Marks)",
+              "topics": [
+                "Forces shaping the modern world; Renaissance",
+                "A broad survey of Indian History, with emphasis on Culture and Civilisation",
+                "Exploration and Discovery; War of American Independence, French Revolution, Industrial Revolution, and Russian Revolution",
+                "Freedom Movement in India",
+                "Impact of Science and Technology on Society",
+                "Elementary Study of Indian Constitution and Administration",
+                "Concept of One World; Elementary knowledge of Five Year Plans of India",
+                "United Nations, Panchsheel, Democracy, Socialism and Communism",
+                "Panchayati Raj; Co-operatives and Community Development",
+                "Role of India in the Present World; Bhoodan, Sarvodaya, National Integration and Welfare State",
+                "Basic Teachings of Mahatma Gandhi"
+              ]
+            },
+            {
+              "subject": "Geography",
+              "weightage": "~20 Questions (~80 Marks)",
+              "topics": [
+                "The Earth, its shape and size; Latitudes and Longitudes; Concept of time; International Date Line",
+                "Movements of Earth and their effects; Origin of Earth; Rocks and their classification",
+                "Weathering\u2014Mechanical and Chemical, Earthquakes and Volcanoes",
+                "Ocean Currents and Tides; Atmosphere and its composition",
+                "Temperature and Atmospheric Pressure, Planetary Winds, Cyclones and Anticyclones; Humidity; Condensation and Precipitation",
+                "Types of Climate; Major Natural Regions of the World",
+                "Regional Geography of India\u2014Climate, Natural vegetation, Mineral and Power resources; location and distribution of agricultural and Industrial activities",
+                "Important Sea ports and main sea, land, and air routes of India",
+                "Main items of Imports and Exports of India"
+              ]
+            },
+            {
+              "subject": "Current Affairs",
+              "weightage": "~10\u201312 Questions (~40 Marks)",
+              "topics": [
+                "Knowledge of Important and recent events in India and across the world",
+                "Prominent personalities\u2014both Indian and International",
+                "Cultural activities, sports, national and international championships",
+                "Current defense developments, military exercises, science and technological achievements"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

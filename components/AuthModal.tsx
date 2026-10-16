@@ -6,16 +6,10 @@ import { Logo } from "./Logo";
 import { 
   X, 
   Mail, 
-  Lock, 
   User, 
   ArrowRight, 
-  Sparkles, 
-  CheckCircle2, 
-  Phone, 
-  Shield, 
-  AlertCircle,
   KeyRound,
-  GraduationCap
+  AlertCircle
 } from "lucide-react";
 
 export function AuthModal() {
@@ -26,14 +20,12 @@ export function AuthModal() {
     setAuthMode, 
     signInEmail, 
     signUpEmail, 
-    signInGoogle, 
-    loginDemo 
+    signInGoogle 
   } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [role, setRole] = useState<"cadet" | "scholar" | "junior" | "parent">("cadet");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -48,12 +40,12 @@ export function AuthModal() {
       if (authMode === "signin") {
         await signInEmail(email, password);
       } else {
-        if (!name) {
+        if (!name.trim()) {
           setError("Please enter your full name.");
           setLoading(false);
           return;
         }
-        await signUpEmail(email, password, name, role);
+        await signUpEmail(email, password, name.trim());
       }
     } catch (err: any) {
       setError(err?.message || "Authentication failed. Please verify credentials.");
@@ -63,15 +55,15 @@ export function AuthModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/35 backdrop-blur-md animate-in fade-in duration-200">
-      {/* Glassmorphic Container */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200">
+      {/* Container */}
       <div 
-        className="relative w-full max-w-md bg-white/90 backdrop-blur-xl border border-white/80 rounded-3xl shadow-[0_25px_60px_-15px_rgba(15,23,42,0.15)] p-7 sm:p-9 text-[#0F172A] overflow-hidden"
+        className="relative w-full max-w-md bg-white/95 backdrop-blur-xl border border-white/80 rounded-3xl shadow-[0_25px_60px_-15px_rgba(15,23,42,0.18)] p-7 sm:p-9 text-[#0F172A] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Soft Decorative Ambient Gradients */}
-        <div className="absolute -top-20 -right-20 w-48 h-48 bg-sky-100/60 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-rose-50/70 rounded-full blur-2xl pointer-events-none" />
+        {/* Subtle Decorative Accents */}
+        <div className="absolute -top-20 -right-20 w-48 h-48 bg-amber-100/40 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-slate-100/60 rounded-full blur-2xl pointer-events-none" />
 
         {/* Close Button */}
         <button
@@ -89,10 +81,10 @@ export function AuthModal() {
           </div>
           <div>
             <h3 className="font-heading font-semibold text-xl text-[#0B192C]">
-              {authMode === "signin" ? "Academy Sign In" : "Cadet Enrollment"}
+              {authMode === "signin" ? "Account Sign In" : "Create Account"}
             </h3>
             <p className="text-xs text-slate-500 font-label uppercase tracking-wider">
-              Officium Supremum Portal
+              Officium Supremum Academy
             </p>
           </div>
         </div>
@@ -130,48 +122,31 @@ export function AuthModal() {
         </div>
 
         {error && (
-          <div className="p-3 mb-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
-            {error}
+          <div className="p-3 mb-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
+            <span>{error}</span>
           </div>
         )}
 
-        {/* Sign In / Sign Up Form */}
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {authMode === "signup" && (
-            <>
-              <div>
-                <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Cadet Rohit Sharma"
-                    className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-all shadow-inner"
-                  />
-                </div>
+            <div>
+              <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
+                Full Name
+              </label>
+              <div className="relative">
+                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your name"
+                  className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-all shadow-inner"
+                />
               </div>
-
-              <div>
-                <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                  Academic Track
-                </label>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value as any)}
-                  className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl px-3 py-2.5 text-xs text-[#0F172A] outline-none transition-all"
-                >
-                  <option value="cadet">Defense Leadership (NDA / CDS / AFCAT)</option>
-                  <option value="scholar">Scholars Program (Class 11–12)</option>
-                  <option value="junior">Juniors Program (Class 7–10)</option>
-                  <option value="parent">Parent of Enrolled Student</option>
-                </select>
-              </div>
-            </>
+            </div>
           )}
 
           <div>
@@ -185,7 +160,7 @@ export function AuthModal() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="cadet@officium.academy"
+                placeholder="name@example.com"
                 className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-all shadow-inner"
               />
             </div>
@@ -193,7 +168,7 @@ export function AuthModal() {
 
           <div>
             <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-              Security Password
+              Password
             </label>
             <div className="relative">
               <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
@@ -213,7 +188,7 @@ export function AuthModal() {
             disabled={loading}
             className="w-full mt-2 py-3 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
           >
-            {loading ? "Authenticating..." : authMode === "signin" ? "Sign In to Academy" : "Complete Registration"}
+            {loading ? "Authenticating..." : authMode === "signin" ? "Sign In" : "Create Account"}
             <ArrowRight className="w-4 h-4 text-[#C8A84E]" />
           </button>
         </form>
@@ -233,31 +208,6 @@ export function AuthModal() {
             </svg>
             <span>Continue with Google</span>
           </button>
-        </div>
-
-        {/* 1-Click Instant Demo Login Bar */}
-        <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
-          <div className="text-[11px] font-label uppercase tracking-widest text-slate-400 text-center">
-            Or Test with 1-Click Demo Profile:
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => loginDemo("cadet")}
-              className="px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-lg text-xs font-label uppercase tracking-wider text-slate-700 transition-colors flex items-center justify-center gap-1.5"
-            >
-              <Shield className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Demo Cadet</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => loginDemo("scholar")}
-              className="px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-lg text-xs font-label uppercase tracking-wider text-slate-700 transition-colors flex items-center justify-center gap-1.5"
-            >
-              <GraduationCap className="w-3.5 h-3.5 text-sky-600" />
-              <span>Demo Scholar</span>
-            </button>
-          </div>
         </div>
       </div>
     </div>
