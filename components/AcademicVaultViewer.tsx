@@ -31,6 +31,7 @@ import {
   PYQ_YEARS,
   ChapterItem,
 } from "@/data/vaultManifest";
+import { useAuth } from "./AuthContext";
 
 export type VaultTab = "syllabus" | "nda-maths" | "cds-maths" | "english" | "pyq";
 
@@ -51,6 +52,7 @@ export default function AcademicVaultViewer({
   selectedDocTitle,
   onClearDoc,
 }: Props) {
+  const { requireAuth } = useAuth();
   const [internalTab, setInternalTab] = useState<VaultTab>("syllabus");
   const activeTab = controlledTab || internalTab;
 
@@ -68,6 +70,13 @@ export default function AcademicVaultViewer({
     selectedDocPdf ? { title: selectedDocTitle || "Document Viewer", pdf: selectedDocPdf } : null
   );
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  // Authenticated doc opener: prompts login if guest, then opens doc
+  const openDoc = (doc: { title: string; pdf: string; meta?: string }) => {
+    requireAuth(() => {
+      setActiveModalDoc(doc);
+    });
+  };
 
   // Sync incoming doc if passed from parent
   React.useEffect(() => {
@@ -276,7 +285,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
             <div className="flex items-center gap-3">
               <button
                 onClick={() => {
-                  setActiveModalDoc({
+                  openDoc({
                     title: "NDA Mathematics 30-Chapter Drill Vault",
                     pdf: "/NDA mathematics/index.html",
                   });
@@ -316,7 +325,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                   </span>
                   <button
                     onClick={() => {
-                      setActiveModalDoc({
+                      openDoc({
                         title: `${ch.num}: ${ch.title}`,
                         pdf: ch.pdf,
                         meta: ch.meta,
@@ -355,7 +364,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
             <div className="flex items-center gap-3">
               <button
                 onClick={() => {
-                  setActiveModalDoc({
+                  openDoc({
                     title: "CDS Mathematics Master Volume (383 Pages)",
                     pdf: "/CDS mathematics/CDS-Mathematics-Officium-Supremum.pdf",
                     meta: "383-Page Full Master Volume",
@@ -398,7 +407,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                   </span>
                   <button
                     onClick={() => {
-                      setActiveModalDoc({
+                      openDoc({
                         title: `${ch.num}: ${ch.title}`,
                         pdf: ch.pdf,
                         meta: ch.meta,
@@ -437,7 +446,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
             <div className="flex items-center gap-3">
               <button
                 onClick={() => {
-                  setActiveModalDoc({
+                  openDoc({
                     title: "NDA & CDS English Master Volume (396 Pages)",
                     pdf: "/NDA CDS English/NDA-CDS-English-Officium-Supremum.pdf",
                     meta: "396-Page Full Master Volume",
@@ -480,7 +489,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                   </span>
                   <button
                     onClick={() => {
-                      setActiveModalDoc({
+                      openDoc({
                         title: `${ch.num}: ${ch.title}`,
                         pdf: ch.pdf,
                         meta: ch.meta,
@@ -541,7 +550,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                       <button
                         key={pIdx}
                         onClick={() => {
-                          setActiveModalDoc({
+                          openDoc({
                             title: `${item.year} — ${paper.name}`,
                             pdf: paper.pdf,
                             meta: item.tag,
@@ -607,7 +616,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
 
               <div className="flex items-center gap-2">
                 <a
-                  href={activeModalDoc.pdf}
+                  href={encodeURI(activeModalDoc.pdf)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
@@ -616,7 +625,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                   <ExternalLink className="w-4 h-4" />
                 </a>
                 <a
-                  href={activeModalDoc.pdf}
+                  href={encodeURI(activeModalDoc.pdf)}
                   download
                   className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
                   title="Download File"
@@ -646,10 +655,36 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
             {/* Modal Body / Embedded Iframe Viewer */}
             <div className="flex-1 bg-slate-100 relative">
               <iframe
-                src={activeModalDoc.pdf}
+                src={encodeURI(activeModalDoc.pdf)}
                 title={activeModalDoc.title}
                 className="w-full h-full border-none"
               />
+            </div>
+
+            {/* Modal Bottom Bar */}
+            <div className="px-6 py-2.5 bg-slate-900 border-t border-slate-800 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-3">
+              <span className="font-sans">
+                Official Officium Supremum Cadre Archive • Verified Curriculum Document
+              </span>
+              <div className="flex items-center gap-4">
+                <a
+                  href={encodeURI(activeModalDoc.pdf)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#C8A84E] hover:underline font-label uppercase tracking-wider flex items-center gap-1 font-semibold"
+                >
+                  <span>Open in Full Browser Tab</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+                <a
+                  href={encodeURI(activeModalDoc.pdf)}
+                  download
+                  className="text-slate-300 hover:text-white font-label uppercase tracking-wider flex items-center gap-1 font-semibold"
+                >
+                  <span>Download Copy</span>
+                  <Download className="w-3 h-3" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

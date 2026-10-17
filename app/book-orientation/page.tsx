@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { Calendar, CheckCircle2, Shield, Phone, MessageCircle, Send, ArrowRight, Loader2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Calendar, CheckCircle2, Shield, Phone, MessageCircle, Send, ArrowRight, Loader2, Lock } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/components/AuthContext";
 
 export default function BookOrientationPage() {
+  const { user, requireAuth } = useAuth();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -16,8 +18,21 @@ export default function BookOrientationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [waLink, setWaLink] = useState("");
 
+  useEffect(() => {
+    if (user) {
+      if (!name && user.displayName) setName(user.displayName);
+      if (!email && user.email) setEmail(user.email);
+    }
+  }, [user]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Verify user is authenticated first
+    if (!requireAuth()) {
+      return;
+    }
+
     if (!name || !phone) return;
     setIsSubmitting(true);
 
@@ -31,7 +46,7 @@ export default function BookOrientationPage() {
           phone: phone.trim(),
           email: email.trim(),
           program,
-          source: "orientation_modal",
+          source: "orientation_page",
           message: `Category: ${userType === "parent" ? "Parent" : "Student"}. Preferred Slot: ${preferredSlot.toUpperCase()}. Target: ${program.toUpperCase()}.`,
         }),
       });

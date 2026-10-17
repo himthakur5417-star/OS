@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
 import { 
   auth, 
   googleProvider,
@@ -36,6 +36,12 @@ interface AuthContextType {
   signInGoogle: () => Promise<void>;
   loginDemo: (role?: "cadet" | "scholar" | "parent") => void;
   logout: () => Promise<void>;
+  /**
+   * Runs `action` immediately for signed-in users. For guests it opens the
+   * login popup and replays `action` right after a successful sign-in
+   * (the user stays on the current page).
+   */
+  requireAuth: (action?: () => void, mode?: "signin" | "signup") => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,6 +53,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const [authRedirectPath, setAuthRedirectPath] = useState<string | null>(null);
   const router = useRouter();
+  // Action blocked behind login (e.g. open a resource folder / orientation form)
+  const pendingActionRef = useRef<(() => void) | null>(null);
 
   // Load local session or verify admin/user
   useEffect(() => {
@@ -84,6 +92,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const openAuthModal = (mode: "signin" | "signup" = "signin", redirectPath?: string) => {
+    pendingActionRef.current = null;
     setAuthMode(mode);
     if (redirectPath) setAuthRedirectPath(redirectPath);
     setIsAuthModalOpen(true);
@@ -93,7 +102,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsAuthModalOpen(false);
   };
 
+  // Closed by the user without signing in: forget the blocked action
+  const dismissAuthModal = () => {
+    pendingActionRef.current = null;
+    setIsAuthModalOpen(false);
+  };
+
+  const requireAuth = useCallback(
+    (action?: () => void, mode: "signin" | "signup" = "signin") => {
+      if (user) {
+        action?.();
+        return true;
+      }
+      pendingActionRef.current = action || null;
+      setAuthMode(mode);
+      setIsAuthModalOpen(true);
+      return false;
+    },
+    [user]
+  );
+
   const checkRedirect = (defaultPath = "/") => {
+    // If the user signed in to unlock something on the current page,
+    // stay here and run that action instead of navigating away.
+    const pending = pendingActionRef.current;
+    if (pending) {
+      pendingActionRef.current = null;
+      setAuthRedirectPath(null);
+      // Let the auth state commit before replaying the action
+      setTimeout(pending, 0);
+      return;
+    }
     const target = authRedirectPath || defaultPath;
     setAuthRedirectPath(null);
     router.push(target);
@@ -113,9 +152,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setUser(data.user);
     localStorage.setItem("os_active_user", JSON.stringify(data.user));
-    closeAuthModal();
+    setIsAuthModalOpen(false);
 
     if (data.role === "admin") {
+      pendingActionRef.current = null;
       router.push("/admin");
     } else {
       checkRedirect(data.redirectTo || "/");
@@ -138,9 +178,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setUser(data.user);
     localStorage.setItem("os_active_user", JSON.stringify(data.user));
-    closeAuthModal();
+    setIsAuthModalOpen(false);
 
     if (data.role === "admin") {
+      pendingActionRef.current = null;
       router.push("/admin");
     } else {
       checkRedirect(data.redirectTo || "/");
@@ -152,7 +193,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signInGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      closeAuthModal();
+      setIsAuthModalOpen(false);
       checkRedirect("/");
     } catch (error) {
       // Mock Google sign-in fallback
@@ -164,7 +205,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       };
       setUser(googleMock);
       localStorage.setItem("os_active_user", JSON.stringify(googleMock));
-      closeAuthModal();
+      setIsAuthModalOpen(false);
       checkRedirect("/");
     }
   };
@@ -179,7 +220,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
     setUser(demoUser);
     localStorage.setItem("os_active_user", JSON.stringify(demoUser));
-    closeAuthModal();
+    setIsAuthModalOpen(false);
     checkRedirect("/");
   };
 
@@ -214,6 +255,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signInGoogle,
         loginDemo,
         logout,
+        requireAuth,
       }}
     >
       {children}

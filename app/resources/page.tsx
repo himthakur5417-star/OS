@@ -37,6 +37,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
         name: "30-Chapter Drill Vault",
         meta: "4,330+ Qs",
         art: "ember",
+        pdf: "/NDA mathematics/index.html",
       },
       {
         name: "Trigonometry & Inv",
@@ -86,6 +87,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
       {
         name: "CDS Curriculum Index",
         meta: "22 Ch · 383 Pgs",
+        pdf: "/CDS mathematics/index.html",
       },
     ],
   },
@@ -118,6 +120,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
       {
         name: "English Curriculum Index",
         meta: "34 Chapters · Full",
+        pdf: "/NDA CDS English/index.html",
       },
     ],
   },
@@ -134,11 +137,13 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
         name: "NDA PYQ (2020–2026)",
         meta: "Maths & GAT · 7 Yrs",
         art: "ember",
+        pdf: "/PYQ/NDA-PYQ/2024/NDA-1- 2024 - Mathematics - OS.pdf",
       },
       {
         name: "CDS PYQ (2020–2026)",
         meta: "Eng, Math & GK · 7 Yrs",
         art: "glacier",
+        pdf: "/PYQ/CDS-PYQ/2024/CDS-1- 2024 - Mathematics - OS.pdf",
       },
       {
         name: "NDA 2024 Solved Papers",
@@ -165,28 +170,32 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
         name: "NDA Syllabus Blueprint",
         meta: "10+2 Cadet Entry",
         art: "verdant",
+        pdf: "/Syllabus/NDA-Syllabus/index.html",
       },
       {
         name: "CDS Syllabus (2025)",
         meta: "IMA, INA, AFA & OTA",
         art: "glacier",
+        pdf: "/Syllabus/CDS-Syllabus/index.html",
       },
       {
         name: "CDS Mathematics Topics",
         meta: "Topics & Weightage",
         art: "ember",
+        pdf: "/Syllabus/CDS-Syllabus/index.html",
       },
       {
         name: "CDS SSB Interview Pattern",
         meta: "5-Day OLQ · 300 Marks",
         art: "dusk",
+        pdf: "/Syllabus/CDS-Syllabus/index.html",
       },
     ],
   },
 ];
 
 export default function ResourcesPage() {
-  const { user, openAuthModal } = useAuth();
+  const { user, openAuthModal, requireAuth } = useAuth();
   const [openFolderId, setOpenFolderId] = useState<string | null>(null);
   const [isVaultOpen, setIsVaultOpen] = useState<boolean>(false);
   const [activeVaultTab, setActiveVaultTab] = useState<VaultTab>("nda-maths");
@@ -194,24 +203,26 @@ export default function ResourcesPage() {
   const [selectedDocTitle, setSelectedDocTitle] = useState<string | null>(null);
 
   const handleOpenFolder = (book: BookFolderData, docPdf?: string, docTitle?: string) => {
-    setOpenFolderId(book.id);
-    setActiveVaultTab(book.tab);
-    setIsVaultOpen(true);
+    requireAuth(() => {
+      setOpenFolderId(book.id);
+      setActiveVaultTab(book.tab);
+      setIsVaultOpen(true);
 
-    if (docPdf) {
-      setSelectedDocPdf(docPdf);
-      setSelectedDocTitle(docTitle || book.label);
-    } else {
-      setSelectedDocPdf(null);
-      setSelectedDocTitle(null);
-    }
-
-    setTimeout(() => {
-      const el = document.getElementById("academic-vault-viewer");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (docPdf) {
+        setSelectedDocPdf(docPdf);
+        setSelectedDocTitle(docTitle || book.label);
+      } else {
+        setSelectedDocPdf(null);
+        setSelectedDocTitle(null);
       }
-    }, 80);
+
+      setTimeout(() => {
+        const el = document.getElementById("academic-vault-viewer");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 80);
+    });
   };
 
   const handleCloseFolder = () => {
@@ -226,11 +237,13 @@ export default function ResourcesPage() {
   };
 
   const handleTabChange = (newTab: VaultTab) => {
-    setActiveVaultTab(newTab);
-    const match = AVAILABLE_BOOKS.find((b) => b.tab === newTab);
-    if (match) {
-      setOpenFolderId(match.id);
-    }
+    requireAuth(() => {
+      setActiveVaultTab(newTab);
+      const match = AVAILABLE_BOOKS.find((b) => b.tab === newTab);
+      if (match) {
+        setOpenFolderId(match.id);
+      }
+    });
   };
 
   return (
@@ -253,14 +266,17 @@ export default function ResourcesPage() {
             </p>
 
             {!user && (
-              <div className="pt-2">
+              <div className="pt-2 flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => openAuthModal("signin", "/resources")}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-label uppercase tracking-wider text-sky-700 hover:underline"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0B192C] hover:bg-slate-800 text-white text-xs font-label uppercase tracking-wider font-semibold transition-all shadow-sm"
                 >
                   <Lock className="w-3.5 h-3.5 text-[#C8A84E]" />
                   <span>Cadet Sign In</span>
                 </button>
+                <span className="text-xs text-slate-500 font-sans">
+                  (Sign in required to open archives and read study material)
+                </span>
               </div>
             )}
           </div>

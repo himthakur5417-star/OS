@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
+import { useAuth } from "./AuthContext";
 
 interface UserSession {
   isLoggedIn: boolean;
@@ -29,6 +30,7 @@ interface ModalContextType {
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 export function ModalProvider({ children }: { children: React.ReactNode }) {
+  const { requireAuth } = useAuth();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isAiOpen, setIsAiOpen] = useState(false);
   const [aiInitialTab, setAiInitialTab] = useState<"syllabus" | "planner" | "accountability">("syllabus");
@@ -49,8 +51,10 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   const closeAi = () => setIsAiOpen(false);
 
   const openOrientation = (program = "general") => {
-    setOrientationDefaultProgram(program);
-    setIsOrientationOpen(true);
+    requireAuth(() => {
+      setOrientationDefaultProgram(program);
+      setIsOrientationOpen(true);
+    });
   };
   const closeOrientation = () => setIsOrientationOpen(false);
 
