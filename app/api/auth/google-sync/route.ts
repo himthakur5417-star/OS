@@ -10,30 +10,28 @@ import {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, displayName, uid, idToken } = body;
+    const { displayName, idToken } = body;
 
-    let verifiedEmail = String(email || "").trim().toLowerCase();
-    let verifiedUid = uid;
-    let authProvider = "google.com";
-
-    // 1. If Firebase ID token is provided, verify it cryptographically on server
-    if (idToken) {
-      const fbUser = await verifyFirebaseIdToken(idToken);
-      if (fbUser) {
-        verifiedEmail = fbUser.email.toLowerCase();
-        verifiedUid = fbUser.uid;
-        authProvider = fbUser.provider || "google.com";
-      } else {
-        return NextResponse.json(
-          { error: "Invalid or expired Google authentication session. Please sign in again." },
-          { status: 401 }
-        );
-      }
+    // 1. A valid Firebase ID token is MANDATORY for all users. Never trust client-supplied email or UID.
+    if (!idToken || typeof idToken !== "string") {
+      return NextResponse.json(
+        { error: "Authentication token (idToken) is required. Unverified requests are rejected." },
+        { status: 401 }
+      );
     }
 
-    if (!verifiedEmail || !verifiedEmail.includes("@")) {
-      return NextResponse.json({ error: "Invalid email provided by Google." }, { status: 400 });
+    const fbUser = await verifyFirebaseIdToken(idToken);
+    if (!fbUser || !fbUser.email) {
+      return NextResponse.json(
+        { error: "Invalid, expired, or unverified authentication token. Please sign in again." },
+        { status: 401 }
+      );
     }
+
+    // Cryptographically verified identity from token ONLY
+    const verifiedEmail = fbUser.email.toLowerCase();
+    const verifiedUid = fbUser.uid;
+    const authProvider = fbUser.provider || "google.com";
 
     const ip = req.headers.get("x-forwarded-for") || undefined;
     const userAgent = req.headers.get("user-agent") || undefined;
