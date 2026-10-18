@@ -61,7 +61,8 @@ const LOCAL_DB_FILE = path.join(LOCAL_DB_DIR, "database.json");
 
 const FIREBASE_PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "os-web-1cc80";
 const FIREBASE_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyCjC7CXHnESi9GBXNrxiN2PkLLVne-w3k4";
-const FIRESTORE_BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
+const FIREBASE_DATABASE_ID = process.env.FIREBASE_DATABASE_ID || "default";
+const FIRESTORE_BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/${FIREBASE_DATABASE_ID}/documents`;
 
 /**
  * Checks whether the current runtime environment is a serverless platform (e.g. Vercel).
@@ -150,6 +151,36 @@ function fromFirestoreDocument<T>(doc: any): T {
 // Cache status of Firestore connectivity
 let firestoreCheckResult: { working: boolean; error?: string } | null = null;
 let migrationCompleted = false;
+let cachedAccessToken: { token: string; exp: number } | null = null;
+
+async function getFirestoreAuthHeader(): Promise<Record<string, string>> {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+    try {
+      if (cachedAccessToken && cachedAccessToken.exp > Date.now() + 60000) {
+        return { Authorization: `Bearer ${cachedAccessToken.token}` };
+      }
+      const raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY.trim();
+      const parsed = JSON.parse(raw.startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf-8"));
+      const { GoogleAuth } = await import("google-auth-library");
+      const auth = new GoogleAuth({
+        credentials: parsed,
+        scopes: [
+          "https://www.googleapis.com/auth/datastore",
+          "https://www.googleapis.com/auth/cloud-platform"
+        ]
+      });
+      const client = await auth.getClient();
+      const tokenRes = await client.getAccessToken();
+      if (tokenRes && tokenRes.token) {
+        cachedAccessToken = { token: tokenRes.token, exp: Date.now() + 3500 * 1000 };
+        return { Authorization: `Bearer ${tokenRes.token}` };
+      }
+    } catch (e) {
+      console.warn("Failed to retrieve Google Service Account access token:", e);
+    }
+  }
+  return {};
+}
 
 /**
  * Checks whether Cloud Firestore is currently accessible and enabled.
@@ -157,9 +188,10 @@ let migrationCompleted = false;
 export async function checkFirestoreStatus(): Promise<{ available: boolean; error?: string; activationUrl: string }> {
   const activationUrl = `https://console.firebase.google.com/project/${FIREBASE_PROJECT_ID}/firestore`;
   try {
+    const authHeaders = await getFirestoreAuthHeader();
     const res = await fetch(`${FIRESTORE_BASE_URL}/enquiries?pageSize=1&key=${FIREBASE_API_KEY}`, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
     });
 
     if (res.ok) {
@@ -171,7 +203,7 @@ export async function checkFirestoreStatus(): Promise<{ available: boolean; erro
     const message = body?.error?.message || `HTTP ${res.status}`;
     let code = body?.error?.details?.[0]?.reason;
     if (!code) {
-      if (res.status === 403) code = "SERVICE_DISABLED";
+      if (res.status === 403) code = message.includes("Missing or insufficient permissions") ? "PERMISSION_DENIED" : "SERVICE_DISABLED";
       else if (res.status === 404 && message.includes("does not exist")) code = "DATABASE_NOT_CREATED";
       else code = "FIRESTORE_ERROR";
     }
@@ -187,10 +219,11 @@ export async function checkFirestoreStatus(): Promise<{ available: boolean; erro
 // --- Firestore Direct Document Access ---
 
 async function getFirestoreDocuments<T>(collection: string, pageSize = 300): Promise<T[]> {
+  const authHeaders = await getFirestoreAuthHeader();
   const url = `${FIRESTORE_BASE_URL}/${collection}?pageSize=${pageSize}&key=${FIREBASE_API_KEY}`;
   const res = await fetch(url, {
     method: "GET",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders },
     cache: "no-store",
   });
 
@@ -207,12 +240,13 @@ async function getFirestoreDocuments<T>(collection: string, pageSize = 300): Pro
 }
 
 async function getFirestoreDocument<T>(collection: string, docId: string): Promise<T | null> {
+  const authHeaders = await getFirestoreAuthHeader();
   const sanitizedId = encodeURIComponent(String(docId).replace(/\//g, "_"));
   const url = `${FIRESTORE_BASE_URL}/${collection}/${sanitizedId}?key=${FIREBASE_API_KEY}`;
   try {
     const res = await fetch(url, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
       cache: "no-store",
     });
 
@@ -227,13 +261,14 @@ async function getFirestoreDocument<T>(collection: string, docId: string): Promi
 }
 
 async function setFirestoreDocument<T extends Record<string, any>>(collection: string, docId: string, data: T): Promise<T> {
+  const authHeaders = await getFirestoreAuthHeader();
   const sanitizedId = encodeURIComponent(String(docId).replace(/\//g, "_"));
   const url = `${FIRESTORE_BASE_URL}/${collection}/${sanitizedId}?key=${FIREBASE_API_KEY}`;
   const fields = toFirestoreFields(data);
 
   const res = await fetch(url, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders },
     body: JSON.stringify({ fields }),
   });
 
@@ -249,12 +284,13 @@ async function setFirestoreDocument<T extends Record<string, any>>(collection: s
 }
 
 async function deleteFirestoreDocument(collection: string, docId: string): Promise<boolean> {
+  const authHeaders = await getFirestoreAuthHeader();
   const sanitizedId = encodeURIComponent(String(docId).replace(/\//g, "_"));
   const url = `${FIRESTORE_BASE_URL}/${collection}/${sanitizedId}?key=${FIREBASE_API_KEY}`;
 
   const res = await fetch(url, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders },
   });
 
   if (!res.ok && res.status !== 404) {
