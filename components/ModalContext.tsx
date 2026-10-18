@@ -51,10 +51,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   const closeAi = () => setIsAiOpen(false);
 
   const openOrientation = (program = "general") => {
-    requireAuth(() => {
-      setOrientationDefaultProgram(program);
-      setIsOrientationOpen(true);
-    });
+    setOrientationDefaultProgram(program);
+    setIsOrientationOpen(true);
   };
   const closeOrientation = () => setIsOrientationOpen(false);
 

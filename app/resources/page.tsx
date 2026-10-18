@@ -203,26 +203,24 @@ export default function ResourcesPage() {
   const [selectedDocTitle, setSelectedDocTitle] = useState<string | null>(null);
 
   const handleOpenFolder = (book: BookFolderData, docPdf?: string, docTitle?: string) => {
-    requireAuth(() => {
-      setOpenFolderId(book.id);
-      setActiveVaultTab(book.tab);
-      setIsVaultOpen(true);
+    setOpenFolderId(book.id);
+    setActiveVaultTab(book.tab);
+    setIsVaultOpen(true);
 
-      if (docPdf) {
-        setSelectedDocPdf(docPdf);
-        setSelectedDocTitle(docTitle || book.label);
-      } else {
-        setSelectedDocPdf(null);
-        setSelectedDocTitle(null);
+    if (docPdf) {
+      setSelectedDocPdf(docPdf);
+      setSelectedDocTitle(docTitle || book.label);
+    } else {
+      setSelectedDocPdf(null);
+      setSelectedDocTitle(null);
+    }
+
+    setTimeout(() => {
+      const el = document.getElementById("academic-vault-viewer");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-
-      setTimeout(() => {
-        const el = document.getElementById("academic-vault-viewer");
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 80);
-    });
+    }, 80);
   };
 
   const handleCloseFolder = () => {
@@ -237,13 +235,11 @@ export default function ResourcesPage() {
   };
 
   const handleTabChange = (newTab: VaultTab) => {
-    requireAuth(() => {
-      setActiveVaultTab(newTab);
-      const match = AVAILABLE_BOOKS.find((b) => b.tab === newTab);
-      if (match) {
-        setOpenFolderId(match.id);
-      }
-    });
+    setActiveVaultTab(newTab);
+    const match = AVAILABLE_BOOKS.find((b) => b.tab === newTab);
+    if (match) {
+      setOpenFolderId(match.id);
+    }
   };
 
   return (
