@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logLoginActivity } from "@/lib/db";
-import { ADMIN_PASSWORD, SESSION_COOKIE_NAME, verifyAdminSession, isAdminEmail } from "@/lib/adminAuth";
+import { 
+  ADMIN_PASSWORD, 
+  SESSION_COOKIE_NAME, 
+  verifyAdminSession, 
+  isAdminEmail,
+  isValidAdminPassword 
+} from "@/lib/adminAuth";
 
 // Check current admin session
 export async function GET(req: NextRequest) {
@@ -42,7 +48,7 @@ export async function POST(req: NextRequest) {
 
     if (
       isAdminEmail(normalizedEmail) &&
-      trimmedPass === ADMIN_PASSWORD
+      isValidAdminPassword(trimmedPass)
     ) {
       // Log successful admin login
       logLoginActivity({

@@ -1,4 +1,8 @@
 Record_Type,ID,Timestamp,Account_Email,Role_or_Page,Status_or_Referrer,IP_Address,Client_Device
+"LOGIN","log-1792308975305-1hsxo","2026-10-18T07:36:15.305Z","student@gmail.com","user","success","::1","curl/8.7.1"
+"LOGIN","log-1792308968460-tyq1a","2026-10-18T07:36:08.460Z","student@gmail.com","user","success","::1","curl/8.7.1"
+"LOGIN","log-1792308961798-q4gvg","2026-10-18T07:36:01.798Z","himthakur5417@gmail.com","admin","success","::1","curl/8.7.1"
+"LOGIN","log-1792308954285-4x7og","2026-10-18T07:35:54.285Z","himthakur5417@gmail.com","admin","success","::1","curl/8.7.1"
 "LOGIN","log-1792308386507-kyzw9","2026-10-18T07:26:26.507Z","himthakur5417@gmail.com","admin","success","::1","curl/8.7.1"
 "LOGIN","log-1792175245675-3x71j","2026-10-16T18:27:25.675Z","osupremum@gmail.com","admin","success","::1","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36"
 "LOGIN","log-1792174045684-t8hlc","2026-10-16T18:07:25.684Z","palakjha82@gmail.com","admin","success","::1","Web Client"

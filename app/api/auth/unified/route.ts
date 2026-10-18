@@ -3,7 +3,8 @@ import { logLoginActivity, recordUser, getAllUsers } from "@/lib/db";
 import { 
   ADMIN_PASSWORD, 
   SESSION_COOKIE_NAME, 
-  isAdminEmail 
+  isAdminEmail,
+  isValidAdminPassword
 } from "@/lib/adminAuth";
 
 export async function POST(req: NextRequest) {
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     if (isAdmin) {
       // Admin verification
-      if (trimmedPass !== ADMIN_PASSWORD) {
+      if (!isValidAdminPassword(trimmedPass)) {
         logLoginActivity({
           email: normalizedEmail,
           role: "admin",

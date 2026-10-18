@@ -14,6 +14,15 @@
   ],
   "users": [
     {
+      "uid": "google-student-456",
+      "email": "student@gmail.com",
+      "displayName": "Rahul Sharma",
+      "role": "cadet",
+      "rollNumber": "OS-MBR-3250",
+      "createdAt": "2026-10-18T07:36:08.460Z",
+      "lastLogin": "2026-10-18T07:36:15.305Z"
+    },
+    {
       "uid": "admin-palakjha82@gmail.com",
       "email": "palakjha82@gmail.com",
       "displayName": "Palak Jha",
@@ -41,16 +50,52 @@
       "lastLogin": "2026-10-16T18:04:31.839Z"
     },
     {
-      "uid": "admin-himthakur5417@gmail.com",
+      "uid": "google-123",
       "email": "himthakur5417@gmail.com",
       "displayName": "Himanshu Thakur",
       "role": "admin",
       "rollNumber": "OS-ADMIN",
       "createdAt": "2026-10-16T18:04:25.526Z",
-      "lastLogin": "2026-10-16T18:04:25.526Z"
+      "lastLogin": "2026-10-18T07:36:01.799Z"
     }
   ],
   "login_logs": [
+    {
+      "id": "log-1792308975305-1hsxo",
+      "email": "student@gmail.com",
+      "role": "user",
+      "status": "success",
+      "ip": "::1",
+      "userAgent": "curl/8.7.1",
+      "timestamp": "2026-10-18T07:36:15.305Z"
+    },
+    {
+      "id": "log-1792308968460-tyq1a",
+      "email": "student@gmail.com",
+      "role": "user",
+      "status": "success",
+      "ip": "::1",
+      "userAgent": "curl/8.7.1",
+      "timestamp": "2026-10-18T07:36:08.460Z"
+    },
+    {
+      "id": "log-1792308961798-q4gvg",
+      "email": "himthakur5417@gmail.com",
+      "role": "admin",
+      "status": "success",
+      "ip": "::1",
+      "userAgent": "curl/8.7.1",
+      "timestamp": "2026-10-18T07:36:01.798Z"
+    },
+    {
+      "id": "log-1792308954285-4x7og",
+      "email": "himthakur5417@gmail.com",
+      "role": "admin",
+      "status": "success",
+      "ip": "::1",
+      "userAgent": "curl/8.7.1",
+      "timestamp": "2026-10-18T07:35:54.285Z"
+    },
     {
       "id": "log-1792308386507-kyzw9",
       "email": "himthakur5417@gmail.com",
