@@ -99,6 +99,50 @@
   ],
   "traffic_logs": [
     {
+      "id": "trf-1792305150674-fdh54",
+      "path": "/",
+      "userEmail": "cadet@officium.academy",
+      "role": "user",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-18T06:32:30.674Z"
+    },
+    {
+      "id": "trf-1792305114593-5tdy5",
+      "path": "/programs/juniors",
+      "userEmail": "cadet@officium.academy",
+      "role": "user",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-18T06:31:54.593Z"
+    },
+    {
+      "id": "trf-1792305099683-mfz99",
+      "path": "/resources",
+      "userEmail": "cadet@officium.academy",
+      "role": "user",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-18T06:31:39.684Z"
+    },
+    {
+      "id": "trf-1792305097906-2ws94",
+      "path": "/",
+      "role": "guest",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-18T06:31:37.906Z"
+    },
+    {
+      "id": "trf-1792305097905-jwyiq",
+      "path": "/",
+      "userEmail": "cadet@officium.academy",
+      "role": "user",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-18T06:31:37.905Z"
+    },
+    {
       "id": "trf-1792304937573-fhlsj",
       "path": "/resources",
       "userEmail": "cadet@officium.academy",

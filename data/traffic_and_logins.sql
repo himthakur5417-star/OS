@@ -1,7 +1,7 @@
 -- =========================================================================
 -- OFFICIUM SUPREMUM: CENTRAL AUDIT & TRAFFIC DATABASE AUTO-EXPORT
 -- File: data/traffic_and_logins.sql
--- Generated at: 2026-10-18T06:28:57.574Z
+-- Generated at: 2026-10-18T06:32:30.675Z
 -- =========================================================================
 
 CREATE TABLE IF NOT EXISTS users (
@@ -49,6 +49,11 @@ INSERT INTO login_logs (id, email, role, status, ip, user_agent, timestamp) VALU
 INSERT INTO login_logs (id, email, role, status, ip, user_agent, timestamp) VALUES ('log-1792173865526-7288a', 'himthakur5417@gmail.com', 'admin', 'success', '::1', 'Web Client', '2026-10-16T18:04:25.526Z');
 
 -- WEBSITE TRAFFIC & VISITOR ACTIVITY
+INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) VALUES ('trf-1792305150674-fdh54', '/', 'cadet@officium.academy', 'user', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', NULL, '2026-10-18T06:32:30.674Z');
+INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) VALUES ('trf-1792305114593-5tdy5', '/programs/juniors', 'cadet@officium.academy', 'user', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', NULL, '2026-10-18T06:31:54.593Z');
+INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) VALUES ('trf-1792305099683-mfz99', '/resources', 'cadet@officium.academy', 'user', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', NULL, '2026-10-18T06:31:39.684Z');
+INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) VALUES ('trf-1792305097906-2ws94', '/', NULL, 'guest', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', NULL, '2026-10-18T06:31:37.906Z');
+INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) VALUES ('trf-1792305097905-jwyiq', '/', 'cadet@officium.academy', 'user', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', NULL, '2026-10-18T06:31:37.905Z');
 INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) VALUES ('trf-1792304937573-fhlsj', '/resources', 'cadet@officium.academy', 'user', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', 'http://localhost:3000/resources', '2026-10-18T06:28:57.573Z');
 INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) VALUES ('trf-1792304937558-ge70a', '/resources', NULL, 'guest', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', 'http://localhost:3000/resources', '2026-10-18T06:28:57.558Z');
 INSERT INTO traffic_logs (id, path, user_email, role, ip, user_agent, referrer, timestamp) VALUES ('trf-1792304931459-f0cte', '/resources', 'cadet@officium.academy', 'user', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', 'http://localhost:3000/resources', '2026-10-18T06:28:51.459Z');
