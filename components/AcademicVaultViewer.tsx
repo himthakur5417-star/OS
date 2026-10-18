@@ -79,9 +79,11 @@ export default function AcademicVaultViewer({
   );
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  // Open document directly in modal reader
+  // Open document in modal reader (prompts sign-in if guest, then opens)
   const openDoc = (doc: { title: string; pdf: string; meta?: string }) => {
-    setActiveModalDoc(doc);
+    requireAuth(() => {
+      setActiveModalDoc(doc);
+    });
   };
 
   // Sync incoming doc if passed from parent

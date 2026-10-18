@@ -203,24 +203,26 @@ export default function ResourcesPage() {
   const [selectedDocTitle, setSelectedDocTitle] = useState<string | null>(null);
 
   const handleOpenFolder = (book: BookFolderData, docPdf?: string, docTitle?: string) => {
-    setOpenFolderId(book.id);
-    setActiveVaultTab(book.tab);
-    setIsVaultOpen(true);
+    requireAuth(() => {
+      setOpenFolderId(book.id);
+      setActiveVaultTab(book.tab);
+      setIsVaultOpen(true);
 
-    if (docPdf) {
-      setSelectedDocPdf(docPdf);
-      setSelectedDocTitle(docTitle || book.label);
-    } else {
-      setSelectedDocPdf(null);
-      setSelectedDocTitle(null);
-    }
-
-    setTimeout(() => {
-      const el = document.getElementById("academic-vault-viewer");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (docPdf) {
+        setSelectedDocPdf(docPdf);
+        setSelectedDocTitle(docTitle || book.label);
+      } else {
+        setSelectedDocPdf(null);
+        setSelectedDocTitle(null);
       }
-    }, 80);
+
+      setTimeout(() => {
+        const el = document.getElementById("academic-vault-viewer");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 80);
+    });
   };
 
   const handleCloseFolder = () => {
@@ -235,11 +237,13 @@ export default function ResourcesPage() {
   };
 
   const handleTabChange = (newTab: VaultTab) => {
-    setActiveVaultTab(newTab);
-    const match = AVAILABLE_BOOKS.find((b) => b.tab === newTab);
-    if (match) {
-      setOpenFolderId(match.id);
-    }
+    requireAuth(() => {
+      setActiveVaultTab(newTab);
+      const match = AVAILABLE_BOOKS.find((b) => b.tab === newTab);
+      if (match) {
+        setOpenFolderId(match.id);
+      }
+    });
   };
 
   return (
@@ -258,21 +262,18 @@ export default function ResourcesPage() {
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 font-sans leading-relaxed">
-              Explore our 30-chapter Mathematics archives, 396-page English master volume, official 2020–2026 UPSC papers, and comprehensive NDA &amp; CDS syllabi.
+              Curated study material, complete curriculum archives, and examination blueprints.
             </p>
 
             {!user && (
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div className="pt-2 flex items-center">
                 <button
                   onClick={() => openAuthModal("signin", "/resources")}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0B192C] hover:bg-slate-800 text-white text-xs font-label uppercase tracking-wider font-semibold transition-all shadow-sm"
                 >
                   <Lock className="w-3.5 h-3.5 text-[#C8A84E]" />
-                  <span>Cadet Sign In</span>
+                  <span>Sign In</span>
                 </button>
-                <span className="text-xs text-slate-500 font-sans">
-                  Open archive access. Sign in to save bookmarks and sync officer drill notes.
-                </span>
               </div>
             )}
           </div>
