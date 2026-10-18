@@ -71,20 +71,21 @@ const initialData: DatabaseSchema = {
 
 // Ensure data directory and file exist
 function initDB(): DatabaseSchema {
-  if (!fs.existsSync(DB_DIR)) {
-    fs.mkdirSync(DB_DIR, { recursive: true });
-  }
-
-  if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), "utf-8");
-    return initialData;
-  }
-
   try {
+    if (!fs.existsSync(DB_DIR)) {
+      try { fs.mkdirSync(DB_DIR, { recursive: true }); } catch {}
+    }
+
+    if (!fs.existsSync(DB_FILE)) {
+      try {
+        fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), "utf-8");
+      } catch {}
+      return initialData;
+    }
+
     const raw = fs.readFileSync(DB_FILE, "utf-8");
     return JSON.parse(raw);
   } catch (err) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), "utf-8");
     return initialData;
   }
 }
@@ -177,15 +178,21 @@ function syncSqlAndCsvFiles(data: DatabaseSchema): void {
 
 // Thread-safe write helper
 function writeDB(data: DatabaseSchema): void {
-  if (!fs.existsSync(DB_DIR)) {
-    fs.mkdirSync(DB_DIR, { recursive: true });
-  }
-  const tempFile = `${DB_FILE}.tmp.${Date.now()}`;
-  fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf-8");
-  fs.renameSync(tempFile, DB_FILE);
+  try {
+    if (!fs.existsSync(DB_DIR)) {
+      try { fs.mkdirSync(DB_DIR, { recursive: true }); } catch {}
+    }
+    const tempFile = `${DB_FILE}.tmp.${Date.now()}`;
+    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf-8");
+    fs.renameSync(tempFile, DB_FILE);
 
-  // Automatically sync to local SQL and CSV files
-  syncSqlAndCsvFiles(data);
+    // Automatically sync to local SQL and CSV files
+    syncSqlAndCsvFiles(data);
+  } catch (fsErr) {
+    // In serverless/Vercel production environments the filesystem is read-only.
+    // We catch this gracefully so logins and other operations never throw 500 errors.
+    console.warn("Read-only filesystem: persistence to local JSON skipped on serverless.", fsErr);
+  }
 }
 
 

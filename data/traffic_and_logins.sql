@@ -1,7 +1,7 @@
 -- =========================================================================
 -- OFFICIUM SUPREMUM: CENTRAL AUDIT & TRAFFIC DATABASE AUTO-EXPORT
 -- File: data/traffic_and_logins.sql
--- Generated at: 2026-10-18T06:32:30.675Z
+-- Generated at: 2026-10-18T07:26:26.508Z
 -- =========================================================================
 
 CREATE TABLE IF NOT EXISTS users (
@@ -42,6 +42,7 @@ INSERT INTO users (uid, email, display_name, role, roll_number, created_at, last
 INSERT INTO users (uid, email, display_name, role, roll_number, created_at, last_login) VALUES ('admin-himthakur5417@gmail.com', 'himthakur5417@gmail.com', 'Himanshu Thakur', 'admin', 'OS-ADMIN', '2026-10-16T18:04:25.526Z', '2026-10-16T18:04:25.526Z') ON CONFLICT (uid) DO UPDATE SET last_login = EXCLUDED.last_login;
 
 -- LOGIN & SECURITY AUDIT LOGS
+INSERT INTO login_logs (id, email, role, status, ip, user_agent, timestamp) VALUES ('log-1792308386507-kyzw9', 'himthakur5417@gmail.com', 'admin', 'success', '::1', 'curl/8.7.1', '2026-10-18T07:26:26.507Z');
 INSERT INTO login_logs (id, email, role, status, ip, user_agent, timestamp) VALUES ('log-1792175245675-3x71j', 'osupremum@gmail.com', 'admin', 'success', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', '2026-10-16T18:27:25.675Z');
 INSERT INTO login_logs (id, email, role, status, ip, user_agent, timestamp) VALUES ('log-1792174045684-t8hlc', 'palakjha82@gmail.com', 'admin', 'success', '::1', 'Web Client', '2026-10-16T18:07:25.684Z');
 INSERT INTO login_logs (id, email, role, status, ip, user_agent, timestamp) VALUES ('log-1792173878168-5w33c', 'shiwangit78@gmail.com', 'admin', 'success', '::1', 'Web Client', '2026-10-16T18:04:38.168Z');

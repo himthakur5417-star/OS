@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
         success: true,
         role: "admin",
         redirectTo: "/admin",
+        token,
         user: {
           uid: "admin-" + normalizedEmail,
           email: normalizedEmail,

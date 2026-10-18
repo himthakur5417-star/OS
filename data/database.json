@@ -52,6 +52,15 @@
   ],
   "login_logs": [
     {
+      "id": "log-1792308386507-kyzw9",
+      "email": "himthakur5417@gmail.com",
+      "role": "admin",
+      "status": "success",
+      "userAgent": "curl/8.7.1",
+      "ip": "::1",
+      "timestamp": "2026-10-18T07:26:26.507Z"
+    },
+    {
       "id": "log-1792175245675-3x71j",
       "email": "osupremum@gmail.com",
       "role": "admin",

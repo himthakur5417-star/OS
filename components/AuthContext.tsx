@@ -61,7 +61,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const localUser = localStorage.getItem("os_active_user") || localStorage.getItem("os_demo_user");
     if (localUser) {
       try {
-        setUser(JSON.parse(localUser));
+        const parsed = JSON.parse(localUser);
+        // Automatically purge any stale mock cadet sessions
+        if (parsed.email === "cadet@officium.academy" && (parsed.uid?.startsWith("google-usr-") || !parsed.uid)) {
+          localStorage.removeItem("os_active_user");
+          localStorage.removeItem("os_demo_user");
+          setUser(null);
+        } else {
+          setUser(parsed);
+        }
         setLoading(false);
       } catch (e) {
         localStorage.removeItem("os_active_user");
@@ -154,6 +162,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error(data.error || "Authentication failed. Please check credentials.");
     }
 
+    if (data.token) {
+      localStorage.setItem("os_admin_token", data.token);
+    }
+
     // Optional Firebase Client Sync
     try {
       if (auth) {
@@ -189,6 +201,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error(data.error || "Registration failed. Please check credentials.");
     }
 
+    if (data.token) {
+      localStorage.setItem("os_admin_token", data.token);
+    }
+
     // Optional Firebase Client Sync
     try {
       if (auth) {
@@ -213,55 +229,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signInGoogle = async () => {
+    if (!auth || !googleProvider) {
+      throw new Error("Google authentication is initializing. Please try again in a moment.");
+    }
+
     try {
-      if (auth && googleProvider) {
-        const result = await signInWithPopup(auth, googleProvider);
-        if (result?.user) {
-          const u = result.user;
-          const userObj: CustomUser = {
+      const result = await signInWithPopup(auth, googleProvider);
+      if (result?.user) {
+        const u = result.user;
+        const res = await fetch("/api/auth/google-sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
             uid: u.uid,
             email: u.email,
             displayName: u.displayName || (u.email ? u.email.split("@")[0] : "Cadet"),
-            role: "user",
-            rollNumber: `OS-MBR-${Math.floor(1000 + Math.random() * 9000)}`,
-          };
+          }),
+        });
 
-          try {
-            await fetch("/api/auth/log", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: u.email,
-                role: "user",
-                status: "success",
-                userDetails: userObj,
-              }),
-            });
-          } catch (e) {}
-
-          setUser(userObj);
-          localStorage.setItem("os_active_user", JSON.stringify(userObj));
-          setIsAuthModalOpen(false);
-          checkRedirect("/");
-          return;
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to synchronize profile.");
         }
-      }
-    } catch (error) {
-      console.warn("Google sign-in popup handled with fallback:", error);
-    }
 
-    // Graceful fallback for environments with blocked popups or unlisted domains
-    const googleMock: CustomUser = {
-      uid: "google-usr-" + Date.now().toString(36),
-      email: "cadet@officium.academy",
-      displayName: "Officer Cadet",
-      role: "user",
-      rollNumber: `OS-MBR-${Math.floor(1000 + Math.random() * 9000)}`,
-    };
-    setUser(googleMock);
-    localStorage.setItem("os_active_user", JSON.stringify(googleMock));
-    setIsAuthModalOpen(false);
-    checkRedirect("/");
+        if (data.token) {
+          localStorage.setItem("os_admin_token", data.token);
+        }
+
+        setUser(data.user);
+        localStorage.setItem("os_active_user", JSON.stringify(data.user));
+        setIsAuthModalOpen(false);
+
+        if (data.role === "admin") {
+          pendingActionRef.current = null;
+          router.push("/admin");
+        } else {
+          checkRedirect(data.redirectTo || "/");
+        }
+        return;
+      }
+    } catch (error: any) {
+      console.error("Google sign-in error:", error);
+      if (error?.code === "auth/popup-closed-by-user") {
+        return; // User intentionally closed popup, no error needed
+      }
+      if (error?.code === "auth/unauthorized-domain") {
+        throw new Error(
+          "Domain is not authorized in Firebase Console yet. Please add this domain to Firebase Console > Authentication > Settings > Authorized Domains, or sign in using your Admin Email & Password."
+        );
+      }
+      throw new Error(error?.message || "Google sign-in could not be completed.");
+    }
   };
 
   const loginDemo = (role: "cadet" | "scholar" | "parent" = "cadet") => {
