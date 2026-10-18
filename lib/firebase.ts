@@ -4,11 +4,16 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
+  browserLocalPersistence,
+  setPersistence,
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
   type User
 } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyCjC7CXHnESi9GBXNrxiN2PkLLVne-w3k4",
@@ -21,7 +26,6 @@ const firebaseConfig = {
 
 // Safe lazy getter functions (prevents lexical TDZ and SSR crashes)
 export function getFirebaseApp() {
-  if (typeof window === "undefined") return null;
   try {
     return getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
   } catch (e) {
@@ -31,37 +35,54 @@ export function getFirebaseApp() {
 }
 
 export function getFirebaseAuth() {
-  if (typeof window === "undefined") return null;
   try {
     const a = getFirebaseApp();
-    return a ? getAuth(a) : null;
+    if (!a) return null;
+    const aAuth = getAuth(a);
+    if (typeof window !== "undefined") {
+      setPersistence(aAuth, browserLocalPersistence).catch(() => {});
+    }
+    return aAuth;
   } catch (e) {
     console.warn("Firebase Auth init warning:", e);
     return null;
   }
 }
 
+export function getFirestoreDb(): Firestore | null {
+  try {
+    const a = getFirebaseApp();
+    return a ? getFirestore(a) : null;
+  } catch (e) {
+    console.warn("Firestore init warning:", e);
+    return null;
+  }
+}
+
 export function getGoogleProvider() {
-  if (typeof window === "undefined") return null;
   try {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
+    provider.addScope("email");
+    provider.addScope("profile");
     return provider;
   } catch (e) {
     return null;
   }
 }
 
-// Hoisted references to prevent any Temporal Dead Zone (TDZ) ReferenceError
+// Client-side instances
 var auth: any = null;
 var googleProvider: any = null;
 var app: any = null;
+var db: any = null;
 
 if (typeof window !== "undefined") {
   try {
     app = getFirebaseApp();
     auth = getFirebaseAuth();
     googleProvider = getGoogleProvider();
+    db = getFirestoreDb();
   } catch (e) {
     console.warn("Firebase client fallback:", e);
   }
@@ -70,10 +91,13 @@ if (typeof window !== "undefined") {
 export {
   app,
   auth,
+  db,
   googleProvider,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut,
   onAuthStateChanged,
   type User
