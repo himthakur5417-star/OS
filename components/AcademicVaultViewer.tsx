@@ -278,31 +278,16 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
       {activeTab === "nda-maths" && (
         <div className="space-y-6 animate-fadeIn">
           {/* Header Banner */}
-          <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C8A84E]/20 text-[#C8A84E] text-xs font-label uppercase tracking-widest font-bold mb-2">
-                UPSC Examination · Paper 1
-              </div>
-              <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
-                NDA Mathematics Archive (30 Chapters · 4,330+ Qs)
-              </h3>
-              <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-xl">
-                Every chapter includes structured theory summaries, graded cadet drill problems, and 15 years of solved UPSC NDA PYQs.
-              </p>
+          <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C8A84E]/20 text-[#C8A84E] text-xs font-label uppercase tracking-widest font-bold mb-2">
+              UPSC Examination · Paper 1
             </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => {
-                  openDoc({
-                    title: "NDA Mathematics 30-Chapter Drill Vault",
-                    pdf: "/NDA mathematics/index.html",
-                  });
-                }}
-                className="px-5 py-2.5 rounded-xl bg-[#C8A84E] hover:bg-[#b5953e] text-slate-950 font-label text-xs uppercase tracking-wider font-bold shadow-sm transition-all"
-              >
-                Open Complete Index
-              </button>
-            </div>
+            <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
+              NDA Mathematics Archive (30 Chapters · 4,330+ Qs)
+            </h3>
+            <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-2xl">
+              Every chapter includes structured theory summaries, graded drill problems, and 15 years of solved UPSC NDA PYQs.
+            </p>
           </div>
 
           {/* Chapters Grid */}
@@ -357,32 +342,16 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
       {activeTab === "cds-maths" && (
         <div className="space-y-6 animate-fadeIn">
           {/* Master Volume Hero */}
-          <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs font-label uppercase tracking-widest font-bold mb-2">
-                Officer Trainee Cadre · IMA, INA &amp; AFA
-              </div>
-              <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
-                CDS Mathematics (22 Chapters · 383 Pages)
-              </h3>
-              <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-xl">
-                Comprehensive 383-page single master volume covering Arithmetic, Algebra, Geometry, Mensuration, Trigonometry, and Statistics.
-              </p>
+          <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs font-label uppercase tracking-widest font-bold mb-2">
+              Officer Trainee Cadre · IMA, INA &amp; AFA
             </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => {
-                  openDoc({
-                    title: "CDS Mathematics Master Volume (383 Pages)",
-                    pdf: "/CDS mathematics/CDS-Mathematics-Officium-Supremum.pdf",
-                    meta: "383-Page Full Master Volume",
-                  });
-                }}
-                className="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-label text-xs uppercase tracking-wider font-bold shadow-sm transition-all"
-              >
-                Read 383-Pg Master Vol
-              </button>
-            </div>
+            <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
+              CDS Mathematics (22 Chapters · 383 Pages)
+            </h3>
+            <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-2xl">
+              Comprehensive 22 chapters covering Arithmetic, Algebra, Geometry, Mensuration, Trigonometry, and Statistics.
+            </p>
           </div>
 
           {/* Chapters Grid */}
@@ -439,32 +408,16 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
       {activeTab === "english" && (
         <div className="space-y-6 animate-fadeIn">
           {/* Master Volume Hero */}
-          <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-label uppercase tracking-widest font-bold mb-2">
-                Curriculum Blueprint · NDA &amp; CDS
-              </div>
-              <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
-                NDA &amp; CDS English Master Volume (34 Chapters · 396 Pages)
-              </h3>
-              <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-xl">
-                Rigorous coverage of grammar core rules, sentence correction, idioms, vocabulary roots, cloze test, and reading comprehension.
-              </p>
+          <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-label uppercase tracking-widest font-bold mb-2">
+              Curriculum Blueprint · NDA &amp; CDS
             </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => {
-                  openDoc({
-                    title: "NDA & CDS English Master Volume (396 Pages)",
-                    pdf: "/NDA CDS English/NDA-CDS-English-Officium-Supremum.pdf",
-                    meta: "396-Page Full Master Volume",
-                  });
-                }}
-                className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-label text-xs uppercase tracking-wider font-bold shadow-sm transition-all"
-              >
-                Read 396-Pg Master Vol
-              </button>
-            </div>
+            <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
+              NDA &amp; CDS English Master Volume (34 Chapters · 396 Pages)
+            </h3>
+            <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-2xl">
+              Rigorous coverage of grammar core rules, sentence correction, idioms, vocabulary roots, cloze test, and reading comprehension.
+            </p>
           </div>
 
           {/* Chapters Grid */}
