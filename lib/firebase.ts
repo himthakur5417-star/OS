@@ -21,9 +21,18 @@ const firebaseConfig = {
 
 
 // Initialize Firebase safely
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+let app: any = null;
+let auth: any = null;
+let googleProvider: any = null;
+
+try {
+  app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  googleProvider = new GoogleAuthProvider();
+  googleProvider.setCustomParameters({ prompt: "select_account" });
+} catch (error) {
+  console.warn("Firebase client initialization handled gracefully:", error);
+}
 
 export {
   app,

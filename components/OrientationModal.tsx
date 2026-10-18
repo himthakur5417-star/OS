@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { useModals } from "./ModalContext";
+import { useAuth } from "./AuthContext";
 import { X, Calendar, CheckCircle2, Send, MessageCircle, ArrowRight, Loader2 } from "lucide-react";
 
 export function OrientationModal() {
   const { isOrientationOpen, closeOrientation, orientationDefaultProgram } = useModals();
+  const { user } = useAuth();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -21,6 +23,17 @@ export function OrientationModal() {
       setProgram(orientationDefaultProgram);
     }
   }, [orientationDefaultProgram]);
+
+  useEffect(() => {
+    if (user) {
+      if (user.displayName && !name) {
+        setName(user.displayName);
+      }
+      if (user.email && !email) {
+        setEmail(user.email);
+      }
+    }
+  }, [user]);
 
   if (!isOrientationOpen) return null;
 

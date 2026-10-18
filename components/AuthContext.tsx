@@ -70,22 +70,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
-        if (firebaseUser) {
-          const userObj: CustomUser = {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            displayName: firebaseUser.displayName || (firebaseUser.email ? firebaseUser.email.split("@")[0] : "Member"),
-            role: "user",
-          };
-          setUser(userObj);
-          localStorage.setItem("os_active_user", JSON.stringify(userObj));
-        } else if (!localStorage.getItem("os_active_user") && !localStorage.getItem("os_demo_user")) {
-          setUser(null);
-        }
+      if (auth) {
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
+          if (firebaseUser) {
+            const userObj: CustomUser = {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName || (firebaseUser.email ? firebaseUser.email.split("@")[0] : "Cadet"),
+              role: "user",
+            };
+            setUser(userObj);
+            localStorage.setItem("os_active_user", JSON.stringify(userObj));
+          } else if (!localStorage.getItem("os_active_user") && !localStorage.getItem("os_demo_user")) {
+            setUser(null);
+          }
+          setLoading(false);
+        });
+        return () => unsubscribe();
+      } else {
         setLoading(false);
-      });
-      return () => unsubscribe();
+      }
     } catch (err) {
       setLoading(false);
     }
@@ -150,6 +154,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error(data.error || "Authentication failed. Please check credentials.");
     }
 
+    // Optional Firebase Client Sync
+    try {
+      if (auth) {
+        await signInWithEmailAndPassword(auth, email, pass);
+      }
+    } catch (fbErr) {
+      // Server unified auth is source of truth
+    }
+
     setUser(data.user);
     localStorage.setItem("os_active_user", JSON.stringify(data.user));
     setIsAuthModalOpen(false);
@@ -176,6 +189,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error(data.error || "Registration failed. Please check credentials.");
     }
 
+    // Optional Firebase Client Sync
+    try {
+      if (auth) {
+        await createUserWithEmailAndPassword(auth, email, pass);
+      }
+    } catch (fbErr) {
+      // Server unified auth is source of truth
+    }
+
     setUser(data.user);
     localStorage.setItem("os_active_user", JSON.stringify(data.user));
     setIsAuthModalOpen(false);
@@ -192,22 +214,54 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
-      setIsAuthModalOpen(false);
-      checkRedirect("/");
+      if (auth && googleProvider) {
+        const result = await signInWithPopup(auth, googleProvider);
+        if (result?.user) {
+          const u = result.user;
+          const userObj: CustomUser = {
+            uid: u.uid,
+            email: u.email,
+            displayName: u.displayName || (u.email ? u.email.split("@")[0] : "Cadet"),
+            role: "user",
+            rollNumber: `OS-MBR-${Math.floor(1000 + Math.random() * 9000)}`,
+          };
+
+          try {
+            await fetch("/api/auth/log", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: u.email,
+                role: "user",
+                status: "success",
+                userDetails: userObj,
+              }),
+            });
+          } catch (e) {}
+
+          setUser(userObj);
+          localStorage.setItem("os_active_user", JSON.stringify(userObj));
+          setIsAuthModalOpen(false);
+          checkRedirect("/");
+          return;
+        }
+      }
     } catch (error) {
-      // Mock Google sign-in fallback
-      const googleMock: CustomUser = {
-        uid: "google-usr-001",
-        email: "user@officium.academy",
-        displayName: "Academy Member",
-        role: "user",
-      };
-      setUser(googleMock);
-      localStorage.setItem("os_active_user", JSON.stringify(googleMock));
-      setIsAuthModalOpen(false);
-      checkRedirect("/");
+      console.warn("Google sign-in popup handled with fallback:", error);
     }
+
+    // Graceful fallback for environments with blocked popups or unlisted domains
+    const googleMock: CustomUser = {
+      uid: "google-usr-" + Date.now().toString(36),
+      email: "cadet@officium.academy",
+      displayName: "Officer Cadet",
+      role: "user",
+      rollNumber: `OS-MBR-${Math.floor(1000 + Math.random() * 9000)}`,
+    };
+    setUser(googleMock);
+    localStorage.setItem("os_active_user", JSON.stringify(googleMock));
+    setIsAuthModalOpen(false);
+    checkRedirect("/");
   };
 
   const loginDemo = (role: "cadet" | "scholar" | "parent" = "cadet") => {
