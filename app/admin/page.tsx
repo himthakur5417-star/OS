@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import {
   Users,
-  MessageSquare,
   Shield,
   Phone,
   Mail,
-  Calendar,
   Clock,
   CheckCircle2,
   AlertCircle,
@@ -26,7 +24,15 @@ import {
   FileText,
   UserCheck,
   Zap,
-  Tag
+  Globe,
+  KeyRound,
+  MessageCircle,
+  Copy,
+  Check,
+  Inbox,
+  User as UserIcon,
+  Activity,
+  ArrowUpRight
 } from "lucide-react";
 
 interface Enquiry {
@@ -34,10 +40,10 @@ interface Enquiry {
   name: string;
   phone: string;
   email: string;
-  program: "defense" | "scholars" | "juniors" | "general";
-  source: "contact_page" | "orientation_modal" | "assessment_call" | "manual_entry";
+  program: string;
+  source: string;
   message: string;
-  status: "new" | "contacted" | "in_progress" | "enrolled" | "archived";
+  status: "new" | "contacted" | "in_progress" | "enrolled" | "archived" | string;
   notes?: string;
   createdAt: string;
 }
@@ -46,7 +52,7 @@ interface UserAccount {
   uid: string;
   email: string;
   displayName: string;
-  role: "admin" | "cadet" | "scholar" | "junior" | "parent";
+  role: "admin" | "user" | string;
   rollNumber: string;
   phone?: string;
   targetExam?: string;
@@ -58,25 +64,10 @@ interface LoginLog {
   id: string;
   email: string;
   role: string;
-  status: "success" | "failed";
+  status: "success" | "failed" | string;
   userAgent?: string;
+  ip?: string;
   timestamp: string;
-}
-
-interface Stats {
-  totalEnquiries: number;
-  newEnquiries: number;
-  contactedEnquiries: number;
-  enrolledEnquiries: number;
-  orientationBookings: number;
-  contactMessages: number;
-  totalUsers: number;
-  totalCadets: number;
-  totalScholars: number;
-  totalJuniors: number;
-  recentLoginsCount: number;
-  totalPageViews?: number;
-  recentPageViews?: number;
 }
 
 interface TrafficLog {
@@ -90,31 +81,59 @@ interface TrafficLog {
   timestamp: string;
 }
 
+interface Stats {
+  totalEnquiries: number;
+  newEnquiries: number;
+  contactedEnquiries: number;
+  enrolledEnquiries: number;
+  orientationBookings: number;
+  contactMessages: number;
+  totalAccounts?: number;
+  totalUsers: number;
+  totalAdmins: number;
+  totalStandardUsers: number;
+  totalLogins: number;
+  successfulLogins: number;
+  failedLogins: number;
+  recentLoginsCount: number;
+  totalPageViews?: number;
+  recentPageViews?: number;
+}
+
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [activeAdminEmail, setActiveAdminEmail] = useState<string>("admin@officium.academy");
+
+  // Data states
   const [stats, setStats] = useState<Stats | null>(null);
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [users, setUsers] = useState<UserAccount[]>([]);
   const [logs, setLogs] = useState<LoginLog[]>([]);
   const [trafficLogs, setTrafficLogs] = useState<TrafficLog[]>([]);
-  const [logSubTab, setLogSubTab] = useState<"logins" | "traffic">("logins");
 
-  // Active Tab
-  const [activeTab, setActiveTab] = useState<"enquiries" | "users" | "logs" | "new-lead">("enquiries");
+  // Active Tab: "enquiries" | "logins" | "users" | "traffic" | "new-lead"
+  const [activeTab, setActiveTab] = useState<"enquiries" | "logins" | "users" | "traffic" | "new-lead">("enquiries");
 
-  // Filter State
-  const [searchQuery, setSearchQuery] = useState("");
-  const [programFilter, setProgramFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [logFilter, setLogFilter] = useState<"all" | "admin" | "user" | "failed">("all");
+  // Search and Filter states
+  const [enquirySearch, setEnquirySearch] = useState("");
+  const [enquiryStatusFilter, setEnquiryStatusFilter] = useState("all");
+  const [enquiryProgramFilter, setEnquiryProgramFilter] = useState("all");
 
-  // Editing Note Modal
+  const [loginSearch, setLoginSearch] = useState("");
+  const [loginRoleFilter, setLoginRoleFilter] = useState<"all" | "admin" | "user">("all");
+  const [loginStatusFilter, setLoginStatusFilter] = useState<"all" | "success" | "failed">("all");
+
+  const [userSearch, setUserSearch] = useState("");
+  const [userRoleFilter, setUserRoleFilter] = useState<"all" | "admin" | "user">("all");
+
+  // Notes Modal state
   const [editingNoteEnquiry, setEditingNoteEnquiry] = useState<Enquiry | null>(null);
   const [currentNote, setCurrentNote] = useState("");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // New Lead Form State
+  // New Lead state
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -133,7 +152,6 @@ export default function AdminDashboardPage() {
     return headers;
   };
 
-  // Check auth and load data
   const loadDashboardData = async () => {
     try {
       // 1. Verify session
@@ -143,6 +161,10 @@ export default function AdminDashboardPage() {
       if (!authRes.ok) {
         router.push("/admin/login");
         return;
+      }
+      const authData = await authRes.json();
+      if (authData.admin?.email) {
+        setActiveAdminEmail(authData.admin.email);
       }
 
       // 2. Fetch Stats
@@ -172,8 +194,8 @@ export default function AdminDashboardPage() {
         setUsers(usersData.users || []);
       }
 
-      // 5. Fetch Logs
-      const logsRes = await fetch("/api/admin/logs?limit=50", {
+      // 5. Fetch Login Logs
+      const logsRes = await fetch("/api/admin/logs?limit=200", {
         headers: getAdminHeaders(),
       });
       if (logsRes.ok) {
@@ -181,8 +203,8 @@ export default function AdminDashboardPage() {
         setLogs(logsData.logs || []);
       }
 
-      // 6. Fetch Traffic
-      const trfRes = await fetch("/api/admin/traffic?limit=100", {
+      // 6. Fetch Traffic Logs
+      const trfRes = await fetch("/api/admin/traffic?limit=200", {
         headers: getAdminHeaders(),
       });
       if (trfRes.ok) {
@@ -212,16 +234,15 @@ export default function AdminDashboardPage() {
         method: "DELETE",
         headers: getAdminHeaders(),
       });
-    } catch (e) {
-      // ignore
-    }
+    } catch (e) {}
     if (typeof window !== "undefined") {
       localStorage.removeItem("os_admin_token");
+      localStorage.removeItem("os_active_user");
     }
     router.push("/admin/login");
   };
 
-  const handleStatusChange = async (id: string, newStatus: Enquiry["status"]) => {
+  const handleStatusChange = async (id: string, newStatus: string) => {
     try {
       const res = await fetch("/api/admin/enquiries", {
         method: "PATCH",
@@ -233,7 +254,6 @@ export default function AdminDashboardPage() {
         setEnquiries((prev) =>
           prev.map((item) => (item.id === id ? { ...item, status: newStatus } : item))
         );
-        // Refresh stats
         const statsRes = await fetch("/api/admin/stats", {
           headers: getAdminHeaders(),
         });
@@ -288,6 +308,38 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const handleClearLogs = async () => {
+    if (!confirm("Clear all login history logs? This cannot be undone.")) return;
+    try {
+      const res = await fetch("/api/admin/logs", {
+        method: "DELETE",
+        headers: getAdminHeaders(),
+      });
+      if (res.ok) {
+        setLogs([]);
+        await handleRefresh();
+      }
+    } catch (e) {
+      console.error("Failed to clear logs", e);
+    }
+  };
+
+  const handleClearTraffic = async () => {
+    if (!confirm("Clear all website traffic history logs?")) return;
+    try {
+      const res = await fetch("/api/admin/traffic", {
+        method: "DELETE",
+        headers: getAdminHeaders(),
+      });
+      if (res.ok) {
+        setTrafficLogs([]);
+        await handleRefresh();
+      }
+    } catch (e) {
+      console.error("Failed to clear traffic", e);
+    }
+  };
+
   const handleCreateManualLead = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName || !newPhone) return;
@@ -301,7 +353,7 @@ export default function AdminDashboardPage() {
           phone: newPhone,
           email: newEmail,
           program: newProgram,
-          message: newMessage || "Manual lead entry via Admin Command",
+          message: newMessage || "Manual entry recorded via Director Terminal",
           status: newStatus,
         }),
       });
@@ -323,20 +375,19 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Export to CSV Functionality
   const handleExportCSV = () => {
     if (!enquiries.length) return;
 
-    const headers = ["ID", "Name", "Phone", "Email", "Program", "Source", "Status", "Message", "Notes", "Created At"];
+    const headers = ["Lead ID", "Candidate Name", "Phone", "Email", "Program Track", "Source", "Status", "Candidate Inquiry", "Admin Notes", "Submitted Date"];
     const rows = filteredEnquiries.map((e) => [
       `"${e.id}"`,
-      `"${e.name.replace(/"/g, '""')}"`,
-      `"${e.phone}"`,
-      `"${e.email}"`,
-      `"${e.program}"`,
-      `"${e.source}"`,
-      `"${e.status}"`,
-      `"${e.message.replace(/"/g, '""')}"`,
+      `"${(e.name || "").replace(/"/g, '""')}"`,
+      `"${e.phone || ""}"`,
+      `"${e.email || ""}"`,
+      `"${e.program || ""}"`,
+      `"${e.source || ""}"`,
+      `"${e.status || ""}"`,
+      `"${(e.message || "").replace(/"/g, '""')}"`,
       `"${(e.notes || "").replace(/"/g, '""')}"`,
       `"${new Date(e.createdAt).toLocaleString()}"`,
     ]);
@@ -348,855 +399,1063 @@ export default function AdminDashboardPage() {
     link.setAttribute("download", `officium-enquiries-${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
   };
 
-  // Filtered enquiries logic
-  const filteredEnquiries = enquiries.filter((item) => {
-    const matchesProgram = programFilter === "all" || item.program === programFilter;
-    const matchesStatus = statusFilter === "all" || item.status === statusFilter;
-    const q = searchQuery.toLowerCase();
-    const matchesSearch =
-      !searchQuery ||
-      item.name.toLowerCase().includes(q) ||
-      item.phone.toLowerCase().includes(q) ||
-      item.email.toLowerCase().includes(q) ||
-      item.message.toLowerCase().includes(q) ||
-      (item.notes && item.notes.toLowerCase().includes(q));
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
 
-    return matchesProgram && matchesStatus && matchesSearch;
-  });
+  // Filtered Enquiries
+  const filteredEnquiries = useMemo(() => {
+    return enquiries.filter((e) => {
+      const q = enquirySearch.toLowerCase();
+      const matchesSearch =
+        !q ||
+        (e.name && e.name.toLowerCase().includes(q)) ||
+        (e.email && e.email.toLowerCase().includes(q)) ||
+        (e.phone && e.phone.includes(q)) ||
+        (e.id && e.id.toLowerCase().includes(q)) ||
+        (e.message && e.message.toLowerCase().includes(q));
+
+      const matchesStatus = enquiryStatusFilter === "all" || e.status === enquiryStatusFilter;
+      const matchesProgram = enquiryProgramFilter === "all" || e.program.toLowerCase() === enquiryProgramFilter.toLowerCase();
+
+      return matchesSearch && matchesStatus && matchesProgram;
+    });
+  }, [enquiries, enquirySearch, enquiryStatusFilter, enquiryProgramFilter]);
+
+  // Filtered Logins
+  const filteredLogs = useMemo(() => {
+    return logs.filter((l) => {
+      const q = loginSearch.toLowerCase();
+      const matchesSearch =
+        !q ||
+        (l.email && l.email.toLowerCase().includes(q)) ||
+        (l.ip && l.ip.includes(q)) ||
+        (l.userAgent && l.userAgent.toLowerCase().includes(q));
+
+      const isLogAdmin = l.role === "admin";
+      const matchesRole =
+        loginRoleFilter === "all" ||
+        (loginRoleFilter === "admin" && isLogAdmin) ||
+        (loginRoleFilter === "user" && !isLogAdmin);
+
+      const matchesStatus =
+        loginStatusFilter === "all" ||
+        l.status === loginStatusFilter;
+
+      return matchesSearch && matchesRole && matchesStatus;
+    });
+  }, [logs, loginSearch, loginRoleFilter, loginStatusFilter]);
+
+  // Filtered Users (Strictly Admin vs User)
+  const filteredUsers = useMemo(() => {
+    return users.filter((u) => {
+      const q = userSearch.toLowerCase();
+      const matchesSearch =
+        !q ||
+        (u.displayName && u.displayName.toLowerCase().includes(q)) ||
+        (u.email && u.email.toLowerCase().includes(q)) ||
+        (u.rollNumber && u.rollNumber.toLowerCase().includes(q));
+
+      const isAdmin = u.role === "admin";
+      const matchesRole =
+        userRoleFilter === "all" ||
+        (userRoleFilter === "admin" && isAdmin) ||
+        (userRoleFilter === "user" && !isAdmin);
+
+      return matchesSearch && matchesRole;
+    });
+  }, [users, userSearch, userRoleFilter]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center">
+      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center p-6">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-[#C8A84E] mx-auto animate-pulse p-2.5">
-            <Logo size="xs" showText={false} variant="gold" />
+          <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-[#C8A84E] mx-auto animate-pulse">
+            <Shield className="w-7 h-7" />
           </div>
-          <div className="font-heading font-semibold text-lg text-[#0B192C]">Loading Academy Database...</div>
-          <div className="text-xs font-label uppercase tracking-widest text-slate-400">Authenticating Terminal Session</div>
+          <p className="text-sm font-label uppercase tracking-widest text-slate-500 font-semibold">
+            Verifying Director Terminal Authorization...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-[#0F172A] flex flex-col font-sans">
-      {/* ========================================================================= */}
-      {/* 1. TOP COMMAND BAR                                                        */}
-      {/* ========================================================================= */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="inline-block transition-transform hover:scale-[1.02]">
+    <div className="min-h-screen bg-[#FAFAF8] text-[#0F172A] flex flex-col selection:bg-[#C8A84E]/20">
+      {/* Top Command Bar */}
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-xl border-b border-slate-200/80 shadow-soft-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Link href="/" className="transition-transform hover:scale-[1.02]">
               <Logo variant="light" size="sm" />
             </Link>
-            <div className="h-5 w-[1px] bg-slate-200 hidden sm:block" />
-            <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-50/80 border border-amber-200/60 text-[10px] font-label uppercase tracking-widest text-amber-900 font-semibold">
-              <Shield className="w-3 h-3 text-[#C8A84E]" />
-              <span>Director Command</span>
+            <div className="h-5 w-px bg-slate-200 hidden sm:block" />
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-100/80 border border-amber-300 text-amber-900 font-mono text-[11px] font-bold tracking-wider uppercase">
+                Director Terminal
+              </span>
+              <span className="flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+                Live Secure
+              </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Admin Profile Pill */}
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100/80 border border-slate-200/70 text-xs">
+              <Shield className="w-3.5 h-3.5 text-[#C8A84E]" />
+              <span className="font-mono text-slate-700 hidden md:inline font-medium">
+                {activeAdminEmail}
+              </span>
+              <span className="text-[10px] font-label font-bold uppercase tracking-wider px-1.5 py-0.5 bg-[#0B192C] text-white rounded">
+                Admin
+              </span>
+            </div>
+
             <button
               onClick={handleRefresh}
               disabled={refreshing}
-              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors"
-              title="Refresh Data"
+              className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-slate-200/70 transition-all active:scale-95"
+              title="Refresh All Records"
             >
               <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin text-[#C8A84E]" : ""}`} />
             </button>
 
-            <Link
-              href="/"
-              target="_blank"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-label uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors border border-slate-200/60"
-            >
-              <span>Public Site</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </Link>
-
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-label uppercase tracking-wider text-rose-600 hover:bg-rose-50 rounded-xl transition-colors border border-rose-200/60"
+              className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-label font-semibold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Logout</span>
+              <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* ========================================================================= */}
-      {/* 2. MAIN ADMIN CONTENT CONTAINER                                           */}
-      {/* ========================================================================= */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="font-heading text-2xl sm:text-3xl font-semibold text-[#0B192C]">
-              Central Operations &amp; Enquiries Database
-            </h1>
-            <p className="text-xs text-slate-500 font-label uppercase tracking-wider mt-1">
-              Officium Supremum • Real-time Academy Records &amp; Cadet Directory
-            </p>
+      {/* Main Container */}
+      <main className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-7 space-y-7 flex-1">
+        {/* Executive Overview KPI Cards */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {/* Card 1: Website Inquiries */}
+          <div 
+            onClick={() => setActiveTab("enquiries")}
+            className={`p-5 rounded-2xl bg-white border cursor-pointer transition-all hover:shadow-soft-md ${
+              activeTab === "enquiries" ? "border-amber-400 ring-2 ring-amber-100 shadow-sm" : "border-slate-200/80 shadow-soft-xs"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-label uppercase tracking-wider text-slate-500 font-bold">
+                Website Enquiries
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200/70 flex items-center justify-center text-[#C8A84E]">
+                <Inbox className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-heading text-3xl font-bold text-[#0B192C]">
+                {stats?.totalEnquiries || 0}
+              </span>
+              <span className="text-xs text-slate-500">total leads</span>
+            </div>
+            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-medium">
+              <span className="text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md font-semibold">
+                {stats?.newEnquiries || 0} New
+              </span>
+              <span className="text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">
+                {stats?.contactedEnquiries || 0} In Progress
+              </span>
+              <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+                {stats?.enrolledEnquiries || 0} Enrolled
+              </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Card 2: Logins Recorded */}
+          <div 
+            onClick={() => setActiveTab("logins")}
+            className={`p-5 rounded-2xl bg-white border cursor-pointer transition-all hover:shadow-soft-md ${
+              activeTab === "logins" ? "border-amber-400 ring-2 ring-amber-100 shadow-sm" : "border-slate-200/80 shadow-soft-xs"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-label uppercase tracking-wider text-slate-500 font-bold">
+                Logins Recorded
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200/70 flex items-center justify-center text-sky-600">
+                <KeyRound className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-heading text-3xl font-bold text-[#0B192C]">
+                {stats?.totalLogins || 0}
+              </span>
+              <span className="text-xs text-slate-500">auth logs</span>
+            </div>
+            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span className="text-emerald-700 font-medium flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                {stats?.successfulLogins || 0} Success
+              </span>
+              <span className="text-rose-600 font-medium flex items-center gap-1">
+                <AlertCircle className="w-3.5 h-3.5" />
+                {stats?.failedLogins || 0} Failed
+              </span>
+            </div>
+          </div>
+
+          {/* Card 3: Registered Accounts (Admin vs User) */}
+          <div 
+            onClick={() => setActiveTab("users")}
+            className={`p-5 rounded-2xl bg-white border cursor-pointer transition-all hover:shadow-soft-md ${
+              activeTab === "users" ? "border-amber-400 ring-2 ring-amber-100 shadow-sm" : "border-slate-200/80 shadow-soft-xs"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-label uppercase tracking-wider text-slate-500 font-bold">
+                Account Directory
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200/70 flex items-center justify-center text-indigo-600">
+                <Users className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-heading text-3xl font-bold text-[#0B192C]">
+                {stats?.totalAccounts || users.length}
+              </span>
+              <span className="text-xs text-slate-500">accounts</span>
+            </div>
+            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-medium">
+              <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200/80">
+                {stats?.totalAdmins || 0} Admins
+              </span>
+              <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                {stats?.totalStandardUsers || 0} Users
+              </span>
+            </div>
+          </div>
+
+          {/* Card 4: Live Website Traffic */}
+          <div 
+            onClick={() => setActiveTab("traffic")}
+            className={`p-5 rounded-2xl bg-white border cursor-pointer transition-all hover:shadow-soft-md ${
+              activeTab === "traffic" ? "border-amber-400 ring-2 ring-amber-100 shadow-sm" : "border-slate-200/80 shadow-soft-xs"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-label uppercase tracking-wider text-slate-500 font-bold">
+                Site Traffic
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200/70 flex items-center justify-center text-emerald-600">
+                <Activity className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-heading text-3xl font-bold text-[#0B192C]">
+                {stats?.totalPageViews || 0}
+              </span>
+              <span className="text-xs text-slate-500">page views</span>
+            </div>
+            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <span>{stats?.recentPageViews || 0} views past 24h</span>
+              <span className="text-[#C8A84E] font-medium flex items-center gap-0.5">
+                View <ArrowUpRight className="w-3 h-3" />
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* Primary Navigation Tabs */}
+        <section className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
+          <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100/90 rounded-2xl border border-slate-200/60 shadow-inner">
+            <button
+              onClick={() => setActiveTab("enquiries")}
+              className={`px-4 py-2.5 rounded-xl font-label text-xs uppercase tracking-wider transition-all flex items-center gap-2 ${
+                activeTab === "enquiries"
+                  ? "bg-[#0B192C] text-white font-bold shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              <Inbox className="w-3.5 h-3.5 text-[#C8A84E]" />
+              <span>Website Enquiries</span>
+              <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
+                {enquiries.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("logins")}
+              className={`px-4 py-2.5 rounded-xl font-label text-xs uppercase tracking-wider transition-all flex items-center gap-2 ${
+                activeTab === "logins"
+                  ? "bg-[#0B192C] text-white font-bold shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              <KeyRound className="w-3.5 h-3.5 text-[#C8A84E]" />
+              <span>Logins Recorded</span>
+              <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
+                {logs.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("users")}
+              className={`px-4 py-2.5 rounded-xl font-label text-xs uppercase tracking-wider transition-all flex items-center gap-2 ${
+                activeTab === "users"
+                  ? "bg-[#0B192C] text-white font-bold shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              <Users className="w-3.5 h-3.5 text-[#C8A84E]" />
+              <span>Users Directory</span>
+              <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
+                {users.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("traffic")}
+              className={`px-4 py-2.5 rounded-xl font-label text-xs uppercase tracking-wider transition-all flex items-center gap-2 ${
+                activeTab === "traffic"
+                  ? "bg-[#0B192C] text-white font-bold shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              <Globe className="w-3.5 h-3.5 text-[#C8A84E]" />
+              <span>Site Traffic</span>
+            </button>
+
             <button
               onClick={() => setActiveTab("new-lead")}
-              className="px-4 py-2.5 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all flex items-center gap-2"
+              className={`px-4 py-2.5 rounded-xl font-label text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+                activeTab === "new-lead"
+                  ? "bg-[#0B192C] text-white font-bold shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
             >
-              <Plus className="w-4 h-4 text-[#C8A84E]" />
-              <span>Record Manual Inquiry</span>
-            </button>
-            <button
-              onClick={handleExportCSV}
-              className="px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-label font-semibold text-xs uppercase tracking-wider rounded-xl shadow-xs transition-all flex items-center gap-2"
-            >
-              <Download className="w-4 h-4 text-slate-500" />
-              <span>Export CSV</span>
+              <Plus className="w-3.5 h-3.5 text-[#C8A84E]" />
+              <span>+ Record Lead</span>
             </button>
           </div>
-        </div>
+
+          {activeTab === "enquiries" && (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleExportCSV}
+                className="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-label uppercase tracking-wider transition-all shadow-soft-xs flex items-center gap-2"
+              >
+                <Download className="w-3.5 h-3.5 text-[#C8A84E]" />
+                <span>Export CSV</span>
+              </button>
+            </div>
+          )}
+
+          {activeTab === "logins" && (
+            <button
+              onClick={handleClearLogs}
+              className="px-3.5 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 text-xs font-label uppercase tracking-wider transition-all flex items-center gap-2"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Clear Login History</span>
+            </button>
+          )}
+
+          {activeTab === "traffic" && (
+            <button
+              onClick={handleClearTraffic}
+              className="px-3.5 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 text-xs font-label uppercase tracking-wider transition-all flex items-center gap-2"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Clear Traffic History</span>
+            </button>
+          )}
+        </section>
 
         {/* ========================================================================= */}
-        {/* 3. KPI SUMMARY CARDS                                                      */}
+        {/* TAB 1: WEBSITE ENQUIRIES SECTION */}
         {/* ========================================================================= */}
-        {stats && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {/* Card 1: Total Enquiries */}
-            <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-2">
-              <div className="flex items-center justify-between text-xs font-label uppercase tracking-wider text-slate-500">
-                <span>Total Enquiries</span>
-                <MessageSquare className="w-4 h-4 text-sky-600" />
+        {activeTab === "enquiries" && (
+          <div className="space-y-5 animate-in fade-in duration-200">
+            {/* Search and Filters Bar */}
+            <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-soft-xs flex flex-col md:flex-row items-center justify-between gap-3">
+              <div className="relative w-full md:w-96">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <input
+                  type="text"
+                  placeholder="Search by name, phone, email, lead ID..."
+                  value={enquirySearch}
+                  onChange={(e) => setEnquirySearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                />
               </div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-heading text-3xl font-bold text-[#0B192C]">{stats.totalEnquiries}</span>
-                {stats.newEnquiries > 0 && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-label font-bold bg-amber-100 text-amber-800">
-                    {stats.newEnquiries} NEW
-                  </span>
-                )}
-              </div>
-              <div className="text-[11px] text-slate-500">
-                {stats.enrolledEnquiries} Enrolled • {stats.contactedEnquiries} Contacted
+
+              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                {/* Status Filter */}
+                <select
+                  value={enquiryStatusFilter}
+                  onChange={(e) => setEnquiryStatusFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-label uppercase tracking-wider focus:outline-none focus:border-[#C8A84E]"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="new">New</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="enrolled">Enrolled</option>
+                  <option value="archived">Archived</option>
+                </select>
+
+                {/* Program Filter */}
+                <select
+                  value={enquiryProgramFilter}
+                  onChange={(e) => setEnquiryProgramFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-label uppercase tracking-wider focus:outline-none focus:border-[#C8A84E]"
+                >
+                  <option value="all">All Tracks</option>
+                  <option value="defense">Defense</option>
+                  <option value="nda">NDA</option>
+                  <option value="cds">CDS</option>
+                  <option value="afcat">AFCAT</option>
+                  <option value="scholars">Scholars</option>
+                  <option value="juniors">Juniors</option>
+                  <option value="general">General</option>
+                </select>
               </div>
             </div>
 
-            {/* Card 2: Orientation Assessment Requests */}
-            <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-2">
-              <div className="flex items-center justify-between text-xs font-label uppercase tracking-wider text-slate-500">
-                <span>Orientation Calls</span>
-                <Calendar className="w-4 h-4 text-amber-600" />
+            {/* Enquiries List */}
+            {filteredEnquiries.length === 0 ? (
+              <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
+                <Inbox className="w-10 h-10 text-slate-300 mx-auto" />
+                <h4 className="font-heading text-lg font-semibold text-slate-700">No Inquiries Found</h4>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                  {enquirySearch || enquiryStatusFilter !== "all" || enquiryProgramFilter !== "all"
+                    ? "Try adjusting your search criteria or filters."
+                    : "Website inquiries submitted via contact forms or orientation booking will appear here."}
+                </p>
               </div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-heading text-3xl font-bold text-[#0B192C]">{stats.orientationBookings}</span>
-                <span className="text-xs text-slate-400">bookings</span>
-              </div>
-              <div className="text-[11px] text-slate-500">
-                Direct diagnostic call requests
-              </div>
-            </div>
+            ) : (
+              <div className="space-y-3.5">
+                {filteredEnquiries.map((enq) => {
+                  const cleanPhone = (enq.phone || "").replace(/[^0-9]/g, "");
+                  const whatsappUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent(
+                    `Hello ${enq.name}, Greetings from Officium Supremum Academy regarding your enquiry for the ${enq.program.toUpperCase()} program.`
+                  )}`;
 
-            {/* Card 3: Registered Cadets & Scholars */}
-            <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-2">
-              <div className="flex items-center justify-between text-xs font-label uppercase tracking-wider text-slate-500">
-                <span>Active Accounts</span>
-                <Users className="w-4 h-4 text-emerald-600" />
-              </div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-heading text-3xl font-bold text-[#0B192C]">{stats.totalUsers}</span>
-                <span className="text-xs text-slate-400">users</span>
-              </div>
-              <div className="text-[11px] text-slate-500">
-                {stats.totalCadets} Cadets • {stats.totalScholars} Scholars
-              </div>
-            </div>
+                  return (
+                    <div
+                      key={enq.id}
+                      className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-soft-xs hover:shadow-soft-sm transition-all space-y-4"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => copyToClipboard(enq.id, enq.id)}
+                            className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 font-mono text-[11px] font-bold text-slate-800 transition-colors flex items-center gap-1.5"
+                            title="Click to copy Reference ID"
+                          >
+                            <span>{enq.id}</span>
+                            {copiedId === enq.id ? (
+                              <Check className="w-3 h-3 text-emerald-600" />
+                            ) : (
+                              <Copy className="w-3 h-3 text-slate-400" />
+                            )}
+                          </button>
 
-            {/* Card 4: 24h Login Security Activity */}
-            <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-2">
-              <div className="flex items-center justify-between text-xs font-label uppercase tracking-wider text-slate-500">
-                <span>24h Logins</span>
-                <Zap className="w-4 h-4 text-[#C8A84E]" />
+                          <span className="px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 font-label text-[11px] font-bold uppercase tracking-wider text-amber-900">
+                            {enq.program}
+                          </span>
+
+                          <span className="text-xs text-slate-400 flex items-center gap-1 font-mono">
+                            <Clock className="w-3 h-3" />
+                            {new Date(enq.createdAt).toLocaleString(undefined, {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            })}
+                          </span>
+                        </div>
+
+                        {/* Status Change Selector */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-500 font-label uppercase tracking-wider">Status:</span>
+                          <select
+                            value={enq.status}
+                            onChange={(e) => handleStatusChange(enq.id, e.target.value)}
+                            className={`px-3 py-1 rounded-xl text-xs font-label font-bold uppercase tracking-wider border focus:outline-none cursor-pointer ${
+                              enq.status === "new"
+                                ? "bg-amber-50 text-amber-900 border-amber-300"
+                                : enq.status === "enrolled"
+                                ? "bg-emerald-50 text-emerald-900 border-emerald-300"
+                                : enq.status === "in_progress" || enq.status === "contacted"
+                                ? "bg-sky-50 text-sky-900 border-sky-300"
+                                : "bg-slate-100 text-slate-700 border-slate-300"
+                            }`}
+                          >
+                            <option value="new">New Lead</option>
+                            <option value="contacted">Contacted</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="enrolled">Enrolled</option>
+                            <option value="archived">Archived</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Candidate Info Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3.5 bg-slate-50/70 rounded-xl border border-slate-100 text-xs">
+                        <div>
+                          <div className="text-[10px] font-label uppercase text-slate-400 tracking-wider">Candidate Name</div>
+                          <div className="font-heading font-semibold text-sm text-[#0B192C]">{enq.name}</div>
+                        </div>
+
+                        <div>
+                          <div className="text-[10px] font-label uppercase text-slate-400 tracking-wider">Phone / WhatsApp</div>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="font-mono font-medium text-slate-800">{enq.phone}</span>
+                            {cleanPhone && (
+                              <a
+                                href={whatsappUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 hover:bg-emerald-200 text-[10px] font-bold flex items-center gap-1 transition-colors"
+                              >
+                                <MessageCircle className="w-3 h-3 text-emerald-600" />
+                                WhatsApp
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="text-[10px] font-label uppercase text-slate-400 tracking-wider">Email Address</div>
+                          <a
+                            href={`mailto:${enq.email}`}
+                            className="font-mono text-slate-800 hover:text-[#C8A84E] underline decoration-slate-300"
+                          >
+                            {enq.email || "Not provided"}
+                          </a>
+                        </div>
+                      </div>
+
+                      {/* Inquiry Message */}
+                      {enq.message && (
+                        <div className="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-100 leading-relaxed">
+                          <span className="font-semibold text-slate-900">Message: </span>
+                          {enq.message}
+                        </div>
+                      )}
+
+                      {/* Internal Notes Preview */}
+                      {enq.notes && (
+                        <div className="text-xs bg-amber-50/70 border border-amber-200/60 p-3 rounded-xl text-amber-900">
+                          <span className="font-bold">Follow-up Notes: </span>
+                          {enq.notes}
+                        </div>
+                      )}
+
+                      {/* Bottom Actions */}
+                      <div className="flex items-center justify-between pt-1 text-xs">
+                        <span className="text-slate-400 text-[11px] font-label uppercase tracking-wider">
+                          Source: {enq.source === "orientation_modal" ? "Orientation Booking" : enq.source === "contact_page" ? "Contact Page" : enq.source}
+                        </span>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              setEditingNoteEnquiry(enq);
+                              setCurrentNote(enq.notes || "");
+                            }}
+                            className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors flex items-center gap-1.5 font-medium"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-[#C8A84E]" />
+                            <span>{enq.notes ? "Edit Notes" : "+ Add Note"}</span>
+                          </button>
+
+                          <button
+                            onClick={() => handleDeleteEnquiry(enq.id)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                            title="Delete Lead"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-heading text-3xl font-bold text-[#0B192C]">{stats.recentLoginsCount}</span>
-                <span className="text-xs text-slate-400">events</span>
-              </div>
-              <div className="text-[11px] text-slate-500">
-                {stats.totalPageViews ? `${stats.totalPageViews} total pageviews recorded` : "Real-time security log active"}
-              </div>
-            </div>
+            )}
           </div>
         )}
 
         {/* ========================================================================= */}
-        {/* 4. DASHBOARD NAVIGATION TABS                                              */}
+        {/* TAB 2: LOGINS RECORDED SECTION */}
         {/* ========================================================================= */}
-        <div className="flex items-center gap-2 border-b border-slate-200">
-          <button
-            onClick={() => setActiveTab("enquiries")}
-            className={`pb-3 px-4 text-xs font-label uppercase tracking-wider transition-all relative ${
-              activeTab === "enquiries"
-                ? "text-[#0B192C] font-bold border-b-2 border-[#C8A84E]"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <span>All Enquiries &amp; Leads ({enquiries.length})</span>
-          </button>
+        {activeTab === "logins" && (
+          <div className="space-y-5 animate-in fade-in duration-200">
+            {/* Top Logins Metrics Banner */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-soft-xs">
+              <div className="p-3 bg-slate-50/80 rounded-xl">
+                <div className="text-[11px] font-label uppercase tracking-wider text-slate-500 font-bold">Total Logins</div>
+                <div className="text-2xl font-heading font-bold text-[#0B192C] mt-1">{stats?.totalLogins || logs.length}</div>
+              </div>
+              <div className="p-3 bg-amber-50/60 rounded-xl border border-amber-200/40">
+                <div className="text-[11px] font-label uppercase tracking-wider text-amber-800 font-bold">Admin Logins</div>
+                <div className="text-2xl font-heading font-bold text-amber-900 mt-1">
+                  {logs.filter((l) => l.role === "admin").length}
+                </div>
+              </div>
+              <div className="p-3 bg-sky-50/60 rounded-xl border border-sky-200/40">
+                <div className="text-[11px] font-label uppercase tracking-wider text-sky-800 font-bold">User Logins</div>
+                <div className="text-2xl font-heading font-bold text-sky-900 mt-1">
+                  {logs.filter((l) => l.role !== "admin").length}
+                </div>
+              </div>
+              <div className="p-3 bg-rose-50/60 rounded-xl border border-rose-200/40">
+                <div className="text-[11px] font-label uppercase tracking-wider text-rose-800 font-bold">Failed Attempts</div>
+                <div className="text-2xl font-heading font-bold text-rose-900 mt-1">
+                  {logs.filter((l) => l.status === "failed").length}
+                </div>
+              </div>
+            </div>
 
-          <button
-            onClick={() => setActiveTab("users")}
-            className={`pb-3 px-4 text-xs font-label uppercase tracking-wider transition-all relative ${
-              activeTab === "users"
-                ? "text-[#0B192C] font-bold border-b-2 border-[#C8A84E]"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <span>Cadet &amp; User Directory ({users.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("logs")}
-            className={`pb-3 px-4 text-xs font-label uppercase tracking-wider transition-all relative ${
-              activeTab === "logs"
-                ? "text-[#0B192C] font-bold border-b-2 border-[#C8A84E]"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <span>Login Audit Logs ({logs.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("new-lead")}
-            className={`pb-3 px-4 text-xs font-label uppercase tracking-wider transition-all relative ${
-              activeTab === "new-lead"
-                ? "text-[#0B192C] font-bold border-b-2 border-[#C8A84E]"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <span>+ Add Lead Entry</span>
-          </button>
-        </div>
-
-        {/* ========================================================================= */}
-        {/* 5. TAB 1: ENQUIRIES DATA TABLE                                            */}
-        {/* ========================================================================= */}
-        {activeTab === "enquiries" && (
-          <div className="space-y-4">
-            {/* Search & Filter Bar */}
-            <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-center gap-3">
-              <div className="relative flex-1 w-full">
+            {/* Filter Controls */}
+            <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-soft-xs flex flex-col md:flex-row items-center justify-between gap-3">
+              <div className="relative w-full md:w-96">
                 <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                 <input
                   type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by student name, phone number, email, or keywords..."
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#C8A84E] font-sans"
+                  placeholder="Filter by account email, IP, device..."
+                  value={loginSearch}
+                  onChange={(e) => setLoginSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                 />
               </div>
 
               <div className="flex items-center gap-2 w-full md:w-auto">
                 <select
-                  value={programFilter}
-                  onChange={(e) => setProgramFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-label uppercase tracking-wider text-slate-700 focus:outline-none"
+                  value={loginRoleFilter}
+                  onChange={(e) => setLoginRoleFilter(e.target.value as any)}
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-label uppercase tracking-wider focus:outline-none focus:border-[#C8A84E]"
                 >
-                  <option value="all">All Programs</option>
-                  <option value="defense">Defense (NDA/CDS/AFCAT)</option>
-                  <option value="scholars">Scholars (Class 11-12)</option>
-                  <option value="juniors">Juniors (Class 7-10)</option>
-                  <option value="general">General Academy</option>
+                  <option value="all">All Roles</option>
+                  <option value="admin">Admins Only</option>
+                  <option value="user">Users Only</option>
                 </select>
 
                 <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-label uppercase tracking-wider text-slate-700 focus:outline-none"
+                  value={loginStatusFilter}
+                  onChange={(e) => setLoginStatusFilter(e.target.value as any)}
+                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-label uppercase tracking-wider focus:outline-none focus:border-[#C8A84E]"
                 >
                   <option value="all">All Statuses</option>
-                  <option value="new">🟢 New</option>
-                  <option value="in_progress">🟡 In Progress</option>
-                  <option value="contacted">📞 Contacted</option>
-                  <option value="enrolled">🎓 Enrolled</option>
-                  <option value="archived">⚪ Archived</option>
+                  <option value="success">Success Only</option>
+                  <option value="failed">Failed Only</option>
                 </select>
               </div>
             </div>
 
-            {/* Enquiries Table */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 border-b border-slate-200 font-label uppercase tracking-wider text-slate-500">
-                    <tr>
-                      <th className="py-3 px-4 font-semibold">Lead ID / Date</th>
-                      <th className="py-3 px-4 font-semibold">Candidate Info</th>
-                      <th className="py-3 px-4 font-semibold">Track / Program</th>
-                      <th className="py-3 px-4 font-semibold">Source</th>
-                      <th className="py-3 px-4 font-semibold">Status</th>
-                      <th className="py-3 px-4 font-semibold">Inquiry Message</th>
-                      <th className="py-3 px-4 font-semibold">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {filteredEnquiries.length === 0 ? (
-                      <tr>
-                        <td colSpan={7} className="py-12 text-center text-slate-400">
-                          <MessageSquare className="w-8 h-8 mx-auto mb-2 text-slate-300" />
-                          <div>No enquiries found matching your criteria.</div>
-                        </td>
+            {/* Logins Table */}
+            {filteredLogs.length === 0 ? (
+              <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
+                <KeyRound className="w-10 h-10 text-slate-300 mx-auto" />
+                <h4 className="font-heading text-lg font-semibold text-slate-700">No Login Activity Found</h4>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                  New logins from members and administrators will automatically be recorded and tracked here in real-time.
+                </p>
+              </div>
+            ) : (
+              <div className="bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr className="bg-slate-50/80 border-b border-slate-200/70 text-slate-500 font-label uppercase tracking-wider text-[11px]">
+                        <th className="py-3 px-4 font-semibold">Timestamp</th>
+                        <th className="py-3 px-4 font-semibold">Account Email</th>
+                        <th className="py-3 px-4 font-semibold">Role</th>
+                        <th className="py-3 px-4 font-semibold">Result</th>
+                        <th className="py-3 px-4 font-semibold">IP Address</th>
+                        <th className="py-3 px-4 font-semibold">Device / Client</th>
                       </tr>
-                    ) : (
-                      filteredEnquiries.map((enq) => {
-                        const statusColors: Record<string, string> = {
-                          new: "bg-emerald-50 text-emerald-800 border-emerald-200",
-                          in_progress: "bg-amber-50 text-amber-800 border-amber-200",
-                          contacted: "bg-blue-50 text-blue-800 border-blue-200",
-                          enrolled: "bg-indigo-50 text-indigo-800 border-indigo-200",
-                          archived: "bg-slate-100 text-slate-600 border-slate-200",
-                        };
-
-                        const programLabels: Record<string, string> = {
-                          defense: "Defense Wing (NDA/CDS)",
-                          scholars: "Scholars (Class 11-12)",
-                          juniors: "Juniors (Class 7-10)",
-                          general: "General Admissions",
-                        };
-
-                        const sourceLabels: Record<string, string> = {
-                          contact_page: "Contact Page",
-                          orientation_modal: "Orientation Booking",
-                          assessment_call: "Assessment Diagnostic",
-                          manual_entry: "Admin Staff Entry",
-                        };
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {filteredLogs.map((log) => {
+                        const isAdmin = log.role === "admin";
+                        const isSuccess = log.status === "success";
 
                         return (
-                          <tr key={enq.id} className="hover:bg-slate-50/60 transition-colors">
-                            {/* ID & Date */}
-                            <td className="py-3.5 px-4 font-mono whitespace-nowrap">
-                              <div className="font-semibold text-slate-900">{enq.id}</div>
-                              <div className="text-[10px] text-slate-400">
-                                {new Date(enq.createdAt).toLocaleDateString()}
-                              </div>
+                          <tr key={log.id} className="hover:bg-slate-50/60 transition-colors">
+                            <td className="py-3 px-4 font-mono text-slate-500 whitespace-nowrap">
+                              {new Date(log.timestamp).toLocaleString(undefined, {
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
+                              })}
                             </td>
-
-                            {/* Candidate Info */}
-                            <td className="py-3.5 px-4">
-                              <div className="font-semibold text-[#0B192C]">{enq.name}</div>
-                              <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-600">
-                                <a
-                                  href={`tel:${enq.phone}`}
-                                  className="hover:text-blue-600 flex items-center gap-1 font-mono"
-                                >
-                                  <Phone className="w-3 h-3 text-slate-400" />
-                                  <span>{enq.phone}</span>
-                                </a>
-                              </div>
-                              {enq.email && (
-                                <div className="text-[10px] text-slate-400 truncate max-w-[160px]">
-                                  {enq.email}
-                                </div>
+                            <td className="py-3 px-4 font-medium text-slate-900 font-mono">
+                              {log.email}
+                            </td>
+                            <td className="py-3 px-4">
+                              {isAdmin ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100/80 border border-amber-300 text-amber-900 font-bold text-[10px] font-label uppercase tracking-wider">
+                                  <Shield className="w-3 h-3 text-amber-700" />
+                                  Admin
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-medium text-[10px] font-label uppercase tracking-wider">
+                                  <UserIcon className="w-3 h-3 text-slate-500" />
+                                  User
+                                </span>
                               )}
                             </td>
-
-                            {/* Program */}
-                            <td className="py-3.5 px-4 whitespace-nowrap">
-                              <span className="px-2.5 py-1 rounded-md text-[10px] font-label uppercase tracking-wider font-semibold bg-slate-100 text-slate-700">
-                                {programLabels[enq.program] || enq.program}
-                              </span>
-                            </td>
-
-                            {/* Source */}
-                            <td className="py-3.5 px-4 whitespace-nowrap text-[11px] text-slate-600">
-                              {sourceLabels[enq.source] || enq.source}
-                            </td>
-
-                            {/* Status Selector */}
-                            <td className="py-3.5 px-4 whitespace-nowrap">
-                              <select
-                                value={enq.status}
-                                onChange={(e) =>
-                                  handleStatusChange(enq.id, e.target.value as Enquiry["status"])
-                                }
-                                className={`px-2 py-1 rounded-md text-[10px] font-label uppercase tracking-wider font-semibold border focus:outline-none cursor-pointer ${
-                                  statusColors[enq.status] || "bg-slate-100"
-                                }`}
-                              >
-                                <option value="new">New</option>
-                                <option value="in_progress">In Progress</option>
-                                <option value="contacted">Contacted</option>
-                                <option value="enrolled">Enrolled</option>
-                                <option value="archived">Archived</option>
-                              </select>
-                            </td>
-
-                            {/* Message & Mentor Notes */}
-                            <td className="py-3.5 px-4 max-w-xs">
-                              <div className="text-slate-700 font-sans line-clamp-2">{enq.message}</div>
-                              {enq.notes && (
-                                <div className="mt-1 text-[11px] text-amber-800 bg-amber-50/70 p-1 rounded border border-amber-200/50 italic">
-                                  Note: {enq.notes}
-                                </div>
+                            <td className="py-3 px-4">
+                              {isSuccess ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider">
+                                  <CheckCircle2 className="w-3 h-3" />
+                                  Success
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-bold uppercase tracking-wider">
+                                  <AlertCircle className="w-3 h-3" />
+                                  Failed
+                                </span>
                               )}
                             </td>
-
-                            {/* Actions */}
-                            <td className="py-3.5 px-4 whitespace-nowrap">
-                              <div className="flex items-center gap-1.5">
-                                {/* Direct WhatsApp */}
-                                <a
-                                  href={`https://wa.me/${enq.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                                    `Hello ${enq.name}, this is the Admissions Director from Officium Supremum regarding your enquiry for the ${programLabels[enq.program]}.`
-                                  )}`}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="p-1.5 rounded-lg text-emerald-600 hover:bg-emerald-50"
-                                  title="Chat on WhatsApp"
-                                >
-                                  <Phone className="w-3.5 h-3.5" />
-                                </a>
-
-                                {/* Add / Edit Notes */}
-                                <button
-                                  onClick={() => {
-                                    setEditingNoteEnquiry(enq);
-                                    setCurrentNote(enq.notes || "");
-                                  }}
-                                  className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100"
-                                  title="Add/Edit Mentor Note"
-                                >
-                                  <FileText className="w-3.5 h-3.5" />
-                                </button>
-
-                                {/* Delete */}
-                                <button
-                                  onClick={() => handleDeleteEnquiry(enq.id)}
-                                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50"
-                                  title="Delete Lead"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
+                            <td className="py-3 px-4 font-mono text-slate-600">
+                              {log.ip || "Local / Host"}
+                            </td>
+                            <td className="py-3 px-4 text-slate-500 max-w-xs truncate" title={log.userAgent}>
+                              {log.userAgent || "Standard Browser"}
                             </td>
                           </tr>
                         );
-                      })
-                    )}
-                  </tbody>
-                </table>
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
         {/* ========================================================================= */}
-        {/* 6. TAB 2: USER DIRECTORY                                                  */}
+        {/* TAB 3: USER & ACCOUNT DIRECTORY (ADMIN vs USER ONLY) */}
         {/* ========================================================================= */}
         {activeTab === "users" && (
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-              <div>
-                <h3 className="font-heading font-semibold text-base text-[#0B192C]">
-                  Cadet, Scholar &amp; User Accounts
-                </h3>
-                <p className="text-xs text-slate-500 font-label uppercase tracking-wider">
-                  Active portal credentials and roll numbers
+          <div className="space-y-5 animate-in fade-in duration-200">
+            {/* User Search & Role Filter */}
+            <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-soft-xs flex flex-col md:flex-row items-center justify-between gap-3">
+              <div className="relative w-full md:w-96">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                <input
+                  type="text"
+                  placeholder="Search accounts by name, email, roll number..."
+                  value={userSearch}
+                  onChange={(e) => setUserSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                />
+              </div>
+
+              <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl text-xs font-label uppercase tracking-wider">
+                <button
+                  onClick={() => setUserRoleFilter("all")}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${
+                    userRoleFilter === "all" ? "bg-white text-slate-900 font-bold shadow-xs" : "text-slate-500 hover:text-slate-800"
+                  }`}
+                >
+                  All ({users.length})
+                </button>
+                <button
+                  onClick={() => setUserRoleFilter("admin")}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${
+                    userRoleFilter === "admin" ? "bg-white text-amber-900 font-bold shadow-xs" : "text-slate-500 hover:text-slate-800"
+                  }`}
+                >
+                  Admins ({users.filter((u) => u.role === "admin").length})
+                </button>
+                <button
+                  onClick={() => setUserRoleFilter("user")}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${
+                    userRoleFilter === "user" ? "bg-white text-blue-900 font-bold shadow-xs" : "text-slate-500 hover:text-slate-800"
+                  }`}
+                >
+                  Users ({users.filter((u) => u.role !== "admin").length})
+                </button>
+              </div>
+            </div>
+
+            {/* Users Table */}
+            {filteredUsers.length === 0 ? (
+              <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
+                <Users className="w-10 h-10 text-slate-300 mx-auto" />
+                <h4 className="font-heading text-lg font-semibold text-slate-700">No Accounts Found</h4>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                  Registered accounts will appear here, separated cleanly into Administrators and Standard Users.
                 </p>
               </div>
-              <span className="text-xs font-label uppercase font-bold text-[#C8A84E]">
-                {users.length} Registered Accounts
-              </span>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 border-b border-slate-200 font-label uppercase tracking-wider text-slate-500">
-                  <tr>
-                    <th className="py-3 px-4 font-semibold">Roll Number</th>
-                    <th className="py-3 px-4 font-semibold">Full Name</th>
-                    <th className="py-3 px-4 font-semibold">Email</th>
-                    <th className="py-3 px-4 font-semibold">Role Track</th>
-                    <th className="py-3 px-4 font-semibold">Created Date</th>
-                    <th className="py-3 px-4 font-semibold">Last Active</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {users.map((u) => {
-                    const roleColors: Record<string, string> = {
-                      admin: "bg-amber-100 text-amber-900",
-                      cadet: "bg-emerald-100 text-emerald-900",
-                      scholar: "bg-blue-100 text-blue-900",
-                      junior: "bg-purple-100 text-purple-900",
-                      parent: "bg-slate-100 text-slate-900",
-                    };
-
-                    return (
-                      <tr key={u.uid} className="hover:bg-slate-50/60">
-                        <td className="py-3.5 px-4 font-mono font-semibold text-slate-900">
-                          {u.rollNumber}
-                        </td>
-                        <td className="py-3.5 px-4 font-medium text-[#0B192C]">
-                          {u.displayName}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-600 font-mono text-[11px]">
-                          {u.email}
-                        </td>
-                        <td className="py-3.5 px-4 whitespace-nowrap">
-                          <span
-                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-label uppercase tracking-wider font-semibold ${
-                              roleColors[u.role] || "bg-slate-100"
-                            }`}
-                          >
-                            {u.role}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
-                          {new Date(u.createdAt).toLocaleDateString()}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
-                          {new Date(u.lastLogin).toLocaleString()}
-                        </td>
+            ) : (
+              <div className="bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr className="bg-slate-50/80 border-b border-slate-200/70 text-slate-500 font-label uppercase tracking-wider text-[11px]">
+                        <th className="py-3 px-4 font-semibold">Account Member</th>
+                        <th className="py-3 px-4 font-semibold">Classification</th>
+                        <th className="py-3 px-4 font-semibold">Reference Number</th>
+                        <th className="py-3 px-4 font-semibold">Registered</th>
+                        <th className="py-3 px-4 font-semibold">Last Active</th>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {filteredUsers.map((user) => {
+                        const isAdmin = user.role === "admin";
+
+                        return (
+                          <tr key={user.uid} className="hover:bg-slate-50/60 transition-colors">
+                            <td className="py-3.5 px-4">
+                              <div className="font-heading font-semibold text-sm text-[#0B192C]">
+                                {user.displayName}
+                              </div>
+                              <div className="font-mono text-slate-500 text-[11px]">
+                                {user.email}
+                              </div>
+                            </td>
+                            <td className="py-3.5 px-4">
+                              {isAdmin ? (
+                                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-50 border border-amber-300 text-amber-900 font-bold text-[11px] font-label uppercase tracking-wider">
+                                  <Shield className="w-3.5 h-3.5 text-amber-700" />
+                                  Admin
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-medium text-[11px] font-label uppercase tracking-wider">
+                                  <UserIcon className="w-3.5 h-3.5 text-slate-500" />
+                                  User
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-4 font-mono font-medium text-slate-800">
+                              {user.rollNumber || (isAdmin ? "OS-ADMIN" : "OS-USER")}
+                            </td>
+                            <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
+                              {new Date(user.createdAt).toLocaleDateString(undefined, {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              })}
+                            </td>
+                            <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
+                              {user.lastLogin
+                                ? new Date(user.lastLogin).toLocaleDateString(undefined, {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  })
+                                : "Recently"}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* ========================================================================= */}
-        {/* 7. TAB 3: LOGIN SECURITY AUDIT & TRAFFIC LOGS                             */}
+        {/* TAB 4: LIVE TRAFFIC MONITORING */}
         {/* ========================================================================= */}
-        {activeTab === "logs" && (
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-            {/* Top Toolbar with Export Buttons */}
-            <div className="p-4 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {activeTab === "traffic" && (
+          <div className="space-y-5 animate-in fade-in duration-200">
+            <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-soft-xs flex items-center justify-between">
               <div>
-                <div className="flex items-center gap-3">
-                  <h3 className="font-heading font-semibold text-base text-[#0B192C]">
-                    Security, Logins &amp; Traffic Hub
-                  </h3>
-                  <span className="text-[10px] font-label uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Auto-Sync to SQL &amp; CSV
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 font-label uppercase tracking-wider mt-0.5">
-                  Automatically logged in local folder: data/traffic_and_logins.sql
+                <h4 className="font-heading font-semibold text-sm text-[#0B192C]">Live Visitor Activity Stream</h4>
+                <p className="text-xs text-slate-500">Track which routes and public pages visitors are browsing in real-time.</p>
+              </div>
+              <div className="text-xs text-slate-500 font-mono">
+                {trafficLogs.length} total records
+              </div>
+            </div>
+
+            {trafficLogs.length === 0 ? (
+              <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
+                <Globe className="w-10 h-10 text-slate-300 mx-auto" />
+                <h4 className="font-heading text-lg font-semibold text-slate-700">No Visitor Logs</h4>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                  Visitor page navigation will automatically be logged here.
                 </p>
               </div>
-
-              {/* Action Buttons: Export SQL & CSV */}
-              <div className="flex items-center gap-2">
-                <a
-                  href="/api/admin/export?format=sql"
-                  download="traffic_and_logins.sql"
-                  className="px-3.5 py-1.5 bg-[#0B192C] hover:bg-[#1E293B] text-white rounded-xl text-xs font-label uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 shadow-xs"
-                >
-                  <Download className="w-3.5 h-3.5 text-[#C8A84E]" />
-                  <span>Download .SQL</span>
-                </a>
-                <a
-                  href="/api/admin/export?format=csv"
-                  download="traffic_and_logins.csv"
-                  className="px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-label uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5 shadow-xs"
-                >
-                  <Download className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Download .CSV</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Sub-Tabs: Login Logs vs Website Traffic */}
-            <div className="px-4 pt-3 pb-2 bg-slate-50/70 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setLogSubTab("logins")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-label uppercase tracking-wider transition-all ${
-                    logSubTab === "logins"
-                      ? "bg-white text-[#0B192C] font-bold shadow-xs border border-slate-200"
-                      : "text-slate-500 hover:text-slate-900"
-                  }`}
-                >
-                  🔐 Login History ({logs.length})
-                </button>
-                <button
-                  onClick={() => setLogSubTab("traffic")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-label uppercase tracking-wider transition-all ${
-                    logSubTab === "traffic"
-                      ? "bg-white text-[#0B192C] font-bold shadow-xs border border-slate-200"
-                      : "text-slate-500 hover:text-slate-900"
-                  }`}
-                >
-                  🌐 Page Views &amp; Traffic ({trafficLogs.length})
-                </button>
-              </div>
-
-              {logSubTab === "logins" && (
-                <div className="flex items-center gap-1 p-0.5 bg-slate-200/60 rounded-lg text-[11px] font-label uppercase tracking-wider">
-                  <button
-                    onClick={() => setLogFilter("all")}
-                    className={`px-2.5 py-1 rounded-md transition-all ${
-                      logFilter === "all" ? "bg-white text-[#0B192C] font-bold shadow-2xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    All ({logs.length})
-                  </button>
-                  <button
-                    onClick={() => setLogFilter("admin")}
-                    className={`px-2.5 py-1 rounded-md transition-all ${
-                      logFilter === "admin" ? "bg-amber-100 text-amber-900 font-bold shadow-2xs" : "text-slate-600 hover:text-amber-800"
-                    }`}
-                  >
-                    Admins ({logs.filter((l) => l.role === "admin").length})
-                  </button>
-                  <button
-                    onClick={() => setLogFilter("user")}
-                    className={`px-2.5 py-1 rounded-md transition-all ${
-                      logFilter === "user" ? "bg-white text-indigo-900 font-bold shadow-2xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    Users ({logs.filter((l) => l.role !== "admin").length})
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* TAB CONTENT: 1. LOGINS */}
-            {logSubTab === "logins" && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 border-b border-slate-200 font-label uppercase tracking-wider text-slate-500">
-                    <tr>
-                      <th className="py-3 px-4 font-semibold">Timestamp</th>
-                      <th className="py-3 px-4 font-semibold">Account Email</th>
-                      <th className="py-3 px-4 font-semibold">Role Access</th>
-                      <th className="py-3 px-4 font-semibold">Status</th>
-                      <th className="py-3 px-4 font-semibold">Client / Device Details</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {logs
-                      .filter((log) => {
-                        if (logFilter === "admin") return log.role === "admin";
-                        if (logFilter === "user") return log.role !== "admin";
-                        if (logFilter === "failed") return log.status === "failed";
-                        return true;
-                      })
-                      .map((log) => (
-                        <tr key={log.id} className="hover:bg-slate-50/60 font-mono text-[11px]">
-                          <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
-                            {new Date(log.timestamp).toLocaleString()}
+            ) : (
+              <div className="bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr className="bg-slate-50/80 border-b border-slate-200/70 text-slate-500 font-label uppercase tracking-wider text-[11px]">
+                        <th className="py-3 px-4 font-semibold">Timestamp</th>
+                        <th className="py-3 px-4 font-semibold">Page Path</th>
+                        <th className="py-3 px-4 font-semibold">User Account</th>
+                        <th className="py-3 px-4 font-semibold">Referrer</th>
+                        <th className="py-3 px-4 font-semibold">IP Address</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {trafficLogs.slice(0, 100).map((t) => (
+                        <tr key={t.id} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-3 px-4 font-mono text-slate-500 whitespace-nowrap">
+                            {new Date(t.timestamp).toLocaleTimeString()}
                           </td>
-                          <td className="py-3 px-4 font-semibold text-slate-800">
-                            {log.email}
+                          <td className="py-3 px-4 font-mono font-medium text-slate-800">
+                            {t.path}
                           </td>
-                          <td className="py-3 px-4 whitespace-nowrap">
-                            {log.role === "admin" ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[10px] tracking-wider">
-                                <Shield className="w-3 h-3 text-amber-700" />
-                                ADMIN
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium text-[10px] tracking-wider">
-                                USER
-                              </span>
-                            )}
+                          <td className="py-3 px-4 text-slate-600">
+                            {t.userEmail || "Anonymous Guest"}
                           </td>
-                          <td className="py-3 px-4 whitespace-nowrap">
-                            {log.status === "success" ? (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-semibold text-[10px]">
-                                <CheckCircle2 className="w-3 h-3" />
-                                SUCCESS
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 font-semibold text-[10px]">
-                                <AlertCircle className="w-3 h-3" />
-                                FAILED
-                              </span>
-                            )}
+                          <td className="py-3 px-4 text-slate-500">
+                            {t.referrer || "Direct"}
                           </td>
-                          <td className="py-3 px-4 text-slate-500 font-sans text-[11px] truncate max-w-sm">
-                            {log.userAgent || "Web Client"}
+                          <td className="py-3 px-4 font-mono text-slate-500">
+                            {t.ip || "Local"}
                           </td>
                         </tr>
                       ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {/* TAB CONTENT: 2. WEBSITE TRAFFIC */}
-            {logSubTab === "traffic" && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 border-b border-slate-200 font-label uppercase tracking-wider text-slate-500">
-                    <tr>
-                      <th className="py-3 px-4 font-semibold">Timestamp</th>
-                      <th className="py-3 px-4 font-semibold">Page Path</th>
-                      <th className="py-3 px-4 font-semibold">Visitor / Account</th>
-                      <th className="py-3 px-4 font-semibold">Referrer</th>
-                      <th className="py-3 px-4 font-semibold">IP &amp; Device</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {trafficLogs.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="py-8 text-center text-slate-400 font-sans text-xs">
-                          No page views recorded yet. Traffic will appear in real time as visitors browse the site.
-                        </td>
-                      </tr>
-                    ) : (
-                      trafficLogs.map((item) => (
-                        <tr key={item.id} className="hover:bg-slate-50/60 font-mono text-[11px]">
-                          <td className="py-3 px-4 text-slate-500 whitespace-nowrap">
-                            {new Date(item.timestamp).toLocaleString()}
-                          </td>
-                          <td className="py-3 px-4 font-semibold text-[#0B192C]">
-                            <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 font-mono text-[11px]">
-                              {item.path}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4 whitespace-nowrap">
-                            {item.userEmail ? (
-                              <span className="text-slate-800 font-sans text-[11px]">
-                                {item.userEmail} {item.role === "admin" && <span className="text-amber-700 font-bold text-[9px]">(Admin)</span>}
-                              </span>
-                            ) : (
-                              <span className="text-slate-400 font-sans text-[11px]">Anonymous Visitor</span>
-                            )}
-                          </td>
-                          <td className="py-3 px-4 text-slate-500 font-sans text-[11px]">
-                            {item.referrer || "Direct"}
-                          </td>
-                          <td className="py-3 px-4 text-slate-500 font-sans text-[11px] truncate max-w-xs">
-                            {item.ip ? `${item.ip} • ` : ""}{item.userAgent || "Browser Client"}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>
         )}
 
-
-
         {/* ========================================================================= */}
-        {/* 8. TAB 4: MANUAL LEAD ENTRY FORM                                          */}
+        {/* TAB 5: RECORD MANUAL LEAD */}
         {/* ========================================================================= */}
         {activeTab === "new-lead" && (
-          <div className="max-w-2xl bg-white rounded-3xl border border-slate-200/80 shadow-xs p-8 space-y-6">
+          <div className="max-w-2xl mx-auto bg-white border border-slate-200/80 rounded-3xl p-7 sm:p-9 shadow-soft-sm space-y-6 animate-in fade-in duration-200">
             <div>
-              <h3 className="font-heading font-semibold text-xl text-[#0B192C]">
-                Record Direct Candidate Inquiry
-              </h3>
-              <p className="text-xs text-slate-500 font-label uppercase tracking-wider mt-1">
-                Log phone calls, WhatsApp inquiries, or walk-in candidates into central database
+              <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Record Walk-In or Telephone Lead</h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Directly add an inquiry to the admissions desk from telephone calls or campus visits.
               </p>
             </div>
 
             {leadCreatedSuccess && (
-              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-xs flex items-center gap-2">
+              <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Candidate inquiry saved successfully! Redirecting to table...</span>
+                <span>Lead inquiry successfully recorded into the database!</span>
               </div>
             )}
 
             <form onSubmit={handleCreateManualLead} className="space-y-4">
+              <div>
+                <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
+                  Candidate Full Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Vikram Singh"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                />
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1">
-                    Candidate Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                    placeholder="e.g. Cadet Aryan Singh"
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#C8A84E]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1">
-                    Phone Number *
+                  <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
+                    Phone / WhatsApp *
                   </label>
                   <input
                     type="tel"
                     required
+                    placeholder="e.g. 9876543210"
                     value={newPhone}
                     onChange={(e) => setNewPhone(e.target.value)}
-                    placeholder="+91 9876543210"
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#C8A84E]"
+                    className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="candidate@example.com"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
-                    placeholder="candidate@gmail.com"
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#C8A84E]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1">
-                    Target Track / Program
+                  <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
+                    Target Track
                   </label>
                   <select
                     value={newProgram}
                     onChange={(e) => setNewProgram(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-label uppercase tracking-wider text-slate-700 focus:outline-none"
+                    className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   >
-                    <option value="defense">Defense Leadership (NDA, CDS, AFCAT)</option>
-                    <option value="scholars">Scholars Program (Class 11–12)</option>
-                    <option value="juniors">Juniors Program (Class 7–10)</option>
-                    <option value="general">General Academy Orientation</option>
+                    <option value="defense">Defense Leadership (NDA/CDS/AFCAT)</option>
+                    <option value="nda">NDA Cadet Wing</option>
+                    <option value="cds">CDS Graduate Cadre</option>
+                    <option value="afcat">AFCAT Air Wing</option>
+                    <option value="scholars">Scholars Academic Wing (11-12)</option>
+                    <option value="juniors">Juniors Wing (7-10)</option>
+                    <option value="general">General Admissions</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
+                    Initial Status
+                  </label>
+                  <select
+                    value={newStatus}
+                    onChange={(e) => setNewStatus(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                  >
+                    <option value="new">New Lead</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="enrolled">Enrolled</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1">
-                  Inquiry Background &amp; Notes
+                <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
+                  Inquiry Notes / Candidate Background
                 </label>
                 <textarea
                   rows={3}
+                  placeholder="Record call summary or key student details..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Details of student aspirations, current school/exam year, or diagnostic notes..."
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#C8A84E] font-sans"
+                  className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                 />
               </div>
 
-              <div className="flex items-center gap-3 pt-2">
+              <div className="pt-2 flex items-center gap-3">
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl shadow-sm transition-all"
+                  className="px-6 py-2.5 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm active:scale-95"
                 >
-                  Save Inquiry to Database
+                  Save Lead Record
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab("enquiries")}
-                  className="px-4 py-3 text-slate-500 hover:text-slate-800 text-xs font-label uppercase"
+                  className="px-4 py-2.5 text-slate-600 hover:text-slate-900 text-xs font-label uppercase tracking-wider transition-colors"
                 >
                   Cancel
                 </button>
@@ -1206,44 +1465,47 @@ export default function AdminDashboardPage() {
         )}
       </main>
 
-      {/* ========================================================================= */}
-      {/* 9. MENTOR NOTE MODAL DIALOG                                              */}
-      {/* ========================================================================= */}
+      {/* Internal Notes Modal */}
       {editingNoteEnquiry && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/35 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-4 shadow-xl border border-slate-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-7 shadow-xl border border-slate-200 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-heading font-semibold text-lg text-[#0B192C]">
-                Mentor Notes for {editingNoteEnquiry.name}
-              </h3>
+              <div>
+                <h4 className="font-heading font-semibold text-lg text-[#0B192C]">
+                  Director Follow-up Notes
+                </h4>
+                <p className="text-xs text-slate-500">
+                  Lead: {editingNoteEnquiry.name} ({editingNoteEnquiry.id})
+                </p>
+              </div>
               <button
                 onClick={() => setEditingNoteEnquiry(null)}
-                className="text-slate-400 hover:text-slate-700 text-sm"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
               >
                 ✕
               </button>
             </div>
 
             <textarea
-              rows={4}
+              rows={5}
               value={currentNote}
               onChange={(e) => setCurrentNote(e.target.value)}
-              placeholder="Record diagnostic outcome, scheduled orientation dates, or admissions remarks..."
-              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#C8A84E] font-sans"
+              placeholder="Record mentor remarks, call outcomes, admission status..."
+              className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
             />
 
-            <div className="flex items-center justify-end gap-2 pt-2">
+            <div className="flex items-center justify-end gap-2.5 pt-2">
               <button
                 onClick={() => setEditingNoteEnquiry(null)}
-                className="px-4 py-2 text-xs font-label uppercase text-slate-500 hover:text-slate-800"
+                className="px-4 py-2 text-xs font-label uppercase tracking-wider text-slate-600 hover:text-slate-900"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveNotes}
-                className="px-5 py-2 bg-[#0B192C] text-white font-label font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs"
+                className="px-5 py-2 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm"
               >
-                Save Note
+                Save Notes
               </button>
             </div>
           </div>

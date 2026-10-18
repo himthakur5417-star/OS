@@ -18,7 +18,7 @@ export interface UserAccount {
   uid: string;
   email: string;
   displayName: string;
-  role: "admin" | "cadet" | "scholar" | "junior" | "parent";
+  role: "admin" | "user" | string;
   rollNumber: string;
   phone?: string;
   targetExam?: string;
@@ -286,18 +286,24 @@ export function recordUser(user: {
   uid: string;
   email: string;
   displayName: string;
-  role: UserAccount["role"];
+  role?: string;
   rollNumber: string;
   phone?: string;
   targetExam?: string;
 }): UserAccount {
   const db = initDB();
   const existingIdx = db.users.findIndex((u) => u.email === user.email || u.uid === user.uid);
+  const normalizedRole: "admin" | "user" = user.role === "admin" ? "admin" : "user";
+
+  const updatedUserData = {
+    ...user,
+    role: normalizedRole,
+  };
 
   if (existingIdx >= 0) {
     db.users[existingIdx] = {
       ...db.users[existingIdx],
-      ...user,
+      ...updatedUserData,
       lastLogin: new Date().toISOString(),
     };
     writeDB(db);
@@ -305,7 +311,7 @@ export function recordUser(user: {
   }
 
   const newUser: UserAccount = {
-    ...user,
+    ...updatedUserData,
     createdAt: new Date().toISOString(),
     lastLogin: new Date().toISOString(),
   };
@@ -317,11 +323,23 @@ export function recordUser(user: {
 
 // --- Login Logs Repository Methods ---
 
-export function getLoginLogs(limit = 50): LoginLog[] {
+export function getLoginLogs(limit = 100): LoginLog[] {
   const db = initDB();
   return (db.login_logs || [])
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
     .slice(0, limit);
+}
+
+export function clearLoginLogs(): void {
+  const db = initDB();
+  db.login_logs = [];
+  writeDB(db);
+}
+
+export function clearTrafficLogs(): void {
+  const db = initDB();
+  db.traffic_logs = [];
+  writeDB(db);
 }
 
 export function logLoginActivity(entry: {
@@ -335,6 +353,7 @@ export function logLoginActivity(entry: {
   const newLog: LoginLog = {
     id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
     ...entry,
+    role: entry.role === "admin" ? "admin" : "user",
     timestamp: new Date().toISOString(),
   };
 
@@ -402,9 +421,12 @@ export function getAcademyStats() {
   const orientationBookings = enquiries.filter((e) => e.source === "orientation_modal").length;
   const contactMessages = enquiries.filter((e) => e.source === "contact_page").length;
 
-  const totalCadets = users.filter((u) => u.role === "cadet").length;
-  const totalScholars = users.filter((u) => u.role === "scholar").length;
-  const totalJuniors = users.filter((u) => u.role === "junior").length;
+  const totalAdmins = users.filter((u) => u.role === "admin").length;
+  const totalStandardUsers = users.filter((u) => u.role !== "admin").length;
+
+  const totalLogins = logs.length;
+  const successfulLogins = logs.filter((l) => l.status === "success").length;
+  const failedLogins = logs.filter((l) => l.status === "failed").length;
 
   const recentLoginsCount = logs.filter(
     (l) => new Date(l.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
@@ -422,10 +444,13 @@ export function getAcademyStats() {
     enrolledEnquiries,
     orientationBookings,
     contactMessages,
+    totalAccounts: users.length,
     totalUsers: users.length,
-    totalCadets,
-    totalScholars,
-    totalJuniors,
+    totalAdmins,
+    totalStandardUsers,
+    totalLogins,
+    successfulLogins,
+    failedLogins,
     recentLoginsCount,
     totalPageViews,
     recentPageViews,

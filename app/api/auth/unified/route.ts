@@ -121,8 +121,8 @@ export async function POST(req: NextRequest) {
       uid: existingUser?.uid || "usr-" + Date.now().toString(36),
       email: normalizedEmail,
       displayName,
-      role: "cadet", // internal compatibility with existing UserAccount role
-      rollNumber: existingUser?.rollNumber || `OS-MBR-${Math.floor(1000 + Math.random() * 9000)}`,
+      role: "user",
+      rollNumber: existingUser?.rollNumber || `OS-USR-${Math.floor(1000 + Math.random() * 9000)}`,
     });
 
     return NextResponse.json({

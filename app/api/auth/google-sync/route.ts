@@ -97,8 +97,8 @@ export async function POST(req: NextRequest) {
       uid: uid || existingUser?.uid || "usr-" + Date.now().toString(36),
       email: normalizedEmail,
       displayName: effectiveDisplayName,
-      role: "cadet",
-      rollNumber: existingUser?.rollNumber || `OS-MBR-${Math.floor(1000 + Math.random() * 9000)}`,
+      role: "user",
+      rollNumber: existingUser?.rollNumber || `OS-USR-${Math.floor(1000 + Math.random() * 9000)}`,
     });
 
     return NextResponse.json({

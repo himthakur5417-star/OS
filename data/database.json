@@ -1,608 +1,64 @@
 {
   "enquiries": [
     {
+      "id": "ENQ-2026-001",
       "name": "Himanshu Thakur",
       "phone": "8969634656",
       "email": "himthakur5417@gmail.com",
       "program": "afcat",
       "source": "orientation_modal",
       "message": "Category: Student. Requested diagnostic orientation call for AFCAT.",
-      "id": "ENQ-2026-001",
       "status": "new",
       "createdAt": "2026-10-18T05:55:24.157Z"
     }
   ],
   "users": [
     {
-      "uid": "google-student-456",
-      "email": "student@gmail.com",
-      "displayName": "Rahul Sharma",
-      "role": "cadet",
-      "rollNumber": "OS-MBR-3250",
-      "createdAt": "2026-10-18T07:36:08.460Z",
-      "lastLogin": "2026-10-18T07:36:15.305Z"
-    },
-    {
-      "uid": "admin-palakjha82@gmail.com",
-      "email": "palakjha82@gmail.com",
-      "displayName": "Palak Jha",
-      "role": "admin",
-      "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-16T18:07:25.685Z",
-      "lastLogin": "2026-10-16T18:07:25.685Z"
-    },
-    {
-      "uid": "admin-shiwangit78@gmail.com",
-      "email": "shiwangit78@gmail.com",
-      "displayName": "Shiwangi",
-      "role": "admin",
-      "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-16T18:04:38.169Z",
-      "lastLogin": "2026-10-16T18:04:38.169Z"
-    },
-    {
-      "uid": "admin-osupremum@gmail.com",
-      "email": "osupremum@gmail.com",
-      "displayName": "Officium Supremum",
-      "role": "admin",
-      "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-16T18:04:31.839Z",
-      "lastLogin": "2026-10-16T18:04:31.839Z"
-    },
-    {
-      "uid": "google-123",
+      "uid": "admin-himthakur5417",
       "email": "himthakur5417@gmail.com",
       "displayName": "Himanshu Thakur",
       "role": "admin",
       "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-16T18:04:25.526Z",
-      "lastLogin": "2026-10-18T07:36:01.799Z"
-    }
-  ],
-  "login_logs": [
-    {
-      "id": "log-1792308975305-1hsxo",
-      "email": "student@gmail.com",
-      "role": "user",
-      "status": "success",
-      "ip": "::1",
-      "userAgent": "curl/8.7.1",
-      "timestamp": "2026-10-18T07:36:15.305Z"
+      "createdAt": "2026-10-18T07:00:00.000Z",
+      "lastLogin": "2026-10-18T08:50:00.000Z"
     },
     {
-      "id": "log-1792308968460-tyq1a",
-      "email": "student@gmail.com",
-      "role": "user",
-      "status": "success",
-      "ip": "::1",
-      "userAgent": "curl/8.7.1",
-      "timestamp": "2026-10-18T07:36:08.460Z"
-    },
-    {
-      "id": "log-1792308961798-q4gvg",
-      "email": "himthakur5417@gmail.com",
-      "role": "admin",
-      "status": "success",
-      "ip": "::1",
-      "userAgent": "curl/8.7.1",
-      "timestamp": "2026-10-18T07:36:01.798Z"
-    },
-    {
-      "id": "log-1792308954285-4x7og",
-      "email": "himthakur5417@gmail.com",
-      "role": "admin",
-      "status": "success",
-      "ip": "::1",
-      "userAgent": "curl/8.7.1",
-      "timestamp": "2026-10-18T07:35:54.285Z"
-    },
-    {
-      "id": "log-1792308386507-kyzw9",
-      "email": "himthakur5417@gmail.com",
-      "role": "admin",
-      "status": "success",
-      "userAgent": "curl/8.7.1",
-      "ip": "::1",
-      "timestamp": "2026-10-18T07:26:26.507Z"
-    },
-    {
-      "id": "log-1792175245675-3x71j",
+      "uid": "admin-osupremum",
       "email": "osupremum@gmail.com",
+      "displayName": "Officium Supremum",
       "role": "admin",
-      "status": "success",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "::1",
-      "timestamp": "2026-10-16T18:27:25.675Z"
+      "rollNumber": "OS-ADMIN",
+      "createdAt": "2026-10-18T07:00:00.000Z",
+      "lastLogin": "2026-10-18T07:00:00.000Z"
     },
     {
-      "id": "log-1792174045684-t8hlc",
-      "email": "palakjha82@gmail.com",
-      "role": "admin",
-      "status": "success",
-      "ip": "::1",
-      "userAgent": "Web Client",
-      "timestamp": "2026-10-16T18:07:25.684Z"
-    },
-    {
-      "id": "log-1792173878168-5w33c",
+      "uid": "admin-shiwangit78",
       "email": "shiwangit78@gmail.com",
+      "displayName": "Shiwangi",
       "role": "admin",
-      "status": "success",
-      "ip": "::1",
-      "userAgent": "Web Client",
-      "timestamp": "2026-10-16T18:04:38.168Z"
+      "rollNumber": "OS-ADMIN",
+      "createdAt": "2026-10-18T07:00:00.000Z",
+      "lastLogin": "2026-10-18T07:00:00.000Z"
     },
     {
-      "id": "log-1792173871838-oiub4",
-      "email": "osupremum@gmail.com",
+      "uid": "admin-palakjha82",
+      "email": "palakjha82@gmail.com",
+      "displayName": "Palak Jha",
       "role": "admin",
-      "status": "success",
-      "ip": "::1",
-      "userAgent": "Web Client",
-      "timestamp": "2026-10-16T18:04:31.838Z"
+      "rollNumber": "OS-ADMIN",
+      "createdAt": "2026-10-18T07:00:00.000Z",
+      "lastLogin": "2026-10-18T07:00:00.000Z"
     },
     {
-      "id": "log-1792173865526-7288a",
-      "email": "himthakur5417@gmail.com",
+      "uid": "admin-master",
+      "email": "admin@officium.academy",
+      "displayName": "Academy Director",
       "role": "admin",
-      "status": "success",
-      "ip": "::1",
-      "userAgent": "Web Client",
-      "timestamp": "2026-10-16T18:04:25.526Z"
+      "rollNumber": "OS-ADMIN",
+      "createdAt": "2026-10-18T07:00:00.000Z",
+      "lastLogin": "2026-10-18T07:00:00.000Z"
     }
   ],
-  "traffic_logs": [
-    {
-      "id": "trf-1792305150674-fdh54",
-      "path": "/",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:32:30.674Z"
-    },
-    {
-      "id": "trf-1792305114593-5tdy5",
-      "path": "/programs/juniors",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:31:54.593Z"
-    },
-    {
-      "id": "trf-1792305099683-mfz99",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:31:39.684Z"
-    },
-    {
-      "id": "trf-1792305097906-2ws94",
-      "path": "/",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:31:37.906Z"
-    },
-    {
-      "id": "trf-1792305097905-jwyiq",
-      "path": "/",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:31:37.905Z"
-    },
-    {
-      "id": "trf-1792304937573-fhlsj",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:28:57.573Z"
-    },
-    {
-      "id": "trf-1792304937558-ge70a",
-      "path": "/resources",
-      "role": "guest",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:28:57.558Z"
-    },
-    {
-      "id": "trf-1792304931459-f0cte",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:28:51.459Z"
-    },
-    {
-      "id": "trf-1792304898106-za76a",
-      "path": "/resources",
-      "role": "guest",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:28:18.106Z"
-    },
-    {
-      "id": "trf-1792304760625-c3kp3",
-      "path": "/resources",
-      "role": "guest",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:26:00.625Z"
-    },
-    {
-      "id": "trf-1792304655105-n23m3",
-      "path": "/resources",
-      "role": "guest",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:24:15.105Z"
-    },
-    {
-      "id": "trf-1792304621412-0gfmg",
-      "path": "/resources",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:23:41.412Z"
-    },
-    {
-      "id": "trf-1792304454093-0tfix",
-      "path": "/resources",
-      "role": "guest",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:20:54.093Z"
-    },
-    {
-      "id": "trf-1792304336893-6tobk",
-      "path": "/resources",
-      "role": "guest",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:18:56.893Z"
-    },
-    {
-      "id": "trf-1792304311979-oqzvn",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:18:31.979Z"
-    },
-    {
-      "id": "trf-1792304311970-tqn4u",
-      "path": "/resources",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:18:31.970Z"
-    },
-    {
-      "id": "trf-1792304309916-py2r6",
-      "path": "/resources",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:18:29.916Z"
-    },
-    {
-      "id": "trf-1792304309915-ldcek",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:18:29.915Z"
-    },
-    {
-      "id": "trf-1792304164853-opnlu",
-      "path": "/resources",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:16:04.853Z"
-    },
-    {
-      "id": "trf-1792304164852-nwt3t",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:16:04.852Z"
-    },
-    {
-      "id": "trf-1792304100039-4i47z",
-      "path": "/api/vault/chapter-01-logarithms.pdf",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "referrer": "http://localhost:3000/api/vault/chapter-01-logarithms.pdf",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:15:00.039Z"
-    },
-    {
-      "id": "trf-1792304100036-3jwpn",
-      "path": "/api/vault/chapter-01-logarithms.pdf",
-      "role": "guest",
-      "referrer": "http://localhost:3000/api/vault/chapter-01-logarithms.pdf",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:15:00.036Z"
-    },
-    {
-      "id": "trf-1792304057076-43zev",
-      "path": "/api/vault/chapter-01-logarithms.pdf",
-      "role": "guest",
-      "referrer": "http://localhost:3000/api/vault/chapter-01-logarithms.pdf",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:14:17.076Z"
-    },
-    {
-      "id": "trf-1792304057075-7zevq",
-      "path": "/api/vault/chapter-01-logarithms.pdf",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "referrer": "http://localhost:3000/api/vault/chapter-01-logarithms.pdf",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:14:17.075Z"
-    },
-    {
-      "id": "trf-1792303861777-nseu9",
-      "path": "/api/vault/chapter-01-logarithms.pdf",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "referrer": "http://localhost:3000/api/vault/doc?file=NDA%20mathematics%2Findex.html",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:11:01.777Z"
-    },
-    {
-      "id": "trf-1792303861772-8e6ah",
-      "path": "/api/vault/chapter-01-logarithms.pdf",
-      "role": "guest",
-      "referrer": "http://localhost:3000/api/vault/doc?file=NDA%20mathematics%2Findex.html",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:11:01.772Z"
-    },
-    {
-      "id": "trf-1792303851815-js0tt",
-      "path": "/api/vault/chapter-06-permutations-combinations.pdf",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "referrer": "http://localhost:3000/api/vault/doc?file=NDA%20mathematics%2Findex.html",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:10:51.815Z"
-    },
-    {
-      "id": "trf-1792303851811-bego9",
-      "path": "/api/vault/chapter-06-permutations-combinations.pdf",
-      "role": "guest",
-      "referrer": "http://localhost:3000/api/vault/doc?file=NDA%20mathematics%2Findex.html",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:10:51.811Z"
-    },
-    {
-      "id": "trf-1792303841765-ysjfu",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:10:41.765Z"
-    },
-    {
-      "id": "trf-1792303821554-r42di",
-      "path": "/resources",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:10:21.554Z"
-    },
-    {
-      "id": "trf-1792303745211-wdgix",
-      "path": "/api/vault/chapter-01-logarithms.pdf",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "referrer": "http://localhost:3000/api/vault/doc?file=NDA%20mathematics%2Findex.html",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:09:05.211Z"
-    },
-    {
-      "id": "trf-1792303745207-z3kxi",
-      "path": "/api/vault/chapter-01-logarithms.pdf",
-      "role": "guest",
-      "referrer": "http://localhost:3000/api/vault/doc?file=NDA%20mathematics%2Findex.html",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:09:05.207Z"
-    },
-    {
-      "id": "trf-1792303697069-58h0j",
-      "path": "/resources",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:08:17.069Z"
-    },
-    {
-      "id": "trf-1792303697067-9z5z5",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T06:08:17.067Z"
-    },
-    {
-      "id": "trf-1792302901254-xt89r",
-      "path": "/resources",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T05:55:01.254Z"
-    },
-    {
-      "id": "trf-1792301744382-42ewy",
-      "path": "/resources",
-      "role": "guest",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T05:35:44.382Z"
-    },
-    {
-      "id": "trf-1792301744381-7fooq",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "referrer": "http://localhost:3000/resources",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T05:35:44.381Z"
-    },
-    {
-      "id": "trf-1792301229768-3wv07",
-      "path": "/resources",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T05:27:09.768Z"
-    },
-    {
-      "id": "trf-1792301229764-irejg",
-      "path": "/resources",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T05:27:09.764Z"
-    },
-    {
-      "id": "trf-1792301197123-0vt36",
-      "path": "/",
-      "userEmail": "cadet@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T05:26:37.123Z"
-    },
-    {
-      "id": "trf-1792301163701-nsrcc",
-      "path": "/",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-18T05:26:03.701Z"
-    },
-    {
-      "id": "trf-1792175359093-d4s3y",
-      "path": "/contact",
-      "role": "guest",
-      "referrer": "http://localhost:3000/admin",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:29:19.093Z"
-    },
-    {
-      "id": "trf-1792175345569-52x39",
-      "path": "/",
-      "role": "guest",
-      "referrer": "http://localhost:3000/admin",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:29:05.569Z"
-    },
-    {
-      "id": "trf-1792175245714-ao5ww",
-      "path": "/admin",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:27:25.714Z"
-    },
-    {
-      "id": "trf-1792175218741-ma2z2",
-      "path": "/admin/login",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:26:58.741Z"
-    },
-    {
-      "id": "trf-1792175215819-91lcb",
-      "path": "/",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:26:55.819Z"
-    },
-    {
-      "id": "trf-1792175210930-xo004",
-      "path": "/",
-      "userEmail": "user@officium.academy",
-      "role": "user",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:26:50.930Z"
-    },
-    {
-      "id": "trf-1792175190443-d0378",
-      "path": "/",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:26:30.443Z"
-    },
-    {
-      "id": "trf-1792175179394-72x6q",
-      "path": "/admin/login",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:26:19.394Z"
-    },
-    {
-      "id": "trf-1792175179283-yole8",
-      "path": "/admin",
-      "role": "guest",
-      "ip": "::1",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "timestamp": "2026-10-16T18:26:19.283Z"
-    },
-    {
-      "id": "trf-1792174955393-yvosl",
-      "path": "/",
-      "userEmail": "himthakur5417@gmail.com",
-      "role": "admin",
-      "referrer": "direct",
-      "ip": "::1",
-      "userAgent": "curl/8.7.1",
-      "timestamp": "2026-10-16T18:22:35.393Z"
-    }
-  ]
+  "login_logs": [],
+  "traffic_logs": []
 }

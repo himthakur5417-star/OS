@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     if (email) {
       logLoginActivity({
         email: String(email).trim(),
-        role: role || "cadet",
+        role: role === "admin" ? "admin" : "user",
         status: status === "failed" ? "failed" : "success",
         userAgent: userAgent || req.headers.get("user-agent") || undefined,
         ip: req.headers.get("x-forwarded-for") || undefined,
@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
         uid: userDetails.uid,
         email: userDetails.email,
         displayName: userDetails.displayName || userDetails.email.split("@")[0],
-        role: userDetails.role || "cadet",
-        rollNumber: userDetails.rollNumber || `OS-${(userDetails.role || "cadet").slice(0, 3).toUpperCase()}-2025`,
+        role: userDetails.role === "admin" ? "admin" : "user",
+        rollNumber: userDetails.rollNumber || `OS-${userDetails.role === "admin" ? "ADM" : "USR"}-${Math.floor(1000 + Math.random() * 9000)}`,
         phone: userDetails.phone,
         targetExam: userDetails.targetExam,
       });

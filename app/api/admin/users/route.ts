@@ -24,13 +24,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email and Name are required" }, { status: 400 });
     }
 
-    const assignedRole = role || "cadet";
+    const assignedRole = role === "admin" ? "admin" : "user";
     const user = recordUser({
       uid: "user-" + Math.random().toString(36).substr(2, 8),
       email: String(email).trim().toLowerCase(),
       displayName: String(displayName).trim(),
       role: assignedRole,
-      rollNumber: `OS-${assignedRole.slice(0, 3).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      rollNumber: `OS-${assignedRole === "admin" ? "ADM" : "USR"}-${Math.floor(1000 + Math.random() * 9000)}`,
       phone,
       targetExam,
     });
