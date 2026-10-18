@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { logLoginActivity, recordUser, getAllUsers } from "@/lib/db";
+import { logLoginActivity, recordUser, getUserById } from "@/lib/db";
 import { 
   SESSION_COOKIE_NAME, 
   isAdminEmail,
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
         role: "admin",
         rollNumber: "OS-ADMIN",
         authProvider: "google.com",
-      });
+      }, idToken);
 
       // Issue 7-day cryptographically signed HMAC-SHA256 session token
       const sessionData = {
@@ -111,8 +111,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. Standard user sign-in via Google (non-admin)
-    const existingUsers = await getAllUsers();
-    const existingUser = existingUsers.find((u) => u.email.toLowerCase() === verifiedEmail);
+    const existingUser = verifiedUid ? await getUserById(verifiedUid, idToken) : null;
     const effectiveDisplayName = displayName || existingUser?.displayName || verifiedEmail.split("@")[0];
 
     await logLoginActivity({
@@ -131,7 +130,7 @@ export async function POST(req: NextRequest) {
       role: "user",
       rollNumber: existingUser?.rollNumber || `OS-USR-${Math.floor(1000 + Math.random() * 9000)}`,
       authProvider: "google.com",
-    });
+    }, idToken);
 
     return NextResponse.json({
       success: true,

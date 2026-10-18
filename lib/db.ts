@@ -153,7 +153,10 @@ let firestoreCheckResult: { working: boolean; error?: string } | null = null;
 let migrationCompleted = false;
 let cachedAccessToken: { token: string; exp: number } | null = null;
 
-async function getFirestoreAuthHeader(): Promise<Record<string, string>> {
+async function getFirestoreAuthHeader(userToken?: string): Promise<Record<string, string>> {
+  if (userToken) {
+    return { Authorization: `Bearer ${userToken}` };
+  }
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     try {
       if (cachedAccessToken && cachedAccessToken.exp > Date.now() + 60000) {
@@ -184,8 +187,19 @@ async function getFirestoreAuthHeader(): Promise<Record<string, string>> {
 
 /**
  * Checks whether Cloud Firestore is currently accessible and enabled.
+ * Accurately distinguishes between:
+ * - API disabled in Google Cloud (reason: SERVICE_DISABLED)
+ * - Database not created in project (status: 404 does not exist)
+ * - Active database enforcing security rules (status: 403 PERMISSION_DENIED)
+ * - Full admin access (status: 200 OK)
  */
-export async function checkFirestoreStatus(): Promise<{ available: boolean; error?: string; activationUrl: string }> {
+export async function checkFirestoreStatus(): Promise<{
+  available: boolean;
+  hasAdminAccess: boolean;
+  error?: string;
+  code?: string;
+  activationUrl: string;
+}> {
   const activationUrl = `https://console.firebase.google.com/project/${FIREBASE_PROJECT_ID}/firestore`;
   try {
     const authHeaders = await getFirestoreAuthHeader();
@@ -196,30 +210,75 @@ export async function checkFirestoreStatus(): Promise<{ available: boolean; erro
 
     if (res.ok) {
       firestoreCheckResult = { working: true };
-      return { available: true, activationUrl };
+      return { available: true, hasAdminAccess: true, activationUrl };
     }
 
     const body = await res.json().catch(() => ({}));
     const message = body?.error?.message || `HTTP ${res.status}`;
-    let code = body?.error?.details?.[0]?.reason;
-    if (!code) {
-      if (res.status === 403) code = message.includes("Missing or insufficient permissions") ? "PERMISSION_DENIED" : "SERVICE_DISABLED";
-      else if (res.status === 404 && message.includes("does not exist")) code = "DATABASE_NOT_CREATED";
-      else code = "FIRESTORE_ERROR";
+    const statusText = body?.error?.status || "";
+    const reason = body?.error?.details?.[0]?.reason || "";
+
+    // 1. Is API disabled in Google Cloud?
+    if (reason === "SERVICE_DISABLED" || message.includes("disabled") || message.includes("has not been used")) {
+      firestoreCheckResult = { working: false, error: message };
+      return {
+        available: false,
+        hasAdminAccess: false,
+        code: "FIRESTORE_DISABLED",
+        error: `Cloud Firestore API is not enabled for project ${FIREBASE_PROJECT_ID}. Enable it at ${activationUrl}`,
+        activationUrl,
+      };
+    }
+
+    // 2. Does database not exist?
+    if (res.status === 404 && message.includes("does not exist")) {
+      firestoreCheckResult = { working: false, error: message };
+      return {
+        available: false,
+        hasAdminAccess: false,
+        code: "DATABASE_NOT_CREATED",
+        error: `Cloud Firestore database '${FIREBASE_DATABASE_ID}' has not yet been created for project ${FIREBASE_PROJECT_ID}.`,
+        activationUrl,
+      };
+    }
+
+    // 3. Is Firestore active and enforcing rules, but unauthenticated read is rejected?
+    if (res.status === 403 && (statusText === "PERMISSION_DENIED" || message.includes("Missing or insufficient permissions"))) {
+      // The database exists, API is enabled, and security rules are actively enforced!
+      firestoreCheckResult = { working: true };
+      return {
+        available: true,
+        hasAdminAccess: false,
+        code: "PERMISSION_DENIED",
+        error: "Cloud Firestore is active and enforcing security rules.",
+        activationUrl,
+      };
     }
 
     firestoreCheckResult = { working: false, error: message };
-    return { available: false, error: `Cloud Firestore: ${code} - ${message}`, activationUrl };
+    return {
+      available: false,
+      hasAdminAccess: false,
+      code: "FIRESTORE_ERROR",
+      error: `Cloud Firestore: ${message}`,
+      activationUrl,
+    };
   } catch (err: any) {
     firestoreCheckResult = { working: false, error: err.message };
-    return { available: false, error: err.message, activationUrl };
+    return {
+      available: false,
+      hasAdminAccess: false,
+      code: "NETWORK_ERROR",
+      error: err.message,
+      activationUrl,
+    };
   }
 }
 
 // --- Firestore Direct Document Access ---
 
-async function getFirestoreDocuments<T>(collection: string, pageSize = 300): Promise<T[]> {
-  const authHeaders = await getFirestoreAuthHeader();
+async function getFirestoreDocuments<T>(collection: string, pageSize = 300, userToken?: string): Promise<T[]> {
+  const authHeaders = await getFirestoreAuthHeader(userToken);
   const url = `${FIRESTORE_BASE_URL}/${collection}?pageSize=${pageSize}&key=${FIREBASE_API_KEY}`;
   const res = await fetch(url, {
     method: "GET",
@@ -239,8 +298,8 @@ async function getFirestoreDocuments<T>(collection: string, pageSize = 300): Pro
   return docs.map((d: any) => fromFirestoreDocument<T>(d));
 }
 
-async function getFirestoreDocument<T>(collection: string, docId: string): Promise<T | null> {
-  const authHeaders = await getFirestoreAuthHeader();
+export async function getFirestoreDocument<T>(collection: string, docId: string, userToken?: string): Promise<T | null> {
+  const authHeaders = await getFirestoreAuthHeader(userToken);
   const sanitizedId = encodeURIComponent(String(docId).replace(/\//g, "_"));
   const url = `${FIRESTORE_BASE_URL}/${collection}/${sanitizedId}?key=${FIREBASE_API_KEY}`;
   try {
@@ -260,8 +319,8 @@ async function getFirestoreDocument<T>(collection: string, docId: string): Promi
   }
 }
 
-async function setFirestoreDocument<T extends Record<string, any>>(collection: string, docId: string, data: T): Promise<T> {
-  const authHeaders = await getFirestoreAuthHeader();
+export async function setFirestoreDocument<T extends Record<string, any>>(collection: string, docId: string, data: T, userToken?: string): Promise<T> {
+  const authHeaders = await getFirestoreAuthHeader(userToken);
   const sanitizedId = encodeURIComponent(String(docId).replace(/\//g, "_"));
   const url = `${FIRESTORE_BASE_URL}/${collection}/${sanitizedId}?key=${FIREBASE_API_KEY}`;
   const fields = toFirestoreFields(data);
@@ -283,8 +342,8 @@ async function setFirestoreDocument<T extends Record<string, any>>(collection: s
   return fromFirestoreDocument<T>(saved);
 }
 
-async function deleteFirestoreDocument(collection: string, docId: string): Promise<boolean> {
-  const authHeaders = await getFirestoreAuthHeader();
+export async function deleteFirestoreDocument(collection: string, docId: string, userToken?: string): Promise<boolean> {
+  const authHeaders = await getFirestoreAuthHeader(userToken);
   const sanitizedId = encodeURIComponent(String(docId).replace(/\//g, "_"));
   const url = `${FIRESTORE_BASE_URL}/${collection}/${sanitizedId}?key=${FIREBASE_API_KEY}`;
 
@@ -384,22 +443,30 @@ export async function migrateLocalDataToFirestore(): Promise<{ migratedEnquiries
 async function useFirestore(): Promise<boolean> {
   const status = await checkFirestoreStatus();
   if (status.available) {
-    // Auto-migrate local records once connected
-    if (!migrationCompleted) {
+    // Auto-migrate local records once connected if admin access is available
+    if (!migrationCompleted && status.hasAdminAccess) {
       migrateLocalDataToFirestore().catch(() => {});
     }
     return true;
   }
 
-  // In production (Vercel), we strictly enforce persistent database access
+  // In production (Vercel), only throw if persistent database is genuinely unavailable (not created or API disabled)
   if (isServerlessEnv() || process.env.NODE_ENV === "production") {
-    const isNotCreated = status.error?.includes("DATABASE_NOT_CREATED");
-    const detailMsg = isNotCreated
-      ? `Cloud Firestore database '(default)' has not yet been created for project ${FIREBASE_PROJECT_ID}. Please create the database at ${status.activationUrl}`
-      : `Cloud Firestore API is not enabled for project ${FIREBASE_PROJECT_ID}. Enable it at ${status.activationUrl}`;
+    if (status.code === "DATABASE_NOT_CREATED") {
+      throw new DatabasePersistenceError(
+        `Persistent production database is required. Cloud Firestore database '${FIREBASE_DATABASE_ID}' has not yet been created for project ${FIREBASE_PROJECT_ID}. Please create the database at ${status.activationUrl}`,
+        "DATABASE_NOT_CREATED"
+      );
+    }
+    if (status.code === "FIRESTORE_DISABLED") {
+      throw new DatabasePersistenceError(
+        `Persistent production database is required. Cloud Firestore API is not enabled for project ${FIREBASE_PROJECT_ID}. Enable it at ${status.activationUrl}`,
+        "FIRESTORE_DISABLED"
+      );
+    }
     throw new DatabasePersistenceError(
-      `Persistent production database is required. ${detailMsg}`,
-      isNotCreated ? "DATABASE_NOT_CREATED" : "FIRESTORE_DISABLED"
+      `Persistent production database is required. Could not connect to Cloud Firestore: ${status.error}`,
+      status.code || "DB_PERSISTENCE_ERROR"
     );
   }
 
@@ -411,10 +478,16 @@ async function useFirestore(): Promise<boolean> {
 // --- Enquiry Repository Methods ---
 
 export async function getAllEnquiries(filter?: { program?: string; status?: string; search?: string }): Promise<Enquiry[]> {
-  let list: Enquiry[];
+  let list: Enquiry[] = [];
 
   if (await useFirestore()) {
-    list = await getFirestoreDocuments<Enquiry>("enquiries");
+    try {
+      list = await getFirestoreDocuments<Enquiry>("enquiries");
+    } catch (e: any) {
+      console.warn("Could not read enquiries from Firestore (permission or rules):", e.message);
+      const local = readLocalDb();
+      list = local.enquiries || [];
+    }
   } else {
     const local = readLocalDb();
     list = local.enquiries || [];
@@ -475,59 +548,86 @@ export async function updateEnquiryStatus(
   notes?: string
 ): Promise<Enquiry | null> {
   if (await useFirestore()) {
-    const enquiries = await getFirestoreDocuments<Enquiry>("enquiries");
-    const target = enquiries.find((e) => e.id === id);
-    if (!target) return null;
+    try {
+      const enquiries = await getFirestoreDocuments<Enquiry>("enquiries");
+      const target = enquiries.find((e) => e.id === id);
+      if (!target) return null;
 
-    const updated: Enquiry = {
-      ...target,
-      status,
-      ...(notes !== undefined ? { notes } : {}),
-    };
-    await setFirestoreDocument("enquiries", id, updated);
-    return updated;
-  } else {
-    const local = readLocalDb();
-    const idx = local.enquiries.findIndex((e) => e.id === id);
-    if (idx === -1) return null;
-
-    local.enquiries[idx].status = status;
-    if (notes !== undefined) {
-      local.enquiries[idx].notes = notes;
+      const updated: Enquiry = {
+        ...target,
+        status,
+        ...(notes !== undefined ? { notes } : {}),
+      };
+      await setFirestoreDocument("enquiries", id, updated);
+      return updated;
+    } catch (e: any) {
+      console.warn("Failed to update enquiry status in Firestore:", e.message);
     }
-    writeLocalDb(local);
-    return local.enquiries[idx];
   }
+
+  const local = readLocalDb();
+  const idx = local.enquiries.findIndex((e) => e.id === id);
+  if (idx === -1) return null;
+
+  local.enquiries[idx].status = status;
+  if (notes !== undefined) {
+    local.enquiries[idx].notes = notes;
+  }
+  writeLocalDb(local);
+  return local.enquiries[idx];
 }
 
 export async function deleteEnquiry(id: string): Promise<boolean> {
   if (await useFirestore()) {
-    return await deleteFirestoreDocument("enquiries", id);
-  } else {
-    const local = readLocalDb();
-    const lenBefore = local.enquiries.length;
-    local.enquiries = local.enquiries.filter((e) => e.id !== id);
-    if (local.enquiries.length !== lenBefore) {
-      writeLocalDb(local);
-      return true;
+    try {
+      return await deleteFirestoreDocument("enquiries", id);
+    } catch (e: any) {
+      console.warn("Failed to delete enquiry from Firestore:", e.message);
     }
-    return false;
   }
+
+  const local = readLocalDb();
+  const lenBefore = local.enquiries.length;
+  local.enquiries = local.enquiries.filter((e) => e.id !== id);
+  if (local.enquiries.length !== lenBefore) {
+    writeLocalDb(local);
+    return true;
+  }
+  return false;
 }
 
 // --- User Accounts Repository Methods ---
 
 export async function getAllUsers(): Promise<UserAccount[]> {
-  let users: UserAccount[];
+  let users: UserAccount[] = [];
 
   if (await useFirestore()) {
-    users = await getFirestoreDocuments<UserAccount>("users");
+    try {
+      users = await getFirestoreDocuments<UserAccount>("users");
+    } catch (e: any) {
+      console.warn("Could not read users from Firestore (permission or rules):", e.message);
+      const local = readLocalDb();
+      users = local.users || [];
+    }
   } else {
     const local = readLocalDb();
     users = local.users || [];
   }
 
   return users.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
+
+export async function getUserById(uid: string, userToken?: string): Promise<UserAccount | null> {
+  if (await useFirestore()) {
+    try {
+      const doc = await getFirestoreDocument<UserAccount>("users", uid, userToken);
+      if (doc) return doc;
+    } catch (e: any) {
+      console.warn(`Could not fetch user ${uid} from Firestore:`, e.message);
+    }
+  }
+  const local = readLocalDb();
+  return (local.users || []).find((u) => u.uid === uid) || null;
 }
 
 export async function recordUser(user: {
@@ -539,12 +639,11 @@ export async function recordUser(user: {
   authProvider?: "google.com" | "password" | string;
   phone?: string;
   targetExam?: string;
-}): Promise<UserAccount> {
+}, userToken?: string): Promise<UserAccount> {
   const normalizedEmail = user.email.toLowerCase();
   const normalizedRole: "admin" | "user" = user.role === "admin" ? "admin" : "user";
 
-  const allUsers = await getAllUsers();
-  const existing = allUsers.find((u) => u.email.toLowerCase() === normalizedEmail || u.uid === user.uid);
+  const existing = user.uid ? await getUserById(user.uid, userToken) : null;
 
   const updatedAccount: UserAccount = {
     uid: user.uid || existing?.uid || `usr-${Date.now().toString(36)}`,
@@ -560,7 +659,11 @@ export async function recordUser(user: {
   };
 
   if (await useFirestore()) {
-    await setFirestoreDocument("users", updatedAccount.uid, updatedAccount);
+    try {
+      await setFirestoreDocument("users", updatedAccount.uid, updatedAccount, userToken);
+    } catch (err: any) {
+      console.warn(`Could not persist user ${updatedAccount.uid} to Firestore:`, err.message);
+    }
   } else {
     const local = readLocalDb();
     const idx = local.users.findIndex((u) => u.email.toLowerCase() === normalizedEmail || u.uid === updatedAccount.uid);
@@ -578,10 +681,16 @@ export async function recordUser(user: {
 // --- Login Logs Repository Methods ---
 
 export async function getLoginLogs(limit = 100): Promise<LoginLog[]> {
-  let logs: LoginLog[];
+  let logs: LoginLog[] = [];
 
   if (await useFirestore()) {
-    logs = await getFirestoreDocuments<LoginLog>("login_logs", limit);
+    try {
+      logs = await getFirestoreDocuments<LoginLog>("login_logs", limit);
+    } catch (e: any) {
+      console.warn("Could not read login logs from Firestore (permission or rules):", e.message);
+      const local = readLocalDb();
+      logs = local.login_logs || [];
+    }
   } else {
     const local = readLocalDb();
     logs = local.login_logs || [];
@@ -676,10 +785,16 @@ export async function logTraffic(entry: {
 }
 
 export async function getTrafficLogs(limit = 100): Promise<TrafficLog[]> {
-  let traffic: TrafficLog[];
+  let traffic: TrafficLog[] = [];
 
   if (await useFirestore()) {
-    traffic = await getFirestoreDocuments<TrafficLog>("traffic_logs", limit);
+    try {
+      traffic = await getFirestoreDocuments<TrafficLog>("traffic_logs", limit);
+    } catch (e: any) {
+      console.warn("Could not read traffic logs from Firestore (permission or rules):", e.message);
+      const local = readLocalDb();
+      traffic = local.traffic_logs || [];
+    }
   } else {
     const local = readLocalDb();
     traffic = local.traffic_logs || [];

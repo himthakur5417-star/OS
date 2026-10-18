@@ -368,7 +368,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const result = await signInWithPopup(auth, googleProvider);
         if (result?.user) {
-          await syncFirebaseUser(result.user, "google.com");
+          try {
+            await syncFirebaseUser(result.user, "google.com");
+          } catch (syncErr: any) {
+            console.warn("Backend profile sync notice:", syncErr?.message);
+            // Google authentication succeeded! Fall back to client session if backend sync had an issue
+            const userObj: CustomUser = {
+              uid: result.user.uid,
+              email: result.user.email,
+              displayName: result.user.displayName || (result.user.email ? result.user.email.split("@")[0] : "Cadet"),
+              role: "user",
+            };
+            setUser(userObj);
+            localStorage.setItem("os_active_user", JSON.stringify(userObj));
+            setIsAuthModalOpen(false);
+            checkRedirect("/");
+          }
           return;
         }
       } catch (popupError: any) {
