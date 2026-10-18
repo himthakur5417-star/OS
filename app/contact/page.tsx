@@ -104,14 +104,14 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <div className="font-label uppercase text-[11px] text-slate-500 tracking-wider">Mode of Instruction</div>
-                  <div className="font-heading font-medium text-[#0B192C] text-base">Online Live Mentorship &amp; Diagnostic Centers</div>
+                  <div className="font-heading font-medium text-[#0B192C] text-base">Online</div>
                 </div>
               </div>
 
               {/* Trust Signal */}
               <div className="p-4 rounded-xl bg-[#FAF7F2] border border-amber-200/40 text-center">
                 <p className="font-heading italic text-sm text-slate-700">
-                  &quot;We respond within 4 business hours. Every inquiry receives a personalized assessment.&quot;
+                  &quot;We respond within 6 hours. Every inquiry receives a personalized assessment.&quot;
                 </p>
               </div>
             </div>
@@ -131,7 +131,7 @@ export default function ContactPage() {
                       </div>
                     )}
                     <p className="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed">
-                      Your inquiry has been stored in our admissions database. An academy mentor will review your target track and contact you within 4 business hours.
+                      Your inquiry has been stored in our admissions database. An academy mentor will review your target track and contact you within 6 hours.
                     </p>
                     <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                       <a
