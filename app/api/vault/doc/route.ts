@@ -76,6 +76,54 @@ export async function GET(req: NextRequest) {
     });
 
     if (!fullPath) {
+      // Intelligent fuzzy fallback (handles time-and-work vs time-work, casing, spacing, and chapter prefixes)
+      const requestedFile = path.basename(normalized);
+      const dirName = path.dirname(normalized);
+      const possibleDirs = [
+        path.join(process.cwd(), dirName),
+        path.join(process.cwd(), "public", dirName),
+        path.resolve(process.cwd(), "..", dirName),
+        path.resolve(__dirname, "../../..", dirName),
+        path.resolve(__dirname, "../../../..", dirName),
+      ];
+
+      const altNames = [
+        requestedFile.replace(/-and-/gi, "-"),
+        requestedFile.replace(/-work/gi, "-and-work"),
+        requestedFile.replace(/\s+/g, "-"),
+        requestedFile.replace(/-/g, " "),
+      ];
+
+      for (const d of possibleDirs) {
+        try {
+          if (fs.existsSync(d) && fs.statSync(d).isDirectory()) {
+            const files = fs.readdirSync(d);
+            // 1. Direct alternative variations
+            const directAlt = files.find((f) =>
+              altNames.some((alt) => alt.toLowerCase() === f.toLowerCase())
+            );
+            if (directAlt) {
+              fullPath = path.join(d, directAlt);
+              break;
+            }
+            // 2. Chapter prefix matching (e.g. chapter-03)
+            const chMatch = requestedFile.match(/^(chapter-\d+|ch-\d+)/i);
+            if (chMatch) {
+              const prefix = chMatch[1].toLowerCase();
+              const prefixMatch = files.find(
+                (f) => f.toLowerCase().startsWith(prefix) && f.toLowerCase().endsWith(".pdf")
+              );
+              if (prefixMatch) {
+                fullPath = path.join(d, prefixMatch);
+                break;
+              }
+            }
+          }
+        } catch {}
+      }
+    }
+
+    if (!fullPath) {
       return NextResponse.json({ error: "Document not found" }, { status: 404 });
     }
 
