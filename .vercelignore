@@ -1,0 +1,14 @@
+# Dependencies and builds
+node_modules/
+.next/
+venv/
+
+# Large non-production assets
+PYQ/
+A2Z Vocabulary/
+scripts/
+
+# Misc
+*.log
+.DS_Store
+__MACOSX/
