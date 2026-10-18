@@ -35,6 +35,14 @@ import { useAuth } from "./AuthContext";
 
 export type VaultTab = "syllabus" | "nda-maths" | "cds-maths" | "english" | "pyq";
 
+function getDocStreamUrl(pdfPath: string): string {
+  if (!pdfPath) return "";
+  if (pdfPath.startsWith("http://") || pdfPath.startsWith("https://")) return pdfPath;
+  if (pdfPath.startsWith("/api/vault/doc")) return pdfPath;
+  const cleanPath = pdfPath.startsWith("/") ? pdfPath.slice(1) : pdfPath;
+  return `/api/vault/doc?file=${encodeURIComponent(cleanPath)}`;
+}
+
 interface Props {
   activeTab?: VaultTab;
   onTabChange?: (tab: VaultTab) => void;
@@ -616,7 +624,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
 
               <div className="flex items-center gap-2">
                 <a
-                  href={encodeURI(activeModalDoc.pdf)}
+                  href={getDocStreamUrl(activeModalDoc.pdf)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
@@ -625,7 +633,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                   <ExternalLink className="w-4 h-4" />
                 </a>
                 <a
-                  href={encodeURI(activeModalDoc.pdf)}
+                  href={getDocStreamUrl(activeModalDoc.pdf)}
                   download
                   className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
                   title="Download File"
@@ -655,7 +663,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
             {/* Modal Body / Embedded Iframe Viewer */}
             <div className="flex-1 bg-slate-100 relative">
               <iframe
-                src={encodeURI(activeModalDoc.pdf)}
+                src={getDocStreamUrl(activeModalDoc.pdf)}
                 title={activeModalDoc.title}
                 className="w-full h-full border-none"
               />
@@ -668,7 +676,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
               </span>
               <div className="flex items-center gap-4">
                 <a
-                  href={encodeURI(activeModalDoc.pdf)}
+                  href={getDocStreamUrl(activeModalDoc.pdf)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#C8A84E] hover:underline font-label uppercase tracking-wider flex items-center gap-1 font-semibold"
@@ -677,7 +685,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                   <ExternalLink className="w-3 h-3" />
                 </a>
                 <a
-                  href={encodeURI(activeModalDoc.pdf)}
+                  href={getDocStreamUrl(activeModalDoc.pdf)}
                   download
                   className="text-slate-300 hover:text-white font-label uppercase tracking-wider flex items-center gap-1 font-semibold"
                 >

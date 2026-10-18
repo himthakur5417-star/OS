@@ -58,13 +58,24 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized directory" }, { status: 403 });
     }
 
-    // Try finding the file in project root or in public/
-    let fullPath = path.join(process.cwd(), normalized);
-    if (!fs.existsSync(fullPath)) {
-      fullPath = path.join(process.cwd(), "public", normalized);
-    }
+    // Try finding the file across project root, public, and serverless bundle locations
+    const candidatePaths = [
+      path.join(process.cwd(), normalized),
+      path.join(process.cwd(), "public", normalized),
+      path.resolve(process.cwd(), "..", normalized),
+      path.resolve(__dirname, "../../..", normalized),
+      path.resolve(__dirname, "../../../..", normalized),
+      path.resolve(__dirname, "../../../../..", normalized),
+    ];
+    let fullPath = candidatePaths.find((p) => {
+      try {
+        return fs.existsSync(p);
+      } catch {
+        return false;
+      }
+    });
 
-    if (!fs.existsSync(fullPath)) {
+    if (!fullPath) {
       return NextResponse.json({ error: "Document not found" }, { status: 404 });
     }
 

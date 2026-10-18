@@ -19,19 +19,52 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:754661334425:web:0279cb6123fa8dc4974708",
 };
 
+// Safe lazy getter functions (prevents lexical TDZ and SSR crashes)
+export function getFirebaseApp() {
+  if (typeof window === "undefined") return null;
+  try {
+    return getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+  } catch (e) {
+    console.warn("Firebase App init warning:", e);
+    return null;
+  }
+}
 
-// Initialize Firebase safely
-let app: any = null;
-let auth: any = null;
-let googleProvider: any = null;
+export function getFirebaseAuth() {
+  if (typeof window === "undefined") return null;
+  try {
+    const a = getFirebaseApp();
+    return a ? getAuth(a) : null;
+  } catch (e) {
+    console.warn("Firebase Auth init warning:", e);
+    return null;
+  }
+}
 
-try {
-  app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  googleProvider = new GoogleAuthProvider();
-  googleProvider.setCustomParameters({ prompt: "select_account" });
-} catch (error) {
-  console.warn("Firebase client initialization handled gracefully:", error);
+export function getGoogleProvider() {
+  if (typeof window === "undefined") return null;
+  try {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    return provider;
+  } catch (e) {
+    return null;
+  }
+}
+
+// Hoisted references to prevent any Temporal Dead Zone (TDZ) ReferenceError
+var auth: any = null;
+var googleProvider: any = null;
+var app: any = null;
+
+if (typeof window !== "undefined") {
+  try {
+    app = getFirebaseApp();
+    auth = getFirebaseAuth();
+    googleProvider = getGoogleProvider();
+  } catch (e) {
+    console.warn("Firebase client fallback:", e);
+  }
 }
 
 export {

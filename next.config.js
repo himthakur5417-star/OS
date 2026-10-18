@@ -4,6 +4,18 @@ const nextConfig = {
   images: {
     domains: [],
   },
+  experimental: {
+    outputFileTracingIncludes: {
+      "/api/vault/doc": [
+        "./CDS mathematics/**/*",
+        "./NDA mathematics/**/*",
+        "./NDA CDS English/**/*",
+        "./A2Z Vocabulary/**/*",
+        "./PYQ/**/*",
+        "./Syllabus/**/*",
+      ],
+    },
+  },
   async rewrites() {
     return [
       {
