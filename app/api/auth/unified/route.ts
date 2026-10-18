@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logLoginActivity, recordUser, getAllUsers } from "@/lib/db";
 import { 
-  ADMIN_PASSWORD, 
   SESSION_COOKIE_NAME, 
   isAdminEmail,
-  isValidAdminPassword
+  isValidAdminPassword,
+  createSignedAdminToken
 } from "@/lib/adminAuth";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, password, name, isSignUp } = body;
+    const { email, password, name } = body;
 
     const normalizedEmail = String(email || "").trim().toLowerCase();
     const trimmedPass = String(password || "").trim();
@@ -26,16 +26,17 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get("x-forwarded-for") || undefined;
     const userAgent = req.headers.get("user-agent") || undefined;
 
-    // 1. Check if the email belongs to the Admin list
+    // 1. Check if the email belongs to the Admin whitelist
     const isAdmin = isAdminEmail(normalizedEmail);
 
     if (isAdmin) {
-      // Admin verification
+      // Admin password verification
       if (!isValidAdminPassword(trimmedPass)) {
-        logLoginActivity({
+        await logLoginActivity({
           email: normalizedEmail,
           role: "admin",
           status: "failed",
+          authProvider: "password",
           ip,
           userAgent,
         });
@@ -47,29 +48,34 @@ export async function POST(req: NextRequest) {
       }
 
       // Successful Admin Authentication
-      logLoginActivity({
+      await logLoginActivity({
         email: normalizedEmail,
         role: "admin",
         status: "success",
+        authProvider: "password",
         ip,
         userAgent,
       });
 
-      recordUser({
-        uid: "admin-" + Buffer.from(normalizedEmail).toString("hex").slice(0, 8),
+      const effectiveUid = "admin-" + Buffer.from(normalizedEmail).toString("hex").slice(0, 8);
+      const effectiveDisplayName = name || normalizedEmail.split("@")[0].toUpperCase();
+
+      await recordUser({
+        uid: effectiveUid,
         email: normalizedEmail,
-        displayName: name || normalizedEmail.split("@")[0].toUpperCase(),
+        displayName: effectiveDisplayName,
         role: "admin",
         rollNumber: "OS-ADMIN",
+        authProvider: "password",
       });
 
-      // Issue 7-day session token
+      // Issue 7-day HMAC-SHA256 cryptographically signed session token
       const sessionData = {
         email: normalizedEmail,
-        role: "admin",
+        role: "admin" as const,
         exp: Date.now() + 7 * 24 * 3600 * 1000,
       };
-      const token = Buffer.from(JSON.stringify(sessionData)).toString("base64");
+      const token = createSignedAdminToken(sessionData);
 
       const response = NextResponse.json({
         success: true,
@@ -77,9 +83,9 @@ export async function POST(req: NextRequest) {
         redirectTo: "/admin",
         token,
         user: {
-          uid: "admin-" + normalizedEmail,
+          uid: effectiveUid,
           email: normalizedEmail,
-          displayName: name || normalizedEmail.split("@")[0].toUpperCase(),
+          displayName: effectiveDisplayName,
           role: "admin",
           rollNumber: "OS-ADMIN",
         },
@@ -103,26 +109,28 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Regular User Authentication
-    const existingUsers = getAllUsers();
+    const existingUsers = await getAllUsers();
     const existingUser = existingUsers.find((u) => u.email.toLowerCase() === normalizedEmail);
 
     const displayName = name || existingUser?.displayName || normalizedEmail.split("@")[0];
 
-    // Log the user login into database
-    logLoginActivity({
+    // Log the user login into persistent database
+    await logLoginActivity({
       email: normalizedEmail,
       role: "user",
       status: "success",
+      authProvider: "password",
       ip,
       userAgent,
     });
 
-    const recordedUser = recordUser({
+    const recordedUser = await recordUser({
       uid: existingUser?.uid || "usr-" + Date.now().toString(36),
       email: normalizedEmail,
       displayName,
       role: "user",
       rollNumber: existingUser?.rollNumber || `OS-USR-${Math.floor(1000 + Math.random() * 9000)}`,
+      authProvider: "password",
     });
 
     return NextResponse.json({
@@ -139,9 +147,14 @@ export async function POST(req: NextRequest) {
     });
   } catch (err: any) {
     console.error("Unified auth error:", err);
+    const status = err?.code === "FIRESTORE_DISABLED" ? 503 : 500;
     return NextResponse.json(
-      { error: "Authentication system encountered an issue. Please try again." },
-      { status: 500 }
+      { 
+        error: err?.message || "Authentication system encountered an issue. Please try again.",
+        code: err?.code || "AUTH_ERROR",
+        activationUrl: err?.activationUrl,
+      },
+      { status }
     );
   }
 }

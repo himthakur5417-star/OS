@@ -7,8 +7,21 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 
-  const users = getAllUsers();
-  return NextResponse.json({ users });
+  try {
+    const users = await getAllUsers();
+    return NextResponse.json({ users });
+  } catch (error: any) {
+    console.error("Failed to fetch users:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
+    return NextResponse.json(
+      { 
+        error: error?.message || "Failed to fetch users from database.",
+        code: error?.code || "DB_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -25,7 +38,7 @@ export async function POST(req: NextRequest) {
     }
 
     const assignedRole = role === "admin" ? "admin" : "user";
-    const user = recordUser({
+    const user = await recordUser({
       uid: "user-" + Math.random().toString(36).substr(2, 8),
       email: String(email).trim().toLowerCase(),
       displayName: String(displayName).trim(),
@@ -36,7 +49,16 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true, user });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to record user" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Failed to record user:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
+    return NextResponse.json(
+      { 
+        error: error?.message || "Failed to record user in database.",
+        code: error?.code || "DB_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
+    );
   }
 }

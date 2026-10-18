@@ -1,31 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logLoginActivity } from "@/lib/db";
 import { 
-  ADMIN_PASSWORD, 
   SESSION_COOKIE_NAME, 
-  verifyAdminSession, 
+  verifyAdminRequest, 
   isAdminEmail,
-  isValidAdminPassword 
+  isValidAdminPassword,
+  createSignedAdminToken
 } from "@/lib/adminAuth";
 
 // Check current admin session
 export async function GET(req: NextRequest) {
-  const isValid = verifyAdminSession(req);
-  if (!isValid) {
+  const check = await verifyAdminRequest(req);
+  if (!check.authorized || !check.email) {
     return NextResponse.json({ authenticated: false }, { status: 401 });
   }
 
-  const cookie = req.cookies.get(SESSION_COOKIE_NAME);
-  const authHeader = req.headers.get("authorization")?.replace("Bearer ", "") || req.headers.get("x-admin-token");
-  const token = cookie?.value || authHeader;
-  let adminEmail = "admin@officium.academy";
-
-  if (token) {
-    try {
-      const data = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
-      if (data.email) adminEmail = data.email;
-    } catch (e) {}
-  }
+  const adminEmail = check.email;
 
   return NextResponse.json({
     authenticated: true,
@@ -51,21 +41,22 @@ export async function POST(req: NextRequest) {
       isValidAdminPassword(trimmedPass)
     ) {
       // Log successful admin login
-      logLoginActivity({
+      await logLoginActivity({
         email: normalizedEmail,
         role: "admin",
         status: "success",
+        authProvider: "password",
         userAgent: req.headers.get("user-agent") || undefined,
         ip: req.headers.get("x-forwarded-for") || undefined,
       });
 
-      // 7-day session token
+      // 7-day HMAC-SHA256 cryptographically signed session token
       const sessionData = {
         email: normalizedEmail,
-        role: "admin",
+        role: "admin" as const,
         exp: Date.now() + 7 * 24 * 3600 * 1000,
       };
-      const token = Buffer.from(JSON.stringify(sessionData)).toString("base64");
+      const token = createSignedAdminToken(sessionData);
 
       const response = NextResponse.json({
         success: true,
@@ -76,7 +67,6 @@ export async function POST(req: NextRequest) {
           displayName: normalizedEmail.split("@")[0].toUpperCase(),
           role: "admin",
         },
-
       });
 
       const host = req.headers.get("host") || "";
@@ -97,10 +87,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Log failed attempt
-    logLoginActivity({
+    await logLoginActivity({
       email: normalizedEmail || "unknown-admin-attempt",
       role: "admin",
       status: "failed",
+      authProvider: "password",
       userAgent: req.headers.get("user-agent") || undefined,
       ip: req.headers.get("x-forwarded-for") || undefined,
     });

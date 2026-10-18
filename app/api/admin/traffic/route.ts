@@ -7,11 +7,24 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(req.url);
-  const limit = parseInt(searchParams.get("limit") || "200", 10);
-  const traffic = getTrafficLogs(limit);
+  try {
+    const { searchParams } = new URL(req.url);
+    const limit = parseInt(searchParams.get("limit") || "200", 10);
+    const traffic = await getTrafficLogs(limit);
 
-  return NextResponse.json({ traffic });
+    return NextResponse.json({ traffic });
+  } catch (error: any) {
+    console.error("Failed to fetch traffic logs:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
+    return NextResponse.json(
+      { 
+        error: error?.message || "Failed to fetch traffic logs from database.",
+        code: error?.code || "DB_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
+    );
+  }
 }
 
 export async function DELETE(req: NextRequest) {
@@ -19,6 +32,19 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 
-  clearTrafficLogs();
-  return NextResponse.json({ success: true, message: "Traffic logs successfully cleared." });
+  try {
+    await clearTrafficLogs();
+    return NextResponse.json({ success: true, message: "Traffic logs successfully cleared." });
+  } catch (error: any) {
+    console.error("Failed to clear traffic logs:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
+    return NextResponse.json(
+      { 
+        error: error?.message || "Failed to clear traffic logs.",
+        code: error?.code || "DB_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
+    );
+  }
 }

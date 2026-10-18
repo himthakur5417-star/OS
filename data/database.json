@@ -12,53 +12,16 @@
       "createdAt": "2026-10-18T05:55:24.157Z"
     }
   ],
-  "users": [
-    {
-      "uid": "admin-himthakur5417",
-      "email": "himthakur5417@gmail.com",
-      "displayName": "Himanshu Thakur",
-      "role": "admin",
-      "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-18T07:00:00.000Z",
-      "lastLogin": "2026-10-18T08:50:00.000Z"
-    },
-    {
-      "uid": "admin-osupremum",
-      "email": "osupremum@gmail.com",
-      "displayName": "Officium Supremum",
-      "role": "admin",
-      "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-18T07:00:00.000Z",
-      "lastLogin": "2026-10-18T07:00:00.000Z"
-    },
-    {
-      "uid": "admin-shiwangit78",
-      "email": "shiwangit78@gmail.com",
-      "displayName": "Shiwangi",
-      "role": "admin",
-      "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-18T07:00:00.000Z",
-      "lastLogin": "2026-10-18T07:00:00.000Z"
-    },
-    {
-      "uid": "admin-palakjha82",
-      "email": "palakjha82@gmail.com",
-      "displayName": "Palak Jha",
-      "role": "admin",
-      "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-18T07:00:00.000Z",
-      "lastLogin": "2026-10-18T07:00:00.000Z"
-    },
-    {
-      "uid": "admin-master",
-      "email": "admin@officium.academy",
-      "displayName": "Academy Director",
-      "role": "admin",
-      "rollNumber": "OS-ADMIN",
-      "createdAt": "2026-10-18T07:00:00.000Z",
-      "lastLogin": "2026-10-18T07:00:00.000Z"
-    }
-  ],
+  "users": [],
   "login_logs": [],
-  "traffic_logs": []
+  "traffic_logs": [
+    {
+      "id": "trf-1792347691344-jei2i",
+      "path": "/admin/login",
+      "role": "guest",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "timestamp": "2026-10-18T18:21:31.344Z"
+    }
+  ]
 }

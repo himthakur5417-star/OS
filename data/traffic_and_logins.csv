@@ -1,1 +1,1 @@
-id,type,email,role,status_or_path,ip,timestamp
+Record_Type,ID,Timestamp,Account_Email,Role_or_Page,Status_or_Referrer,IP_Address,Client_Device

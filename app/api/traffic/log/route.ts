@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const userAgent = req.headers.get("user-agent") || undefined;
 
     if (path) {
-      logTraffic({
+      await logTraffic({
         path: String(path).slice(0, 150),
         userEmail: userEmail ? String(userEmail).trim() : undefined,
         role: role ? String(role) : undefined,

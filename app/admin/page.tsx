@@ -54,6 +54,7 @@ interface UserAccount {
   displayName: string;
   role: "admin" | "user" | string;
   rollNumber: string;
+  authProvider?: "google.com" | "password" | string;
   phone?: string;
   targetExam?: string;
   createdAt: string;
@@ -65,6 +66,7 @@ interface LoginLog {
   email: string;
   role: string;
   status: "success" | "failed" | string;
+  authProvider?: string;
   userAgent?: string;
   ip?: string;
   timestamp: string;
@@ -92,6 +94,8 @@ interface Stats {
   totalUsers: number;
   totalAdmins: number;
   totalStandardUsers: number;
+  googleUsersCount?: number;
+  emailPasswordUsersCount?: number;
   totalLogins: number;
   successfulLogins: number;
   failedLogins: number;
@@ -99,6 +103,7 @@ interface Stats {
   totalPageViews?: number;
   recentPageViews?: number;
 }
+
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -636,6 +641,17 @@ export default function AdminDashboardPage() {
               </span>
               <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
                 {stats?.totalStandardUsers || 0} Users
+              </span>
+            </div>
+            <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
+                {stats?.googleUsersCount ?? 0} Google
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
+                {stats?.emailPasswordUsersCount ?? 0} Password
               </span>
             </div>
           </div>
@@ -1206,6 +1222,7 @@ export default function AdminDashboardPage() {
                       <tr className="bg-slate-50/80 border-b border-slate-200/70 text-slate-500 font-label uppercase tracking-wider text-[11px]">
                         <th className="py-3 px-4 font-semibold">Account Member</th>
                         <th className="py-3 px-4 font-semibold">Classification</th>
+                        <th className="py-3 px-4 font-semibold">Auth Method</th>
                         <th className="py-3 px-4 font-semibold">Reference Number</th>
                         <th className="py-3 px-4 font-semibold">Registered</th>
                         <th className="py-3 px-4 font-semibold">Last Active</th>
@@ -1214,6 +1231,7 @@ export default function AdminDashboardPage() {
                     <tbody className="divide-y divide-slate-100">
                       {filteredUsers.map((user) => {
                         const isAdmin = user.role === "admin";
+                        const isGoogle = user.authProvider === "google.com";
 
                         return (
                           <tr key={user.uid} className="hover:bg-slate-50/60 transition-colors">
@@ -1235,6 +1253,19 @@ export default function AdminDashboardPage() {
                                 <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-medium text-[11px] font-label uppercase tracking-wider">
                                   <UserIcon className="w-3.5 h-3.5 text-slate-500" />
                                   User
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-4">
+                              {isGoogle ? (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 font-medium text-[10px] font-label uppercase tracking-wider">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-sky-500" />
+                                  Google
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 font-medium text-[10px] font-label uppercase tracking-wider">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                                  Password
                                 </span>
                               )}
                             </td>

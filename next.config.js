@@ -5,6 +5,7 @@ const nextConfig = {
     domains: [],
   },
   experimental: {
+    serverComponentsExternalPackages: ["firebase-admin"],
     outputFileTracingIncludes: {
       "/api/vault/doc": [
         "./CDS mathematics/**/*",

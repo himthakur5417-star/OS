@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newEnquiry = createEnquiry({
+    const newEnquiry = await createEnquiry({
       name: String(name).trim(),
       phone: String(phone).trim(),
       email: email ? String(email).trim() : "",
@@ -30,9 +30,14 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: any) {
     console.error("Failed to save enquiry:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
     return NextResponse.json(
-      { error: "Failed to record enquiry in database." },
-      { status: 500 }
+      { 
+        error: error?.message || "Failed to record enquiry in persistent database.",
+        code: error?.code || "DATABASE_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
     );
   }
 }

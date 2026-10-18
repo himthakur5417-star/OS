@@ -12,13 +12,26 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(req.url);
-  const program = searchParams.get("program") || undefined;
-  const status = searchParams.get("status") || undefined;
-  const search = searchParams.get("search") || undefined;
+  try {
+    const { searchParams } = new URL(req.url);
+    const program = searchParams.get("program") || undefined;
+    const status = searchParams.get("status") || undefined;
+    const search = searchParams.get("search") || undefined;
 
-  const enquiries = getAllEnquiries({ program, status, search });
-  return NextResponse.json({ enquiries });
+    const enquiries = await getAllEnquiries({ program, status, search });
+    return NextResponse.json({ enquiries });
+  } catch (error: any) {
+    console.error("Failed to fetch enquiries:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
+    return NextResponse.json(
+      { 
+        error: error?.message || "Failed to fetch enquiries from persistent database.",
+        code: error?.code || "DB_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -34,7 +47,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Name and phone are required" }, { status: 400 });
     }
 
-    const created = createEnquiry({
+    const created = await createEnquiry({
       name,
       phone,
       email: email || "",
@@ -45,12 +58,21 @@ export async function POST(req: NextRequest) {
     });
 
     if (notes) {
-      updateEnquiryStatus(created.id, created.status, notes);
+      await updateEnquiryStatus(created.id, created.status, notes);
     }
 
     return NextResponse.json({ success: true, enquiry: created });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to create enquiry" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Failed to create enquiry:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
+    return NextResponse.json(
+      { 
+        error: error?.message || "Failed to create enquiry in database.",
+        code: error?.code || "DB_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
+    );
   }
 }
 
@@ -67,14 +89,23 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Enquiry id and status are required" }, { status: 400 });
     }
 
-    const updated = updateEnquiryStatus(id, status, notes);
+    const updated = await updateEnquiryStatus(id, status, notes);
     if (!updated) {
       return NextResponse.json({ error: "Enquiry not found" }, { status: 404 });
     }
 
     return NextResponse.json({ success: true, enquiry: updated });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to update enquiry" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Failed to update enquiry:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
+    return NextResponse.json(
+      { 
+        error: error?.message || "Failed to update enquiry in database.",
+        code: error?.code || "DB_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
+    );
   }
 }
 
@@ -91,13 +122,22 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "Enquiry id required" }, { status: 400 });
     }
 
-    const deleted = deleteEnquiry(id);
+    const deleted = await deleteEnquiry(id);
     if (!deleted) {
       return NextResponse.json({ error: "Enquiry not found" }, { status: 404 });
     }
 
     return NextResponse.json({ success: true, message: "Enquiry removed" });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to delete enquiry" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Failed to delete enquiry:", error);
+    const status = error?.code === "FIRESTORE_DISABLED" ? 503 : 500;
+    return NextResponse.json(
+      { 
+        error: error?.message || "Failed to delete enquiry from database.",
+        code: error?.code || "DB_ERROR",
+        activationUrl: error?.activationUrl,
+      },
+      { status }
+    );
   }
 }

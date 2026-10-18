@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
 
     // Log the login attempt
     if (email) {
-      logLoginActivity({
+      await logLoginActivity({
         email: String(email).trim(),
         role: role === "admin" ? "admin" : "user",
         status: status === "failed" ? "failed" : "success",
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     // If user profile details are provided, record or update in the user directory
     if (userDetails && userDetails.uid && userDetails.email) {
-      recordUser({
+      await recordUser({
         uid: userDetails.uid,
         email: userDetails.email,
         displayName: userDetails.displayName || userDetails.email.split("@")[0],
