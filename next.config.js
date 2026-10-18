@@ -11,6 +11,7 @@ const nextConfig = {
         "./NDA mathematics/**/*",
         "./NDA CDS English/**/*",
         "./A2Z Vocabulary/**/*",
+        "./PYQ/**/*",
         "./Syllabus/**/*",
       ],
     },
