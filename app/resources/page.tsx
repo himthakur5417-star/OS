@@ -271,7 +271,7 @@ export default function ResourcesPage() {
                   <span>Cadet Sign In</span>
                 </button>
                 <span className="text-xs text-slate-500 font-sans">
-                  (Sign in required to open archives and read study material)
+                  Open archive access. Sign in to save bookmarks and sync officer drill notes.
                 </span>
               </div>
             )}
