@@ -145,6 +145,12 @@ function fromFirestoreDocument<T>(doc: any): T {
   for (const [k, v] of Object.entries(fields)) {
     res[k] = fromFirestoreValue(v);
   }
+  if (!res.id && doc?.name) {
+    res.id = doc.name.split("/").pop();
+  }
+  if (!res.createdAt && doc?.createTime) {
+    res.createdAt = doc.createTime;
+  }
   return res as T;
 }
 
@@ -494,26 +500,32 @@ export async function getAllEnquiries(filter?: { program?: string; status?: stri
   }
 
   if (filter?.program && filter.program !== "all") {
-    list = list.filter((e) => e.program === filter.program);
+    list = list.filter((e) => (e.program || "").toLowerCase() === filter.program!.toLowerCase());
   }
 
   if (filter?.status && filter.status !== "all") {
-    list = list.filter((e) => e.status === filter.status);
+    list = list.filter((e) => (e.status || "new") === filter.status);
   }
 
   if (filter?.search) {
     const q = filter.search.toLowerCase();
     list = list.filter(
       (e) =>
-        e.name?.toLowerCase().includes(q) ||
-        e.phone?.toLowerCase().includes(q) ||
-        e.email?.toLowerCase().includes(q) ||
-        e.message?.toLowerCase().includes(q) ||
-        (e.notes && e.notes.toLowerCase().includes(q))
+        (e.name && e.name.toLowerCase().includes(q)) ||
+        (e.phone && e.phone.toLowerCase().includes(q)) ||
+        (e.email && e.email.toLowerCase().includes(q)) ||
+        (e.message && e.message.toLowerCase().includes(q)) ||
+        (e.notes && e.notes.toLowerCase().includes(q)) ||
+        (e.id && e.id.toLowerCase().includes(q)) ||
+        (e.program && e.program.toLowerCase().includes(q))
     );
   }
 
-  return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  return list.sort((a, b) => {
+    const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return timeB - timeA;
+  });
 }
 
 export async function createEnquiry(
@@ -614,7 +626,11 @@ export async function getAllUsers(): Promise<UserAccount[]> {
     users = local.users || [];
   }
 
-  return users.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  return users.sort((a, b) => {
+    const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return timeB - timeA;
+  });
 }
 
 export async function getUserById(uid: string, userToken?: string): Promise<UserAccount | null> {
@@ -697,7 +713,11 @@ export async function getLoginLogs(limit = 100): Promise<LoginLog[]> {
   }
 
   return logs
-    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    .sort((a, b) => {
+      const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+      const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+      return timeB - timeA;
+    })
     .slice(0, limit);
 }
 
@@ -801,7 +821,11 @@ export async function getTrafficLogs(limit = 100): Promise<TrafficLog[]> {
   }
 
   return traffic
-    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    .sort((a, b) => {
+      const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+      const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+      return timeB - timeA;
+    })
     .slice(0, limit);
 }
 
@@ -826,7 +850,7 @@ export async function getAcademyStats() {
   const logs = await getLoginLogs(500);
   const traffic = await getTrafficLogs(1000);
 
-  const newEnquiries = enquiries.filter((e) => e.status === "new").length;
+  const newEnquiries = enquiries.filter((e) => (e.status || "new") === "new").length;
   const contactedEnquiries = enquiries.filter((e) => e.status === "contacted" || e.status === "in_progress").length;
   const enrolledEnquiries = enquiries.filter((e) => e.status === "enrolled").length;
 
@@ -844,12 +868,12 @@ export async function getAcademyStats() {
   const failedLogins = logs.filter((l) => l.status === "failed").length;
 
   const recentLoginsCount = logs.filter(
-    (l) => new Date(l.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
+    (l) => l.timestamp && !isNaN(new Date(l.timestamp).getTime()) && new Date(l.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
   ).length;
 
   const totalPageViews = traffic.length;
   const recentPageViews = traffic.filter(
-    (t) => new Date(t.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
+    (t) => t.timestamp && !isNaN(new Date(t.timestamp).getTime()) && new Date(t.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
   ).length;
 
   return {

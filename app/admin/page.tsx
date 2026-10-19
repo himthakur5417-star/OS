@@ -384,18 +384,25 @@ export default function AdminDashboardPage() {
     if (!enquiries.length) return;
 
     const headers = ["Lead ID", "Candidate Name", "Phone", "Email", "Program Track", "Source", "Status", "Candidate Inquiry", "Admin Notes", "Submitted Date"];
-    const rows = filteredEnquiries.map((e) => [
-      `"${e.id}"`,
-      `"${(e.name || "").replace(/"/g, '""')}"`,
-      `"${e.phone || ""}"`,
-      `"${e.email || ""}"`,
-      `"${e.program || ""}"`,
-      `"${e.source || ""}"`,
-      `"${e.status || ""}"`,
-      `"${(e.message || "").replace(/"/g, '""')}"`,
-      `"${(e.notes || "").replace(/"/g, '""')}"`,
-      `"${new Date(e.createdAt).toLocaleString()}"`,
-    ]);
+    const rows = filteredEnquiries.map((e) => {
+      const formattedDate =
+        e.createdAt && !isNaN(new Date(e.createdAt).getTime())
+          ? new Date(e.createdAt).toLocaleString()
+          : "Date Unknown";
+
+      return [
+        `"${e.id || "N/A"}"`,
+        `"${(e.name || "Unknown Candidate").replace(/"/g, '""')}"`,
+        `"${e.phone || ""}"`,
+        `"${e.email || ""}"`,
+        `"${e.program || "Unspecified"}"`,
+        `"${e.source || "Unknown"}"`,
+        `"${e.status || "new"}"`,
+        `"${(e.message || "").replace(/"/g, '""')}"`,
+        `"${(e.notes || "").replace(/"/g, '""')}"`,
+        `"${formattedDate}"`,
+      ];
+    });
 
     const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
     const encodedUri = encodeURI(csvContent);
@@ -420,12 +427,16 @@ export default function AdminDashboardPage() {
         !q ||
         (e.name && e.name.toLowerCase().includes(q)) ||
         (e.email && e.email.toLowerCase().includes(q)) ||
-        (e.phone && e.phone.includes(q)) ||
+        (e.phone && String(e.phone).includes(q)) ||
         (e.id && e.id.toLowerCase().includes(q)) ||
+        (e.program && e.program.toLowerCase().includes(q)) ||
         (e.message && e.message.toLowerCase().includes(q));
 
-      const matchesStatus = enquiryStatusFilter === "all" || e.status === enquiryStatusFilter;
-      const matchesProgram = enquiryProgramFilter === "all" || e.program.toLowerCase() === enquiryProgramFilter.toLowerCase();
+      const matchesStatus =
+        enquiryStatusFilter === "all" || (e.status || "new") === enquiryStatusFilter;
+      const matchesProgram =
+        enquiryProgramFilter === "all" ||
+        (Boolean(e.program) && e.program.toLowerCase() === enquiryProgramFilter.toLowerCase());
 
       return matchesSearch && matchesStatus && matchesProgram;
     });
@@ -856,42 +867,53 @@ export default function AdminDashboardPage() {
               </div>
             ) : (
               <div className="space-y-3.5">
-                {filteredEnquiries.map((enq) => {
+                {filteredEnquiries.map((enq, index) => {
                   const cleanPhone = (enq.phone || "").replace(/[^0-9]/g, "");
-                  const whatsappUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent(
-                    `Hello ${enq.name}, Greetings from Officium Supremum Academy regarding your enquiry for the ${enq.program.toUpperCase()} program.`
-                  )}`;
+                  const candidateName = enq.name || "Candidate";
+                  const programTrack = (enq.program || "").trim();
+                  const programUpper = programTrack ? programTrack.toUpperCase() : "GENERAL";
+                  const whatsappMessage = `Hello ${candidateName}, Greetings from Officium Supremum Academy regarding your enquiry${programTrack ? ` for the ${programUpper} program` : ""}.`;
+                  const whatsappUrl = `https://wa.me/91${cleanPhone}?text=${encodeURIComponent(whatsappMessage)}`;
+                  const enqEffectiveStatus = enq.status || "new";
 
                   return (
                     <div
-                      key={enq.id}
+                      key={enq.id || `enquiry-${index}`}
                       className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-soft-xs hover:shadow-soft-sm transition-all space-y-4"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <button
-                            onClick={() => copyToClipboard(enq.id, enq.id)}
-                            className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 font-mono text-[11px] font-bold text-slate-800 transition-colors flex items-center gap-1.5"
-                            title="Click to copy Reference ID"
-                          >
-                            <span>{enq.id}</span>
-                            {copiedId === enq.id ? (
-                              <Check className="w-3 h-3 text-emerald-600" />
-                            ) : (
-                              <Copy className="w-3 h-3 text-slate-400" />
-                            )}
-                          </button>
+                          {enq.id ? (
+                            <button
+                              onClick={() => copyToClipboard(enq.id, enq.id)}
+                              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 font-mono text-[11px] font-bold text-slate-800 transition-colors flex items-center gap-1.5"
+                              title="Click to copy Reference ID"
+                            >
+                              <span>{enq.id}</span>
+                              {copiedId === enq.id ? (
+                                <Check className="w-3 h-3 text-emerald-600" />
+                              ) : (
+                                <Copy className="w-3 h-3 text-slate-400" />
+                              )}
+                            </button>
+                          ) : (
+                            <span className="px-2.5 py-1 rounded-lg bg-slate-100 font-mono text-[11px] font-medium text-slate-400">
+                              REF PENDING
+                            </span>
+                          )}
 
                           <span className="px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 font-label text-[11px] font-bold uppercase tracking-wider text-amber-900">
-                            {enq.program}
+                            {enq.program || "Unspecified"}
                           </span>
 
                           <span className="text-xs text-slate-400 flex items-center gap-1 font-mono">
                             <Clock className="w-3 h-3" />
-                            {new Date(enq.createdAt).toLocaleString(undefined, {
-                              dateStyle: "medium",
-                              timeStyle: "short",
-                            })}
+                            {enq.createdAt && !isNaN(new Date(enq.createdAt).getTime())
+                              ? new Date(enq.createdAt).toLocaleString(undefined, {
+                                  dateStyle: "medium",
+                                  timeStyle: "short",
+                                })
+                              : "Date Unknown"}
                           </span>
                         </div>
 
@@ -899,14 +921,18 @@ export default function AdminDashboardPage() {
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-slate-500 font-label uppercase tracking-wider">Status:</span>
                           <select
-                            value={enq.status}
-                            onChange={(e) => handleStatusChange(enq.id, e.target.value)}
+                            value={enqEffectiveStatus}
+                            onChange={(e) => {
+                              if (enq.id) {
+                                handleStatusChange(enq.id, e.target.value);
+                              }
+                            }}
                             className={`px-3 py-1 rounded-xl text-xs font-label font-bold uppercase tracking-wider border focus:outline-none cursor-pointer ${
-                              enq.status === "new"
+                              enqEffectiveStatus === "new"
                                 ? "bg-amber-50 text-amber-900 border-amber-300"
-                                : enq.status === "enrolled"
+                                : enqEffectiveStatus === "enrolled"
                                 ? "bg-emerald-50 text-emerald-900 border-emerald-300"
-                                : enq.status === "in_progress" || enq.status === "contacted"
+                                : enqEffectiveStatus === "in_progress" || enqEffectiveStatus === "contacted"
                                 ? "bg-sky-50 text-sky-900 border-sky-300"
                                 : "bg-slate-100 text-slate-700 border-slate-300"
                             }`}
@@ -924,13 +950,17 @@ export default function AdminDashboardPage() {
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3.5 bg-slate-50/70 rounded-xl border border-slate-100 text-xs">
                         <div>
                           <div className="text-[10px] font-label uppercase text-slate-400 tracking-wider">Student Name</div>
-                          <div className="font-heading font-semibold text-sm text-[#0B192C]">{enq.name}</div>
+                          <div className="font-heading font-semibold text-sm text-[#0B192C]">
+                            {enq.name || "Unknown Candidate"}
+                          </div>
                         </div>
 
                         <div>
                           <div className="text-[10px] font-label uppercase text-slate-400 tracking-wider">Phone / WhatsApp</div>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="font-mono font-medium text-slate-800">{enq.phone}</span>
+                            <span className="font-mono font-medium text-slate-800">
+                              {enq.phone || "Not provided"}
+                            </span>
                             {cleanPhone && (
                               <a
                                 href={whatsappUrl}
@@ -947,12 +977,16 @@ export default function AdminDashboardPage() {
 
                         <div>
                           <div className="text-[10px] font-label uppercase text-slate-400 tracking-wider">Email Address</div>
-                          <a
-                            href={`mailto:${enq.email}`}
-                            className="font-mono text-slate-800 hover:text-[#C8A84E] underline decoration-slate-300"
-                          >
-                            {enq.email || "Not provided"}
-                          </a>
+                          {enq.email ? (
+                            <a
+                              href={`mailto:${enq.email}`}
+                              className="font-mono text-slate-800 hover:text-[#C8A84E] underline decoration-slate-300"
+                            >
+                              {enq.email}
+                            </a>
+                          ) : (
+                            <span className="font-mono text-slate-400">Not provided</span>
+                          )}
                         </div>
                       </div>
 
@@ -975,7 +1009,14 @@ export default function AdminDashboardPage() {
                       {/* Bottom Actions */}
                       <div className="flex items-center justify-between pt-1 text-xs">
                         <span className="text-slate-400 text-[11px] font-label uppercase tracking-wider">
-                          Source: {enq.source === "orientation_modal" ? "Orientation Booking" : enq.source === "contact_page" ? "Contact Page" : enq.source}
+                          Source:{" "}
+                          {enq.source === "orientation_modal"
+                            ? "Orientation Booking"
+                            : enq.source === "contact_page"
+                            ? "Contact Page"
+                            : enq.source === "manual_entry"
+                            ? "Manual Entry"
+                            : enq.source || "Website Enquiry"}
                         </span>
 
                         <div className="flex items-center gap-2">
@@ -990,13 +1031,15 @@ export default function AdminDashboardPage() {
                             <span>{enq.notes ? "Edit Notes" : "+ Add Note"}</span>
                           </button>
 
-                          <button
-                            onClick={() => handleDeleteEnquiry(enq.id)}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                            title="Delete Lead"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
+                          {enq.id && (
+                            <button
+                              onClick={() => handleDeleteEnquiry(enq.id)}
+                              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                              title="Delete Lead"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -1105,16 +1148,18 @@ export default function AdminDashboardPage() {
                         return (
                           <tr key={log.id} className="hover:bg-slate-50/60 transition-colors">
                             <td className="py-3 px-4 font-mono text-slate-500 whitespace-nowrap">
-                              {new Date(log.timestamp).toLocaleString(undefined, {
-                                month: "short",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                second: "2-digit",
-                              })}
+                              {log.timestamp && !isNaN(new Date(log.timestamp).getTime())
+                                ? new Date(log.timestamp).toLocaleString(undefined, {
+                                    month: "short",
+                                    day: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    second: "2-digit",
+                                  })
+                                : "Unknown"}
                             </td>
                             <td className="py-3 px-4 font-medium text-slate-900 font-mono">
-                              {log.email}
+                              {log.email || "Unknown"}
                             </td>
                             <td className="py-3 px-4">
                               {isAdmin ? (
@@ -1237,10 +1282,10 @@ export default function AdminDashboardPage() {
                           <tr key={user.uid} className="hover:bg-slate-50/60 transition-colors">
                             <td className="py-3.5 px-4">
                               <div className="font-heading font-semibold text-sm text-[#0B192C]">
-                                {user.displayName}
+                                {user.displayName || "Unknown Member"}
                               </div>
                               <div className="font-mono text-slate-500 text-[11px]">
-                                {user.email}
+                                {user.email || "No email recorded"}
                               </div>
                             </td>
                             <td className="py-3.5 px-4">
@@ -1273,14 +1318,16 @@ export default function AdminDashboardPage() {
                               {user.rollNumber || (isAdmin ? "OS-ADMIN" : "OS-USER")}
                             </td>
                             <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
-                              {new Date(user.createdAt).toLocaleDateString(undefined, {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              })}
+                              {user.createdAt && !isNaN(new Date(user.createdAt).getTime())
+                                ? new Date(user.createdAt).toLocaleDateString(undefined, {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  })
+                                : "Unknown"}
                             </td>
                             <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
-                              {user.lastLogin
+                              {user.lastLogin && !isNaN(new Date(user.lastLogin).getTime())
                                 ? new Date(user.lastLogin).toLocaleDateString(undefined, {
                                     year: "numeric",
                                     month: "short",
@@ -1339,7 +1386,9 @@ export default function AdminDashboardPage() {
                       {trafficLogs.slice(0, 100).map((t) => (
                         <tr key={t.id} className="hover:bg-slate-50/60 transition-colors">
                           <td className="py-3 px-4 font-mono text-slate-500 whitespace-nowrap">
-                            {new Date(t.timestamp).toLocaleTimeString()}
+                            {t.timestamp && !isNaN(new Date(t.timestamp).getTime())
+                              ? new Date(t.timestamp).toLocaleTimeString()
+                              : "Unknown"}
                           </td>
                           <td className="py-3 px-4 font-mono font-medium text-slate-800">
                             {t.path}
@@ -1506,7 +1555,7 @@ export default function AdminDashboardPage() {
                   Mentor Follow-up Notes
                 </h4>
                 <p className="text-xs text-slate-500">
-                  Student: {editingNoteEnquiry.name} ({editingNoteEnquiry.id})
+                  Student: {editingNoteEnquiry.name || "Student"} ({editingNoteEnquiry.id || "Pending ID"})
                 </p>
               </div>
               <button
