@@ -160,10 +160,12 @@ export function Footer() {
           <div>
             &copy; {new Date().getFullYear()} Officium Supremum. All rights reserved. Discipline today. Leadership tomorrow.
           </div>
-          <div className="flex items-center gap-6 font-label uppercase text-[11px] tracking-widest text-slate-600">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-6 gap-y-2 font-label uppercase text-[11px] tracking-widest text-slate-600">
             <Link href="/about" className="hover:text-slate-900">About Us</Link>
             <Link href="/contact" className="hover:text-slate-900">Contact Us</Link>
             <Link href="/resources" className="hover:text-slate-900">Study Library</Link>
+            <Link href="/privacy" className="hover:text-slate-900">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-slate-900">Terms &amp; Conditions</Link>
           </div>
         </div>
       </div>

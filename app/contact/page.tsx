@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2, Shield } from "lucide-react";
 
 export default function ContactPage() {
@@ -242,6 +243,14 @@ export default function ContactPage() {
                         <Send className="w-4 h-4" />
                         <span>Submit Enquiry</span>
                       </button>
+
+                      <p className="text-[11px] text-slate-500 text-center leading-relaxed font-sans pt-1">
+                        By submitting this form, you acknowledge that your information will be used to respond to your enquiry and arrange mentorship-related communication. Please review our{" "}
+                        <Link href="/privacy" className="text-[#C8A84E] underline hover:text-[#0B192C] transition-colors">
+                          Privacy Policy
+                        </Link>
+                        .
+                      </p>
                     </form>
                   </div>
                 )}
