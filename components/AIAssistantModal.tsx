@@ -32,7 +32,7 @@ export function AIAssistantModal() {
   const [syllabusOutput, setSyllabusOutput] = useState<any>(null);
 
   // Daily Planner State
-  const [plannerExam, setPlannerExam] = useState("NDA 2025");
+  const [plannerExam, setPlannerExam] = useState("NDA Examination");
   const [availableHours, setAvailableHours] = useState("5");
   const [generatedSchedule, setGeneratedSchedule] = useState<PlanItem[] | null>(null);
 
@@ -49,10 +49,10 @@ export function AIAssistantModal() {
     if (examKey === "nda-maths") {
       setSyllabusOutput({
         title: "NDA Mathematics — 30 Chapter Blueprint (300 Marks)",
-        description: "Curated from the Officium Supremum 4,330+ solved problem archive.",
+        description: "Curated from the Officium Supremum 4,000+ solved practice questions archive.",
         sections: [
           {
-            name: "High-Yield Tier 1 (40% Weightage)",
+            name: "High-Yield Topics (40% Weightage)",
             topics: [
               "Trigonometry & Inverse Trig (Chapters 11, 13) — ~15-20 Questions",
               "Matrices & Determinants (Chapters 09, 10) — ~10-12 Questions",
@@ -61,7 +61,7 @@ export function AIAssistantModal() {
             ],
           },
           {
-            name: "Tier 2 Calculus & Algebra Core (35% Weightage)",
+            name: "Calculus & Algebra Core (35% Weightage)",
             topics: [
               "Limits, Continuity & Differentiation (Chapters 23, 24, 25)",
               "Definite & Indefinite Integration (Chapters 26, 27)",
@@ -70,7 +70,7 @@ export function AIAssistantModal() {
             ],
           },
           {
-            name: "Tier 3 Geometry & Coordinate Systems (25% Weightage)",
+            name: "Geometry & Coordinate Systems (25% Weightage)",
             topics: [
               "Point, Straight Line & Circle (Chapters 15, 16)",
               "Conic Sections (Parabola, Ellipse, Hyperbola) (Chapter 17)",
@@ -84,7 +84,7 @@ export function AIAssistantModal() {
     } else if (examKey === "cds-maths") {
       setSyllabusOutput({
         title: "CDS Elementary Mathematics — 22 Chapter Blueprint (100 Marks)",
-        description: "Based on the 383-page Officium Supremum Master Volume.",
+        description: "Based on the complete 22-chapter Elementary Mathematics study volume.",
         sections: [
           {
             name: "Arithmetic & Commercial Math (30-35% Questions)",
@@ -96,7 +96,7 @@ export function AIAssistantModal() {
             ],
           },
           {
-            name: "Advance Geometry & Mensuration (40% Questions)",
+            name: "Geometry & Mensuration (40% Questions)",
             topics: [
               "Geometry (Triangles, Circles, Polygons) (Chapter 16)",
               "Mensuration 2D & 3D (Chapters 17, 18)",
@@ -113,12 +113,12 @@ export function AIAssistantModal() {
           },
         ],
         actionLink: "/resources#cds-maths",
-        actionText: "Access CDS 383-Page Master PDF",
+        actionText: "Access CDS Mathematics Study Volume",
       });
     } else if (examKey === "english") {
       setSyllabusOutput({
         title: "NDA & CDS English — 34 Chapter Blueprint (200 / 100 Marks)",
-        description: "Divided into Grammar, High-Frequency Vocabulary, and Comprehension.",
+        description: "Divided into Grammar, High-Frequency Vocabulary, and Reading Comprehension.",
         sections: [
           {
             name: "Part I: Grammar & Error Detection (17 Chapters)",
@@ -138,7 +138,7 @@ export function AIAssistantModal() {
             ],
           },
           {
-            name: "Part III: Reading & Ordering (6 Chapters)",
+            name: "Part III: Reading & Sentence Ordering (6 Chapters)",
             topics: [
               "Ordering of Words in a Sentence (PQRS)",
               "Ordering of Sentences in a Paragraph (S1-S6)",
@@ -147,15 +147,15 @@ export function AIAssistantModal() {
           },
         ],
         actionLink: "/resources#english",
-        actionText: "Open 396-Page English Archive",
+        actionText: "Open Complete English Study Volume",
       });
     } else {
       setSyllabusOutput({
-        title: "Juniors Foundation (Class 7–10) Academic & Aptitude Framework",
-        description: "Building early analytical excellence, communication, and cognitive speed.",
+        title: "Juniors Foundation (Class 7–10) Academic & Aptitude Guide",
+        description: "Building early problem solving, clear communication, and strong study habits.",
         sections: [
           {
-            name: "Mathematical Reasoning & Olympiad Prep",
+            name: "Mathematical Thinking & School Foundation",
             topics: [
               "Number Sense, Prime Factorisation, Fractions & Decimals",
               "Algebraic Expressions & Linear Equations",
@@ -163,19 +163,19 @@ export function AIAssistantModal() {
             ],
           },
           {
-            name: "English Mastery & Editorial Reading",
+            name: "English Mastery & Reading Practice",
             topics: [
-              "Daily Editorial Analysis (The Hindu / Indian Express student excerpts)",
-              "Etymology & Root Words (Latin & Greek prefixes/suffixes)",
-              "Extempore & Structured Public Speaking drills",
+              "Daily Newspaper Reading (editorials and comprehension)",
+              "Root Words and Vocabulary Expansion",
+              "Public Speaking and Self-Expression Drills",
             ],
           },
           {
-            name: "Habit & Executive Function Architecture",
+            name: "Daily Study Habits & Focus",
             topics: [
-              "The 90-Minute Focus Sprint framework",
-              "Personal Daily Accountability Log",
-              "Digital Distraction Firewall Protocol",
+              "The 90-Minute Focus Session routine",
+              "Daily Study & Habit Log",
+              "Eliminating Phone & Digital Distractions",
             ],
           },
         ],
@@ -191,27 +191,27 @@ export function AIAssistantModal() {
 
     if (hours <= 4) {
       items = [
-        { time: "06:00 - 06:45", activity: "Academy Physical Routine & Hydration", detail: "Running, calisthenics, cold shower, mind-clearing meditation.", tag: "Physical" },
-        { time: "07:30 - 09:30", activity: "Deep Work Sprint: High-Weightage Concepts", detail: "Active recall study on targeted chapter with zero mobile distraction.", tag: "Focus Study" },
-        { time: "18:00 - 19:30", activity: "High-Intensity Drill & PYQs", detail: "Solve 35-40 timed problems without looking at solutions.", tag: "Problem Drill" },
-        { time: "21:30 - 22:00", activity: "Cadet Night Briefing & Error Log", detail: "Review mistakes, update daily accountability log, set tomorrow's targets.", tag: "Accountability" },
+        { time: "06:00 - 06:45", activity: "Morning Exercise & Hydration", detail: "Running, calisthenics, and a fresh start to the day.", tag: "Physical" },
+        { time: "07:30 - 09:30", activity: "Focus Study: Important Concepts", detail: "Study key chapters with your phone kept in another room.", tag: "Focus Study" },
+        { time: "18:00 - 19:30", activity: "Timed Practice & PYQs", detail: "Solve 25-30 practice questions under a timer.", tag: "Problem Drill" },
+        { time: "21:30 - 22:00", activity: "Evening Review & Mistake Notebook", detail: "Review today's mistakes and set tomorrow's goals.", tag: "Review" },
       ];
     } else if (hours <= 6) {
       items = [
-        { time: "05:30 - 06:30", activity: "Cadet PT & Morning Routine", detail: "Physical readiness conditioning and morning mindset activation.", tag: "Discipline" },
-        { time: "07:00 - 09:00", activity: "Block 1: Core Mathematics / Theory", detail: "Theory breakdown, formula derivation, 20 foundational drills.", tag: "Academic" },
-        { time: "11:00 - 12:30", activity: "Block 2: English & Vocabulary Recall", detail: "Study 25 A2Z vocabulary words + 2 comprehension passages.", tag: "Language" },
-        { time: "16:00 - 18:00", activity: "Block 3: Timed PYQ Pressure Test", detail: "Real exam condition problem solving under timer constraint.", tag: "Recall Drill" },
-        { time: "21:15 - 22:00", activity: "Night Accountability Briefing", detail: "Daily audit with Officium Supremum mentors / journal log.", tag: "Accountability" },
+        { time: "05:30 - 06:30", activity: "Morning Workout & Routine", detail: "Light run, stretching, and mental preparation.", tag: "Discipline" },
+        { time: "07:00 - 09:00", activity: "Block 1: Core Mathematics / Theory", detail: "Learn concepts, formulas, and solve 15 foundational examples.", tag: "Academic" },
+        { time: "11:00 - 12:30", activity: "Block 2: English & Vocabulary", detail: "Learn 20 new words + solve 2 reading comprehension passages.", tag: "Language" },
+        { time: "16:00 - 18:00", activity: "Block 3: Timed Question Practice", detail: "Practice questions under real exam time limits.", tag: "Practice" },
+        { time: "21:15 - 22:00", activity: "Evening Review & Goal Check", detail: "Log hours studied, review mistakes, and plan the next morning.", tag: "Review" },
       ];
     } else {
       items = [
-        { time: "05:00 - 06:15", activity: "Military Academy PT & Mental Focus", detail: "Long run, pushups, pull-ups, breathing drills, fresh mind reset.", tag: "Discipline" },
-        { time: "07:00 - 09:30", activity: "Block 1: Heavyweight Subject Sprint", detail: "Deep focus on complex mathematics / science modules.", tag: "Deep Work" },
-        { time: "10:30 - 12:30", activity: "Block 2: General Ability / GS Analysis", detail: "Current affairs, modern history, geography spatial mapping.", tag: "General Studies" },
-        { time: "15:00 - 17:30", activity: "Block 3: High-Intensity Problem Solving", detail: "Solve 60+ questions from chapter drill sheets; tag tricky doubts.", tag: "Execution" },
-        { time: "18:30 - 19:30", activity: "Block 4: Vocabulary & OLQ Communication", detail: "Extempore speaking, newspaper editorial synthesis, Word Power.", tag: "Personality" },
-        { time: "21:00 - 22:00", activity: "Daily Review & Night Briefing", detail: "Forgetting curve revision + send daily study report.", tag: "Accountability" },
+        { time: "05:00 - 06:15", activity: "Morning Workout & Fresh Start", detail: "Running, calisthenics, and fresh morning mindset.", tag: "Discipline" },
+        { time: "07:00 - 09:30", activity: "Block 1: Difficult Subject Study", detail: "Deep focus on complex mathematics or science chapters.", tag: "Deep Work" },
+        { time: "10:30 - 12:30", activity: "Block 2: General Studies", detail: "Current affairs, Indian history, geography, and general science.", tag: "General Studies" },
+        { time: "15:00 - 17:30", activity: "Block 3: Timed Problem Solving", detail: "Solve 40-50 practice questions; note down doubts in your notebook.", tag: "Practice" },
+        { time: "18:30 - 19:30", activity: "Block 4: English Vocabulary & Speaking Practice", detail: "Speaking practice, editorial reading, and vocabulary review.", tag: "Language" },
+        { time: "21:00 - 22:00", activity: "Daily Review & Goal Check", detail: "Quick revision of today's topics + update your study log.", tag: "Review" },
       ];
     }
     setGeneratedSchedule(items);
@@ -222,25 +222,25 @@ export function AIAssistantModal() {
     if (!hoursStudied || !topicsCompleted) return;
     const hours = parseFloat(hoursStudied);
     let score = "8.5/10";
-    let comment = "Strong commitment shown today. Your execution is aligning with the standard of an officer.";
+    let comment = "Great work today! Consistent daily study is the key to passing your exam.";
     if (hours < 3) {
       score = "5.5/10";
-      comment = "Below the academy standard. Eliminate digital friction tomorrow and protect your first 2 hours.";
+      comment = "Less study time today than planned. Try putting your phone in another room tomorrow and protect your morning study hours.";
     } else if (hours >= 6) {
       score = "9.8/10";
-      comment = "Exceptional volume and focus. Ensure you review today's error log before sleeping.";
+      comment = "Outstanding effort today! Make sure to review your mistake notebook before sleeping.";
     }
 
     setAccountabilityFeedback(`
-🎖️ DISCIPLINE EVALUATION: ${score}
+🎯 DAILY STUDY EVALUATION: ${score}
 
 • Consistency Rating: Verified
-• Cadet Status: On Target
-• Mentor Assessment: ${comment}
+• Progress Status: On Target
+• Mentor Feedback: ${comment}
 
-💡 Action for Tomorrow:
-1. Run a 15-minute active recall test on "${topicsCompleted.slice(0, 30)}..." before touching new material.
-2. Complete your morning physical routine by 06:30 hrs.
+💡 Tips for Tomorrow:
+1. Spend 15 minutes testing yourself from memory on "${topicsCompleted.slice(0, 30)}..." before starting new topics.
+2. Complete your morning workout or routine by 06:30 AM.
     `);
   };
 
@@ -262,14 +262,14 @@ export function AIAssistantModal() {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-heading font-semibold text-base sm:text-lg text-[#0B192C]">
-                  Officium AI Copilot
+                  Study Assistant &amp; Planner
                 </h3>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-label tracking-widest uppercase bg-amber-100 text-amber-800 font-semibold">
-                  Academy AI
+                  Study Tool
                 </span>
               </div>
               <p className="text-xs text-slate-500 font-sans">
-                Syllabus Explorer, Timetable Planner &amp; Accountability Coach
+                Syllabus Explorer, Timetable Planner &amp; Daily Study Tracker
               </p>
             </div>
           </div>
@@ -323,7 +323,7 @@ export function AIAssistantModal() {
             }`}
           >
             <CheckSquare className="w-4 h-4" />
-            <span>3. Night Briefing</span>
+            <span>3. Daily Check-in</span>
           </button>
         </div>
 
@@ -335,7 +335,7 @@ export function AIAssistantModal() {
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-2">
-                  Select Examination / Academic Track:
+                  Select Examination or Class Track:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {[
@@ -414,10 +414,10 @@ export function AIAssistantModal() {
                     onChange={(e) => setPlannerExam(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E]"
                   >
-                    <option value="NDA 2025">NDA Examination</option>
-                    <option value="CDS 2025">CDS / AFCAT Examination</option>
+                    <option value="NDA Examination">NDA Examination</option>
+                    <option value="CDS / AFCAT Examination">CDS / AFCAT Examination</option>
                     <option value="Class 11-12 Boards">Class 11-12 Board + Entrance</option>
-                    <option value="Juniors Class 8-10">Juniors Foundation (Class 7-10)</option>
+                    <option value="Juniors Foundation">Juniors Foundation (Class 7-10)</option>
                   </select>
                 </div>
 
@@ -457,10 +457,10 @@ export function AIAssistantModal() {
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3">
                   <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
                     <span className="font-heading font-semibold text-sm text-[#0B192C]">
-                      Academy Routine: {plannerExam} ({availableHours}h Target)
+                      Study Schedule: {plannerExam} ({availableHours}h Target)
                     </span>
                     <span className="text-[11px] font-label uppercase text-[#C8A84E] font-semibold">
-                      Active Recall Protocol
+                      Structured Daily Routine
                     </span>
                   </div>
 
@@ -492,13 +492,13 @@ export function AIAssistantModal() {
             </div>
           )}
 
-          {/* TAB 3: NIGHT BRIEFING */}
+          {/* TAB 3: DAILY CHECK-IN */}
           {activeTab === "accountability" && (
             <div className="space-y-4">
               <form onSubmit={handleSubmitAccountability} className="space-y-3.5">
                 <div>
                   <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                    Hours Invested Today:
+                    Hours Studied Today:
                   </label>
                   <input
                     type="number"
@@ -519,7 +519,7 @@ export function AIAssistantModal() {
                     type="text"
                     value={topicsCompleted}
                     onChange={(e) => setTopicsCompleted(e.target.value)}
-                    placeholder="e.g. Matrices Chapter 09, 30 PYQs, 25 Vocabulary Words"
+                    placeholder="e.g. Matrices Chapter 09, 30 Practice Questions, 25 Words"
                     required
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E] focus:bg-white"
                   />
@@ -527,13 +527,13 @@ export function AIAssistantModal() {
 
                 <div>
                   <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                    Friction or Doubts Encountered:
+                    Difficulties or Doubts Faced:
                   </label>
                   <textarea
                     rows={2}
                     value={challengesFaced}
                     onChange={(e) => setChallengesFaced(e.target.value)}
-                    placeholder="e.g. Struggled with inverse matrix determinant proofs."
+                    placeholder="e.g. Found inverse matrix proofs difficult; need revision."
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E] focus:bg-white"
                   />
                 </div>
@@ -543,7 +543,7 @@ export function AIAssistantModal() {
                   className="w-full py-2.5 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
                 >
                   <Send className="w-4 h-4 text-[#C8A84E]" />
-                  <span>Submit Daily Briefing for Evaluation</span>
+                  <span>Submit Daily Check-in</span>
                 </button>
               </form>
 
@@ -559,7 +559,7 @@ export function AIAssistantModal() {
         {/* Modal Footer */}
         <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
           <span className="font-label uppercase tracking-widest text-[10px]">
-            Officium Supremum Mentorship Engine
+            Officium Supremum Mentorship
           </span>
           <button
             onClick={closeAi}

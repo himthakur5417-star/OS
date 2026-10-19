@@ -58,7 +58,7 @@ export default function HomePage() {
             >
               <span className="w-2 h-2 rounded-full bg-[#C8A84E]" />
               <span className="font-label text-xs uppercase tracking-[0.2em] text-slate-700 font-medium">
-                Discipline-First Learning Academy
+                A Mentorship Academy Built on Discipline
               </span>
             </motion.div>
 
@@ -69,9 +69,9 @@ export default function HomePage() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="font-heading text-5xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-[#0B192C] leading-[1.05]"
             >
-              Discipline Creates <br />
+              Discipline Builds <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0B192C] via-sky-800 to-[#C8A84E]">
-                Excellence.
+                Real Success.
               </span>
             </motion.h1>
 
@@ -82,7 +82,7 @@ export default function HomePage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-base sm:text-xl text-slate-600 font-sans max-w-2xl mx-auto leading-relaxed"
             >
-              We help students build discipline, master learning, and achieve ambitious goals through structured mentorship.
+              We help school and college students build strong study habits, learn deeply, and clear competitive exams with personal guidance.
             </motion.p>
 
             {/* CTAs */}
@@ -96,7 +96,7 @@ export default function HomePage() {
                 onClick={() => openOrientation("general")}
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest shadow-[0_12px_25px_-8px_rgba(11,25,44,0.35)] transition-all active:scale-95 flex items-center justify-center gap-2 group"
               >
-                <span>Book Orientation</span>
+                <span>Book a Free 20-Minute Call</span>
                 <ArrowRight className="w-4 h-4 text-[#C8A84E] group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -104,7 +104,7 @@ export default function HomePage() {
                 href="#programs"
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/90 hover:bg-white border border-slate-200 hover:border-slate-300 text-[#0B192C] font-label font-semibold text-xs uppercase tracking-widest shadow-sm hover:shadow transition-all text-center"
               >
-                Explore Programs
+                View All Programs
               </a>
             </motion.div>
           </div>
@@ -114,25 +114,25 @@ export default function HomePage() {
             <div className="border-r border-slate-200/60 pr-4 last:border-r-0">
               <div className="font-label text-2xl sm:text-3xl font-bold text-[#0B192C]">100%</div>
               <div className="font-heading text-xs text-slate-500 uppercase tracking-wider mt-0.5">
-                Personalized Roadmaps
+                A Personal Study Plan for Every Student
               </div>
             </div>
             <div className="border-r border-slate-200/60 pr-4 last:border-r-0">
               <div className="font-label text-2xl sm:text-3xl font-bold text-sky-700">Daily</div>
               <div className="font-heading text-xs text-slate-500 uppercase tracking-wider mt-0.5">
-                Accountability Audits
+                Daily Study Check Every Evening
               </div>
             </div>
             <div className="border-r border-slate-200/60 pr-4 last:border-r-0">
-              <div className="font-label text-2xl sm:text-3xl font-bold text-[#C8A84E]">4,330+</div>
+              <div className="font-label text-2xl sm:text-3xl font-bold text-[#C8A84E]">4,000+</div>
               <div className="font-heading text-xs text-slate-500 uppercase tracking-wider mt-0.5">
-                Curated Drill Problems
+                Practice Questions with Solutions
               </div>
             </div>
             <div>
               <div className="font-label text-2xl sm:text-3xl font-bold text-[#0B192C]">15 OLQs</div>
               <div className="font-heading text-xs text-slate-500 uppercase tracking-wider mt-0.5">
-                Leadership Framework
+                Training for All 15 Officer-Like Qualities (SSB)
               </div>
             </div>
           </div>
@@ -146,13 +146,13 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <div className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold">
-              Distinct Pathways
+              Choose Your Stage
             </div>
             <h2 className="font-heading text-3xl sm:text-5xl font-medium tracking-tight text-[#0B192C]">
-              Structured Mentorship Across Three Tracks
+              Mentorship Programs Designed for Your Class
             </h2>
             <p className="text-sm sm:text-base text-slate-600 font-sans">
-              Each student enters an environment engineered for their specific developmental and academic stage.
+              Every student gets guidance matched to their class, school workload, and future goals.
             </p>
           </div>
 
@@ -171,20 +171,20 @@ export default function HomePage() {
                   Juniors Program
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6 font-sans">
-                  The Early Advantage Track. Focuses on foundational habit architecture, reading speed, critical reasoning, and academic self-discipline before senior high school.
+                  Start building strong habits early. We help middle school students develop daily focus, fast reading skills, and self-discipline before high school pressure begins.
                 </p>
                 <ul className="space-y-2.5 text-xs text-slate-700 mb-8 border-t border-slate-100 pt-4">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-sky-500 shrink-0" />
-                    <span>Habit Building &amp; Daily Journaling</span>
+                    <span>Daily Study Routine &amp; Habit Tracking</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-sky-500 shrink-0" />
-                    <span>Editorial Reading &amp; Speaking</span>
+                    <span>Daily English Reading &amp; Confident Speaking</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-sky-500 shrink-0" />
-                    <span>Confidence &amp; Self-Accountability</span>
+                    <span>Building Confidence to Study Without Nagging</span>
                   </li>
                 </ul>
               </div>
@@ -193,7 +193,7 @@ export default function HomePage() {
                 href="/programs/juniors"
                 className="w-full py-3 px-4 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200/80 text-sky-800 font-label text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-colors"
               >
-                <span>Explore Juniors Track</span>
+                <span>Learn About Juniors Program</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -211,20 +211,20 @@ export default function HomePage() {
                   Scholars Program
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6 font-sans">
-                  Academic Mastery &amp; High-Stakes Performance. Engineered for scholars balancing senior board exams with competitive examinations through active recall and time-blocking.
+                  For students preparing for Class 11 and 12 boards and competitive entrance exams at the same time. Learn how to manage time, revise faster, and score high without burnout.
                 </p>
                 <ul className="space-y-2.5 text-xs text-slate-700 mb-8 border-t border-slate-100 pt-4">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
-                    <span>Board + Competitive Exam Synergy</span>
+                    <span>Balance Board Exams with Entrance Tests</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
-                    <span>Deep Work &amp; Recall Schedules</span>
+                    <span>90-Minute Focus Blocks &amp; Active Revision</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
-                    <span>Burnout &amp; Stress Inoculation</span>
+                    <span>Managing Stress and Exam Pressure</span>
                   </li>
                 </ul>
               </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
                 href="/programs/scholars"
                 className="w-full py-3 px-4 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/80 text-indigo-900 font-label text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-colors"
               >
-                <span>Explore Scholars Track</span>
+                <span>Learn About Scholars Program</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -248,23 +248,23 @@ export default function HomePage() {
                   NDA • CDS • AFCAT
                 </div>
                 <h3 className="font-heading text-2xl font-semibold text-[#0B192C] group-hover:text-amber-800 transition-colors mb-3">
-                  Defense Leadership
+                  Defence Leadership
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6 font-sans">
-                  The Officer Transformation Track. Complete preparation combining rigorous written exam systems with daily academy routines and the 15 Officer-Like Qualities (OLQs).
+                  Complete training for Armed Forces examinations. Covers written exam preparation, daily morning routines, and personality development for the SSB interview.
                 </p>
                 <ul className="space-y-2.5 text-xs text-slate-700 mb-8 border-t border-slate-100 pt-4">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E] shrink-0" />
-                    <span>30-Chapter Math &amp; 34-Ch English Vault</span>
+                    <span>Complete Maths &amp; English Practice Material</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E] shrink-0" />
-                    <span>SSB Psychology, GTO &amp; Interview</span>
+                    <span>Preparation for SSB Psychology, GTO Tasks &amp; Interview</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E] shrink-0" />
-                    <span>Academy Routine &amp; Daily Physicals</span>
+                    <span>Daily Morning Fitness &amp; Discipline Routine</span>
                   </li>
                 </ul>
               </div>
@@ -273,7 +273,7 @@ export default function HomePage() {
                 href="/programs/defense"
                 className="w-full py-3 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200/80 text-amber-900 font-label text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 transition-colors"
               >
-                <span>Explore Defense Track</span>
+                <span>Learn About Defence Program</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -291,14 +291,14 @@ export default function HomePage() {
             
             <div className="lg:col-span-5 space-y-4">
               <div className="font-label text-xs uppercase tracking-[0.2em] text-sky-600 font-semibold">
-                Our Methodology
+                How We Guide You
               </div>
               <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#0B192C] leading-tight">
-                Not a Mass Coaching Factory. <br />
-                A Disciplined Mentorship Engine.
+                Not a Crowded Coaching Class. <br />
+                A Personal Mentorship System.
               </h2>
               <p className="text-sm text-slate-600 leading-relaxed font-sans">
-                Most students don't fail because of lack of intelligence; they fail because of lack of execution consistency, unmonitored preparation, and the forgetting curve. We systematically close that gap.
+                Most students struggle not because they lack talent, but because they study without a daily plan, lack consistency, and forget topics after a few weeks. We guide you step by step every day so you stay on track.
               </p>
               
               <div className="pt-3">
@@ -306,7 +306,7 @@ export default function HomePage() {
                   onClick={() => openOrientation("general")}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0B192C] hover:bg-[#1E293B] text-white font-label text-xs uppercase tracking-widest font-semibold transition-all shadow-sm"
                 >
-                  <span>Request Method Orientation</span>
+                  <span>Book a Free 20-Minute Call</span>
                   <ArrowRight className="w-4 h-4 text-[#C8A84E]" />
                 </button>
               </div>
@@ -316,26 +316,26 @@ export default function HomePage() {
               {[
                 {
                   step: "01",
-                  title: "Personalized Roadmap",
-                  desc: "Zero generic schedules. Every student receives daily tasks, weekly targets, and ongoing tracking calibrated to their baseline.",
+                  title: "A Study Plan Made for You",
+                  desc: "No one-size-fits-all timetable. You get a daily schedule and weekly targets tailored to your current strengths and weaknesses.",
                   icon: Target,
                 },
                 {
                   step: "02",
-                  title: "Daily Accountability Log",
-                  desc: "A mandatory evening briefing auditing hours, topics mastered, and friction faced. If a day slips, it is corrected immediately.",
+                  title: "Daily Study Check Every Evening",
+                  desc: "Every evening, you share what you studied, questions you solved, and where you got stuck. If you fall behind, your mentor helps you fix it the very next day.",
                   icon: Clock,
                 },
                 {
                   step: "03",
-                  title: "Active Recall Framework",
-                  desc: "Passive re-reading is banned. Cadets are trained in flash-testing, short-note syntheses, and timed problem solving.",
+                  title: "Practice to Remember Longer",
+                  desc: "Just reading notes again and again does not work. We train you to test yourself with quick practice drills, short summary notes, and timed quizzes so you never forget in the exam hall.",
                   icon: Layers,
                 },
                 {
                   step: "04",
-                  title: "Weekly Mind Sessions",
-                  desc: "Training the mind that carries the plan: mental resilience, discipline psychology, stress inoculation, and executive clarity.",
+                  title: "Weekly Guidance & Mindset Sessions",
+                  desc: "Learn how to stay calm under pressure, avoid distractions, overcome study tiredness, and stay motivated through the entire year.",
                   icon: Award,
                 },
               ].map((item, idx) => (
@@ -368,21 +368,21 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-sm border-l-4 border-l-[#C8A84E] space-y-6">
             <div className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold">
-              The Academy Charter
+              Our Core Belief
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#0B192C] leading-snug">
-              "We rejected the coaching factory model to build an institution of genuine accountability."
+              &quot;We built Officium Supremum to give students personal attention, real discipline, and daily support.&quot;
             </h2>
             <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
               <p>
-                In standard coaching institutes, students are lost in lecture halls of hundreds. Teachers deliver lectures, but no one checks if the student actually recalled the topic the next morning. When exams arrive, panic sets in.
+                In big coaching centres, students often get lost in crowded classrooms of hundreds. Teachers give lectures, but no one checks whether each student understood the concept or revised it the next day. By the time exams come near, students feel stressed and unprepared.
               </p>
               <p>
-                Officium Supremum was founded on a singular conviction: <strong>Discipline is built, not lectured.</strong> Whether a student is in Class 8 establishing daily study stamina or in college preparing to lead troops into combat, the recipe remains constant: a structured daily cadence, unforgiving accountability, and weekly mindset coaching.
+                Officium Supremum was started with one clear belief: <strong>Discipline cannot be taught through lectures alone — it must be practiced every day.</strong> Whether you are in school building good study habits or preparing for the armed forces, success comes from simple things: a clear daily plan, honest daily progress checks, and regular mentor support.
               </p>
             </div>
             <div className="pt-2 font-label text-xs uppercase tracking-widest text-[#0B192C]">
-              — Mentorship Board, Officium Supremum
+              — Mentorship Team, Officium Supremum
             </div>
           </div>
         </div>
@@ -395,7 +395,7 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 space-y-3">
             <div className="font-label text-xs uppercase tracking-[0.2em] text-sky-600 font-semibold">
-              Clarifications
+              Common Questions
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#0B192C]">
               Frequently Asked Questions
@@ -406,23 +406,23 @@ export default function HomePage() {
             {[
               {
                 q: "How is Officium Supremum different from regular coaching classes?",
-                a: "Coaching classes focus primarily on passive syllabus completion through lectures. Officium Supremum is a mentorship ecosystem that focuses on execution: daily personalized roadmaps, evening accountability audits, active recall drills, and psychological training to ensure concepts are retained under examination pressure."
+                a: "Regular coaching classes mainly finish chapters through classroom lectures. Officium Supremum focuses on personal mentorship and daily action: we give you a personalized study schedule, check your progress every evening, help you practice active revision, and teach you how to stay calm during exams so you remember everything you learn."
               },
               {
-                q: "Is this only for defense aspirants (NDA / CDS)?",
-                a: "No. While our Defense Leadership program is acclaimed for NDA, CDS, and AFCAT, our Juniors Program (Class 7-10) and Scholars Program (Class 11-12) serve students aiming for high-performance academic mastery, Olympiads, and competitive excellence across fields."
+                q: "Is this mentorship only for defence exams (NDA / CDS / AFCAT)?",
+                a: "No. While our Defence Program is popular for NDA, CDS, and AFCAT, we also offer the Juniors Program (Class 7 to 10) and Scholars Program (Class 11 and 12). These programs help students score high in school exams, Olympiads, and future entrance tests by building solid study habits early."
               },
               {
-                q: "How does the Daily Accountability System operate?",
-                a: "Every evening before 22:00 hrs, students submit their daily briefing (hours invested, topics completed, practice problems solved, and doubts faced). Mentors evaluate the submission, correct slumps immediately, and lock in tomorrow's targets."
+                q: "How does the Daily Study Check work?",
+                a: "Every evening before 10:00 PM, students share a quick update with their mentor: hours studied, topics finished, practice questions solved, and any doubts they had. Your mentor reviews your progress, helps you overcome difficulties, and sets clear targets for the next day."
               },
               {
-                q: "Can parents monitor their child's progress?",
-                a: "Yes. In the Juniors and Scholars programs, parents receive regular attendance and consistency dashboards, along with bi-monthly parent-mentor conferences."
+                q: "Can parents track their child's progress?",
+                a: "Yes. For students in the Juniors and Scholars programs, parents receive regular study reports and updates, along with regular meetings with the mentor to discuss the student's progress."
               },
               {
                 q: "How do we get started?",
-                a: "Begin by booking a 20-minute diagnostic orientation call. We review the student's target examination, current baseline, and daily routine before advising on admission fit."
+                a: "Start by booking a free 20-minute introductory call. We will discuss the student's goals, current study routine, and challenges to see which program is the right fit."
               }
             ].map((faq, idx) => (
               <div
@@ -464,12 +464,12 @@ export default function HomePage() {
           </div>
 
           <h2 className="font-heading text-3xl sm:text-5xl font-medium tracking-tight text-[#0B192C] leading-tight">
-            Stop Relying on Fleeting Motivation. <br />
-            <span className="text-[#C8A84E]">Build an Unbreakable System.</span>
+            Build Consistent Daily Habits <br />
+            <span className="text-[#C8A84E]">Instead of Waiting for Motivation.</span>
           </h2>
 
           <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto font-sans">
-            Schedule a diagnostic orientation session to assess current preparation and receive a structured roadmap.
+            Book a free 20-minute call to review your current preparation and get a personalized study plan.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -477,7 +477,7 @@ export default function HomePage() {
               onClick={() => openOrientation("general")}
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest shadow-[0_12px_25px_-8px_rgba(11,25,44,0.35)] transition-all active:scale-95"
             >
-              Book Orientation Call
+              Book a Free 20-Minute Call
             </button>
 
             <a
@@ -486,7 +486,7 @@ export default function HomePage() {
               rel="noreferrer"
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 text-[#0B192C] font-label font-semibold text-xs uppercase tracking-widest transition-all shadow-sm"
             >
-              Speak via WhatsApp (+91 8969634656)
+              Chat with Us on WhatsApp (+91 8969634656)
             </a>
           </div>
         </div>

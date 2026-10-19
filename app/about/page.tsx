@@ -15,16 +15,16 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-soft-sm text-xs font-label uppercase tracking-widest text-[#C8A84E]">
             <Compass className="w-3.5 h-3.5 text-[#C8A84E]" />
-            <span>The Academy Charter</span>
+            <span>About Officium Supremum</span>
           </div>
 
           <h1 className="font-heading text-4xl sm:text-6xl font-semibold tracking-tight text-[#0B192C] leading-tight">
-            We Build Systems, Mindsets, &amp; <br />
-            <span className="text-[#C8A84E]">Uncompromising Leaders.</span>
+            We Build Strong Habits, Clear Thinking, <br />
+            <span className="text-[#C8A84E]">and Confident Leaders.</span>
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 font-sans leading-relaxed max-w-2xl mx-auto">
-            Officium Supremum is not a mass coaching institute. It is a discipline-first learning academy designed to transform ambitious students into future officers and high-performance achievers.
+            Officium Supremum is not a crowded coaching institute. We are a personal mentorship academy that helps students build strong discipline, master their syllabus, and prepare with confidence for school, college, and defence exams.
           </p>
         </div>
       </section>
@@ -37,9 +37,9 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-[#C8A84E]">
                 <Target className="w-5 h-5" />
               </div>
-              <h3 className="font-heading font-semibold text-xl text-[#0B192C]">Execution Over Advice</h3>
+              <h3 className="font-heading font-semibold text-xl text-[#0B192C]">Daily Action Over Endless Advice</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
-                Knowledge without a daily cadence is useless. We focus 80% of our energy on daily habit compliance, night briefing audits, and error log reviews.
+                Advice without daily action does not help. We focus our energy on practical daily habits, regular progress checks, and clearing doubts immediately.
               </p>
             </div>
 
@@ -47,9 +47,9 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200/60 flex items-center justify-center text-sky-600">
                 <Shield className="w-5 h-5" />
               </div>
-              <h3 className="font-heading font-semibold text-xl text-[#0B192C]">The Academy Standard</h3>
+              <h3 className="font-heading font-semibold text-xl text-[#0B192C]">High Standards &amp; Good Habits</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
-                Modeled after the rigorous routines of India&apos;s premier military and leadership institutions: early wakeups, physical stamina, and mental poise under stress.
+                Inspired by the daily discipline of India&apos;s defence academies: a regular morning routine, physical fitness, and staying calm under pressure.
               </p>
             </div>
 
@@ -57,9 +57,9 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-600">
                 <Award className="w-5 h-5" />
               </div>
-              <h3 className="font-heading font-semibold text-xl text-[#0B192C]">Long-Term Retention</h3>
+              <h3 className="font-heading font-semibold text-xl text-[#0B192C]">Remembering What You Study</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
-                Active recall testing and structured spaced repetition ensure you do not suffer from the forgetting curve when examination day arrives.
+                We use quick self-quizzes and planned revisions so you remember formulas, vocabulary, and concepts long before examination day arrives.
               </p>
             </div>
           </div>
@@ -70,17 +70,17 @@ export default function AboutPage() {
       <section className="py-24 text-center bg-gradient-to-b from-[#FAFAF9] to-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold text-[#0B192C]">
-            Experience the Officium Supremum Difference
+            Talk to an Academic Mentor
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-sans max-w-lg mx-auto">
-            Book an orientation session with our academic mentors to evaluate your goals and build your roadmap.
+            Schedule a free 20-minute call with our mentors to discuss your goals and receive a personalized study plan.
           </p>
           <div className="pt-2">
             <button
               onClick={() => openOrientation("general")}
               className="px-8 py-4 rounded-xl bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest shadow-md hover:shadow-lg transition-all active:scale-95"
             >
-              Book Orientation
+              Book a Free 20-Minute Call
             </button>
           </div>
         </div>

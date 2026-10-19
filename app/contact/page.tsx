@@ -55,10 +55,10 @@ export default function ContactPage() {
             <span>Admissions &amp; Orientation</span>
           </div>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-[#0B192C] leading-tight">
-            Connect with the Mentorship Desk
+            Get in Touch with Our Mentors
           </h1>
           <p className="text-sm sm:text-base text-slate-600 font-sans leading-relaxed max-w-xl mx-auto">
-            Whether you are an aspirant ready to commit to academy discipline or a parent exploring the right track for your child, our admissions desk is available daily.
+            Whether you are a student preparing for competitive exams or a parent looking for the right guidance for your child, our team is here to help.
           </p>
         </div>
       </section>
@@ -93,7 +93,7 @@ export default function ContactPage() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-label uppercase text-[11px] text-slate-500 tracking-wider">Direct Enquiries</div>
+                  <div className="font-label uppercase text-[11px] text-slate-500 tracking-wider">Email Us</div>
                   <div className="font-heading font-medium text-[#0B192C] text-base">osupremum@gmail.com</div>
                 </div>
               </a>
@@ -103,15 +103,15 @@ export default function ContactPage() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-label uppercase text-[11px] text-slate-500 tracking-wider">Mode of Instruction</div>
-                  <div className="font-heading font-medium text-[#0B192C] text-base">Online</div>
+                  <div className="font-label uppercase text-[11px] text-slate-500 tracking-wider">Mode of Learning</div>
+                  <div className="font-heading font-medium text-[#0B192C] text-base">Live Online Mentorship</div>
                 </div>
               </div>
 
               {/* Trust Signal */}
               <div className="p-4 rounded-xl bg-[#FAF7F2] border border-amber-200/40 text-center">
                 <p className="font-heading italic text-sm text-slate-700">
-                  &quot;We respond within 6 hours. Every inquiry receives a personalized assessment.&quot;
+                  &ldquo;We respond within 6 hours. Every enquiry receives personal guidance.&rdquo;
                 </p>
               </div>
             </div>
@@ -124,19 +124,19 @@ export default function ContactPage() {
                     <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mx-auto shadow-sm">
                       <CheckCircle2 className="w-8 h-8" />
                     </div>
-                    <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Inquiry Successfully Recorded</h3>
+                    <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Enquiry Successfully Received</h3>
                     {enquiryRef && (
                       <div className="inline-block px-3 py-1 rounded-md bg-amber-50 border border-amber-200/60 font-mono text-xs font-semibold text-amber-900">
-                        Lead Reference: {enquiryRef}
+                        Enquiry Reference: {enquiryRef}
                       </div>
                     )}
                     <p className="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed">
-                      Your inquiry has been stored in our admissions database. An academy mentor will review your target track and contact you within 6 hours.
+                      Your enquiry has been received. An Officium Supremum mentor will review your details and contact you within 6 hours.
                     </p>
                     <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                       <a
                         href={`https://wa.me/918969634656?text=${encodeURIComponent(
-                          `Hello Officium Supremum, I submitted inquiry ${enquiryRef || ""} for the ${program.toUpperCase()} track.`
+                          `Hello Officium Supremum, I submitted enquiry ${enquiryRef || ""} for the ${program.toUpperCase()} program.`
                         )}`}
                         target="_blank"
                         rel="noreferrer"
@@ -149,17 +149,17 @@ export default function ContactPage() {
                         onClick={() => setSent(false)}
                         className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-label font-bold text-xs uppercase tracking-wider rounded-xl transition-colors"
                       >
-                        Submit Another Inquiry
+                        Submit Another Enquiry
                       </button>
                     </div>
                   </div>
                 ) : (
                   <div>
                     <h3 className="font-heading font-semibold text-2xl text-[#0B192C] mb-2">
-                      Send an Admission Inquiry
+                      Send an Admission Enquiry
                     </h3>
                     <p className="text-xs text-slate-500 font-sans mb-8">
-                      Fill in your details below and we will prepare your personalized assessment slot.
+                      Fill in your details below and an Officium Supremum mentor will get in touch with you.
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
@@ -172,7 +172,7 @@ export default function ContactPage() {
                           required
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          placeholder="Your Name / Cadet Name"
+                          placeholder="Your Name or Student's Name"
                           className="w-full bg-[#FAFAF9] border border-slate-200 rounded-xl px-4 py-3.5 text-sm text-[#0B192C] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:ring-2 focus:ring-[#C8A84E]/10 transition-all"
                         />
                       </div>
@@ -187,24 +187,24 @@ export default function ContactPage() {
                             required
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
-                            placeholder="+91 8969634656"
+                            placeholder="+91 98765 43210"
                             className="w-full bg-[#FAFAF9] border border-slate-200 rounded-xl px-4 py-3.5 text-sm text-[#0B192C] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:ring-2 focus:ring-[#C8A84E]/10 transition-all"
                           />
                         </div>
 
                         <div>
                           <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1.5">
-                            Target Track:
+                            Target Program:
                           </label>
                           <select
                             value={program}
                             onChange={(e) => setProgram(e.target.value)}
                             className="w-full bg-[#FAFAF9] border border-slate-200 rounded-xl px-4 py-3.5 text-sm text-[#0B192C] outline-none focus:border-[#C8A84E] focus:ring-2 focus:ring-[#C8A84E]/10 transition-all"
                           >
-                            <option value="defense">Defense Leadership (NDA/CDS/AFCAT)</option>
-                            <option value="juniors">Juniors Program (Class 7-10)</option>
-                            <option value="scholars">Scholars Program (Class 11-12)</option>
-                            <option value="materials">Study Materials &amp; Vault Access</option>
+                            <option value="defense">Defence Leadership (NDA / CDS / AFCAT)</option>
+                            <option value="juniors">Juniors Program (Class 7–10)</option>
+                            <option value="scholars">Scholars Program (Class 11–12)</option>
+                            <option value="materials">Study Materials &amp; Library Access</option>
                           </select>
                         </div>
                       </div>
@@ -217,20 +217,20 @@ export default function ContactPage() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          placeholder="cadet@example.com"
+                          placeholder="student@example.com"
                           className="w-full bg-[#FAFAF9] border border-slate-200 rounded-xl px-4 py-3.5 text-sm text-[#0B192C] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:ring-2 focus:ring-[#C8A84E]/10 transition-all"
                         />
                       </div>
 
                       <div>
                         <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1.5">
-                          Brief Background &amp; Current Stage:
+                          Your Goal or Current Challenge:
                         </label>
                         <textarea
                           rows={3}
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
-                          placeholder="e.g. Currently in Class 12 preparing for NDA 2025; struggling with Mathematics time management."
+                          placeholder="e.g. Currently in Class 12 preparing for NDA; need help with Mathematics time management."
                           className="w-full bg-[#FAFAF9] border border-slate-200 rounded-xl px-4 py-3.5 text-sm text-[#0B192C] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:ring-2 focus:ring-[#C8A84E]/10 transition-all resize-none"
                         />
                       </div>
@@ -240,7 +240,7 @@ export default function ContactPage() {
                         className="w-full py-4 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 active:scale-[0.98]"
                       >
                         <Send className="w-4 h-4" />
-                        <span>Submit Inquiry to Admissions</span>
+                        <span>Submit Enquiry</span>
                       </button>
                     </form>
                   </div>

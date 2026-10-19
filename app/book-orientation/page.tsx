@@ -84,15 +84,15 @@ export default function BookOrientationPage() {
         <div className="text-center space-y-4 mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-soft-sm text-xs font-label uppercase tracking-widest text-[#C8A84E]">
             <Calendar className="w-3.5 h-3.5 text-[#C8A84E]" />
-            <span>Admissions Diagnostic Session</span>
+            <span>Free Mentorship Consultation</span>
           </div>
 
           <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[#0B192C]">
-            Book Your 20-Minute Orientation Call
+            Book a Free 20-Minute Guidance Call
           </h1>
 
           <p className="text-sm sm:text-base text-slate-600 font-sans max-w-xl mx-auto leading-relaxed">
-            Every student undergoes a readiness and discipline diagnostic assessment before admission to ensure alignment with academy standards.
+            Speak directly with an Officium Supremum mentor to discuss your goals, study routine, and the right preparation plan.
           </p>
         </div>
 
@@ -104,16 +104,16 @@ export default function BookOrientationPage() {
               <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mx-auto shadow-sm">
                 <CheckCircle2 className="w-9 h-9" />
               </div>
-              <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Slot Requested Successfully</h3>
+              <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Call Request Received</h3>
               
               {enquiryRef && (
                 <div className="inline-block px-4 py-1.5 rounded-lg bg-amber-50 border border-amber-200/70 font-mono text-xs font-semibold text-amber-900">
-                  Diagnostic Booking Ref: {enquiryRef}
+                  Booking Reference: {enquiryRef}
                 </div>
               )}
 
               <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-                Your orientation request has been routed to our admissions desk (+91 8969634656). A senior mentor will review your profile and connect with you to confirm the time slot.
+                We have received your request. An Officium Supremum mentor will review your details and confirm your call slot within 6 hours.
               </p>
 
               {waLink && (
@@ -125,7 +125,7 @@ export default function BookOrientationPage() {
                     className="inline-flex items-center justify-center gap-2 w-full py-3.5 bg-[#25D366] hover:bg-[#20ba5a] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl shadow-md transition-all active:scale-98"
                   >
                     <MessageCircle className="w-4 h-4" />
-                    <span>Open in WhatsApp Now</span>
+                    <span>Chat with Us on WhatsApp Now</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
@@ -184,7 +184,7 @@ export default function BookOrientationPage() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Cadet Rohan / Major Sharma"
+                    placeholder="e.g. Rahul Sharma"
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   />
                 </div>
@@ -198,7 +198,7 @@ export default function BookOrientationPage() {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 8969634656"
+                    placeholder="+91 98765 43210"
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   />
                 </div>
@@ -214,13 +214,13 @@ export default function BookOrientationPage() {
                     onChange={(e) => setProgram(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   >
-                    <option value="defense">Defense Leadership (NDA / CDS / AFCAT)</option>
+                    <option value="defense">Defence Leadership (NDA / CDS / AFCAT)</option>
                     <option value="nda">NDA (National Defence Academy)</option>
                     <option value="cds">CDS (Combined Defence Services)</option>
                     <option value="afcat">AFCAT (Air Force Common Admission)</option>
                     <option value="juniors">Juniors Program (Class 7–10)</option>
                     <option value="scholars">Scholars Program (Class 11–12)</option>
-                    <option value="general">General Academy Inquiry</option>
+                    <option value="general">General Guidance &amp; Consultation</option>
                   </select>
                 </div>
 
@@ -248,7 +248,7 @@ export default function BookOrientationPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
+                  placeholder="student@example.com"
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                 />
               </div>
@@ -261,12 +261,12 @@ export default function BookOrientationPage() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-[#C8A84E]" />
-                    <span>Transmitting Request...</span>
+                    <span>Sending Request...</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4 text-[#C8A84E]" />
-                    <span>Confirm &amp; Transmit to Admissions Desk</span>
+                    <span>Confirm &amp; Book Free Call</span>
                   </>
                 )}
               </button>

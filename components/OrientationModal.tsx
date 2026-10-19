@@ -115,20 +115,20 @@ export function OrientationModal() {
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <div>
-              <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Orientation Requested</h3>
+              <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Call Request Received</h3>
               <p className="text-xs text-slate-500 font-label uppercase tracking-widest mt-0.5">
-                Officium Supremum Admissions
+                Officium Supremum Mentorship Desk
               </p>
             </div>
 
             {enquiryRef && (
               <div className="inline-block px-3.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200/70 font-mono text-xs font-semibold text-amber-900">
-                Diagnostic Booking Ref: {enquiryRef}
+                Booking Reference: {enquiryRef}
               </div>
             )}
 
             <p className="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed font-sans">
-              Your orientation request has been registered. We opened WhatsApp to connect you directly with the Admissions Desk (+91 8969634656).
+              We have received your request. We opened WhatsApp to connect you directly with an Officium Supremum mentor (+91 8969634656).
             </p>
 
             {waLink && (
@@ -140,7 +140,7 @@ export function OrientationModal() {
                   className="inline-flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] hover:bg-[#20ba5a] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl shadow-md transition-all active:scale-98"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>Open WhatsApp Directly</span>
+                  <span>Open WhatsApp Now</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -160,9 +160,9 @@ export function OrientationModal() {
                 <Calendar className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-heading font-semibold text-xl text-[#0B192C]">Book Orientation &amp; Assessment</h3>
+                <h3 className="font-heading font-semibold text-xl text-[#0B192C]">Book a Free 20-Minute Guidance Call</h3>
                 <p className="text-xs text-slate-500 font-label uppercase tracking-widest">
-                  Discipline &amp; Readiness Diagnostic Call
+                  1-on-1 Consultation with an Academy Mentor
                 </p>
               </div>
             </div>
@@ -203,7 +203,7 @@ export function OrientationModal() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Cadet Rohit Sharma / Dr. Sharma"
+                  placeholder="e.g. Rahul Sharma"
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                 />
               </div>
@@ -218,26 +218,26 @@ export function OrientationModal() {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 8969634656"
+                    placeholder="+91 98765 43210"
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                    Target Track
+                    Target Program
                   </label>
                   <select
                     value={program}
                     onChange={(e) => setProgram(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   >
-                    <option value="defense">Defense Leadership (NDA / CDS / AFCAT)</option>
+                    <option value="defense">Defence Leadership (NDA / CDS / AFCAT)</option>
                     <option value="nda">NDA (National Defence Academy)</option>
                     <option value="cds">CDS (Combined Defence Services)</option>
                     <option value="afcat">AFCAT (Air Force Common Admission)</option>
                     <option value="juniors">Juniors Program (Class 7–10)</option>
                     <option value="scholars">Scholars Program (Class 11–12)</option>
-                    <option value="general">General Academy Inquiry</option>
+                    <option value="general">General Guidance &amp; Consultation</option>
                   </select>
                 </div>
               </div>
@@ -250,7 +250,7 @@ export function OrientationModal() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
+                  placeholder="student@example.com"
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                 />
               </div>
@@ -263,12 +263,12 @@ export function OrientationModal() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-[#C8A84E]" />
-                    <span>Transmitting Request...</span>
+                    <span>Sending Request...</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4 text-[#C8A84E]" />
-                    <span>Transmit to Admissions Desk</span>
+                    <span>Confirm &amp; Book Free Call</span>
                   </>
                 )}
               </button>

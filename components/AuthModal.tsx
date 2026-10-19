@@ -81,7 +81,7 @@ export function AuthModal() {
           </div>
           <div>
             <h3 className="font-heading font-semibold text-xl text-[#0B192C]">
-              {authMode === "signin" ? "Account Sign In" : "Create Account"}
+              {authMode === "signin" ? "Student Sign In" : "Create Student Account"}
             </h3>
             <p className="text-xs text-slate-500 font-label uppercase tracking-wider">
               Officium Supremum Academy
@@ -142,7 +142,7 @@ export function AuthModal() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
+                  placeholder="Enter your full name"
                   className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-all shadow-inner"
                 />
               </div>
@@ -160,7 +160,7 @@ export function AuthModal() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
+                placeholder="student@example.com"
                 className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-all shadow-inner"
               />
             </div>
@@ -188,7 +188,13 @@ export function AuthModal() {
             disabled={loading}
             className="w-full mt-2 py-3 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
           >
-            {loading ? "Authenticating..." : authMode === "signin" ? "Sign In" : "Create Account"}
+            {loading
+              ? authMode === "signin"
+                ? "Signing In..."
+                : "Creating Account..."
+              : authMode === "signin"
+              ? "Sign In to Library"
+              : "Create Account & Continue"}
             <ArrowRight className="w-4 h-4 text-[#C8A84E]" />
           </button>
         </form>

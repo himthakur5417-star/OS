@@ -59,7 +59,7 @@ export function Navbar() {
       icon: <Sparkles className="w-5 h-5" />,
       iconBg: "bg-sky-100/80 text-sky-600",
       name: "Juniors Program",
-      desc: "Class 7–10 • Early Advantage & Habit Building",
+      desc: "Class 7–10 • Build daily study habits & confidence early",
       hoverBg: "hover:bg-sky-50/80",
     },
     {
@@ -67,15 +67,15 @@ export function Navbar() {
       icon: <GraduationCap className="w-5 h-5" />,
       iconBg: "bg-amber-100/80 text-amber-700",
       name: "Scholars Program",
-      desc: "Class 11–12 • Board Mastery & Competitive Edge",
+      desc: "Class 11–12 • Balance board exams & competitive tests",
       hoverBg: "hover:bg-amber-50/60",
     },
     {
       href: "/programs/defense",
       icon: <Shield className="w-5 h-5" />,
       iconBg: "bg-emerald-100/80 text-emerald-700",
-      name: "Defense Leadership",
-      desc: "NDA • CDS • AFCAT • SSB & 15 OLQs Mentorship",
+      name: "Defence Leadership",
+      desc: "NDA • CDS • AFCAT • Written Exam & SSB Guidance",
       hoverBg: "hover:bg-emerald-50/60",
     },
   ];
@@ -167,7 +167,7 @@ export function Navbar() {
                     }}
                     className="w-full text-center py-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs font-label uppercase tracking-wider text-slate-600 hover:text-[#0B192C] transition-colors"
                   >
-                    Not sure? Book a Free Orientation →
+                    Not sure which program to pick? Book a Free Call →
                   </button>
                 </div>
               </div>
@@ -180,7 +180,7 @@ export function Navbar() {
               pathname === "/resources" ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
             }`}
           >
-            Resources
+            Study Materials
           </Link>
 
           <Link
@@ -189,7 +189,7 @@ export function Navbar() {
               pathname === "/about" ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
             }`}
           >
-            About
+            About Us
           </Link>
 
           <Link
@@ -198,7 +198,7 @@ export function Navbar() {
               pathname === "/contact" ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
             }`}
           >
-            Contact
+            Contact Us
           </Link>
         </nav>
 
@@ -257,7 +257,7 @@ export function Navbar() {
               className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-label uppercase tracking-wider text-slate-700 hover:text-[#0B192C] border border-slate-200/80 hover:bg-slate-50 rounded-xl transition-all shadow-sm"
             >
               <LogIn className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Sign In</span>
+              <span>Student Login</span>
             </button>
           )}
 
@@ -266,7 +266,7 @@ export function Navbar() {
             onClick={() => openOrientation("general")}
             className="inline-flex items-center justify-center px-4 py-2 text-xs font-label uppercase tracking-widest font-bold text-white bg-[#0B192C] hover:bg-[#1E293B] rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95"
           >
-            Book Orientation
+            Book a Free Call
           </button>
         </div>
 
@@ -321,7 +321,7 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="hover:text-[#C8A84E] py-1 border-b border-slate-100"
             >
-              Resource Library
+              Study Materials
             </Link>
 
             <Link
@@ -329,14 +329,14 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="hover:text-[#C8A84E] py-1 border-b border-slate-100"
             >
-              About the Academy
+              About Us
             </Link>
             <Link
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
               className="hover:text-[#C8A84E] py-1 border-b border-slate-100"
             >
-              Contact
+              Contact Us
             </Link>
           </div>
 
@@ -365,7 +365,7 @@ export function Navbar() {
                 }}
                 className="w-full py-2.5 text-center text-xs font-label uppercase tracking-wider text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50"
               >
-                Sign In
+                Student Login
               </button>
             )}
 
@@ -376,7 +376,7 @@ export function Navbar() {
               }}
               className="w-full py-3 text-center text-xs font-label uppercase tracking-widest font-bold text-white bg-[#0B192C] rounded-xl shadow-md"
             >
-              Book Orientation
+              Book a Free Call
             </button>
           </div>
         </div>

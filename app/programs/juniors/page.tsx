@@ -34,19 +34,19 @@ export default function JuniorsProgramPage() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#BBD8F5] shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
               <span className="font-label text-xs uppercase tracking-[0.18em] text-[#1E3A5F] font-semibold">
-                Class 7–10 • The Early Advantage Track
+                Class 7–10 • Building Early Study &amp; Life Habits
               </span>
             </div>
 
             <h1 className="font-heading text-4xl sm:text-6xl font-semibold tracking-tight text-[#1E3A5F] leading-[1.1]">
-              Building Leaders <br />
+              Building Confidence and <br />
               <span className="text-blue-600">
-                Before High School Arrives.
+                Strong Habits Early.
               </span>
             </h1>
 
             <p className="text-base sm:text-lg text-slate-700 font-sans leading-relaxed">
-              Most students learn time management and deep focus in college — when it is already stressful and late. The Juniors Program instills study discipline, editorial reading, and self-direction in middle school.
+              Most students learn time management and deep focus only after entering college or board exams, when stress is high. Our Juniors Program helps middle school students build calm daily routines, reading habits, and self-confidence early.
             </p>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
@@ -54,7 +54,7 @@ export default function JuniorsProgramPage() {
                 onClick={() => openOrientation("juniors")}
                 className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#1E3A5F] hover:bg-[#152943] text-white font-label font-bold text-xs uppercase tracking-widest shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
               >
-                <span>Book Family Orientation</span>
+                <span>Book a Free Parent &amp; Student Call</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -62,14 +62,14 @@ export default function JuniorsProgramPage() {
                 href="#habits"
                 className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-slate-100 border border-[#CBD5E1] text-[#1E3A5F] font-label font-semibold text-xs uppercase tracking-widest transition-all text-center shadow-sm"
               >
-                View Curriculum Pillars
+                Explore What We Teach
               </a>
             </div>
 
             <div className="pt-4 flex items-center gap-6 text-xs text-slate-600 font-label uppercase tracking-wider">
-              <span>• Zero Rote Memorization</span>
-              <span>• Parent-Guided Progress</span>
-              <span>• Daily Micro-Habits</span>
+              <span>• No Rote Learning</span>
+              <span>• Regular Updates for Parents</span>
+              <span>• Small Daily Habits</span>
             </div>
           </div>
         </div>
@@ -87,10 +87,10 @@ export default function JuniorsProgramPage() {
                 Foundation 01
               </div>
               <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#1E3A5F]">
-                Habit Architecture: Systems Over Willpower
+                Daily Habits: Building Routines That Last
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
-                Telling a teenager to "just study harder" produces frustration. We replace lectures with physical routines: the 90-minute study sprint, phone-free focus zones, and structured night journals.
+                Telling a teenager to &ldquo;just study harder&rdquo; usually leads to frustration. We replace lectures with clear, practical routines: 90-minute distraction-free study blocks, phone-free study zones, and a simple daily reflection notebook.
               </p>
             </div>
 
@@ -100,10 +100,10 @@ export default function JuniorsProgramPage() {
                   <Clock className="w-5 h-5" />
                 </div>
                 <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">
-                  The 90-Minute Sprint
+                  The 90-Minute Focus Session
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                  Training the adolescent brain for sustained uninterrupted focus, completely removing the urge to check gadgets.
+                  Training young minds to sit and study with focus without reaching for their phones or getting distracted.
                 </p>
               </div>
 
@@ -112,10 +112,10 @@ export default function JuniorsProgramPage() {
                   <Calendar className="w-5 h-5" />
                 </div>
                 <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">
-                  Personalized Cadence Journal
+                  Daily Study &amp; Habit Journal
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                  Students log daily accomplishments, reading quotas, and physical sports, building natural pride in consistency.
+                  Students track daily reading, homework, and sports, building genuine pride in their own progress.
                 </p>
               </div>
             </div>
@@ -134,10 +134,10 @@ export default function JuniorsProgramPage() {
               Foundation 02
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#1E3A5F]">
-              Reading &amp; Eloquent Communication
+              Daily Reading &amp; Confident Speaking
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 font-sans">
-              The ability to articulate complex thoughts clearly is the single strongest predictor of future leadership.
+              The ability to read well, understand complex ideas, and speak with confidence is the foundation of long-term success.
             </p>
           </div>
 
@@ -146,9 +146,9 @@ export default function JuniorsProgramPage() {
               <div className="w-10 h-10 rounded-xl bg-[#DCEEFF] flex items-center justify-center text-[#1E3A5F]">
                 <BookOpen className="w-5 h-5" />
               </div>
-              <h3 className="font-heading font-semibold text-xl text-[#1E3A5F]">Editorial Analysis</h3>
+              <h3 className="font-heading font-semibold text-xl text-[#1E3A5F]">Active Reading &amp; Vocabulary</h3>
               <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                Reading curated essays, historical chronicles, and science briefings, expanding vocabulary and comprehension speed.
+                Reading interesting articles, history stories, and science topics to build vocabulary and understanding.
               </p>
             </div>
 
@@ -156,9 +156,9 @@ export default function JuniorsProgramPage() {
               <div className="w-10 h-10 rounded-xl bg-[#DCEEFF] flex items-center justify-center text-[#1E3A5F]">
                 <MessageSquare className="w-5 h-5" />
               </div>
-              <h3 className="font-heading font-semibold text-xl text-[#1E3A5F]">Structured Public Speaking</h3>
+              <h3 className="font-heading font-semibold text-xl text-[#1E3A5F]">Public Speaking &amp; Debates</h3>
               <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                Weekly extempore presentations and group debates designed to dissolve stage fright and build commanding vocal delivery.
+                Weekly speaking exercises and friendly debates that help students overcome stage fright and express ideas clearly.
               </p>
             </div>
 
@@ -166,9 +166,9 @@ export default function JuniorsProgramPage() {
               <div className="w-10 h-10 rounded-xl bg-[#DCEEFF] flex items-center justify-center text-[#1E3A5F]">
                 <Brain className="w-5 h-5" />
               </div>
-              <h3 className="font-heading font-semibold text-xl text-[#1E3A5F]">Critical Thinking Drills</h3>
+              <h3 className="font-heading font-semibold text-xl text-[#1E3A5F]">Critical Thinking &amp; Logic</h3>
               <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                Learning to dissect arguments, evaluate evidence, and form reasoned viewpoints rather than passively regurgitating opinions.
+                Helping students ask good questions, think logically, and explain their thoughts instead of just memorizing answers.
               </p>
             </div>
           </div>
@@ -187,34 +187,34 @@ export default function JuniorsProgramPage() {
                 Foundation 03
               </div>
               <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#1E3A5F]">
-                Academic Pacing: Excellence Without Anxiety
+                School Success Without Last-Minute Stress
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
-                We align school syllabus mastery with early exposure to competitive thinking (NTSE, Olympiads, Foundation Mathematics). Students conquer their school tests weeks ahead of deadlines.
+                We help students finish their school syllabus well in advance while introducing them to Olympiads and foundation concepts. Students enter exams feeling calm and prepared.
               </p>
               
               <div className="space-y-2.5 pt-2 text-xs text-slate-700">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span>3-Week Advance Exam Buffer so school finals feel easy</span>
+                  <span>3-week revision buffer so school exams feel manageable</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span>Mental Mathematics &amp; Conceptual Science Foundations</span>
+                  <span>Strong foundation in mathematics and science concepts</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span>Zero Last-Minute Cramming</span>
+                  <span>No stressful overnight cramming</span>
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-6 bg-[#DCEEFF]/40 p-8 rounded-2xl border border-[#BBD8F5] space-y-4">
               <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">
-                Early Career Horizon Briefings
+                Early Career Awareness
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                Whether a junior aspires towards Medicine (NEET), Engineering (JEE), Defence Leadership (NDA), Civil Services (UPSC), or Commerce &amp; Entrepreneurship, we introduce them to the mindset years ahead of their peers.
+                Whether a student is curious about Science &amp; Engineering (JEE/NEET), Defence Services (NDA), Civil Services (UPSC), or Commerce, we help them explore opportunities early.
               </p>
               <div className="grid grid-cols-2 gap-3 pt-2">
                 {["Science & JEE/NEET", "Defence & NDA", "Civil Services & Law", "Commerce & Leadership"].map((track, i) => (
@@ -239,27 +239,27 @@ export default function JuniorsProgramPage() {
               Foundation 04
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#1E3A5F]">
-              Confidence Development &amp; Emotional Resilience
+              Building Character &amp; Overcoming Setbacks
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-6 rounded-xl bg-white border border-[#E2E8F0] space-y-2">
-              <div className="font-label text-xs uppercase tracking-wider text-blue-600 font-bold">Physical Stamina</div>
-              <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">Sports &amp; Fitness Quota</h4>
-              <p className="text-xs text-slate-600 leading-relaxed font-sans">Mandatory daily movement and physical sports to cultivate vitality and clear brain fog.</p>
+              <div className="font-label text-xs uppercase tracking-wider text-blue-600 font-bold">Daily Fitness</div>
+              <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">Sports &amp; Movement</h4>
+              <p className="text-xs text-slate-600 leading-relaxed font-sans">Regular physical exercise and sports to keep energy high and mind sharp.</p>
             </div>
 
             <div className="p-6 rounded-xl bg-white border border-[#E2E8F0] space-y-2">
-              <div className="font-label text-xs uppercase tracking-wider text-blue-600 font-bold">Mental Toughness</div>
-              <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">Mistake Reframing</h4>
-              <p className="text-xs text-slate-600 leading-relaxed font-sans">Training students to view poor test scores as diagnostic feedback rather than personal failure.</p>
+              <div className="font-label text-xs uppercase tracking-wider text-blue-600 font-bold">Resilience</div>
+              <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">Learning from Mistakes</h4>
+              <p className="text-xs text-slate-600 leading-relaxed font-sans">Teaching students that low marks are just clues to what needs practice, not a personal failure.</p>
             </div>
 
             <div className="p-6 rounded-xl bg-white border border-[#E2E8F0] space-y-2">
-              <div className="font-label text-xs uppercase tracking-wider text-blue-600 font-bold">Inner Discipline</div>
-              <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">Self-Accountability</h4>
-              <p className="text-xs text-slate-600 leading-relaxed font-sans">Gradually shifting the student from needing parental nagging to taking self-directed ownership.</p>
+              <div className="font-label text-xs uppercase tracking-wider text-blue-600 font-bold">Self-Reliance</div>
+              <h4 className="font-heading font-semibold text-lg text-[#1E3A5F]">Taking Personal Ownership</h4>
+              <p className="text-xs text-slate-600 leading-relaxed font-sans">Guiding students to take responsibility for their studies without needing parents to constantly remind them.</p>
             </div>
           </div>
         </div>
@@ -275,29 +275,29 @@ export default function JuniorsProgramPage() {
           </div>
 
           <div className="font-label text-xs uppercase tracking-[0.2em] text-blue-600 font-semibold">
-            Collaborative Growth
+            Partnering With Families
           </div>
 
           <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#1E3A5F]">
-            The Parent Partnership Protocol
+            Working Hand in Hand with Parents
           </h2>
 
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed font-sans">
-            We partner closely with parents. You receive transparent weekly consistency logs, monthly growth milestones, and direct mentor touchpoints. No surprises, no guessing.
+            We keep parents informed at every step. You receive weekly progress updates, regular mentor calls, and clear visibility into your child&apos;s daily habits.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 text-left">
             <div className="p-4 bg-[#F5F7FA] rounded-xl border border-[#E2E8F0]">
               <div className="font-label text-xs uppercase tracking-wider text-[#1E3A5F] font-bold mb-1">Weekly Reports</div>
-              <p className="text-xs text-slate-600 font-sans">Hours invested, books read, and journal completions sent every Sunday.</p>
+              <p className="text-xs text-slate-600 font-sans">Weekly summary of study hours, reading milestones, and daily habits.</p>
             </div>
             <div className="p-4 bg-[#F5F7FA] rounded-xl border border-[#E2E8F0]">
-              <div className="font-label text-xs uppercase tracking-wider text-[#1E3A5F] font-bold mb-1">Parent Briefings</div>
-              <p className="text-xs text-slate-600 font-sans">Dedicated calls to discuss emotional wellbeing, focus habits, and school balance.</p>
+              <div className="font-label text-xs uppercase tracking-wider text-[#1E3A5F] font-bold mb-1">Parent Meetings</div>
+              <p className="text-xs text-slate-600 font-sans">Regular calls with mentors to discuss wellbeing, study balance, and school performance.</p>
             </div>
             <div className="p-4 bg-[#F5F7FA] rounded-xl border border-[#E2E8F0]">
-              <div className="font-label text-xs uppercase tracking-wider text-[#1E3A5F] font-bold mb-1">Zero Nagging</div>
-              <p className="text-xs text-slate-600 font-sans">Mentors take over the accountability role, restoring harmony in family dynamics.</p>
+              <div className="font-label text-xs uppercase tracking-wider text-[#1E3A5F] font-bold mb-1">Less Stress at Home</div>
+              <p className="text-xs text-slate-600 font-sans">Mentors take care of daily follow-ups, bringing peace back to parent-child conversations.</p>
             </div>
           </div>
         </div>
@@ -309,11 +309,11 @@ export default function JuniorsProgramPage() {
       <section className="py-24 bg-gradient-to-b from-[#F5F7FA] to-[#DCEEFF] text-center">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-[#1E3A5F]">
-            Give Your Child the Early Advantage
+            Give Your Child a Calm, Confident Start
           </h2>
 
           <p className="text-xs sm:text-sm text-slate-700 font-sans max-w-lg mx-auto">
-            Book a 20-minute diagnostic session with an Officium Supremum senior mentor to evaluate study routines and roadmap options.
+            Book a free 20-minute call with an Officium Supremum mentor to discuss your child&apos;s routine and goals.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -321,16 +321,16 @@ export default function JuniorsProgramPage() {
               onClick={() => openOrientation("juniors")}
               className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#1E3A5F] hover:bg-[#152943] text-white font-label font-bold text-xs uppercase tracking-widest shadow-md transition-all active:scale-95"
             >
-              Book Juniors Orientation Call
+              Book a Free 20-Minute Call
             </button>
 
             <a
-              href="https://wa.me/918969634656?text=I%20am%20interested%20in%20the%20Officium%20Supremum%20Juniors%20Program%20(Class%207-10)"
+              href="https://wa.me/918969634656?text=Hello%20Officium%20Supremum,%20I%20would%20like%20guidance%20for%20the%20Juniors%20Program"
               target="_blank"
               rel="noreferrer"
               className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white border border-[#CBD5E1] text-[#1E3A5F] font-label font-semibold text-xs uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm"
             >
-              Inquire on WhatsApp (+91 8969634656)
+              Chat with an Advisor on WhatsApp
             </a>
           </div>
         </div>

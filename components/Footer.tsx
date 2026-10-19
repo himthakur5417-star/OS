@@ -18,12 +18,12 @@ export function Footer() {
               &quot;Discipline today. Leadership tomorrow.&quot;
             </p>
             <p className="text-xs text-slate-500 leading-relaxed max-w-sm font-sans">
-              Officium Supremum is a discipline-first learning academy committed to developing high-performance students, future leaders, and defense officers through active recall, academy routines, and structured accountability.
+              Officium Supremum is a discipline-first learning academy committed to guiding students and defence aspirants through personalized study plans, daily accountability, and proven revision methods.
             </p>
             <div className="pt-2 flex items-center gap-3 text-xs font-label uppercase tracking-widest text-[#C8A84E]">
-              <span>System &gt; Motivation</span>
+              <span>Habits &gt; Motivation</span>
               <span>•</span>
-              <span>Accountability Daily</span>
+              <span>Daily Progress</span>
             </div>
           </div>
 
@@ -45,17 +45,17 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/programs/defense" className="hover:text-emerald-800 transition-colors">
-                  Defense Leadership (NDA/CDS)
+                  Defence Leadership (NDA / CDS / AFCAT)
                 </Link>
               </li>
               <li>
-                <Link href="/programs/defense#ssb" className="hover:text-emerald-800 transition-colors">
+                <Link href="/programs/defense" className="hover:text-emerald-800 transition-colors">
                   SSB &amp; 15 OLQs Mentorship
                 </Link>
               </li>
               <li>
                 <Link href="/programs/juniors#habits" className="hover:text-sky-700 transition-colors">
-                  Habit &amp; Focus Architecture
+                  Daily Habits &amp; Focus Building
                 </Link>
               </li>
             </ul>
@@ -64,32 +64,32 @@ export function Footer() {
           {/* Col 3: Resource Library */}
           <div className="space-y-3">
             <h4 className="font-label uppercase tracking-wider text-xs font-semibold text-[#0B192C]">
-              Resource Vault
+              Study Library
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/resources#nda-maths" className="hover:text-[#C8A84E] transition-colors">
+                <Link href="/resources" className="hover:text-[#C8A84E] transition-colors">
                   NDA Mathematics (30 Chapters)
                 </Link>
               </li>
               <li>
-                <Link href="/resources#cds-maths" className="hover:text-[#C8A84E] transition-colors">
-                  CDS Mathematics (Master Vol)
+                <Link href="/resources" className="hover:text-[#C8A84E] transition-colors">
+                  CDS Mathematics (22 Chapters)
                 </Link>
               </li>
               <li>
-                <Link href="/resources#english" className="hover:text-[#C8A84E] transition-colors">
+                <Link href="/resources" className="hover:text-[#C8A84E] transition-colors">
                   NDA &amp; CDS English (34 Chapters)
                 </Link>
               </li>
               <li>
-                <Link href="/resources#vocab" className="hover:text-[#C8A84E] transition-colors">
-                  A to Z Vocabulary &amp; Word Power
+                <Link href="/resources/syllabus" className="hover:text-[#C8A84E] transition-colors">
+                  UPSC Defence Exam Syllabus
                 </Link>
               </li>
               <li>
-                <Link href="/resources#pyq" className="hover:text-[#C8A84E] transition-colors">
-                  2020–2026 PYQ Archive
+                <Link href="/resources" className="hover:text-[#C8A84E] transition-colors">
+                  Previous Years&apos; Solved Papers
                 </Link>
               </li>
             </ul>
@@ -98,7 +98,7 @@ export function Footer() {
           {/* Col 4: Admissions & Contact */}
           <div className="space-y-3">
             <h4 className="font-label uppercase tracking-wider text-xs font-semibold text-[#0B192C]">
-              Admissions Desk
+              Mentorship Desk
             </h4>
             <div className="space-y-2.5 text-xs">
               <a
@@ -124,12 +124,12 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div>
-            &copy; {new Date().getFullYear()} Officium Supremum. All rights reserved. A discipline-first academy.
+            &copy; {new Date().getFullYear()} Officium Supremum. All rights reserved. Discipline today. Leadership tomorrow.
           </div>
           <div className="flex items-center gap-6 font-label uppercase text-[11px] tracking-widest text-slate-600">
-            <Link href="/about" className="hover:text-slate-900">Charter</Link>
-            <Link href="/contact" className="hover:text-slate-900">Admissions</Link>
-            <Link href="/resources" className="hover:text-slate-900">Study Vault</Link>
+            <Link href="/about" className="hover:text-slate-900">About Us</Link>
+            <Link href="/contact" className="hover:text-slate-900">Contact Us</Link>
+            <Link href="/resources" className="hover:text-slate-900">Study Library</Link>
             <Link href="/admin/login" className="text-slate-400 hover:text-[#C8A84E] transition-colors">Admin</Link>
           </div>
         </div>

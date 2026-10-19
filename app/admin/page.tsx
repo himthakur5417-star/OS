@@ -358,7 +358,7 @@ export default function AdminDashboardPage() {
           phone: newPhone,
           email: newEmail,
           program: newProgram,
-          message: newMessage || "Manual entry recorded via Director Terminal",
+          message: newMessage || "Manual entry recorded by administrator",
           status: newStatus,
         }),
       });
@@ -483,7 +483,7 @@ export default function AdminDashboardPage() {
             <Shield className="w-7 h-7" />
           </div>
           <p className="text-sm font-label uppercase tracking-widest text-slate-500 font-semibold">
-            Verifying Director Terminal Authorization...
+            Checking Administrator Access...
           </p>
         </div>
       </div>
@@ -502,7 +502,7 @@ export default function AdminDashboardPage() {
             <div className="h-5 w-px bg-slate-200 hidden sm:block" />
             <div className="hidden sm:flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full bg-amber-100/80 border border-amber-300 text-amber-900 font-mono text-[11px] font-bold tracking-wider uppercase">
-                Director Terminal
+                Academy Admin
               </span>
               <span className="flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
@@ -623,7 +623,7 @@ export default function AdminDashboardPage() {
           >
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-label uppercase tracking-wider text-slate-500 font-bold">
-                Account Directory
+                Registered Accounts
               </span>
               <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200/70 flex items-center justify-center text-indigo-600">
                 <Users className="w-4 h-4" />
@@ -665,7 +665,7 @@ export default function AdminDashboardPage() {
           >
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-label uppercase tracking-wider text-slate-500 font-bold">
-                Site Traffic
+                Website Visitors
               </span>
               <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200/70 flex items-center justify-center text-emerald-600">
                 <Activity className="w-4 h-4" />
@@ -698,7 +698,7 @@ export default function AdminDashboardPage() {
               }`}
             >
               <Inbox className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Website Enquiries</span>
+              <span>Student Enquiries</span>
               <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
                 {enquiries.length}
               </span>
@@ -713,7 +713,7 @@ export default function AdminDashboardPage() {
               }`}
             >
               <KeyRound className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Logins Recorded</span>
+              <span>Login History</span>
               <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
                 {logs.length}
               </span>
@@ -728,7 +728,7 @@ export default function AdminDashboardPage() {
               }`}
             >
               <Users className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Users Directory</span>
+              <span>Registered Students & Staff</span>
               <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
                 {users.length}
               </span>
@@ -743,7 +743,7 @@ export default function AdminDashboardPage() {
               }`}
             >
               <Globe className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Site Traffic</span>
+              <span>Website Visitors</span>
             </button>
 
             <button
@@ -755,7 +755,7 @@ export default function AdminDashboardPage() {
               }`}
             >
               <Plus className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>+ Record Lead</span>
+              <span>+ Add Enquiry Manually</span>
             </button>
           </div>
 
@@ -766,7 +766,7 @@ export default function AdminDashboardPage() {
                 className="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-label uppercase tracking-wider transition-all shadow-soft-xs flex items-center gap-2"
               >
                 <Download className="w-3.5 h-3.5 text-[#C8A84E]" />
-                <span>Export CSV</span>
+                <span>Download Enquiries CSV</span>
               </button>
             </div>
           )}
@@ -831,8 +831,8 @@ export default function AdminDashboardPage() {
                   onChange={(e) => setEnquiryProgramFilter(e.target.value)}
                   className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-label uppercase tracking-wider focus:outline-none focus:border-[#C8A84E]"
                 >
-                  <option value="all">All Tracks</option>
-                  <option value="defense">Defense</option>
+                  <option value="all">All Programs</option>
+                  <option value="defense">Defence</option>
                   <option value="nda">NDA</option>
                   <option value="cds">CDS</option>
                   <option value="afcat">AFCAT</option>
@@ -911,7 +911,7 @@ export default function AdminDashboardPage() {
                                 : "bg-slate-100 text-slate-700 border-slate-300"
                             }`}
                           >
-                            <option value="new">New Lead</option>
+                            <option value="new">New</option>
                             <option value="contacted">Contacted</option>
                             <option value="in_progress">In Progress</option>
                             <option value="enrolled">Enrolled</option>
@@ -923,7 +923,7 @@ export default function AdminDashboardPage() {
                       {/* Candidate Info Grid */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3.5 bg-slate-50/70 rounded-xl border border-slate-100 text-xs">
                         <div>
-                          <div className="text-[10px] font-label uppercase text-slate-400 tracking-wider">Candidate Name</div>
+                          <div className="text-[10px] font-label uppercase text-slate-400 tracking-wider">Student Name</div>
                           <div className="font-heading font-semibold text-sm text-[#0B192C]">{enq.name}</div>
                         </div>
 
@@ -1378,14 +1378,14 @@ export default function AdminDashboardPage() {
             {leadCreatedSuccess && (
               <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Lead inquiry successfully recorded into the database!</span>
+                <span>Enquiry successfully added to the database!</span>
               </div>
             )}
 
             <form onSubmit={handleCreateManualLead} className="space-y-4">
               <div>
                 <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
-                  Candidate Full Name *
+                  Student Full Name *
                 </label>
                 <input
                   type="text"
@@ -1418,7 +1418,7 @@ export default function AdminDashboardPage() {
                   </label>
                   <input
                     type="email"
-                    placeholder="candidate@example.com"
+                    placeholder="student@example.com"
                     value={newEmail}
                     onChange={(e) => setNewEmail(e.target.value)}
                     className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
@@ -1429,20 +1429,20 @@ export default function AdminDashboardPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
-                    Target Track
+                    Program Selected
                   </label>
                   <select
                     value={newProgram}
                     onChange={(e) => setNewProgram(e.target.value)}
                     className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   >
-                    <option value="defense">Defense Leadership (NDA/CDS/AFCAT)</option>
-                    <option value="nda">NDA Cadet Wing</option>
-                    <option value="cds">CDS Graduate Cadre</option>
-                    <option value="afcat">AFCAT Air Wing</option>
-                    <option value="scholars">Scholars Academic Wing (11-12)</option>
-                    <option value="juniors">Juniors Wing (7-10)</option>
-                    <option value="general">General Admissions</option>
+                    <option value="defense">Defence Leadership (NDA / CDS / AFCAT)</option>
+                    <option value="nda">NDA Mentorship</option>
+                    <option value="cds">CDS Mentorship</option>
+                    <option value="afcat">AFCAT Mentorship</option>
+                    <option value="scholars">OS Scholars (Classes 11-12)</option>
+                    <option value="juniors">OS Juniors (Classes 7-10)</option>
+                    <option value="general">General Enquiry</option>
                   </select>
                 </div>
 
@@ -1455,7 +1455,7 @@ export default function AdminDashboardPage() {
                     onChange={(e) => setNewStatus(e.target.value)}
                     className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   >
-                    <option value="new">New Lead</option>
+                    <option value="new">New</option>
                     <option value="contacted">Contacted</option>
                     <option value="in_progress">In Progress</option>
                     <option value="enrolled">Enrolled</option>
@@ -1465,11 +1465,11 @@ export default function AdminDashboardPage() {
 
               <div>
                 <label className="block text-xs font-label uppercase tracking-wider text-slate-700 mb-1 font-semibold">
-                  Inquiry Notes / Candidate Background
+                  Enquiry Notes / Background
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="Record call summary or key student details..."
+                  placeholder="Write call notes or key student details..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
@@ -1481,7 +1481,7 @@ export default function AdminDashboardPage() {
                   type="submit"
                   className="px-6 py-2.5 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm active:scale-95"
                 >
-                  Save Lead Record
+                  Save Enquiry
                 </button>
                 <button
                   type="button"
@@ -1503,10 +1503,10 @@ export default function AdminDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="font-heading font-semibold text-lg text-[#0B192C]">
-                  Director Follow-up Notes
+                  Mentor Follow-up Notes
                 </h4>
                 <p className="text-xs text-slate-500">
-                  Lead: {editingNoteEnquiry.name} ({editingNoteEnquiry.id})
+                  Student: {editingNoteEnquiry.name} ({editingNoteEnquiry.id})
                 </p>
               </div>
               <button
@@ -1521,7 +1521,7 @@ export default function AdminDashboardPage() {
               rows={5}
               value={currentNote}
               onChange={(e) => setCurrentNote(e.target.value)}
-              placeholder="Record mentor remarks, call outcomes, admission status..."
+              placeholder="Write mentor notes, call outcome, or admission status..."
               className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
             />
 

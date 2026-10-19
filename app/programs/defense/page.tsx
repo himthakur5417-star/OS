@@ -28,7 +28,7 @@ export default function DefenseProgramPage() {
       <div className="camo-depth-layer" />
 
       {/* ========================================================================= */}
-      {/* 1. DEFENSE HERO SECTION                                                  */}
+      {/* 1. DEFENCE HERO SECTION                                                  */}
       {/* ========================================================================= */}
       <section className="relative pt-24 pb-24 lg:pt-32 lg:pb-32 border-b border-white/10 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -38,7 +38,7 @@ export default function DefenseProgramPage() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-md">
               <Shield className="w-3.5 h-3.5 text-[#C8A84E]" />
               <span className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold">
-                Defense Leadership Track • NDA • CDS • AFCAT
+                Defence Leadership Track • NDA • CDS • AFCAT
               </span>
             </div>
 
@@ -52,7 +52,7 @@ export default function DefenseProgramPage() {
 
             {/* Subheadline */}
             <p className="text-base sm:text-lg text-zinc-300 font-sans leading-relaxed">
-              Success in NDA, CDS, and AFCAT is not decided by how much an aspirant studies — but by how effectively they recall, apply, and execute under pressure. We train future officers under academy discipline.
+              Success in NDA, CDS, and AFCAT is not decided by how many books you buy, but by how well you remember formulas, solve questions under time pressure, and carry yourself with confidence. We train students with academy-level discipline.
             </p>
 
             {/* CTAs */}
@@ -61,21 +61,21 @@ export default function DefenseProgramPage() {
                 onClick={() => openOrientation("defense")}
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C8A84E] hover:bg-[#D4B65B] text-[#0F1115] font-label font-bold text-xs uppercase tracking-widest shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
               >
-                <span>Begin Cadet Assessment</span>
+                <span>Book a Free Defence Guidance Call</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
               <Link
-                href="/resources"
+                href="/resources/syllabus"
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-label font-semibold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2"
               >
-                <span>Inspect Defense Syllabus</span>
+                <span>View Defence Syllabus &amp; Pattern</span>
               </Link>
             </div>
 
             {/* Academy Maxim Banner with Soft Glassmorphism */}
             <div className="pt-6 border-l-2 border-[#C8A84E] pl-4 text-xs font-heading italic text-zinc-200">
-              "The objective is not merely to clear an examination — it is to become worthy of wearing the uniform."
+              &ldquo;The goal is not just to clear an exam — it is to become worthy of wearing the uniform.&rdquo;
             </div>
           </div>
         </div>
@@ -88,10 +88,10 @@ export default function DefenseProgramPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <div className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold">
-              Three Routes into Service
+              Three Pathways into the Armed Forces
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-white">
-              Targeted Examination Architecture
+              Preparation for NDA, CDS, and AFCAT
             </h2>
           </div>
 
@@ -110,20 +110,20 @@ export default function DefenseProgramPage() {
                   Army • Navy • Air Force • 10+2 Cadets
                 </div>
                 <p className="text-xs text-zinc-300 leading-relaxed font-sans mb-6">
-                  Rigorous preparation covering Mathematics (300 Marks, 30 Chapters) and the General Ability Test (GAT - 600 Marks English &amp; GS).
+                  Complete preparation covering Mathematics (300 Marks, 30 Chapters) and the General Ability Test (GAT - 600 Marks English &amp; General Studies).
                 </p>
                 <div className="space-y-2.5 text-xs text-zinc-200 border-t border-white/15 pt-4">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>4,330+ Solved Math Drill Archive</span>
+                    <span>4,000+ Solved Math Practice Questions</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>50-Question English Vocab Mastery</span>
+                    <span>50-Question Daily English Practice</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>5-Day SSB Psychological Conditioning</span>
+                    <span>SSB Interview &amp; Personality Preparation</span>
                   </div>
                 </div>
               </div>
@@ -150,20 +150,20 @@ export default function DefenseProgramPage() {
                   IMA • OTA • INA • AFA • Graduates
                 </div>
                 <p className="text-xs text-zinc-300 leading-relaxed font-sans mb-6">
-                  Comprehensive strategy for Elementary Mathematics (383-page Master Vol), English (100 Marks), and General Knowledge.
+                  Complete preparation for Elementary Mathematics (Complete 22-Chapter Master Volume), English (100 Marks), and General Knowledge.
                 </p>
                 <div className="space-y-2.5 text-xs text-zinc-200 border-t border-white/15 pt-4">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>22-Chapter Elementary Math Vault</span>
+                    <span>22-Chapter Elementary Mathematics Series</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>Current Affairs &amp; Strategic GS Notes</span>
+                    <span>Current Affairs &amp; Strategic General Knowledge Notes</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>Rigorous Mock Exam Simulations</span>
+                    <span>Full-Length Mock Test Series</span>
                   </div>
                 </div>
               </div>
@@ -190,20 +190,20 @@ export default function DefenseProgramPage() {
                   Flying • Technical • Ground Duty Branches
                 </div>
                 <p className="text-xs text-zinc-300 leading-relaxed font-sans mb-6">
-                  High-speed verbal ability, numerical ability, reasoning aptitude, and military awareness tests with AFSB interview preparation.
+                  Speed training in verbal ability, numerical ability, reasoning aptitude, and military awareness with AFSB interview guidance.
                 </p>
                 <div className="space-y-2.5 text-xs text-zinc-200 border-t border-white/15 pt-4">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>High-Speed Reasoning Modules</span>
+                    <span>Speed &amp; Reasoning Practice Sets</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>AFSB Interview &amp; CPSS Guidance</span>
+                    <span>AFSB Interview &amp; Guidance</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#C8A84E]" />
-                    <span>Daily Speed &amp; Accuracy Drills</span>
+                    <span>Daily Speed &amp; Accuracy Practice</span>
                   </div>
                 </div>
               </div>
@@ -222,29 +222,29 @@ export default function DefenseProgramPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. PYQ LIBRARY & 8-PILLARS                                               */}
+      {/* 3. 8 PILLARS OF MENTORSHIP                                               */}
       {/* ========================================================================= */}
       <section className="py-24 border-b border-white/10 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <div className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold">
-              The 8 Systems of Execution
+              The 8 Pillars of Mentorship
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-white">
-              What Every Officer Cadet Receives
+              What Every Student Receives
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { num: "01", title: "Mentorship Roadmap", desc: "A personalized battle plan tailored to your exam stage — no generic schedules." },
-              { num: "02", title: "Personal Guidance", desc: "1-on-1 performance monitoring and time-management correction." },
-              { num: "03", title: "Daily Accountability", desc: "Nightly logs tracking hours invested, topics completed, and revision verified." },
-              { num: "04", title: "Revision & Recall", desc: "Active recall drills and memory reinforcement before forgetting sets in." },
-              { num: "05", title: "Mock Test Ecosystem", desc: "Scheduled full-length simulations strictly under exam-pressure conditions." },
-              { num: "06", title: "15 Officer-Like Qualities", desc: "Building the 15 OLQs through daily tasks rather than memorizing for an interview." },
-              { num: "07", title: "Academy Routine", desc: "Mandatory morning physical exercise, discipline-building, and time-blocking." },
-              { num: "08", title: "Weekly Mind Sessions", desc: "Mental resilience, focus psychology, and overcoming exam fatigue." },
+              { num: "01", title: "Personalized Study Plan", desc: "A clear, day-by-day study roadmap made specifically for your target exam — no generic schedules." },
+              { num: "02", title: "1-on-1 Mentor Guidance", desc: "Direct regular advice to track your progress and fix study habits." },
+              { num: "03", title: "Daily Study Check", desc: "Daily evening reporting to confirm what you studied, practiced, and revised." },
+              { num: "04", title: "Regular Revision & Practice", desc: "Targeted questions and revision tests to make sure you do not forget what you study." },
+              { num: "05", title: "Real Mock Tests", desc: "Regular full-length practice tests under real exam conditions." },
+              { num: "06", title: "15 Officer-Like Qualities", desc: "Developing character, honesty, teamwork, and courage through daily habits." },
+              { num: "07", title: "Daily Routine & Fitness", desc: "Morning fitness routine, time-blocking, and disciplined daily habits." },
+              { num: "08", title: "Weekly Mindset Sessions", desc: "Staying motivated, handling stress, and overcoming exam anxiety." },
             ].map((pillar, idx) => (
               <div key={idx} className="p-6 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 space-y-3 shadow-lg">
                 <div className="font-label text-xs uppercase tracking-widest text-[#C8A84E] font-bold">
@@ -272,11 +272,11 @@ export default function DefenseProgramPage() {
           </div>
 
           <h2 className="font-heading text-3xl sm:text-5xl font-semibold tracking-tight text-white">
-            Begin the Cadet Assessment
+            Book a Free Defence Guidance Call
           </h2>
 
           <p className="text-sm text-zinc-300 font-sans max-w-xl mx-auto">
-            We evaluate your physical readiness, written examination baseline, and current study discipline before confirming batch allotment.
+            We review your current preparation level, syllabus coverage, and study routine before suggesting the right plan.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -284,15 +284,15 @@ export default function DefenseProgramPage() {
               onClick={() => openOrientation("defense")}
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C8A84E] hover:bg-[#D4B65B] text-[#0F1115] font-label font-bold text-xs uppercase tracking-widest shadow-lg"
             >
-              Book Assessment Conversation
+              Book a Free 20-Minute Call
             </button>
             <a
-              href="https://wa.me/918969634656?text=I%20want%20to%20apply%20for%20the%20Officium%20Supremum%20Defense%20Leadership%20Track"
+              href="https://wa.me/918969634656?text=Hello%20Officium%20Supremum,%20I%20would%20like%20guidance%20for%20Defence%20exams"
               target="_blank"
               rel="noreferrer"
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 text-white font-label text-xs uppercase tracking-widest hover:bg-white/25 transition-colors"
             >
-              Direct WhatsApp Admissions
+              Chat with an Advisor on WhatsApp
             </a>
           </div>
         </div>

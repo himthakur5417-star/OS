@@ -28,7 +28,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
     id: "nda-maths-book",
     tab: "nda-maths",
     label: "NDA Mathematics",
-    meta: "30 Chapters · 4,330+ Qs",
+    meta: "30 Chapters · 4,000+ Questions",
     tone: "light",
     art: "ember",
     seed: 14,
@@ -41,7 +41,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
       },
       {
         name: "Ch 11: Trigonometry",
-        meta: "67 Drill Qs",
+        meta: "67 Practice Qs",
         art: "aurora",
         pdf: "/NDA mathematics/chapter-11-trigonometry.pdf",
       },
@@ -52,7 +52,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
       },
       {
         name: "Ch 25: Differentiation",
-        meta: "89 Drill Qs",
+        meta: "89 Practice Qs",
         pdf: "/NDA mathematics/chapter-25-differentiation.pdf",
       },
     ],
@@ -61,14 +61,14 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
     id: "cds-maths-book",
     tab: "cds-maths",
     label: "CDS Mathematics",
-    meta: "22 Chapters · 383 Pages",
+    meta: "Complete 22-Chapter Master Volume",
     tone: "light",
     art: "glacier",
     seed: 28,
     files: [
       {
         name: "Ch 01: Ratio & Proportion",
-        meta: "Cadet Drill Set",
+        meta: "Practice Problem Set",
         art: "glacier",
         pdf: "/CDS mathematics/chapter-01-ratio-proportion.pdf",
       },
@@ -95,7 +95,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
     id: "english-book",
     tab: "english",
     label: "NDA & CDS English",
-    meta: "34 Chapters · 396 Pages",
+    meta: "Complete 34-Chapter English Curriculum",
     tone: "light",
     art: "dusk",
     seed: 42,
@@ -108,19 +108,19 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
       },
       {
         name: "Ch 10: Prepositions",
-        meta: "Rule Sheets",
+        meta: "Rules & Notes",
         art: "ember",
         pdf: "/NDA CDS English/chapter-10-preposition.pdf",
       },
       {
         name: "Ch 18: Synonyms & Ant",
-        meta: "Vocabulary Drill",
+        meta: "Vocabulary Practice",
         art: "aurora",
         pdf: "/NDA CDS English/chapter-18-synonyms.pdf",
       },
       {
         name: "Ch 31: Comprehension",
-        meta: "Passage Drills",
+        meta: "Passage Practice",
         pdf: "/NDA CDS English/chapter-31-comprehension.pdf",
       },
     ],
@@ -128,21 +128,21 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
   {
     id: "pyq-vault-book",
     tab: "pyq",
-    label: "PYQ Archives",
-    meta: "NDA & CDS · 2020–2026",
+    label: "Previous Years' Papers",
+    meta: "NDA & CDS Solved Papers",
     tone: "light",
     art: "aurora",
     seed: 71,
     files: [
       {
-        name: "NDA PYQ (2020–2026)",
-        meta: "Maths & GAT · 7 Yrs",
+        name: "NDA Previous Years' Papers",
+        meta: "Maths & GAT Solved",
         art: "ember",
         pdf: "/PYQ/NDA-PYQ/2024/NDA-1- 2024 - Mathematics - OS.pdf",
       },
       {
-        name: "CDS PYQ (2020–2026)",
-        meta: "Eng, Math & GK · 7 Yrs",
+        name: "CDS Previous Years' Papers",
+        meta: "English, Maths & GK Solved",
         art: "glacier",
         pdf: "/PYQ/CDS-PYQ/2024/CDS-1- 2024 - Mathematics - OS.pdf",
       },
@@ -161,19 +161,19 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
   {
     id: "syllabus-vault-book",
     tab: "syllabus",
-    label: "Syllabus Blueprint",
-    meta: "NDA & CDS · UPSC Pattern",
+    label: "Syllabus & Exam Pattern",
+    meta: "UPSC NDA & CDS Pattern",
     tone: "light",
     art: "verdant",
     seed: 88,
     files: [
       {
-        name: "NDA Syllabus Blueprint",
+        name: "NDA Syllabus & Pattern",
         meta: "10+2 Cadet Entry",
         art: "verdant",
       },
       {
-        name: "CDS Syllabus (2025)",
+        name: "CDS Syllabus & Pattern",
         meta: "IMA, INA, AFA & OTA",
         art: "glacier",
       },
@@ -183,8 +183,8 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
         art: "ember",
       },
       {
-        name: "CDS SSB Interview Pattern",
-        meta: "5-Day OLQ · 300 Marks",
+        name: "SSB 5-Day Interview Pattern",
+        meta: "Stage 1 & Stage 2 · 300 Marks",
         art: "dusk",
       },
     ],
@@ -251,15 +251,15 @@ export default function ResourcesPage() {
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-label uppercase tracking-widest text-slate-700 shadow-sm">
               <BookOpen className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Officium Supremum Academic Vault</span>
+              <span>Officium Supremum Study Library</span>
             </div>
 
             <h1 className="font-heading text-4xl sm:text-6xl font-semibold tracking-tight text-[#0B192C]">
-              Curated Study Archives &amp; Examination Blueprint
+              Curated Study Notes &amp; Exam Blueprints
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 font-sans leading-relaxed">
-              Curated study material, complete curriculum archives, and examination blueprints.
+              Access chapter-wise notes, solved practice questions, previous years&apos; papers, and detailed exam patterns for NDA and CDS.
             </p>
 
             {!user && (
@@ -269,7 +269,7 @@ export default function ResourcesPage() {
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0B192C] hover:bg-slate-800 text-white text-xs font-label uppercase tracking-wider font-semibold transition-all shadow-sm"
                 >
                   <Lock className="w-3.5 h-3.5 text-[#C8A84E]" />
-                  <span>Sign In</span>
+                  <span>Student Sign In</span>
                 </button>
               </div>
             )}
@@ -285,14 +285,14 @@ export default function ResourcesPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-14">
             <div>
               <div className="font-label text-xs uppercase tracking-[0.2em] text-[#C8A84E] font-semibold mb-1">
-                Official Book Volumes ({AVAILABLE_BOOKS.length} Dedicated Folders)
+                Official Study Volumes ({AVAILABLE_BOOKS.length} Folders)
               </div>
               <h2 className="font-heading text-2xl sm:text-4xl font-semibold tracking-tight text-[#0B192C]">
-                Interactive Book Archives
+                Study Materials &amp; Question Banks
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 font-sans max-w-md">
-              Click any folder to inspect its complete curriculum and study material.
+              Click any folder below to open chapter notes, practice sheets, and previous year question papers.
             </p>
           </div>
 
@@ -355,7 +355,7 @@ export default function ResourcesPage() {
       ) : (
         <section className="pb-24 px-4 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-xs font-label uppercase tracking-widest text-slate-400 shadow-sm">
-            <span>Select any folder above to open and inspect its volume</span>
+            <span>Click any folder above to open and read its chapters</span>
           </div>
         </section>
       )}

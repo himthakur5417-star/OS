@@ -58,13 +58,13 @@ export default function SyllabusDossier({ initialTrack = "nda", initialSection =
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-[11px] font-label uppercase tracking-widest mb-3">
               <Shield className="w-3.5 h-3.5 text-[#C8A84E]" />
-              <span>Official UPSC Examination Blueprint</span>
+              <span>Official UPSC Exam Pattern &amp; Syllabus</span>
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-[#0B192C]">
-              UPSC Defence Examination Blueprint
+              UPSC Defence Examination Syllabus &amp; Pattern
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl font-sans leading-relaxed">
-              Systematically arranged, verified syllabus frameworks for National Defence Academy (NDA &amp; NA) and Combined Defence Services (CDS) examinations.
+              Complete verified syllabus and exam patterns for the National Defence Academy (NDA &amp; NA) and Combined Defence Services (CDS) examinations.
             </p>
           </div>
 
@@ -529,7 +529,7 @@ export default function SyllabusDossier({ initialTrack = "nda", initialSection =
                   SERIAL 01
                 </span>
                 <h3 className="font-heading text-lg sm:text-xl font-semibold">
-                  CDS Examination Architecture &amp; Academy Tracks (2025)
+                  CDS Examination Pattern &amp; Academy Tracks
                 </h3>
               </div>
               <span className="text-xs font-label uppercase tracking-widest text-slate-300">
@@ -604,7 +604,7 @@ export default function SyllabusDossier({ initialTrack = "nda", initialSection =
               {/* Question Weightage Indicators from PDF */}
               <div className="mb-8">
                 <div className="font-label text-xs uppercase tracking-wider text-sky-700 font-semibold mb-2">
-                  Estimated CDS 1 2025 Mathematics Question Weightage
+                  CDS Mathematics Chapter-Wise Question Distribution
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                   {[
@@ -914,29 +914,30 @@ export default function SyllabusDossier({ initialTrack = "nda", initialSection =
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-slate-700">
                     <tr>
-                      <td className="py-4 px-4 sm:px-6 font-semibold text-slate-900">Stage 1 (Screening)</td>
-                      <td className="py-4 px-4 sm:px-6">
-                        • Officer Intelligence Rating (OIR)<br />
-                        • Picture Perception and Descriptive Test (PPDT) &amp; Group Discussion
+                      <td className="py-4 px-4 sm:px-6 font-semibold text-slate-900">
+                        Stage 1 (Screening · Day 1)
                       </td>
-                      <td className="py-4 px-4 sm:px-6">Immediate cognitive alertness, visual perception, and logical synthesis.</td>
+                      <td className="py-4 px-4 sm:px-6">
+                        • Officer Intelligence Rating (OIR) Tests<br />
+                        • Picture Perception &amp; Description Test (PPDT) &amp; Group Discussion
+                      </td>
+                      <td className="py-4 px-4 sm:px-6">
+                        Evaluates quick logical reasoning, observation, and confidence in group discussion. Candidates who clear Stage 1 move on to Stage 2.
+                      </td>
                     </tr>
                     <tr>
-                      <td className="py-4 px-4 sm:px-6 font-semibold text-slate-900">Stage 2 (Comprehensive)</td>
-                      <td className="py-4 px-4 sm:px-6">
-                        • Personal Interview with Interviewing Officer (IO)<br />
-                        • Group Testing Officer (GTO) Tasks (GD, GPE, PGT, HGT, FGT, Lecturette)<br />
-                        • Psychology Tests (TAT, WAT, SRT, Self Description)
+                      <td className="py-4 px-4 sm:px-6 font-semibold text-slate-900">
+                        Stage 2 (Comprehensive Assessment · Days 2–5)
                       </td>
-                      <td className="py-4 px-4 sm:px-6">Comprehensive identification of Officer Like Qualities (OLQ) and trainability.</td>
-                    </tr>
-                    <tr>
-                      <td className="py-4 px-4 sm:px-6 font-semibold text-slate-900">Stage 3 (Final Board)</td>
                       <td className="py-4 px-4 sm:px-6">
-                        • Final Board Conference<br />
-                        • Group Discussion &amp; Assessor Alignment
+                        • Psychological Tests (TAT, WAT, SRT, Self-Description)<br />
+                        • Group Testing Officer (GTO) Tasks (PGT, HGT, FGT, Snake Race, Lecturette, Command Task, GD, GPE)<br />
+                        • Personal Interview with the Interviewing Officer (IO)<br />
+                        • Final Board Conference (All Assessors)
                       </td>
-                      <td className="py-4 px-4 sm:px-6">Consolidated final merit recommendation across all three assessors.</td>
+                      <td className="py-4 px-4 sm:px-6">
+                        In-depth evaluation of 15 Officer-Like Qualities (OLQs), teamwork, mental stamina, and leadership potential.
+                      </td>
                     </tr>
                   </tbody>
                 </table>

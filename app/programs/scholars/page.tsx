@@ -34,19 +34,19 @@ export default function ScholarsProgramPage() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#D4C4A8]/60 shadow-soft-sm">
               <GraduationCap className="w-3.5 h-3.5 text-[#8B6914]" />
               <span className="font-label text-xs uppercase tracking-[0.18em] text-[#8B6914] font-semibold">
-                Class 11–12 • Academic Mastery &amp; Competitive Track
+                Class 11–12 • Academic Guidance &amp; Exam Preparation
               </span>
             </div>
 
             <h1 className="font-heading text-4xl sm:text-6xl font-semibold tracking-tight text-[#2C1F0F] leading-[1.08]">
-              High-Stakes Mastery. <br />
+              Score High in Exams <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#C8A84E] to-[#A37D2E]">
-                Zero Burnout.
+                Without Burning Out.
               </span>
             </h1>
 
             <p className="text-base sm:text-lg text-[#5A4A35] font-sans leading-relaxed">
-              Senior secondary school is where most students crash under the twin pressures of board exams and competitive entrance tests. Officium Supremum builds an airtight study cadence, ruthless time management, and active recall routines.
+              Class 11 and 12 can feel overwhelming when balancing school board exams with entrance tests. Officium Supremum gives students a clear daily study routine, focused practice sessions, and techniques to remember what they study longer.
             </p>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
@@ -54,7 +54,7 @@ export default function ScholarsProgramPage() {
                 onClick={() => openOrientation("scholars")}
                 className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#2C1F0F] hover:bg-[#3B2F20] text-white font-label font-bold text-xs uppercase tracking-widest shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
               >
-                <span>Book Scholar Diagnostic</span>
+                <span>Book a Free 20-Minute Call</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -62,14 +62,14 @@ export default function ScholarsProgramPage() {
                 href="/resources"
                 className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-[#FFFDF8] border border-[#D4C4A8]/80 text-[#5A4A35] font-label font-semibold text-xs uppercase tracking-widest transition-all shadow-soft-sm hover:shadow-soft-md text-center"
               >
-                <span>Explore Study Syllabus</span>
+                <span>View Study Resources</span>
               </Link>
             </div>
 
             <div className="pt-4 flex items-center gap-6 text-xs text-[#8B7A5E] font-label uppercase tracking-wider">
-              <span>• Board + Entrance Synergy</span>
-              <span>• Deep Work Protocols</span>
-              <span>• Weekly Testing Diagnostics</span>
+              <span>• Balanced Board &amp; Entrance Prep</span>
+              <span>• Focused Study Blocks</span>
+              <span>• Weekly Progress Checks</span>
             </div>
           </div>
         </div>
@@ -86,10 +86,10 @@ export default function ScholarsProgramPage() {
                 Strategic Balance
               </div>
               <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#2C1F0F] leading-tight">
-                Solving the &quot;Boards vs. Competitive&quot; Paradox
+                Balancing Board Exams and Entrance Tests
               </h2>
               <p className="text-xs sm:text-sm text-[#5A4A35] leading-relaxed font-sans">
-                Students often spend weekdays agonizing over school tests and weekends cramming for competitive exams without retaining either. We sync syllabus coverage so concept depth in competitive exams automatically powers board distinction.
+                Many students spend weekdays stressing over school tests and weekends cramming for entrance exams without remembering either. We connect both syllabi so that mastering deep concepts for entrance exams automatically helps you score top marks in school boards.
               </p>
             </div>
 
@@ -99,10 +99,10 @@ export default function ScholarsProgramPage() {
                   <Layers className="w-5 h-5" />
                 </div>
                 <h4 className="font-heading font-semibold text-lg text-[#2C1F0F]">
-                  Concept In-Depth Synchronisation
+                  Learn Concepts in Depth
                 </h4>
                 <p className="text-xs text-[#6B5D4A] leading-relaxed font-sans">
-                  Covering theory to the highest depth first, followed by speed drills for objective papers and written formulation for subjective boards.
+                  Learn core concepts thoroughly once, then practice fast problem-solving for entrance exams and step-by-step answers for board exams.
                 </p>
               </div>
 
@@ -111,10 +111,10 @@ export default function ScholarsProgramPage() {
                   <Clock className="w-5 h-5" />
                 </div>
                 <h4 className="font-heading font-semibold text-lg text-[#2C1F0F]">
-                  Strict 90-Minute Deep Work Blocks
+                  Focused 90-Minute Study Blocks
                 </h4>
                 <p className="text-xs text-[#6B5D4A] leading-relaxed font-sans">
-                  Eliminating shallow multitasking. Two concentrated 90-minute blocks deliver more retention than 8 hours of distracted studying.
+                  Study in quiet, uninterrupted 90-minute blocks without phone notifications. Two focused blocks produce better results than eight hours of distracted sitting.
                 </p>
               </div>
             </div>
@@ -129,10 +129,10 @@ export default function ScholarsProgramPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <div className="font-label text-xs uppercase tracking-[0.2em] text-[#8B6914] font-semibold">
-              The 4 Pillars of Scholar Excellence
+              The 4 Steps to Academic Success
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-medium tracking-tight text-[#2C1F0F]">
-              Systematic Academic Engineering
+              How We Help You Study Smarter
             </h2>
           </div>
 
@@ -140,28 +140,28 @@ export default function ScholarsProgramPage() {
             {[
               {
                 num: "01",
-                title: "Active Recall & Spaced Tests",
-                desc: "Replacing passive notebook reading with active flash-drills to permanently anchor formulas and mechanisms.",
+                title: "Testing to Remember",
+                desc: "Rather than just reading textbooks again and again, we use short quizzes and practice questions so formulas stay fresh in your mind.",
               },
               {
                 num: "02",
-                title: "Error Log Analysis",
-                desc: "Every wrong question is categorized by silly mistake, formula lapse, or concept gap, preventing repeated blunders.",
+                title: "Mistake Notebook",
+                desc: "Every wrong answer is noted down with the reason why—silly calculation mistake, forgotten formula, or misunderstood concept—so you do not repeat it.",
               },
               {
                 num: "03",
-                title: "Exam Endurance Conditioning",
-                desc: "Simulating 3-hour full-syllabus papers under monitored conditions to inoculate against panic and time starvation.",
+                title: "Real Exam Practice",
+                desc: "Full-length 3-hour practice tests under timed conditions to build speed, accuracy, and confidence before the actual exam.",
               },
               {
                 num: "04",
-                title: "Burnout Defense Protocols",
-                desc: "Sleep hygiene, mandatory outdoor exercise, and weekly emotional resilience briefings with senior mentors.",
+                title: "Avoiding Burnout",
+                desc: "Proper sleep schedules, daily physical exercise, and regular check-ins with your mentor to keep motivation high.",
               },
             ].map((col, idx) => (
               <div key={idx} className="p-6 rounded-xl bg-white border border-[#E8DFD0]/80 shadow-soft-sm space-y-3 hover:shadow-soft-md transition-shadow">
                 <div className="font-label text-xs text-[#8B6914] uppercase tracking-widest font-bold">
-                  Phase {col.num}
+                  Step {col.num}
                 </div>
                 <h4 className="font-heading font-semibold text-lg text-[#2C1F0F]">
                   {col.title}
@@ -185,11 +185,11 @@ export default function ScholarsProgramPage() {
           </div>
 
           <h2 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-[#2C1F0F]">
-            Schedule Your Scholar Baseline Assessment
+            Book a Free 20-Minute Guidance Call
           </h2>
 
           <p className="text-xs sm:text-sm text-[#5A4A35] font-sans max-w-lg mx-auto leading-relaxed">
-            A 20-minute diagnostic session with an Officium Supremum mentor to audit current syllabus completion, time leaks, and exam targets.
+            Speak with an Officium Supremum mentor to review your current syllabus coverage, study schedule, and exam goals.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -197,15 +197,15 @@ export default function ScholarsProgramPage() {
               onClick={() => openOrientation("scholars")}
               className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#2C1F0F] hover:bg-[#3B2F20] text-white font-label font-bold text-xs uppercase tracking-widest shadow-md transition-all active:scale-95"
             >
-              Book Scholar Diagnostic
+              Book a Free 20-Minute Call
             </button>
             <a
-              href="https://wa.me/918969634656?text=I%20am%20interested%20in%20the%20Officium%20Supremum%20Scholars%20Program%20(Class%2011-12)"
+              href="https://wa.me/918969634656?text=Hello%20Officium%20Supremum,%20I%20would%20like%20guidance%20for%20the%20Scholars%20Program"
               target="_blank"
               rel="noreferrer"
               className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white border border-[#D4C4A8]/80 text-[#2C1F0F] font-label text-xs uppercase tracking-widest hover:bg-[#FAF7F2] shadow-soft-sm hover:shadow-soft-md transition-all"
             >
-              Admissions WhatsApp
+              Chat with an Advisor on WhatsApp
             </a>
           </div>
         </div>

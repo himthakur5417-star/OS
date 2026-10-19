@@ -145,29 +145,29 @@ export default function AcademicVaultViewer({
 
 const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: string }> = {
   "syllabus": {
-    eyebrow: "Official Examination Blueprint",
+    eyebrow: "Syllabus & Exam Pattern",
     title: "UPSC NDA & CDS Complete Syllabus",
-    subtitle: "Complete verified syllabus topics, paper-wise distribution, marking schemes, and SSB interview pattern.",
+    subtitle: "Complete verified syllabus topics, paper patterns, marks distribution, and SSB interview structure.",
   },
   "nda-maths": {
-    eyebrow: "Official Curriculum Archive",
-    title: "NDA Mathematics (30 Chapters · 4,330+ Qs)",
-    subtitle: "Theory summaries, graded drill problems, and 15 years of solved UPSC NDA mathematics questions.",
+    eyebrow: "Official Study Material",
+    title: "NDA Mathematics (30 Chapters · 4,000+ Questions)",
+    subtitle: "Short theory notes, practice questions, and solved UPSC NDA mathematics questions.",
   },
   "cds-maths": {
-    eyebrow: "Official Curriculum Archive",
-    title: "CDS Mathematics (22 Chapters · 383 Pages)",
-    subtitle: "Master curriculum covering Arithmetic, Algebra, Geometry, Mensuration, Trigonometry, and Statistics.",
+    eyebrow: "Official Study Material",
+    title: "CDS Mathematics (Complete 22-Chapter Master Volume)",
+    subtitle: "Complete curriculum covering Arithmetic, Algebra, Geometry, Mensuration, Trigonometry, and Statistics.",
   },
   "english": {
-    eyebrow: "Official Curriculum Archive",
-    title: "NDA & CDS English (34 Chapters · 396 Pages)",
-    subtitle: "Grammar rules, sentence structure, idioms, vocabulary roots, cloze test, and reading comprehension.",
+    eyebrow: "Official Study Material",
+    title: "NDA & CDS English (Complete 34-Chapter English Curriculum)",
+    subtitle: "Grammar rules, sentence correction, idioms, vocabulary, cloze tests, and reading comprehension.",
   },
   "pyq": {
-    eyebrow: "Official UPSC Archives",
-    title: "Previous Year Question Papers (2020–2026)",
-    subtitle: "Official question papers with authentic answer keys and solutions arranged chronologically.",
+    eyebrow: "Official UPSC Papers",
+    title: "Previous Year Question Papers (Solved)",
+    subtitle: "Official question papers with authentic answer keys and solutions arranged by year.",
   },
 };
 
@@ -206,11 +206,11 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
             Folder:
           </span>
           {[
-            { id: "syllabus" as VaultTab, label: "📋 Syllabus Blueprint", count: "NDA & CDS" },
+            { id: "syllabus" as VaultTab, label: "📋 Syllabus & Pattern", count: "NDA & CDS" },
             { id: "nda-maths" as VaultTab, label: "📐 NDA Mathematics", count: "30 Ch" },
             { id: "cds-maths" as VaultTab, label: "📊 CDS Mathematics", count: "22 Ch" },
             { id: "english" as VaultTab, label: "📖 NDA & CDS English", count: "34 Ch" },
-            { id: "pyq" as VaultTab, label: "🏛️ UPSC PYQ Archives", count: "2020–2026" },
+            { id: "pyq" as VaultTab, label: "🏛️ Previous Years' Papers", count: "Solved" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -280,13 +280,13 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
           {/* Header Banner */}
           <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 shadow-sm">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C8A84E]/20 text-[#C8A84E] text-xs font-label uppercase tracking-widest font-bold mb-2">
-              UPSC Examination · Paper 1
+              UPSC NDA · Mathematics
             </div>
             <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
-              NDA Mathematics Archive (30 Chapters · 4,330+ Qs)
+              NDA Mathematics (30 Chapters · 4,000+ Questions)
             </h3>
             <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-2xl">
-              Every chapter includes structured theory summaries, graded drill problems, and 15 years of solved UPSC NDA PYQs.
+              Every chapter includes theory summaries, graded practice problems, and solved past questions.
             </p>
           </div>
 
@@ -344,13 +344,13 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
           {/* Master Volume Hero */}
           <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 shadow-sm">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs font-label uppercase tracking-widest font-bold mb-2">
-              Officer Trainee Cadre · IMA, INA &amp; AFA
+              CDS Examination · IMA, INA &amp; AFA
             </div>
             <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
-              CDS Mathematics (22 Chapters · 383 Pages)
+              CDS Mathematics (Complete 22-Chapter Master Volume)
             </h3>
             <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-2xl">
-              Comprehensive 22 chapters covering Arithmetic, Algebra, Geometry, Mensuration, Trigonometry, and Statistics.
+              Complete 22 chapters covering Arithmetic, Algebra, Geometry, Mensuration, Trigonometry, and Statistics.
             </p>
           </div>
 
@@ -410,13 +410,13 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
           {/* Master Volume Hero */}
           <div className="bg-gradient-to-r from-slate-900 to-[#1B2838] text-white rounded-3xl p-6 sm:p-8 shadow-sm">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-label uppercase tracking-widest font-bold mb-2">
-              Curriculum Blueprint · NDA &amp; CDS
+              NDA &amp; CDS English Curriculum
             </div>
             <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
-              NDA &amp; CDS English Master Volume (34 Chapters · 396 Pages)
+              NDA &amp; CDS English (Complete 34-Chapter English Curriculum)
             </h3>
             <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-2xl">
-              Rigorous coverage of grammar core rules, sentence correction, idioms, vocabulary roots, cloze test, and reading comprehension.
+              Clear explanations of core grammar rules, vocabulary, sentence correction, and reading comprehension.
             </p>
           </div>
 
@@ -480,14 +480,14 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                 Official Examination Papers
               </div>
               <h3 className="font-heading text-2xl sm:text-3xl font-semibold">
-                UPSC PYQ Archives (2020–2026 · NDA &amp; CDS)
+                Previous Year Question Papers (NDA &amp; CDS)
               </h3>
               <p className="text-slate-300 text-xs sm:text-sm font-sans mt-1 max-w-xl">
-                Official question papers with authentic answer keys and officer solutions arranged chronologically.
+                Official UPSC question papers with solutions arranged chronologically.
               </p>
             </div>
             <div className="text-xs font-label uppercase tracking-wider text-slate-400">
-              14 Year Sessions Available
+              Recent Solved Papers Available
             </div>
           </div>
 
@@ -625,7 +625,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
             {/* Modal Bottom Bar */}
             <div className="px-6 py-2.5 bg-slate-900 border-t border-slate-800 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-3">
               <span className="font-sans">
-                Official Officium Supremum Cadre Archive • Verified Curriculum Document
+                Officium Supremum Study Library • Verified Study Document
               </span>
               <div className="flex items-center gap-4">
                 <a
@@ -653,3 +653,4 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
     </div>
   );
 }
+
