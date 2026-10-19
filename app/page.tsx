@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useModals } from "@/components/ModalContext";
 import { useAuth } from "@/components/AuthContext";
 import { FloatingSymbols } from "@/components/FloatingSymbols";
@@ -383,6 +384,42 @@ export default function HomePage() {
             </div>
             <div className="pt-2 font-label text-xs uppercase tracking-widest text-[#0B192C]">
               — Mentorship Team, Officium Supremum
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6.5. FOUNDER TEASER                                                       */}
+      {/* ========================================================================= */}
+      <section className="py-16 bg-white border-b border-slate-200/60">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-[#FAF7F2] rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/80 shadow-soft-sm flex flex-col sm:flex-row items-center gap-6 sm:gap-8 lg:gap-10">
+            <div className="relative w-28 h-36 sm:w-36 sm:h-44 flex-shrink-0 rounded-2xl overflow-hidden border border-slate-200/80 shadow-soft-sm bg-slate-100">
+              <Image
+                src="/founder-portrait.jpeg"
+                alt="Himanshu Thakur — Founder of Officium Supremum"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 640px) 112px, 144px"
+              />
+            </div>
+            <div className="space-y-3 text-center sm:text-left flex-1">
+              <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-[#0B192C]">
+                Meet the Founder
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans max-w-xl">
+                I started Officium Supremum to help students build a clear study plan, stay consistent and get steady guidance.
+              </p>
+              <div className="pt-1">
+                <Link
+                  href="/about#founder"
+                  className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#0B192C] hover:text-[#C8A84E] transition-colors group font-sans"
+                >
+                  <span>Read the founder&apos;s story</span>
+                  <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

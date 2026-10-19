@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, Instagram, Linkedin } from "lucide-react";
 import { Logo } from "./Logo";
 
 export function Footer() {
@@ -95,28 +95,62 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Admissions & Contact */}
-          <div className="space-y-3">
-            <h4 className="font-label uppercase tracking-wider text-xs font-semibold text-[#0B192C]">
-              Mentorship Desk
-            </h4>
-            <div className="space-y-2.5 text-xs">
-              <a
-                href="https://wa.me/918969634656"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 text-slate-700 hover:text-emerald-600 transition-colors"
-              >
-                <Phone className="w-3.5 h-3.5 text-[#C8A84E]" />
-                <span>+91 8969634656 (WhatsApp)</span>
-              </a>
-              <a
-                href="mailto:osupremum@gmail.com"
-                className="flex items-center gap-2 text-slate-700 hover:text-[#0B192C] transition-colors"
-              >
-                <Mail className="w-3.5 h-3.5 text-[#C8A84E]" />
-                <span>osupremum@gmail.com</span>
-              </a>
+          {/* Col 4: Admissions, Contact & Follow Us */}
+          <div className="space-y-4">
+            <div className="space-y-3">
+              <h4 className="font-label uppercase tracking-wider text-xs font-semibold text-[#0B192C]">
+                Mentorship Desk
+              </h4>
+              <div className="space-y-2.5 text-xs">
+                <a
+                  href="https://wa.me/918969634656"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-slate-700 hover:text-emerald-600 transition-colors"
+                  aria-label="Contact Officium Supremum on WhatsApp (+91 8969634656)"
+                >
+                  <Phone className="w-3.5 h-3.5 text-[#C8A84E]" />
+                  <span>+91 8969634656 (WhatsApp)</span>
+                </a>
+                <a
+                  href="mailto:osupremum@gmail.com"
+                  className="flex items-center gap-2 text-slate-700 hover:text-[#0B192C] transition-colors"
+                  aria-label="Email Officium Supremum at osupremum@gmail.com"
+                >
+                  <Mail className="w-3.5 h-3.5 text-[#C8A84E]" />
+                  <span>osupremum@gmail.com</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Follow Us */}
+            <div className="space-y-2 pt-2 border-t border-slate-100">
+              <h4 className="font-label uppercase tracking-wider text-xs font-semibold text-[#0B192C]">
+                Follow Us
+              </h4>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://www.instagram.com/officiumsupremum/?hl=en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-pink-600 transition-colors"
+                  aria-label="Officium Supremum on Instagram"
+                >
+                  <Instagram className="w-4 h-4 text-slate-500 hover:text-pink-600 transition-colors" />
+                  <span>Instagram</span>
+                </a>
+                <span className="text-slate-300">•</span>
+                <a
+                  href="https://www.linkedin.com/company/officium-supremum/?viewAsMember=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-blue-700 transition-colors"
+                  aria-label="Officium Supremum on LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4 text-slate-500 hover:text-blue-700 transition-colors" />
+                  <span>LinkedIn</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -130,7 +164,6 @@ export function Footer() {
             <Link href="/about" className="hover:text-slate-900">About Us</Link>
             <Link href="/contact" className="hover:text-slate-900">Contact Us</Link>
             <Link href="/resources" className="hover:text-slate-900">Study Library</Link>
-            <Link href="/admin/login" className="text-slate-400 hover:text-[#C8A84E] transition-colors">Admin</Link>
           </div>
         </div>
       </div>

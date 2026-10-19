@@ -31,17 +31,40 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Officium Supremum — Modern Discipline-First Learning Academy",
+  metadataBase: new URL("https://www.officiumsupremum.in"),
+  title: {
+    default: "Officium Supremum | Discipline-First Mentorship",
+    template: "%s | Officium Supremum",
+  },
   description:
-    "Discipline today. Leadership tomorrow. Structured mentorship for Juniors (Class 7-10), Scholars (Class 11-12), and Defense Aspirants (NDA, CDS, AFCAT).",
-  keywords: [
-    "Officium Supremum",
-    "NDA Mentorship",
-    "CDS Preparation",
-    "Class 7-10 Juniors Program",
-    "Class 11-12 Scholars Program",
-    "Academic Discipline",
-  ],
+    "Discipline today. Leadership tomorrow. Personalized study mentorship for Juniors, Scholars, and Defence aspirants with structured plans and steady guidance.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Officium Supremum | Discipline-First Mentorship",
+    description:
+      "Discipline today. Leadership tomorrow. Personalized study mentorship for Juniors, Scholars, and Defence aspirants with structured plans and steady guidance.",
+    url: "https://www.officiumsupremum.in",
+    siteName: "Officium Supremum",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Officium Supremum — Modern Discipline-First Learning Academy",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Officium Supremum | Discipline-First Mentorship",
+    description:
+      "Discipline today. Leadership tomorrow. Personalized study mentorship for Juniors, Scholars, and Defence aspirants with structured plans and steady guidance.",
+    images: ["/og-image.png"],
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
