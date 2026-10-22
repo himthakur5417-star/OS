@@ -156,9 +156,9 @@ export default function AboutPage() {
                         <div className="mt-4 rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200/80 shadow-soft-sm bg-[#FAF7F2] p-2 max-w-sm sm:max-w-md">
                           <Image
                             src="/journey-each-one-teach-one.jpeg"
-                            alt="NCC cadet helping children with their studies under the Each One Teach One initiative."
-                            width={1204}
-                            height={1600}
+                            alt="NCC cadet Himanshu Thakur teaching children under the Each One Teach One initiative."
+                            width={1280}
+                            height={960}
                             className="w-full h-auto rounded-lg sm:rounded-xl object-contain"
                           />
                         </div>
