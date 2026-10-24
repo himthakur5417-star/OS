@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomeClient from "@/components/HomeClient";
+import { homeFaqs } from "@/lib/faqData";
 
 export const metadata: Metadata = {
   title: "Officium Supremum | Discipline-First Mentorship",
@@ -34,6 +35,44 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Officium Supremum",
+  url: "https://www.officiumsupremum.in",
+  logo: "https://www.officiumsupremum.in/og-image.png",
+  email: "osupremum@gmail.com",
+  sameAs: [
+    "https://www.instagram.com/officiumsupremum/?hl=en",
+    "https://www.linkedin.com/company/officium-supremum/?viewAsMember=true",
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: homeFaqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
+
 export default function HomePage() {
-  return <HomeClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <HomeClient />
+    </>
+  );
 }

@@ -30,10 +30,32 @@ export const metadata: Metadata = {
   },
 };
 
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: "NDA, CDS & AFCAT Online Mentorship",
+  description:
+    "Personal mentorship for NDA, CDS and AFCAT: Maths and English practice, mock tests, SSB prep and a daily fitness routine.",
+  url: "https://www.officiumsupremum.in/programs/defence",
+  provider: {
+    "@type": "Organization",
+    name: "Officium Supremum",
+    url: "https://www.officiumsupremum.in",
+  },
+};
+
 export default function DefenceLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      {children}
+    </>
+  );
 }

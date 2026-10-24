@@ -6,7 +6,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/admin/", "/api/"],
+        disallow: [
+          "/admin",
+          "/admin/",
+          "/dashboard",
+          "/dashboard/",
+          "/api/",
+        ],
       },
     ],
     sitemap: "https://www.officiumsupremum.in/sitemap.xml",

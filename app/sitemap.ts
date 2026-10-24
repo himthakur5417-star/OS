@@ -2,68 +2,51 @@ import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.officiumsupremum.in";
-  const lastModified = new Date("2026-10-19");
 
   return [
     {
       url: `${baseUrl}/`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 1.0,
+      lastModified: new Date("2026-10-24T03:04:40.000Z"),
     },
     {
       url: `${baseUrl}/about`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.7,
+      lastModified: new Date("2026-10-22T14:59:51.000Z"),
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.7,
+      lastModified: new Date("2026-10-24T03:04:40.000Z"),
+    },
+    {
+      url: `${baseUrl}/book-orientation`,
+      lastModified: new Date("2026-10-24T03:04:40.000Z"),
     },
     {
       url: `${baseUrl}/programs/juniors`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.8,
+      lastModified: new Date("2026-10-19T10:24:06.000Z"),
     },
     {
       url: `${baseUrl}/programs/scholars`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.8,
+      lastModified: new Date("2026-10-19T10:24:06.000Z"),
     },
     {
       url: `${baseUrl}/programs/defence`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.9,
+      lastModified: new Date("2026-10-24T03:04:40.000Z"),
     },
     {
       url: `${baseUrl}/resources`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.8,
+      lastModified: new Date("2026-10-19T10:24:06.000Z"),
     },
     {
       url: `${baseUrl}/resources/syllabus`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.8,
+      lastModified: new Date("2026-10-19T10:24:06.000Z"),
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.5,
+      lastModified: new Date("2026-10-24T03:04:40.000Z"),
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.5,
+      lastModified: new Date("2026-10-24T03:04:40.000Z"),
     },
   ];
 }

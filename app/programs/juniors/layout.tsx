@@ -30,10 +30,32 @@ export const metadata: Metadata = {
   },
 };
 
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: "Class 7–10 Study Mentorship",
+  description:
+    "Daily study routine, reading practice and habit tracking for Class 7–10 students, with evening progress checks and parent updates.",
+  url: "https://www.officiumsupremum.in/programs/juniors",
+  provider: {
+    "@type": "Organization",
+    name: "Officium Supremum",
+    url: "https://www.officiumsupremum.in",
+  },
+};
+
 export default function JuniorsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      {children}
+    </>
+  );
 }

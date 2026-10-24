@@ -30,10 +30,32 @@ export const metadata: Metadata = {
   },
 };
 
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: "Class 11–12 Board & Entrance Mentorship",
+  description:
+    "Balance boards with entrance exams through 90-minute focus blocks, active revision and weekly mentor sessions.",
+  url: "https://www.officiumsupremum.in/programs/scholars",
+  provider: {
+    "@type": "Organization",
+    name: "Officium Supremum",
+    url: "https://www.officiumsupremum.in",
+  },
+};
+
 export default function ScholarsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      {children}
+    </>
+  );
 }
