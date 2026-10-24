@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Scholars Mentorship (Class 11–12)",
+  title: "Class 11–12 Board & Entrance Mentorship",
   description:
-    "Prepare for board exams and entrance tests with structured study schedules, revision planning, and individual mentorship for Classes 11 and 12.",
+    "Balance boards with entrance exams through 90-minute focus blocks, active revision and weekly mentor sessions.",
   alternates: {
-    canonical: "/programs/scholars",
+    canonical: "https://www.officiumsupremum.in/programs/scholars",
   },
   openGraph: {
-    title: "Scholars Mentorship (Class 11–12) | Officium Supremum",
+    title: "Class 11–12 Board & Entrance Mentorship | Officium Supremum",
     description:
-      "Prepare for board exams and entrance tests with structured study schedules, revision planning, and individual mentorship for Classes 11 and 12.",
-    url: "/programs/scholars",
+      "Balance boards with entrance exams through 90-minute focus blocks, active revision and weekly mentor sessions.",
+    url: "https://www.officiumsupremum.in/programs/scholars",
     images: [
       {
         url: "/og-image.png",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Scholars Mentorship (Class 11–12) | Officium Supremum",
+    title: "Class 11–12 Board & Entrance Mentorship | Officium Supremum",
     description:
-      "Prepare for board exams and entrance tests with structured study schedules, revision planning, and individual mentorship for Classes 11 and 12.",
+      "Balance boards with entrance exams through 90-minute focus blocks, active revision and weekly mentor sessions.",
     images: ["/og-image.png"],
   },
 };

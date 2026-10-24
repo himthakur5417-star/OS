@@ -18,11 +18,11 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function DefenseProgramPage() {
+export default function DefenceProgramPage() {
   const { openOrientation } = useModals();
 
   return (
-    <div className="defense-camo-bg text-zinc-100 min-h-screen relative overflow-hidden">
+    <div className="defence-camo-bg text-zinc-100 min-h-screen relative overflow-hidden">
       
       {/* Slow-Moving Camouflage Depth Layer */}
       <div className="camo-depth-layer" />
@@ -58,7 +58,7 @@ export default function DefenseProgramPage() {
             {/* CTAs */}
             <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
               <button
-                onClick={() => openOrientation("defense")}
+                onClick={() => openOrientation("defence")}
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C8A84E] hover:bg-[#D4B65B] text-[#0F1115] font-label font-bold text-xs uppercase tracking-widest shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
               >
                 <span>Book a Free Defence Guidance Call</span>
@@ -281,7 +281,7 @@ export default function DefenseProgramPage() {
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
-              onClick={() => openOrientation("defense")}
+              onClick={() => openOrientation("defence")}
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C8A84E] hover:bg-[#D4B65B] text-[#0F1115] font-label font-bold text-xs uppercase tracking-widest shadow-lg"
             >
               Book a Free 20-Minute Call

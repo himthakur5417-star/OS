@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact & Admissions",
+  title: "Contact & Free Call",
   description:
-    "Contact Officium Supremum to ask about student mentorship, admissions, or an orientation call. Find the available contact options.",
+    "Book a free 20-minute counselling call or send an enquiry. Our mentors reply within 6 hours on WhatsApp, phone or email.",
   alternates: {
-    canonical: "/contact",
+    canonical: "https://www.officiumsupremum.in/contact",
   },
   openGraph: {
-    title: "Contact & Admissions | Officium Supremum",
+    title: "Contact & Free Call | Officium Supremum",
     description:
-      "Contact Officium Supremum to ask about student mentorship, admissions, or an orientation call. Find the available contact options.",
-    url: "/contact",
+      "Book a free 20-minute counselling call or send an enquiry. Our mentors reply within 6 hours on WhatsApp, phone or email.",
+    url: "https://www.officiumsupremum.in/contact",
     images: [
       {
         url: "/og-image.png",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact & Admissions | Officium Supremum",
+    title: "Contact & Free Call | Officium Supremum",
     description:
-      "Contact Officium Supremum to ask about student mentorship, admissions, or an orientation call. Find the available contact options.",
+      "Book a free 20-minute counselling call or send an enquiry. Our mentors reply within 6 hours on WhatsApp, phone or email.",
     images: ["/og-image.png"],
   },
 };

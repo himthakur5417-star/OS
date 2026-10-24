@@ -71,7 +71,7 @@ export function Navbar() {
       hoverBg: "hover:bg-amber-50/60",
     },
     {
-      href: "/programs/defense",
+      href: "/programs/defence",
       icon: <Shield className="w-5 h-5" />,
       iconBg: "bg-emerald-100/80 text-emerald-700",
       name: "Defence Leadership",

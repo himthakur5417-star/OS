@@ -5,9 +5,30 @@ import { Shield, BookOpen, AlertTriangle, CheckCircle2, Clock, Mail, MapPin, Fil
 export const metadata: Metadata = {
   title: "Terms & Conditions",
   description:
-    "Terms & Conditions for Officium Supremum. Review guidelines regarding educational mentorship, free orientations, non-affiliation, intellectual property, and acceptable website use.",
+    "Terms & Conditions for Officium Supremum. Review guidelines regarding educational mentorship, free orientations, non-affiliation, IP rights, and website usage.",
   alternates: {
-    canonical: "/terms",
+    canonical: "https://www.officiumsupremum.in/terms",
+  },
+  openGraph: {
+    title: "Terms & Conditions | Officium Supremum",
+    description:
+      "Terms & Conditions for Officium Supremum. Review guidelines regarding educational mentorship, free orientations, non-affiliation, IP rights, and website usage.",
+    url: "https://www.officiumsupremum.in/terms",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Officium Supremum — Modern Discipline-First Learning Academy",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms & Conditions | Officium Supremum",
+    description:
+      "Terms & Conditions for Officium Supremum. Review guidelines regarding educational mentorship, free orientations, non-affiliation, IP rights, and website usage.",
+    images: ["/og-image.png"],
   },
 };
 

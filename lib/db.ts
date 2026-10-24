@@ -6,7 +6,7 @@ export interface Enquiry {
   name: string;
   phone: string;
   email: string;
-  program: "defense" | "scholars" | "juniors" | "general" | "nda" | "cds" | "afcat" | string;
+  program: "defence" | "defense" | "scholars" | "juniors" | "general" | "nda" | "cds" | "afcat" | string;
   source: "contact_page" | "orientation_modal" | "assessment_call" | "manual_entry" | string;
   message: string;
   status: "new" | "contacted" | "in_progress" | "enrolled" | "archived";

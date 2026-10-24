@@ -8,7 +8,7 @@ export default function ContactPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [program, setProgram] = useState("defense");
+  const [program, setProgram] = useState("defence");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
   const [enquiryRef, setEnquiryRef] = useState<string | null>(null);
@@ -202,7 +202,7 @@ export default function ContactPage() {
                             onChange={(e) => setProgram(e.target.value)}
                             className="w-full bg-[#FAFAF9] border border-slate-200 rounded-xl px-4 py-3.5 text-sm text-[#0B192C] outline-none focus:border-[#C8A84E] focus:ring-2 focus:ring-[#C8A84E]/10 transition-all"
                           >
-                            <option value="defense">Defence Leadership (NDA / CDS / AFCAT)</option>
+                            <option value="defence">Defence Leadership (NDA / CDS / AFCAT)</option>
                             <option value="juniors">Juniors Program (Class 7–10)</option>
                             <option value="scholars">Scholars Program (Class 11–12)</option>
                             <option value="materials">Study Materials &amp; Library Access</option>

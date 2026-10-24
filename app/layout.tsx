@@ -38,9 +38,6 @@ export const metadata: Metadata = {
   },
   description:
     "Discipline today. Leadership tomorrow. Personalized study mentorship for Juniors, Scholars, and Defence aspirants with structured plans and steady guidance.",
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     title: "Officium Supremum | Discipline-First Mentorship",
     description:

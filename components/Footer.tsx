@@ -44,12 +44,12 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/programs/defense" className="hover:text-emerald-800 transition-colors">
+                <Link href="/programs/defence" className="hover:text-emerald-800 transition-colors">
                   Defence Leadership (NDA / CDS / AFCAT)
                 </Link>
               </li>
               <li>
-                <Link href="/programs/defense" className="hover:text-emerald-800 transition-colors">
+                <Link href="/programs/defence" className="hover:text-emerald-800 transition-colors">
                   SSB &amp; 15 OLQs Mentorship
                 </Link>
               </li>

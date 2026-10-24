@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "NDA & CDS Syllabus and Exam Pattern",
+  title: "NDA, CDS & SSB Syllabus and Pattern",
   description:
-    "Review NDA and CDS syllabus details, exam structure, marks distribution, and SSB stages covered by the syllabus resource.",
+    "Subject-wise syllabus, marking scheme and SSB 5-day interview pattern for NDA and CDS.",
   alternates: {
-    canonical: "/resources/syllabus",
+    canonical: "https://www.officiumsupremum.in/resources/syllabus",
   },
   openGraph: {
-    title: "NDA & CDS Syllabus and Exam Pattern | Officium Supremum",
+    title: "NDA, CDS & SSB Syllabus and Pattern | Officium Supremum",
     description:
-      "Review NDA and CDS syllabus details, exam structure, marks distribution, and SSB stages covered by the syllabus resource.",
-    url: "/resources/syllabus",
+      "Subject-wise syllabus, marking scheme and SSB 5-day interview pattern for NDA and CDS.",
+    url: "https://www.officiumsupremum.in/resources/syllabus",
     images: [
       {
         url: "/og-image.png",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NDA & CDS Syllabus and Exam Pattern | Officium Supremum",
+    title: "NDA, CDS & SSB Syllabus and Pattern | Officium Supremum",
     description:
-      "Review NDA and CDS syllabus details, exam structure, marks distribution, and SSB stages covered by the syllabus resource.",
+      "Subject-wise syllabus, marking scheme and SSB 5-day interview pattern for NDA and CDS.",
     images: ["/og-image.png"],
   },
 };

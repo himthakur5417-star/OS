@@ -85,7 +85,7 @@ export function LoginModal() {
                 : "text-zinc-400 hover:text-white"
             }`}
           >
-            Defense
+            Defence
           </button>
           <button
             type="button"

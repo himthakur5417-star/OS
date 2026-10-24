@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Juniors Mentorship (Class 7–10)",
+  title: "Class 7–10 Study Mentorship",
   description:
-    "Build consistent study habits and focused routines with personalized academic guidance and accountability for students in Classes 7 to 10.",
+    "Daily study routine, reading practice and habit tracking for Class 7–10 students, with evening progress checks and parent updates.",
   alternates: {
-    canonical: "/programs/juniors",
+    canonical: "https://www.officiumsupremum.in/programs/juniors",
   },
   openGraph: {
-    title: "Juniors Mentorship (Class 7–10) | Officium Supremum",
+    title: "Class 7–10 Study Mentorship | Officium Supremum",
     description:
-      "Build consistent study habits and focused routines with personalized academic guidance and accountability for students in Classes 7 to 10.",
-    url: "/programs/juniors",
+      "Daily study routine, reading practice and habit tracking for Class 7–10 students, with evening progress checks and parent updates.",
+    url: "https://www.officiumsupremum.in/programs/juniors",
     images: [
       {
         url: "/og-image.png",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Juniors Mentorship (Class 7–10) | Officium Supremum",
+    title: "Class 7–10 Study Mentorship | Officium Supremum",
     description:
-      "Build consistent study habits and focused routines with personalized academic guidance and accountability for students in Classes 7 to 10.",
+      "Daily study routine, reading practice and habit tracking for Class 7–10 students, with evening progress checks and parent updates.",
     images: ["/og-image.png"],
   },
 };

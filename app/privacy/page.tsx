@@ -7,7 +7,28 @@ export const metadata: Metadata = {
   description:
     "Privacy Policy for Officium Supremum. Understand how personal information, admissions enquiries, and mentorship communications are collected, used, and protected.",
   alternates: {
-    canonical: "/privacy",
+    canonical: "https://www.officiumsupremum.in/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy | Officium Supremum",
+    description:
+      "Privacy Policy for Officium Supremum. Understand how personal information, admissions enquiries, and mentorship communications are collected, used, and protected.",
+    url: "https://www.officiumsupremum.in/privacy",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Officium Supremum — Modern Discipline-First Learning Academy",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Officium Supremum",
+    description:
+      "Privacy Policy for Officium Supremum. Understand how personal information, admissions enquiries, and mentorship communications are collected, used, and protected.",
+    images: ["/og-image.png"],
   },
 };
 

@@ -447,7 +447,7 @@ export default function SyllabusDossier({ initialTrack = "nda", initialSection =
                       Current Affairs (~10 Qs / ~40 M)
                     </div>
                     <p className="text-xs text-slate-600 font-sans leading-relaxed">
-                      Major national and international events, defense exercises, bilateral treaties, prominent personalities, sports championships, scientific milestones, and cultural awards.
+                      Major national and international events, defence exercises, bilateral treaties, prominent personalities, sports championships, scientific milestones, and cultural awards.
                     </p>
                   </div>
                 </div>

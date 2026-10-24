@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Study Library & Resources",
+    default: "NDA & CDS Study Material",
     template: "%s | Officium Supremum",
   },
   description:
-    "Explore the Officium Supremum study library, including academic materials, exam preparation resources, and available practice content.",
+    "Chapter-wise NDA and CDS Maths, English notes, practice questions and solved papers in one study library.",
   alternates: {
-    canonical: "/resources",
+    canonical: "https://www.officiumsupremum.in/resources",
   },
   openGraph: {
-    title: "Study Library & Resources | Officium Supremum",
+    title: "NDA & CDS Study Material | Officium Supremum",
     description:
-      "Explore the Officium Supremum study library, including academic materials, exam preparation resources, and available practice content.",
-    url: "/resources",
+      "Chapter-wise NDA and CDS Maths, English notes, practice questions and solved papers in one study library.",
+    url: "https://www.officiumsupremum.in/resources",
     images: [
       {
         url: "/og-image.png",
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Study Library & Resources | Officium Supremum",
+    title: "NDA & CDS Study Material | Officium Supremum",
     description:
-      "Explore the Officium Supremum study library, including academic materials, exam preparation resources, and available practice content.",
+      "Chapter-wise NDA and CDS Maths, English notes, practice questions and solved papers in one study library.",
     images: ["/og-image.png"],
   },
 };

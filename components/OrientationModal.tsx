@@ -13,7 +13,7 @@ export function OrientationModal() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [userType, setUserType] = useState<"student" | "parent">("student");
-  const [program, setProgram] = useState("defense");
+  const [program, setProgram] = useState("defence");
   const [submitted, setSubmitted] = useState(false);
   const [enquiryRef, setEnquiryRef] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,7 +21,7 @@ export function OrientationModal() {
 
   useEffect(() => {
     if (orientationDefaultProgram && orientationDefaultProgram !== "general") {
-      setProgram(orientationDefaultProgram);
+      setProgram(orientationDefaultProgram === "defense" ? "defence" : orientationDefaultProgram);
     }
   }, [orientationDefaultProgram]);
 
@@ -232,7 +232,7 @@ export function OrientationModal() {
                     onChange={(e) => setProgram(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   >
-                    <option value="defense">Defence Leadership (NDA / CDS / AFCAT)</option>
+                    <option value="defence">Defence Leadership (NDA / CDS / AFCAT)</option>
                     <option value="nda">NDA (National Defence Academy)</option>
                     <option value="cds">CDS (Combined Defence Services)</option>
                     <option value="afcat">AFCAT (Air Force Common Admission)</option>

@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us & Founder Story",
+  title: "About Us",
   description:
-    "Learn about the founder's journey and the discipline-first mentorship approach behind Officium Supremum.",
+    "Meet the mentors behind Officium Supremum, a discipline-first academy for school students and defence aspirants, built on daily accountability.",
   alternates: {
-    canonical: "/about",
+    canonical: "https://www.officiumsupremum.in/about",
   },
   openGraph: {
-    title: "About Us & Founder Story | Officium Supremum",
+    title: "About Us | Officium Supremum",
     description:
-      "Learn about the founder's journey and the discipline-first mentorship approach behind Officium Supremum.",
-    url: "/about",
+      "Meet the mentors behind Officium Supremum, a discipline-first academy for school students and defence aspirants, built on daily accountability.",
+    url: "https://www.officiumsupremum.in/about",
     images: [
       {
         url: "/og-image.png",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Us & Founder Story | Officium Supremum",
+    title: "About Us | Officium Supremum",
     description:
-      "Learn about the founder's journey and the discipline-first mentorship approach behind Officium Supremum.",
+      "Meet the mentors behind Officium Supremum, a discipline-first academy for school students and defence aspirants, built on daily accountability.",
     images: ["/og-image.png"],
   },
 };

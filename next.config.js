@@ -17,6 +17,15 @@ const nextConfig = {
       ],
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/programs/defense",
+        destination: "/programs/defence",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

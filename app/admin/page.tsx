@@ -142,7 +142,7 @@ export default function AdminDashboardPage() {
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [newEmail, setNewEmail] = useState("");
-  const [newProgram, setNewProgram] = useState("defense");
+  const [newProgram, setNewProgram] = useState("defence");
   const [newMessage, setNewMessage] = useState("");
   const [newStatus, setNewStatus] = useState("new");
   const [leadCreatedSuccess, setLeadCreatedSuccess] = useState(false);
@@ -436,7 +436,10 @@ export default function AdminDashboardPage() {
         enquiryStatusFilter === "all" || (e.status || "new") === enquiryStatusFilter;
       const matchesProgram =
         enquiryProgramFilter === "all" ||
-        (Boolean(e.program) && e.program.toLowerCase() === enquiryProgramFilter.toLowerCase());
+        (Boolean(e.program) &&
+          (enquiryProgramFilter === "defence" || enquiryProgramFilter === "defense"
+            ? (e.program.toLowerCase() === "defence" || e.program.toLowerCase() === "defense")
+            : e.program.toLowerCase() === enquiryProgramFilter.toLowerCase()));
 
       return matchesSearch && matchesStatus && matchesProgram;
     });
@@ -843,7 +846,7 @@ export default function AdminDashboardPage() {
                   className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-label uppercase tracking-wider focus:outline-none focus:border-[#C8A84E]"
                 >
                   <option value="all">All Programs</option>
-                  <option value="defense">Defence</option>
+                  <option value="defence">Defence</option>
                   <option value="nda">NDA</option>
                   <option value="cds">CDS</option>
                   <option value="afcat">AFCAT</option>
@@ -1485,7 +1488,7 @@ export default function AdminDashboardPage() {
                     onChange={(e) => setNewProgram(e.target.value)}
                     className="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
                   >
-                    <option value="defense">Defence Leadership (NDA / CDS / AFCAT)</option>
+                    <option value="defence">Defence Leadership (NDA / CDS / AFCAT)</option>
                     <option value="nda">NDA Mentorship</option>
                     <option value="cds">CDS Mentorship</option>
                     <option value="afcat">AFCAT Mentorship</option>

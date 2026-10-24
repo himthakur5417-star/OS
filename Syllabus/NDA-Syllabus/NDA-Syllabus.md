@@ -168,6 +168,6 @@ Assesses verbal precision, command over English syntax, vocabulary depth, and co
 #### Section 6: Current Affairs (~10–12 Questions | ~40 Marks)
 - Important national and international events of recent 6–12 months.
 - Prominent National & Global Personalities in News.
-- Defense developments, new acquisitions, joint military exercises, defense technology.
+- Defence developments, new acquisitions, joint military exercises, defence technology.
 - Major summits, geopolitical treaties, international organizations.
 - Awards, Honours, Sports championships, cultural festivals.
