@@ -48,5 +48,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/terms`,
       lastModified: new Date("2026-10-24T03:04:40.000Z"),
     },
+    {
+      url: `${baseUrl}/resources/nda-mathematics`,
+      lastModified: new Date("2026-10-24T05:30:00.000Z"),
+    },
+    {
+      url: `${baseUrl}/resources/cds-mathematics`,
+      lastModified: new Date("2026-10-24T05:30:00.000Z"),
+    },
+    {
+      url: `${baseUrl}/resources/nda-cds-english`,
+      lastModified: new Date("2026-10-24T05:30:00.000Z"),
+    },
+    {
+      url: `${baseUrl}/resources/previous-year-papers`,
+      lastModified: new Date("2026-10-24T05:30:00.000Z"),
+    },
   ];
 }

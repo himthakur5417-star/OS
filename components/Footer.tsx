@@ -68,17 +68,17 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/resources" className="hover:text-[#C8A84E] transition-colors">
+                <Link href="/resources/nda-mathematics" className="hover:text-[#C8A84E] transition-colors">
                   NDA Mathematics (30 Chapters)
                 </Link>
               </li>
               <li>
-                <Link href="/resources" className="hover:text-[#C8A84E] transition-colors">
+                <Link href="/resources/cds-mathematics" className="hover:text-[#C8A84E] transition-colors">
                   CDS Mathematics (22 Chapters)
                 </Link>
               </li>
               <li>
-                <Link href="/resources" className="hover:text-[#C8A84E] transition-colors">
+                <Link href="/resources/nda-cds-english" className="hover:text-[#C8A84E] transition-colors">
                   NDA &amp; CDS English (34 Chapters)
                 </Link>
               </li>
@@ -88,7 +88,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/resources" className="hover:text-[#C8A84E] transition-colors">
+                <Link href="/resources/previous-year-papers" className="hover:text-[#C8A84E] transition-colors">
                   Previous Years&apos; Solved Papers
                 </Link>
               </li>

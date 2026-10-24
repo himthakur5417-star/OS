@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/components/AuthContext";
 import GlassFolder, { ArtPreset } from "@/components/GlassFolder";
 import AcademicVaultViewer, { VaultTab } from "@/components/AcademicVaultViewer";
-import { BookOpen, Lock } from "lucide-react";
+import { BookOpen, Lock, ArrowRight } from "lucide-react";
 
 interface BookFolderData {
   id: string;
@@ -15,6 +15,7 @@ interface BookFolderData {
   tone: "light" | "dark";
   art: ArtPreset;
   seed: number;
+  previewHref: string;
   files: {
     name: string;
     meta?: string;
@@ -32,6 +33,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
     tone: "light",
     art: "ember",
     seed: 14,
+    previewHref: "/resources/nda-mathematics",
     files: [
       {
         name: "Ch 01: Logarithms",
@@ -65,6 +67,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
     tone: "light",
     art: "glacier",
     seed: 28,
+    previewHref: "/resources/cds-mathematics",
     files: [
       {
         name: "Ch 01: Ratio & Proportion",
@@ -99,6 +102,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
     tone: "light",
     art: "dusk",
     seed: 42,
+    previewHref: "/resources/nda-cds-english",
     files: [
       {
         name: "Ch 01: Spotting Errors",
@@ -133,6 +137,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
     tone: "light",
     art: "aurora",
     seed: 71,
+    previewHref: "/resources/previous-year-papers",
     files: [
       {
         name: "NDA Previous Years' Papers",
@@ -166,6 +171,7 @@ const AVAILABLE_BOOKS: BookFolderData[] = [
     tone: "light",
     art: "verdant",
     seed: 88,
+    previewHref: "/resources/syllabus",
     files: [
       {
         name: "NDA Syllabus & Pattern",
@@ -298,38 +304,46 @@ export default function ResourcesPage() {
 
           <div className="flex flex-wrap justify-center gap-8 lg:gap-10">
             {AVAILABLE_BOOKS.map((book, idx) => (
-              <GlassFolder
-                key={book.id}
-                label={book.label}
-                meta={book.meta}
-                tone={book.tone}
-                art={book.art}
-                seed={book.seed}
-                files={book.files}
-                action="more"
-                width={280}
-                open={openFolderId === book.id}
-                closeOnClickOutside={false}
-                appearDelay={idx * 100}
-                onOpenChange={(isOpen) => {
-                  if (isOpen) {
-                    handleOpenFolder(book);
-                  } else {
-                    if (openFolderId === book.id) {
-                      handleCloseFolder();
+              <div key={book.id} className="flex flex-col items-center">
+                <GlassFolder
+                  label={book.label}
+                  meta={book.meta}
+                  tone={book.tone}
+                  art={book.art}
+                  seed={book.seed}
+                  files={book.files}
+                  action="more"
+                  width={280}
+                  open={openFolderId === book.id}
+                  closeOnClickOutside={false}
+                  appearDelay={idx * 100}
+                  onOpenChange={(isOpen) => {
+                    if (isOpen) {
+                      handleOpenFolder(book);
+                    } else {
+                      if (openFolderId === book.id) {
+                        handleCloseFolder();
+                      }
                     }
-                  }
-                }}
-                onFileSelect={(file) => {
-                  handleOpenFolder(book, file.pdf, file.name);
-                }}
-                menu={[
-                  {
-                    label: `Open ${book.label}`,
-                    onSelect: () => handleOpenFolder(book),
-                  },
-                ]}
-              />
+                  }}
+                  onFileSelect={(file) => {
+                    handleOpenFolder(book, file.pdf, file.name);
+                  }}
+                  menu={[
+                    {
+                      label: `Open ${book.label}`,
+                      onSelect: () => handleOpenFolder(book),
+                    },
+                  ]}
+                />
+                <Link
+                  href={book.previewHref}
+                  className="mt-3.5 inline-flex items-center gap-1.5 text-xs font-label uppercase tracking-wider text-slate-600 hover:text-[#0B192C] font-semibold transition-colors py-1.5 px-3.5 rounded-xl border border-slate-200/80 bg-white hover:bg-slate-50 shadow-xs"
+                >
+                  <span>Free Preview &amp; Chapters</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#C8A84E]" />
+                </Link>
+              </div>
             ))}
           </div>
         </div>
