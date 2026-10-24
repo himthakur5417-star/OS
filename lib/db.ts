@@ -155,7 +155,22 @@ function fromFirestoreDocument<T>(doc: any): T {
 }
 
 // Cache status of Firestore connectivity
-let firestoreCheckResult: { working: boolean; error?: string } | null = null;
+let firestoreCheckResult: {
+  available: boolean;
+  hasAdminAccess: boolean;
+  error?: string;
+  code?: string;
+  activationUrl: string;
+} | null = null;
+let lastFirestoreCheckTime = 0;
+const FIRESTORE_CHECK_TTL = 120000; // 2-minute memory cache to avoid redundant health check roundtrips
+
+// In-memory traffic count cache
+let cachedTrafficTotal: { count: number; time: number } | null = null;
+
+// In-memory login deduplication cache (email:role:status -> timestamp)
+const recentLoginCache = new Map<string, number>();
+
 let migrationCompleted = false;
 let cachedAccessToken: { token: string; exp: number } | null = null;
 
@@ -193,11 +208,7 @@ async function getFirestoreAuthHeader(userToken?: string): Promise<Record<string
 
 /**
  * Checks whether Cloud Firestore is currently accessible and enabled.
- * Accurately distinguishes between:
- * - API disabled in Google Cloud (reason: SERVICE_DISABLED)
- * - Database not created in project (status: 404 does not exist)
- * - Active database enforcing security rules (status: 403 PERMISSION_DENIED)
- * - Full admin access (status: 200 OK)
+ * Uses in-memory TTL caching to avoid repeating roundtrips on every database query.
  */
 export async function checkFirestoreStatus(): Promise<{
   available: boolean;
@@ -207,6 +218,10 @@ export async function checkFirestoreStatus(): Promise<{
   activationUrl: string;
 }> {
   const activationUrl = `https://console.firebase.google.com/project/${FIREBASE_PROJECT_ID}/firestore`;
+  if (firestoreCheckResult && Date.now() - lastFirestoreCheckTime < FIRESTORE_CHECK_TTL) {
+    return firestoreCheckResult;
+  }
+
   try {
     const authHeaders = await getFirestoreAuthHeader();
     const res = await fetch(`${FIRESTORE_BASE_URL}/enquiries?pageSize=1&key=${FIREBASE_API_KEY}`, {
@@ -214,9 +229,11 @@ export async function checkFirestoreStatus(): Promise<{
       headers: { "Content-Type": "application/json", ...authHeaders },
     });
 
+    lastFirestoreCheckTime = Date.now();
+
     if (res.ok) {
-      firestoreCheckResult = { working: true };
-      return { available: true, hasAdminAccess: true, activationUrl };
+      firestoreCheckResult = { available: true, hasAdminAccess: true, activationUrl };
+      return firestoreCheckResult;
     }
 
     const body = await res.json().catch(() => ({}));
@@ -226,82 +243,166 @@ export async function checkFirestoreStatus(): Promise<{
 
     // 1. Is API disabled in Google Cloud?
     if (reason === "SERVICE_DISABLED" || message.includes("disabled") || message.includes("has not been used")) {
-      firestoreCheckResult = { working: false, error: message };
-      return {
+      firestoreCheckResult = {
         available: false,
         hasAdminAccess: false,
         code: "FIRESTORE_DISABLED",
         error: `Cloud Firestore API is not enabled for project ${FIREBASE_PROJECT_ID}. Enable it at ${activationUrl}`,
         activationUrl,
       };
+      return firestoreCheckResult;
     }
 
     // 2. Does database not exist?
     if (res.status === 404 && message.includes("does not exist")) {
-      firestoreCheckResult = { working: false, error: message };
-      return {
+      firestoreCheckResult = {
         available: false,
         hasAdminAccess: false,
         code: "DATABASE_NOT_CREATED",
         error: `Cloud Firestore database '${FIREBASE_DATABASE_ID}' has not yet been created for project ${FIREBASE_PROJECT_ID}.`,
         activationUrl,
       };
+      return firestoreCheckResult;
     }
 
     // 3. Is Firestore active and enforcing rules, but unauthenticated read is rejected?
     if (res.status === 403 && (statusText === "PERMISSION_DENIED" || message.includes("Missing or insufficient permissions"))) {
-      // The database exists, API is enabled, and security rules are actively enforced!
-      firestoreCheckResult = { working: true };
-      return {
+      firestoreCheckResult = {
         available: true,
         hasAdminAccess: false,
         code: "PERMISSION_DENIED",
         error: "Cloud Firestore is active and enforcing security rules.",
         activationUrl,
       };
+      return firestoreCheckResult;
     }
 
-    firestoreCheckResult = { working: false, error: message };
-    return {
+    firestoreCheckResult = {
       available: false,
       hasAdminAccess: false,
       code: "FIRESTORE_ERROR",
       error: `Cloud Firestore: ${message}`,
       activationUrl,
     };
+    return firestoreCheckResult;
   } catch (err: any) {
-    firestoreCheckResult = { working: false, error: err.message };
-    return {
+    lastFirestoreCheckTime = Date.now();
+    firestoreCheckResult = {
       available: false,
       hasAdminAccess: false,
       code: "NETWORK_ERROR",
       error: err.message,
       activationUrl,
     };
+    return firestoreCheckResult;
   }
 }
 
-// --- Firestore Direct Document Access ---
+// --- Firestore Direct Document & Query Access ---
 
-async function getFirestoreDocuments<T>(collection: string, pageSize = 300, userToken?: string): Promise<T[]> {
+/**
+ * Runs a structured query against Cloud Firestore REST API (:runQuery).
+ * Allows ordering (e.g. timestamp DESC), field filters, and bounds without client-side array sorting.
+ */
+export async function runFirestoreQuery<T>(structuredQuery: any, userToken?: string): Promise<T[]> {
   const authHeaders = await getFirestoreAuthHeader(userToken);
-  const url = `${FIRESTORE_BASE_URL}/${collection}?pageSize=${pageSize}&key=${FIREBASE_API_KEY}`;
+  const url = `${FIRESTORE_BASE_URL}:runQuery?key=${FIREBASE_API_KEY}`;
   const res = await fetch(url, {
-    method: "GET",
+    method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders },
+    body: JSON.stringify({ structuredQuery }),
     cache: "no-store",
   });
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     const message = body?.error?.message || `HTTP ${res.status}`;
-    const reason = body?.error?.details?.[0]?.reason || "DATABASE_READ_FAILED";
-    throw new DatabasePersistenceError(`Firestore read failed (${collection}): ${message}`, reason);
+    throw new DatabasePersistenceError(`Firestore query failed: ${message}`);
   }
 
   const data = await res.json();
-  const docs = data?.documents || [];
-  return docs.map((d: any) => fromFirestoreDocument<T>(d));
+  if (!Array.isArray(data)) return [];
+  return data
+    .filter((d: any) => d.document)
+    .map((d: any) => fromFirestoreDocument<T>(d.document));
+}
+
+/**
+ * Counts documents in a collection via Firestore server-side aggregation (:runAggregationQuery).
+ * Returns exact count without downloading document bodies into memory.
+ */
+export async function getFirestoreCollectionCount(
+  collection: string,
+  userToken?: string,
+  whereFilter?: any
+): Promise<number> {
+  const authHeaders = await getFirestoreAuthHeader(userToken);
+  const url = `${FIRESTORE_BASE_URL}:runAggregationQuery?key=${FIREBASE_API_KEY}`;
+  const structuredQuery: any = {
+    from: [{ collectionId: collection }],
+  };
+  if (whereFilter) {
+    structuredQuery.where = whereFilter;
+  }
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders },
+    body: JSON.stringify({
+      structuredAggregationQuery: {
+        structuredQuery,
+        aggregations: [{ alias: "totalCount", count: {} }],
+      },
+    }),
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error(`Aggregation query failed: HTTP ${res.status}`);
+  }
+
+  const data = await res.json();
+  const raw = data?.[0]?.result?.aggregateFields?.totalCount?.integerValue;
+  if (raw !== undefined) {
+    return parseInt(raw, 10);
+  }
+  return 0;
+}
+
+/**
+ * Fetches documents from a Firestore collection with pagination support.
+ * Automatically handles nextPageToken when maxResults > 300 to avoid single-page cap.
+ */
+async function getFirestoreDocuments<T>(collection: string, maxResults = 300, userToken?: string): Promise<T[]> {
+  const authHeaders = await getFirestoreAuthHeader(userToken);
+  let allDocs: T[] = [];
+  let pageToken = "";
+  const pageSize = Math.min(maxResults, 300);
+
+  do {
+    const pageTokenParam = pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : "";
+    const url = `${FIRESTORE_BASE_URL}/${collection}?pageSize=${pageSize}&key=${FIREBASE_API_KEY}${pageTokenParam}`;
+    const res = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", ...authHeaders },
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      const message = body?.error?.message || `HTTP ${res.status}`;
+      const reason = body?.error?.details?.[0]?.reason || "DATABASE_READ_FAILED";
+      throw new DatabasePersistenceError(`Firestore read failed (${collection}): ${message}`, reason);
+    }
+
+    const data = await res.json();
+    const docs = (data?.documents || []).map((d: any) => fromFirestoreDocument<T>(d));
+    allDocs = allDocs.concat(docs);
+
+    pageToken = data?.nextPageToken || "";
+  } while (pageToken && allDocs.length < maxResults);
+
+  return allDocs.slice(0, maxResults);
 }
 
 export async function getFirestoreDocument<T>(collection: string, docId: string, userToken?: string): Promise<T | null> {
@@ -561,8 +662,7 @@ export async function updateEnquiryStatus(
 ): Promise<Enquiry | null> {
   if (await useFirestore()) {
     try {
-      const enquiries = await getFirestoreDocuments<Enquiry>("enquiries");
-      const target = enquiries.find((e) => e.id === id);
+      const target = await getFirestoreDocument<Enquiry>("enquiries", id);
       if (!target) return null;
 
       const updated: Enquiry = {
@@ -646,20 +746,54 @@ export async function getUserById(uid: string, userToken?: string): Promise<User
   return (local.users || []).find((u) => u.uid === uid) || null;
 }
 
+/**
+ * Looks up a user account by email address using structured query or local cache.
+ * Avoids downloading the entire user collection.
+ */
+export async function getUserByEmail(email: string, userToken?: string): Promise<UserAccount | null> {
+  const normalized = String(email || "").trim().toLowerCase();
+  if (!normalized) return null;
+
+  if (await useFirestore()) {
+    try {
+      const results = await runFirestoreQuery<UserAccount>({
+        from: [{ collectionId: "users" }],
+        where: {
+          fieldFilter: {
+            field: { fieldPath: "email" },
+            op: "EQUAL",
+            value: { stringValue: normalized },
+          },
+        },
+        limit: 1,
+      }, userToken);
+
+      if (results.length > 0) return results[0];
+    } catch (e: any) {
+      console.warn(`Could not fetch user by email ${normalized} from Firestore:`, e.message);
+    }
+  }
+
+  const local = readLocalDb();
+  return (local.users || []).find((u) => (u.email || "").trim().toLowerCase() === normalized) || null;
+}
+
 export async function recordUser(user: {
   uid: string;
   email: string;
   displayName: string;
   role?: string;
-  rollNumber: string;
+  rollNumber?: string;
   authProvider?: "google.com" | "password" | string;
   phone?: string;
   targetExam?: string;
 }, userToken?: string): Promise<UserAccount> {
-  const normalizedEmail = user.email.toLowerCase();
+  const normalizedEmail = String(user.email || "").trim().toLowerCase();
   const normalizedRole: "admin" | "user" = user.role === "admin" ? "admin" : "user";
 
-  const existing = user.uid ? await getUserById(user.uid, userToken) : null;
+  // Check existing user by UID first, then by normalized email to prevent duplicate accounts
+  const existing = (user.uid ? await getUserById(user.uid, userToken) : null) ||
+                   (await getUserByEmail(normalizedEmail, userToken));
 
   const updatedAccount: UserAccount = {
     uid: user.uid || existing?.uid || `usr-${Date.now().toString(36)}`,
@@ -682,7 +816,8 @@ export async function recordUser(user: {
     }
   } else {
     const local = readLocalDb();
-    const idx = local.users.findIndex((u) => u.email.toLowerCase() === normalizedEmail || u.uid === updatedAccount.uid);
+    if (!local.users) local.users = [];
+    const idx = local.users.findIndex((u) => (u.email || "").trim().toLowerCase() === normalizedEmail || u.uid === updatedAccount.uid);
     if (idx >= 0) {
       local.users[idx] = updatedAccount;
     } else {
@@ -701,11 +836,20 @@ export async function getLoginLogs(limit = 100): Promise<LoginLog[]> {
 
   if (await useFirestore()) {
     try {
-      logs = await getFirestoreDocuments<LoginLog>("login_logs", limit);
+      // Query recent logs ordered by timestamp DESC directly from Firestore
+      logs = await runFirestoreQuery<LoginLog>({
+        from: [{ collectionId: "login_logs" }],
+        orderBy: [{ field: { fieldPath: "timestamp" }, direction: "DESCENDING" }],
+        limit: Math.min(limit, 200),
+      });
     } catch (e: any) {
-      console.warn("Could not read login logs from Firestore (permission or rules):", e.message);
-      const local = readLocalDb();
-      logs = local.login_logs || [];
+      try {
+        logs = await getFirestoreDocuments<LoginLog>("login_logs", limit);
+      } catch (err: any) {
+        console.warn("Could not read login logs from Firestore:", err.message);
+        const local = readLocalDb();
+        logs = local.login_logs || [];
+      }
     }
   } else {
     const local = readLocalDb();
@@ -742,10 +886,37 @@ export async function logLoginActivity(entry: {
   userAgent?: string;
   ip?: string;
 }): Promise<LoginLog> {
+  const normalizedEmail = String(entry.email || "").trim().toLowerCase();
+  const normalizedRole = entry.role === "admin" ? "admin" : "user";
+
+  // Server-side deduplication safeguard:
+  // If the same email, role, and status was logged within the last 15 seconds, return recent log to avoid duplicate entries
+  const dedupKey = `${normalizedEmail}:${normalizedRole}:${entry.status}`;
+  const now = Date.now();
+  const lastLoggedAt = recentLoginCache.get(dedupKey) || 0;
+  if (now - lastLoggedAt < 15000) {
+    return {
+      id: `dedup-${now}`,
+      email: normalizedEmail,
+      role: normalizedRole,
+      status: entry.status,
+      authProvider: entry.authProvider || "password",
+      userAgent: entry.userAgent,
+      ip: entry.ip,
+      timestamp: new Date(lastLoggedAt).toISOString(),
+    };
+  }
+  recentLoginCache.set(dedupKey, now);
+  if (recentLoginCache.size > 200) {
+    recentLoginCache.forEach((v, k) => {
+      if (now - v > 60000) recentLoginCache.delete(k);
+    });
+  }
+
   const newLog: LoginLog = {
     id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-    email: entry.email.toLowerCase(),
-    role: entry.role === "admin" ? "admin" : "user",
+    email: normalizedEmail,
+    role: normalizedRole,
     status: entry.status,
     authProvider: entry.authProvider || "password",
     userAgent: entry.userAgent,
@@ -781,11 +952,18 @@ export async function logTraffic(entry: {
   userEmail?: string;
   role?: string;
 }): Promise<TrafficLog> {
+  const normalizedEmail = entry.userEmail ? String(entry.userEmail).trim().toLowerCase() : undefined;
   const newLog: TrafficLog = {
     id: `trf-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
     ...entry,
+    userEmail: normalizedEmail,
     timestamp: new Date().toISOString(),
   };
+
+  // Increment in-memory lifetime count cache immediately (without extending TTL)
+  if (cachedTrafficTotal) {
+    cachedTrafficTotal.count++;
+  }
 
   try {
     if (await useFirestore()) {
@@ -794,7 +972,7 @@ export async function logTraffic(entry: {
       const local = readLocalDb();
       if (!local.traffic_logs) local.traffic_logs = [];
       local.traffic_logs.unshift(newLog);
-      if (local.traffic_logs.length > 1000) local.traffic_logs = local.traffic_logs.slice(0, 1000);
+      if (local.traffic_logs.length > 2000) local.traffic_logs = local.traffic_logs.slice(0, 2000);
       writeLocalDb(local);
     }
   } catch (e) {
@@ -804,16 +982,94 @@ export async function logTraffic(entry: {
   return newLog;
 }
 
+/**
+ * Returns total lifetime page views efficiently.
+ * Uses native Firestore server-side aggregation (:runAggregationQuery) as authoritative source.
+ * A short 15-second cache prevents spamming Firestore on rapid dashboard reloads, while
+ * ensuring all serverless instances stay synchronized with the persistent database.
+ */
+export async function getTrafficCount(): Promise<number> {
+  if (cachedTrafficTotal && Date.now() - cachedTrafficTotal.time < 15000) {
+    return cachedTrafficTotal.count;
+  }
+
+  if (await useFirestore()) {
+    try {
+      const count = await getFirestoreCollectionCount("traffic_logs");
+      if (count >= 0) {
+        cachedTrafficTotal = { count, time: Date.now() };
+        return count;
+      }
+    } catch (e) {
+      console.warn("Could not get traffic aggregation count from Firestore:", e);
+    }
+  }
+
+  const local = readLocalDb();
+  const count = (local.traffic_logs || []).length;
+  cachedTrafficTotal = { count, time: Date.now() };
+  return count;
+}
+
+/**
+ * Returns page views in the past 24 hours.
+ * Uses a bounded recent query or filtered aggregation, never downloading the full history.
+ */
+export async function getRecentTrafficCount(): Promise<number> {
+  const sinceTime = Date.now() - 24 * 3600 * 1000;
+  const iso24h = new Date(sinceTime).toISOString();
+
+  if (await useFirestore()) {
+    try {
+      const count = await getFirestoreCollectionCount("traffic_logs", undefined, {
+        fieldFilter: {
+          field: { fieldPath: "timestamp" },
+          op: "GREATER_THAN_OR_EQUAL",
+          value: { stringValue: iso24h },
+        },
+      });
+      if (count >= 0) return count;
+    } catch (e) {
+      // Fall through to bounded query
+    }
+
+    try {
+      const recent = await getTrafficLogs(150);
+      return recent.filter((t) => {
+        const time = t.timestamp ? new Date(t.timestamp).getTime() : 0;
+        return time >= sinceTime;
+      }).length;
+    } catch (e) {
+      // Fall through to local
+    }
+  }
+
+  const local = readLocalDb();
+  return (local.traffic_logs || []).filter((t) => {
+    const time = t.timestamp ? new Date(t.timestamp).getTime() : 0;
+    return time >= sinceTime;
+  }).length;
+}
+
 export async function getTrafficLogs(limit = 100): Promise<TrafficLog[]> {
   let traffic: TrafficLog[] = [];
 
   if (await useFirestore()) {
     try {
-      traffic = await getFirestoreDocuments<TrafficLog>("traffic_logs", limit);
+      // Query recent visitor stream ordered by timestamp DESCENDING
+      traffic = await runFirestoreQuery<TrafficLog>({
+        from: [{ collectionId: "traffic_logs" }],
+        orderBy: [{ field: { fieldPath: "timestamp" }, direction: "DESCENDING" }],
+        limit: Math.min(limit, 200),
+      });
     } catch (e: any) {
-      console.warn("Could not read traffic logs from Firestore (permission or rules):", e.message);
-      const local = readLocalDb();
-      traffic = local.traffic_logs || [];
+      try {
+        traffic = await getFirestoreDocuments<TrafficLog>("traffic_logs", limit);
+      } catch (err: any) {
+        console.warn("Could not read traffic logs from Firestore:", err.message);
+        const local = readLocalDb();
+        traffic = local.traffic_logs || [];
+      }
     }
   } else {
     const local = readLocalDb();
@@ -845,10 +1101,14 @@ export async function clearTrafficLogs(): Promise<void> {
 // --- Dashboard KPI Stats ---
 
 export async function getAcademyStats() {
-  const enquiries = await getAllEnquiries();
-  const users = await getAllUsers();
-  const logs = await getLoginLogs(500);
-  const traffic = await getTrafficLogs(1000);
+  // Execute independent metric requests concurrently via Promise.all
+  const [enquiries, users, logs, totalPageViews, recentPageViews] = await Promise.all([
+    getAllEnquiries(),
+    getAllUsers(),
+    getLoginLogs(100),
+    getTrafficCount(),
+    getRecentTrafficCount(),
+  ]);
 
   const newEnquiries = enquiries.filter((e) => (e.status || "new") === "new").length;
   const contactedEnquiries = enquiries.filter((e) => e.status === "contacted" || e.status === "in_progress").length;
@@ -869,11 +1129,6 @@ export async function getAcademyStats() {
 
   const recentLoginsCount = logs.filter(
     (l) => l.timestamp && !isNaN(new Date(l.timestamp).getTime()) && new Date(l.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
-  ).length;
-
-  const totalPageViews = traffic.length;
-  const recentPageViews = traffic.filter(
-    (t) => t.timestamp && !isNaN(new Date(t.timestamp).getTime()) && new Date(t.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
   ).length;
 
   return {

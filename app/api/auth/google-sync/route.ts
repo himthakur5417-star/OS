@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { logLoginActivity, recordUser, getUserById } from "@/lib/db";
+import { logLoginActivity, recordUser, getUserById, getUserByEmail } from "@/lib/db";
 import { 
   SESSION_COOKIE_NAME, 
   isAdminEmail,
@@ -10,7 +10,7 @@ import {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { displayName, idToken } = body;
+    const { displayName, idToken, isSessionRestore } = body;
 
     // 1. A valid Firebase ID token is MANDATORY for all users. Never trust client-supplied email or UID.
     if (!idToken || typeof idToken !== "string") {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Cryptographically verified identity from token ONLY
-    const verifiedEmail = fbUser.email.toLowerCase();
+    const verifiedEmail = String(fbUser.email || "").trim().toLowerCase();
     const verifiedUid = fbUser.uid;
     const authProvider = fbUser.provider || "google.com";
 
@@ -48,24 +48,29 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      await logLoginActivity({
-        email: verifiedEmail,
-        role: "admin",
-        status: "success",
-        authProvider: "google.com",
-        ip,
-        userAgent,
-      });
+      // Only record login audit log on explicit user login actions, not background session restorations
+      if (!isSessionRestore) {
+        await logLoginActivity({
+          email: verifiedEmail,
+          role: "admin",
+          status: "success",
+          authProvider: "google.com",
+          ip,
+          userAgent,
+        });
+      }
 
-      const effectiveUid = verifiedUid || "admin-" + Buffer.from(verifiedEmail).toString("hex").slice(0, 8);
-      const effectiveDisplayName = displayName || verifiedEmail.split("@")[0].toUpperCase();
+      const existingAdmin = (await getUserByEmail(verifiedEmail, idToken)) || 
+                            (verifiedUid ? await getUserById(verifiedUid, idToken) : null);
+      const effectiveUid = verifiedUid || existingAdmin?.uid || "admin-" + Buffer.from(verifiedEmail).toString("hex").slice(0, 8);
+      const effectiveDisplayName = displayName || existingAdmin?.displayName || verifiedEmail.split("@")[0].toUpperCase();
 
       await recordUser({
         uid: effectiveUid,
         email: verifiedEmail,
         displayName: effectiveDisplayName,
         role: "admin",
-        rollNumber: "OS-ADMIN",
+        rollNumber: existingAdmin?.rollNumber || "OS-ADMIN",
         authProvider: "google.com",
       }, idToken);
 
@@ -87,7 +92,7 @@ export async function POST(req: NextRequest) {
           email: verifiedEmail,
           displayName: effectiveDisplayName,
           role: "admin",
-          rollNumber: "OS-ADMIN",
+          rollNumber: existingAdmin?.rollNumber || "OS-ADMIN",
         },
       });
 
@@ -109,17 +114,21 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. Standard user sign-in via Google (non-admin)
-    const existingUser = verifiedUid ? await getUserById(verifiedUid, idToken) : null;
+    const existingUser = (await getUserByEmail(verifiedEmail, idToken)) || 
+                         (verifiedUid ? await getUserById(verifiedUid, idToken) : null);
     const effectiveDisplayName = displayName || existingUser?.displayName || verifiedEmail.split("@")[0];
 
-    await logLoginActivity({
-      email: verifiedEmail,
-      role: "user",
-      status: "success",
-      authProvider: "google.com",
-      ip,
-      userAgent,
-    });
+    // Only record login audit log on explicit user login actions, not background session restorations
+    if (!isSessionRestore) {
+      await logLoginActivity({
+        email: verifiedEmail,
+        role: "user",
+        status: "success",
+        authProvider: "google.com",
+        ip,
+        userAgent,
+      });
+    }
 
     const recordedUser = await recordUser({
       uid: verifiedUid || existingUser?.uid || "usr-" + Date.now().toString(36),

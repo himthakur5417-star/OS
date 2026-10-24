@@ -56,6 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Action blocked behind login (e.g. open a resource folder / orientation form)
   const pendingActionRef = useRef<(() => void) | null>(null);
   const isGoogleSigningInRef = useRef(false);
+  const syncInProgressRef = useRef<string | null>(null);
 
   // Helper to detect mobile browsers
   const isMobileDevice = useCallback(() => {
@@ -89,7 +90,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Synchronize authenticated Firebase user profile with backend
   const syncFirebaseUser = useCallback(
-    async (firebaseUser: FirebaseUser, provider = "google.com") => {
+    async (firebaseUser: FirebaseUser, provider = "google.com", isSessionRestore = false) => {
+      // Prevent concurrent duplicate sync calls for same user
+      if (syncInProgressRef.current === firebaseUser.uid) {
+        return;
+      }
+      syncInProgressRef.current = firebaseUser.uid;
+
       try {
         const idToken = await firebaseUser.getIdToken();
         const res = await fetch("/api/auth/google-sync", {
@@ -101,6 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             email: firebaseUser.email,
             displayName: firebaseUser.displayName || (firebaseUser.email ? firebaseUser.email.split("@")[0] : "Cadet"),
             provider,
+            isSessionRestore,
           }),
         });
 
@@ -117,16 +125,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("os_active_user", JSON.stringify(data.user));
         setIsAuthModalOpen(false);
 
-        if (data.role === "admin") {
-          pendingActionRef.current = null;
-          router.push("/admin");
-        } else {
-          checkRedirect(data.redirectTo || "/");
+        if (!isSessionRestore) {
+          if (data.role === "admin") {
+            pendingActionRef.current = null;
+            router.push("/admin");
+          } else {
+            checkRedirect(data.redirectTo || "/");
+          }
         }
         return data;
       } catch (err: any) {
         console.error("Profile sync error:", err);
         throw err;
+      } finally {
+        syncInProgressRef.current = null;
       }
     },
     [router]
@@ -169,7 +181,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                   const redirectPath = sessionStorage.getItem("os_auth_redirect_target");
                   sessionStorage.removeItem("os_auth_redirect_target");
                   if (redirectPath) setAuthRedirectPath(redirectPath);
-                  await syncFirebaseUser(result.user, "google.com");
+                  await syncFirebaseUser(result.user, "google.com", false);
                 } else if (wasPending) {
                   sessionStorage.removeItem("os_auth_pending_redirect");
                 }
@@ -183,11 +195,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
           if (!isMounted) return;
+          // If explicit Google sign-in is currently processing via popup, let it handle the sync
+          if (isGoogleSigningInRef.current) return;
+
           if (firebaseUser) {
             const stored = localStorage.getItem("os_active_user");
             if (!stored) {
               try {
-                await syncFirebaseUser(firebaseUser, "google.com");
+                await syncFirebaseUser(firebaseUser, "google.com", true);
               } catch (e) {
                 const userObj: CustomUser = {
                   uid: firebaseUser.uid,

@@ -170,7 +170,7 @@ export async function verifyFirebaseIdToken(idToken: string): Promise<{ email: s
       if (decoded && decoded.email) {
         const provider = decoded.firebase?.sign_in_provider || "google.com";
         return {
-          email: decoded.email.toLowerCase(),
+          email: decoded.email.trim().toLowerCase(),
           uid: decoded.uid,
           provider,
         };
@@ -201,7 +201,7 @@ export async function verifyFirebaseIdToken(idToken: string): Promise<{ email: s
 
     const provider = user.providerUserInfo?.[0]?.providerId || "password";
     return {
-      email: user.email.toLowerCase(),
+      email: user.email.trim().toLowerCase(),
       uid: user.localId,
       provider,
     };

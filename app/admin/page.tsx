@@ -109,6 +109,13 @@ export default function AdminDashboardPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [tabLoading, setTabLoading] = useState(false);
+  const [loadedTabs, setLoadedTabs] = useState<Record<string, boolean>>({
+    enquiries: false,
+    logins: false,
+    users: false,
+    traffic: false,
+  });
   const [activeAdminEmail, setActiveAdminEmail] = useState<string>("admin@officium.academy");
 
   // Data states
@@ -159,7 +166,7 @@ export default function AdminDashboardPage() {
 
   const loadDashboardData = async () => {
     try {
-      // 1. Verify session
+      // 1. Verify session immediately
       const authRes = await fetch("/api/admin/auth", {
         headers: getAdminHeaders(),
       });
@@ -172,54 +179,73 @@ export default function AdminDashboardPage() {
         setActiveAdminEmail(authData.admin.email);
       }
 
-      // 2. Fetch Stats
-      const statsRes = await fetch("/api/admin/stats", {
-        headers: getAdminHeaders(),
-      });
+      // Session verified: Reveal admin shell immediately for progressive UX
+      setLoading(false);
+
+      // 2. Concurrently fetch high-level stats and default active tab (enquiries)
+      const [statsRes, enqRes] = await Promise.all([
+        fetch("/api/admin/stats", { headers: getAdminHeaders() }),
+        fetch("/api/admin/enquiries", { headers: getAdminHeaders() }),
+      ]);
+
       if (statsRes.ok) {
         const statsData = await statsRes.json();
         setStats(statsData.stats);
       }
 
-      // 3. Fetch Enquiries
-      const enqRes = await fetch("/api/admin/enquiries", {
-        headers: getAdminHeaders(),
-      });
       if (enqRes.ok) {
         const enqData = await enqRes.json();
         setEnquiries(enqData.enquiries || []);
+        setLoadedTabs((prev) => ({ ...prev, enquiries: true }));
       }
-
-      // 4. Fetch Users
-      const usersRes = await fetch("/api/admin/users", {
-        headers: getAdminHeaders(),
-      });
-      if (usersRes.ok) {
-        const usersData = await usersRes.json();
-        setUsers(usersData.users || []);
-      }
-
-      // 5. Fetch Login Logs
-      const logsRes = await fetch("/api/admin/logs?limit=200", {
-        headers: getAdminHeaders(),
-      });
-      if (logsRes.ok) {
-        const logsData = await logsRes.json();
-        setLogs(logsData.logs || []);
-      }
-
-      // 6. Fetch Traffic Logs
-      const trfRes = await fetch("/api/admin/traffic?limit=200", {
-        headers: getAdminHeaders(),
-      });
-      if (trfRes.ok) {
-        const trfData = await trfRes.json();
-        setTrafficLogs(trfData.traffic || []);
-      }
-
-      setLoading(false);
     } catch (e) {
       router.push("/admin/login");
+    }
+  };
+
+  const loadTabData = async (tab: string) => {
+    if (tab === "logins" && !loadedTabs.logins) {
+      setTabLoading(true);
+      try {
+        const logsRes = await fetch("/api/admin/logs?limit=100", { headers: getAdminHeaders() });
+        if (logsRes.ok) {
+          const logsData = await logsRes.json();
+          setLogs(logsData.logs || []);
+          setLoadedTabs((prev) => ({ ...prev, logins: true }));
+        }
+      } catch (e) {
+        console.error("Failed to load logins tab:", e);
+      } finally {
+        setTabLoading(false);
+      }
+    } else if (tab === "users" && !loadedTabs.users) {
+      setTabLoading(true);
+      try {
+        const usersRes = await fetch("/api/admin/users", { headers: getAdminHeaders() });
+        if (usersRes.ok) {
+          const usersData = await usersRes.json();
+          setUsers(usersData.users || []);
+          setLoadedTabs((prev) => ({ ...prev, users: true }));
+        }
+      } catch (e) {
+        console.error("Failed to load users tab:", e);
+      } finally {
+        setTabLoading(false);
+      }
+    } else if (tab === "traffic" && !loadedTabs.traffic) {
+      setTabLoading(true);
+      try {
+        const trfRes = await fetch("/api/admin/traffic?limit=100", { headers: getAdminHeaders() });
+        if (trfRes.ok) {
+          const trfData = await trfRes.json();
+          setTrafficLogs(trfData.traffic || []);
+          setLoadedTabs((prev) => ({ ...prev, traffic: true }));
+        }
+      } catch (e) {
+        console.error("Failed to load traffic tab:", e);
+      } finally {
+        setTabLoading(false);
+      }
     }
   };
 
@@ -227,10 +253,51 @@ export default function AdminDashboardPage() {
     loadDashboardData();
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      loadTabData(activeTab);
+    }
+  }, [activeTab, loading]);
+
   const handleRefresh = async () => {
     setRefreshing(true);
-    await loadDashboardData();
-    setRefreshing(false);
+    try {
+      const statsRes = await fetch("/api/admin/stats", { headers: getAdminHeaders() });
+      if (statsRes.ok) {
+        const statsData = await statsRes.json();
+        setStats(statsData.stats);
+      }
+
+      if (activeTab === "enquiries") {
+        const enqRes = await fetch("/api/admin/enquiries", { headers: getAdminHeaders() });
+        if (enqRes.ok) {
+          const enqData = await enqRes.json();
+          setEnquiries(enqData.enquiries || []);
+        }
+      } else if (activeTab === "logins") {
+        const logsRes = await fetch("/api/admin/logs?limit=100", { headers: getAdminHeaders() });
+        if (logsRes.ok) {
+          const logsData = await logsRes.json();
+          setLogs(logsData.logs || []);
+        }
+      } else if (activeTab === "users") {
+        const usersRes = await fetch("/api/admin/users", { headers: getAdminHeaders() });
+        if (usersRes.ok) {
+          const usersData = await usersRes.json();
+          setUsers(usersData.users || []);
+        }
+      } else if (activeTab === "traffic") {
+        const trfRes = await fetch("/api/admin/traffic?limit=100", { headers: getAdminHeaders() });
+        if (trfRes.ok) {
+          const trfData = await trfRes.json();
+          setTrafficLogs(trfData.traffic || []);
+        }
+      }
+    } catch (e) {
+      console.error("Refresh failed:", e);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   const handleLogout = async () => {
@@ -714,7 +781,7 @@ export default function AdminDashboardPage() {
               <Inbox className="w-3.5 h-3.5 text-[#C8A84E]" />
               <span>Student Enquiries</span>
               <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
-                {enquiries.length}
+                {stats?.totalEnquiries ?? enquiries.length}
               </span>
             </button>
 
@@ -729,7 +796,7 @@ export default function AdminDashboardPage() {
               <KeyRound className="w-3.5 h-3.5 text-[#C8A84E]" />
               <span>Login History</span>
               <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
-                {logs.length}
+                {stats?.totalLogins ?? logs.length}
               </span>
             </button>
 
@@ -744,7 +811,7 @@ export default function AdminDashboardPage() {
               <Users className="w-3.5 h-3.5 text-[#C8A84E]" />
               <span>Registered Students & Staff</span>
               <span className="ml-1 px-1.5 py-0.2 bg-white/20 rounded-md text-[10px]">
-                {users.length}
+                {stats?.totalAccounts ?? users.length}
               </span>
             </button>
 
@@ -1121,7 +1188,14 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Logins Table */}
-            {filteredLogs.length === 0 ? (
+            {tabLoading && !loadedTabs.logins ? (
+              <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
+                <RefreshCw className="w-8 h-8 text-[#C8A84E] animate-spin mx-auto" />
+                <p className="text-xs text-slate-500 font-label uppercase tracking-wider font-semibold">
+                  Loading Login Activity...
+                </p>
+              </div>
+            ) : filteredLogs.length === 0 ? (
               <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
                 <KeyRound className="w-10 h-10 text-slate-300 mx-auto" />
                 <h4 className="font-heading text-lg font-semibold text-slate-700">No Login Activity Found</h4>
@@ -1254,7 +1328,14 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Users Table */}
-            {filteredUsers.length === 0 ? (
+            {tabLoading && !loadedTabs.users ? (
+              <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
+                <RefreshCw className="w-8 h-8 text-[#C8A84E] animate-spin mx-auto" />
+                <p className="text-xs text-slate-500 font-label uppercase tracking-wider font-semibold">
+                  Loading User Directory...
+                </p>
+              </div>
+            ) : filteredUsers.length === 0 ? (
               <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
                 <Users className="w-10 h-10 text-slate-300 mx-auto" />
                 <h4 className="font-heading text-lg font-semibold text-slate-700">No Accounts Found</h4>
@@ -1360,11 +1441,18 @@ export default function AdminDashboardPage() {
                 <p className="text-xs text-slate-500">Track which routes and public pages visitors are browsing in real-time.</p>
               </div>
               <div className="text-xs text-slate-500 font-mono">
-                {trafficLogs.length} total records
+                {trafficLogs.length} recent stream records {stats?.totalPageViews ? `(Total: ${stats.totalPageViews})` : ""}
               </div>
             </div>
 
-            {trafficLogs.length === 0 ? (
+            {tabLoading && !loadedTabs.traffic ? (
+              <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
+                <RefreshCw className="w-8 h-8 text-[#C8A84E] animate-spin mx-auto" />
+                <p className="text-xs text-slate-500 font-label uppercase tracking-wider font-semibold">
+                  Loading Visitor Stream...
+                </p>
+              </div>
+            ) : trafficLogs.length === 0 ? (
               <div className="p-12 text-center bg-white border border-slate-200/80 rounded-2xl shadow-soft-xs space-y-3">
                 <Globe className="w-10 h-10 text-slate-300 mx-auto" />
                 <h4 className="font-heading text-lg font-semibold text-slate-700">No Visitor Logs</h4>

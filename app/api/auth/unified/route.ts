@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { logLoginActivity, recordUser, getAllUsers } from "@/lib/db";
+import { logLoginActivity, recordUser, getUserByEmail } from "@/lib/db";
 import { 
   SESSION_COOKIE_NAME, 
   isAdminEmail,
@@ -57,15 +57,16 @@ export async function POST(req: NextRequest) {
         userAgent,
       });
 
-      const effectiveUid = "admin-" + Buffer.from(normalizedEmail).toString("hex").slice(0, 8);
-      const effectiveDisplayName = name || normalizedEmail.split("@")[0].toUpperCase();
+      const existingAdmin = await getUserByEmail(normalizedEmail);
+      const effectiveUid = existingAdmin?.uid || "admin-" + Buffer.from(normalizedEmail).toString("hex").slice(0, 8);
+      const effectiveDisplayName = name || existingAdmin?.displayName || normalizedEmail.split("@")[0].toUpperCase();
 
       await recordUser({
         uid: effectiveUid,
         email: normalizedEmail,
         displayName: effectiveDisplayName,
         role: "admin",
-        rollNumber: "OS-ADMIN",
+        rollNumber: existingAdmin?.rollNumber || "OS-ADMIN",
         authProvider: "password",
       });
 
@@ -87,7 +88,7 @@ export async function POST(req: NextRequest) {
           email: normalizedEmail,
           displayName: effectiveDisplayName,
           role: "admin",
-          rollNumber: "OS-ADMIN",
+          rollNumber: existingAdmin?.rollNumber || "OS-ADMIN",
         },
       });
 
@@ -109,9 +110,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Regular User Authentication
-    const existingUsers = await getAllUsers();
-    const existingUser = existingUsers.find((u) => u.email.toLowerCase() === normalizedEmail);
-
+    const existingUser = await getUserByEmail(normalizedEmail);
     const displayName = name || existingUser?.displayName || normalizedEmail.split("@")[0];
 
     // Log the user login into persistent database
