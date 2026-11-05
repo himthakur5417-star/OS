@@ -37,11 +37,15 @@ export function getPaidSubject(subjectId: string): PaidSubjectConfig | null {
   return PAID_SUBJECTS.find((subject) => subject.id === subjectId) || null;
 }
 
-export function getConfiguredAmount(subject: PaidSubjectConfig): number | null {
+export const DEFAULT_SUBJECT_AMOUNT_PAISE = 14900;
+
+export function getConfiguredAmount(subject: PaidSubjectConfig): number {
   const raw = process.env[subject.amountEnv];
-  if (!raw || !/^\d+$/.test(raw.trim())) return null;
-  const amount = Number(raw);
-  return Number.isSafeInteger(amount) && amount >= 100 ? amount : null;
+  if (raw && /^\d+$/.test(raw.trim())) {
+    const amount = Number(raw);
+    if (Number.isSafeInteger(amount) && amount >= 100) return amount;
+  }
+  return DEFAULT_SUBJECT_AMOUNT_PAISE;
 }
 
 export function getPublicSubjectCatalog() {
