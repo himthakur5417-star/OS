@@ -3,7 +3,7 @@
 import React, { useId } from "react";
 
 export interface LogoProps {
-  variant?: "light" | "dark" | "tactical" | "gold" | "monochrome";
+  variant?: "light" | "dark" | "tactical" | "gold" | "monochrome" | "burgundy" | "cream";
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero";
   showText?: boolean;
   goldAccent?: boolean;
@@ -39,13 +39,23 @@ export function Logo({
   const colorMap = {
     light: {
       primary: "#0F1115", // Deep academy obsidian ink
-      accent: goldAccent ? "#C8A84E" : "#0F1115",
-      hoverAccent: "#C8A84E",
+      accent: goldAccent ? "#722F37" : "#0F1115",
+      hoverAccent: "#722F37",
     },
     dark: {
       primary: "#FFFFFF",
-      accent: "#C8A84E",
-      hoverAccent: "#E5C875",
+      accent: "#E8DCC6",
+      hoverAccent: "#E8DCC6",
+    },
+    burgundy: {
+      primary: "#722F37",
+      accent: "#722F37",
+      hoverAccent: "#211C1D",
+    },
+    cream: {
+      primary: "#E8DCC6",
+      accent: "#E8DCC6",
+      hoverAccent: "#FFFFFF",
     },
     tactical: {
       primary: "#F7F5F0",
@@ -53,9 +63,9 @@ export function Logo({
       hoverAccent: "#E5C875",
     },
     gold: {
-      primary: "#C8A84E",
-      accent: "#C8A84E",
-      hoverAccent: "#E5C875",
+      primary: "#722F37",
+      accent: "#722F37",
+      hoverAccent: "#211C1D",
     },
     monochrome: {
       primary: "currentColor",

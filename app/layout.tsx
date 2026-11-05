@@ -14,7 +14,6 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
 });
 
 const oswald = Oswald({
@@ -82,7 +81,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${oswald.variable} ${inter.variable}`}>
-      <body className="bg-[#FAFAF9] text-[#0F172A] font-sans antialiased min-h-screen flex flex-col selection:bg-[#C8A84E] selection:text-white">
+      <body className="bg-[#FAF7F2] text-[#211C1D] font-sans antialiased min-h-screen flex flex-col selection:bg-[#722F37] selection:text-[#E8DCC6]">
         <AuthProvider>
           <ModalProvider>
             <Navbar />

@@ -994,6 +994,27 @@
       r.style.display = text.includes(query) ? '' : 'none';
     });
   }
+
+  function activateSectionFromHash() {
+    const hash = window.location.hash.replace(/^#/, '').trim();
+    if (!hash) return;
+    const targetSection = document.getElementById(hash);
+    if (!targetSection) return;
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => {
+      const onClickAttr = btn.getAttribute('onclick') || '';
+      btn.classList.toggle('active', onClickAttr.includes("'" + hash + "'"));
+    });
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(sec => {
+      sec.style.display = sec.id === hash ? 'block' : 'none';
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  activateSectionFromHash();
+  window.addEventListener('DOMContentLoaded', activateSectionFromHash);
+  window.addEventListener('hashchange', activateSectionFromHash);
 </script>
 
 </body>

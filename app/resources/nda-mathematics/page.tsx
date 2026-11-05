@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { NDA_MATHS_CHAPTERS } from "@/data/vaultManifest";
+import { NDA_MATHS_CHAPTERS } from "@/data/vaultManifestClient";
 import ResourceLoginCta from "@/components/ResourceLoginCta";
 import { BookOpen, Calculator, CheckCircle2, FileText, HelpCircle, ArrowRight } from "lucide-react";
 

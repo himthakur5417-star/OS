@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllUsers, recordUser } from "@/lib/db";
-import { verifyAdminSession } from "@/lib/adminAuth";
+import { verifyAdminRequest } from "@/lib/adminAuth";
 
 export async function GET(req: NextRequest) {
-  if (!verifyAdminSession(req)) {
+  const authCheck = await verifyAdminRequest(req);
+  if (!authCheck.authorized) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 
@@ -25,7 +26,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!verifyAdminSession(req)) {
+  const authCheck = await verifyAdminRequest(req);
+  if (!authCheck.authorized) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 

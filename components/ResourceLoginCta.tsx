@@ -23,7 +23,7 @@ export default function ResourceLoginCta({ returnUrl, resourceTitle }: ResourceL
           You are signed in as {user.displayName || "Cadet"}
         </h3>
         <p className="mt-2 text-xs sm:text-sm text-emerald-800 leading-relaxed font-sans max-w-md mx-auto">
-          You have full access to all chapter PDFs, solved drill problems, and previous years&apos; answer keys in the study library.
+          Free syllabus and previous-year papers are available now. Paid subject volumes require a separate one-year purchase.
         </p>
         <div className="mt-5">
           <Link

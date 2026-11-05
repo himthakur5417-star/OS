@@ -12,19 +12,25 @@ import {
 export async function GET(req: NextRequest) {
   const check = await verifyAdminRequest(req);
   if (!check.authorized || !check.email) {
-    return NextResponse.json({ authenticated: false }, { status: 401 });
+    return NextResponse.json(
+      { authenticated: false },
+      { status: 401, headers: { "Cache-Control": "no-store" } }
+    );
   }
 
   const adminEmail = check.email;
 
-  return NextResponse.json({
-    authenticated: true,
-    admin: {
-      email: adminEmail,
-      displayName: adminEmail.split("@")[0].toUpperCase() + " (Admin)",
-      role: "admin",
+  return NextResponse.json(
+    {
+      authenticated: true,
+      admin: {
+        email: adminEmail,
+        displayName: adminEmail.split("@")[0].toUpperCase() + " (Admin)",
+        role: "admin",
+      },
     },
-  });
+    { status: 200, headers: { "Cache-Control": "no-store" } }
+  );
 }
 
 // Admin login
@@ -109,13 +115,23 @@ export async function POST(req: NextRequest) {
 }
 
 // Admin logout
-export async function DELETE() {
-  const response = NextResponse.json({ success: true, message: "Logged out" });
+export async function DELETE(req: NextRequest) {
+  const host = req.headers.get("host") || "";
+  const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
+  const isSecure = process.env.NODE_ENV === "production" && !isLocalhost;
+
+  const response = NextResponse.json(
+    { success: true, message: "Logged out" },
+    { headers: { "Cache-Control": "no-store" } }
+  );
   response.cookies.set({
     name: SESSION_COOKIE_NAME,
     value: "",
     httpOnly: true,
+    secure: isSecure,
+    sameSite: "lax",
     maxAge: 0,
+    expires: new Date(0),
     path: "/",
   });
   return response;

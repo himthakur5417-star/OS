@@ -125,10 +125,12 @@
   .toolbar-actions {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
   }
   .btn-action {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     padding: 8px 16px;
     border-radius: 8px;
@@ -140,6 +142,8 @@
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
+    white-space: nowrap;
+    box-sizing: border-box;
   }
   .btn-outline {
     background: #fff;
@@ -183,7 +187,7 @@
   }
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
     gap: 14px;
     margin-top: 14px;
   }
@@ -290,6 +294,8 @@
     border-bottom: 2px solid #e2e8f0;
     padding-bottom: 12px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .section-title {
     font-family: 'Fraunces', serif;
@@ -317,7 +323,8 @@
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     margin-bottom: 24px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.02);
   }
@@ -359,7 +366,7 @@
   /* Cards Grid */
   .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
     gap: 16px;
     margin-bottom: 24px;
   }
@@ -424,7 +431,7 @@
   /* Weightage bars */
   .weightage-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
     gap: 12px;
     margin-bottom: 20px;
   }
@@ -462,6 +469,79 @@
     text-align: center;
     font-size: 0.82rem;
     color: var(--muted);
+  }
+
+  /* Responsive Mobile & Tablet Layout */
+  @media (max-width: 768px) {
+    body {
+      padding: 16px 8px;
+    }
+    .sheet {
+      padding: 24px 16px 36px;
+      border-radius: 14px;
+    }
+    .top-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .header-meta {
+      text-align: left;
+    }
+    .header-title {
+      font-size: 1.45rem;
+      line-height: 1.25;
+    }
+    .toolbar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .toolbar-actions {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn-action {
+      flex: 1 1 calc(50% - 4px);
+      min-width: 120px;
+      padding: 8px 12px;
+      font-size: 0.72rem;
+      text-align: center;
+    }
+    .btn-action:last-child {
+      flex: 1 1 100%;
+    }
+    .master-banner {
+      padding: 18px 16px;
+    }
+    .master-title {
+      font-size: 1.25rem;
+    }
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+    .weightage-grid {
+      grid-template-columns: 1fr;
+    }
+    .custom-table {
+      min-width: 520px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    body {
+      padding: 12px 6px;
+    }
+    .sheet {
+      padding: 16px 10px 24px;
+    }
+    .btn-action {
+      flex: 1 1 100%;
+      min-width: 0;
+      width: 100%;
+    }
   }
 
   /* Print Styles */
@@ -1109,6 +1189,27 @@
       r.style.display = text.includes(query) ? '' : 'none';
     });
   }
+
+  function activateSectionFromHash() {
+    const hash = window.location.hash.replace(/^#/, '').trim();
+    if (!hash) return;
+    const targetSection = document.getElementById(hash);
+    if (!targetSection) return;
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => {
+      const onClickAttr = btn.getAttribute('onclick') || '';
+      btn.classList.toggle('active', onClickAttr.includes("'" + hash + "'"));
+    });
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(sec => {
+      sec.style.display = sec.id === hash ? 'block' : 'none';
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  activateSectionFromHash();
+  window.addEventListener('DOMContentLoaded', activateSectionFromHash);
+  window.addEventListener('hashchange', activateSectionFromHash);
 </script>
 
 </body>

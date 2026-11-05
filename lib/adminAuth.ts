@@ -156,10 +156,22 @@ export function verifySignedAdminToken(token: string | null | undefined): { emai
 }
 
 /**
+ * Extracts a Bearer token from the request's Authorization header.
+ */
+export function extractBearerToken(req: NextRequest): string | null {
+  const header = req.headers.get("authorization") || req.headers.get("Authorization");
+  if (!header) return null;
+  const match = header.match(/^Bearer\s+(.+)$/i);
+  return match ? match[1].trim() : null;
+}
+
+/**
  * Cryptographically verifies a Firebase ID Token using Firebase Admin SDK server-side,
  * with fallback to Google Identity Toolkit REST verification.
  */
-export async function verifyFirebaseIdToken(idToken: string): Promise<{ email: string; uid: string; provider?: string } | null> {
+export async function verifyFirebaseIdToken(
+  idToken: string
+): Promise<{ email: string; uid: string; provider?: string; name?: string } | null> {
   if (!idToken || typeof idToken !== "string") return null;
 
   // 1. Primary: Verify via Firebase Admin SDK
@@ -167,18 +179,26 @@ export async function verifyFirebaseIdToken(idToken: string): Promise<{ email: s
     const adminAuth = await getAdminAuth();
     if (adminAuth) {
       const decoded = await adminAuth.verifyIdToken(idToken, true);
-      if (decoded && decoded.email) {
-        const provider = decoded.firebase?.sign_in_provider || "google.com";
+      if (decoded && decoded.email && decoded.uid) {
+        const provider = decoded.firebase?.sign_in_provider || "password";
         return {
           email: decoded.email.trim().toLowerCase(),
           uid: decoded.uid,
           provider,
+          name: typeof decoded.name === "string" ? decoded.name.trim() : undefined,
         };
       }
     }
   } catch (adminErr: any) {
-    // If Admin SDK threw token-revoked or expired, immediately reject
-    if (adminErr?.code?.includes("auth/id-token-expired") || adminErr?.code?.includes("auth/id-token-revoked")) {
+    // If Admin SDK explicitly rejected the token as expired, revoked, or malformed, reject immediately
+    const code = String(adminErr?.code || "");
+    if (
+      code.includes("auth/id-token-expired") ||
+      code.includes("auth/id-token-revoked") ||
+      code.includes("auth/argument-error") ||
+      code.includes("auth/invalid-id-token") ||
+      code.includes("auth/user-disabled")
+    ) {
       return null;
     }
   }
@@ -197,54 +217,71 @@ export async function verifyFirebaseIdToken(idToken: string): Promise<{ email: s
     if (!res.ok) return null;
     const data = await res.json();
     const user = data?.users?.[0];
-    if (!user || !user.email) return null;
+    if (!user || !user.email || !user.localId || user.disabled) return null;
 
     const provider = user.providerUserInfo?.[0]?.providerId || "password";
     return {
       email: user.email.trim().toLowerCase(),
       uid: user.localId,
       provider,
+      name: typeof user.displayName === "string" ? user.displayName.trim() : undefined,
     };
   } catch (e) {
     return null;
   }
 }
 
+function collectCandidateAdminTokens(req: NextRequest): string[] {
+  const cookieToken = req.cookies.get(SESSION_COOKIE_NAME)?.value?.trim();
+  const bearerToken = extractBearerToken(req);
+  const headerToken = req.headers.get("x-admin-token")?.trim();
+
+  const seen = new Set<string>();
+  const candidates: string[] = [];
+  for (const candidate of [cookieToken, bearerToken, headerToken]) {
+    if (candidate && !seen.has(candidate)) {
+      seen.add(candidate);
+      candidates.push(candidate);
+    }
+  }
+  return candidates;
+}
+
 /**
  * Synchronous verification of admin session cookie or signed header.
  */
 export function verifyAdminSession(req: NextRequest): boolean {
-  const cookie = req.cookies.get(SESSION_COOKIE_NAME);
-  const authHeader = req.headers.get("authorization")?.replace("Bearer ", "") || req.headers.get("x-admin-token");
-  const token = cookie?.value || authHeader;
-
-  if (!token) return false;
-
-  // Verify HMAC-SHA256 signature
-  const verified = verifySignedAdminToken(token);
-  return Boolean(verified);
+  const candidates = collectCandidateAdminTokens(req);
+  for (const token of candidates) {
+    const verified = verifySignedAdminToken(token);
+    if (verified && isAdminEmail(verified.email)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
  * Comprehensive async admin verification supporting both signed sessions and Firebase ID Tokens.
  */
 export async function verifyAdminRequest(req: NextRequest): Promise<{ authorized: boolean; email?: string }> {
-  const cookie = req.cookies.get(SESSION_COOKIE_NAME);
-  const authHeader = req.headers.get("authorization")?.replace("Bearer ", "") || req.headers.get("x-admin-token");
-  const token = cookie?.value || authHeader;
+  const candidates = collectCandidateAdminTokens(req);
+  if (candidates.length === 0) return { authorized: false };
 
-  if (!token) return { authorized: false };
-
-  // 1. Check signed HMAC token
-  const verified = verifySignedAdminToken(token);
-  if (verified) {
-    return { authorized: true, email: verified.email };
+  // 1. Check signed HMAC tokens first
+  for (const token of candidates) {
+    const verified = verifySignedAdminToken(token);
+    if (verified && isAdminEmail(verified.email)) {
+      return { authorized: true, email: verified.email };
+    }
   }
 
-  // 2. Check if token is a valid Firebase ID Token belonging to an authorized admin
-  const fbUser = await verifyFirebaseIdToken(token);
-  if (fbUser && isAdminEmail(fbUser.email)) {
-    return { authorized: true, email: fbUser.email };
+  // 2. Check if any candidate is a valid Firebase ID Token belonging to an authorized admin
+  for (const token of candidates) {
+    const fbUser = await verifyFirebaseIdToken(token);
+    if (fbUser && isAdminEmail(fbUser.email)) {
+      return { authorized: true, email: fbUser.email };
+    }
   }
 
   return { authorized: false };

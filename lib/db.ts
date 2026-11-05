@@ -154,15 +154,18 @@ function fromFirestoreDocument<T>(doc: any): T {
   return res as T;
 }
 
-// Cache status of Firestore connectivity
-let firestoreCheckResult: {
+type FirestoreCheckStatus = {
   available: boolean;
   hasAdminAccess: boolean;
   error?: string;
   code?: string;
   activationUrl: string;
-} | null = null;
+};
+
+// Cache status of Firestore connectivity
+let firestoreCheckResult: FirestoreCheckStatus | null = null;
 let lastFirestoreCheckTime = 0;
+let inflightFirestoreCheck: Promise<FirestoreCheckStatus> | null = null;
 const FIRESTORE_CHECK_TTL = 120000; // 2-minute memory cache to avoid redundant health check roundtrips
 
 // In-memory traffic count cache
@@ -173,34 +176,55 @@ const recentLoginCache = new Map<string, number>();
 
 let migrationCompleted = false;
 let cachedAccessToken: { token: string; exp: number } | null = null;
+let inflightAccessTokenPromise: Promise<string | null> | null = null;
 
 async function getFirestoreAuthHeader(userToken?: string): Promise<Record<string, string>> {
   if (userToken) {
     return { Authorization: `Bearer ${userToken}` };
   }
-  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-    try {
-      if (cachedAccessToken && cachedAccessToken.exp > Date.now() + 60000) {
-        return { Authorization: `Bearer ${cachedAccessToken.token}` };
-      }
-      const raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY.trim();
-      const parsed = JSON.parse(raw.startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf-8"));
-      const { GoogleAuth } = await import("google-auth-library");
-      const auth = new GoogleAuth({
-        credentials: parsed,
-        scopes: [
-          "https://www.googleapis.com/auth/datastore",
-          "https://www.googleapis.com/auth/cloud-platform"
-        ]
+  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY || (process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL)) {
+    if (cachedAccessToken && cachedAccessToken.exp > Date.now() + 60000) {
+      return { Authorization: `Bearer ${cachedAccessToken.token}` };
+    }
+    if (!inflightAccessTokenPromise) {
+      inflightAccessTokenPromise = (async () => {
+        try {
+          let parsed: Record<string, string>;
+          if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+            const raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY.trim();
+            parsed = JSON.parse(raw.startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf-8"));
+          } else {
+            parsed = {
+              project_id: FIREBASE_PROJECT_ID,
+              client_email: process.env.FIREBASE_CLIENT_EMAIL || "",
+              private_key: (process.env.FIREBASE_PRIVATE_KEY || "").replace(/\\n/g, "\n"),
+            };
+          }
+          const { GoogleAuth } = await import("google-auth-library");
+          const auth = new GoogleAuth({
+            credentials: parsed,
+            scopes: [
+              "https://www.googleapis.com/auth/datastore",
+              "https://www.googleapis.com/auth/cloud-platform"
+            ]
+          });
+          const client = await auth.getClient();
+          const tokenRes = await client.getAccessToken();
+          if (tokenRes && tokenRes.token) {
+            cachedAccessToken = { token: tokenRes.token, exp: Date.now() + 3500 * 1000 };
+            return tokenRes.token;
+          }
+        } catch (e) {
+          console.warn("Failed to retrieve Google Service Account access token:", e);
+        }
+        return null;
+      })().finally(() => {
+        inflightAccessTokenPromise = null;
       });
-      const client = await auth.getClient();
-      const tokenRes = await client.getAccessToken();
-      if (tokenRes && tokenRes.token) {
-        cachedAccessToken = { token: tokenRes.token, exp: Date.now() + 3500 * 1000 };
-        return { Authorization: `Bearer ${tokenRes.token}` };
-      }
-    } catch (e) {
-      console.warn("Failed to retrieve Google Service Account access token:", e);
+    }
+    const token = await inflightAccessTokenPromise;
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
     }
   }
   return {};
@@ -210,92 +234,95 @@ async function getFirestoreAuthHeader(userToken?: string): Promise<Record<string
  * Checks whether Cloud Firestore is currently accessible and enabled.
  * Uses in-memory TTL caching to avoid repeating roundtrips on every database query.
  */
-export async function checkFirestoreStatus(): Promise<{
-  available: boolean;
-  hasAdminAccess: boolean;
-  error?: string;
-  code?: string;
-  activationUrl: string;
-}> {
+export async function checkFirestoreStatus(): Promise<FirestoreCheckStatus> {
   const activationUrl = `https://console.firebase.google.com/project/${FIREBASE_PROJECT_ID}/firestore`;
   if (firestoreCheckResult && Date.now() - lastFirestoreCheckTime < FIRESTORE_CHECK_TTL) {
     return firestoreCheckResult;
   }
-
-  try {
-    const authHeaders = await getFirestoreAuthHeader();
-    const res = await fetch(`${FIRESTORE_BASE_URL}/enquiries?pageSize=1&key=${FIREBASE_API_KEY}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json", ...authHeaders },
-    });
-
-    lastFirestoreCheckTime = Date.now();
-
-    if (res.ok) {
-      firestoreCheckResult = { available: true, hasAdminAccess: true, activationUrl };
-      return firestoreCheckResult;
-    }
-
-    const body = await res.json().catch(() => ({}));
-    const message = body?.error?.message || `HTTP ${res.status}`;
-    const statusText = body?.error?.status || "";
-    const reason = body?.error?.details?.[0]?.reason || "";
-
-    // 1. Is API disabled in Google Cloud?
-    if (reason === "SERVICE_DISABLED" || message.includes("disabled") || message.includes("has not been used")) {
-      firestoreCheckResult = {
-        available: false,
-        hasAdminAccess: false,
-        code: "FIRESTORE_DISABLED",
-        error: `Cloud Firestore API is not enabled for project ${FIREBASE_PROJECT_ID}. Enable it at ${activationUrl}`,
-        activationUrl,
-      };
-      return firestoreCheckResult;
-    }
-
-    // 2. Does database not exist?
-    if (res.status === 404 && message.includes("does not exist")) {
-      firestoreCheckResult = {
-        available: false,
-        hasAdminAccess: false,
-        code: "DATABASE_NOT_CREATED",
-        error: `Cloud Firestore database '${FIREBASE_DATABASE_ID}' has not yet been created for project ${FIREBASE_PROJECT_ID}.`,
-        activationUrl,
-      };
-      return firestoreCheckResult;
-    }
-
-    // 3. Is Firestore active and enforcing rules, but unauthenticated read is rejected?
-    if (res.status === 403 && (statusText === "PERMISSION_DENIED" || message.includes("Missing or insufficient permissions"))) {
-      firestoreCheckResult = {
-        available: true,
-        hasAdminAccess: false,
-        code: "PERMISSION_DENIED",
-        error: "Cloud Firestore is active and enforcing security rules.",
-        activationUrl,
-      };
-      return firestoreCheckResult;
-    }
-
-    firestoreCheckResult = {
-      available: false,
-      hasAdminAccess: false,
-      code: "FIRESTORE_ERROR",
-      error: `Cloud Firestore: ${message}`,
-      activationUrl,
-    };
-    return firestoreCheckResult;
-  } catch (err: any) {
-    lastFirestoreCheckTime = Date.now();
-    firestoreCheckResult = {
-      available: false,
-      hasAdminAccess: false,
-      code: "NETWORK_ERROR",
-      error: err.message,
-      activationUrl,
-    };
-    return firestoreCheckResult;
+  if (inflightFirestoreCheck) {
+    return inflightFirestoreCheck;
   }
+
+  inflightFirestoreCheck = (async (): Promise<FirestoreCheckStatus> => {
+    try {
+      const authHeaders = await getFirestoreAuthHeader();
+      const res = await fetch(`${FIRESTORE_BASE_URL}/enquiries?pageSize=1&key=${FIREBASE_API_KEY}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json", ...authHeaders },
+      });
+
+      lastFirestoreCheckTime = Date.now();
+
+      if (res.ok) {
+        firestoreCheckResult = { available: true, hasAdminAccess: true, activationUrl };
+        return firestoreCheckResult;
+      }
+
+      const body = await res.json().catch(() => ({}));
+      const message = body?.error?.message || `HTTP ${res.status}`;
+      const statusText = body?.error?.status || "";
+      const reason = body?.error?.details?.[0]?.reason || "";
+
+      // 1. Is API disabled in Google Cloud?
+      if (reason === "SERVICE_DISABLED" || message.includes("disabled") || message.includes("has not been used")) {
+        firestoreCheckResult = {
+          available: false,
+          hasAdminAccess: false,
+          code: "FIRESTORE_DISABLED",
+          error: `Cloud Firestore API is not enabled for project ${FIREBASE_PROJECT_ID}. Enable it at ${activationUrl}`,
+          activationUrl,
+        };
+        return firestoreCheckResult;
+      }
+
+      // 2. Does database not exist?
+      if (res.status === 404 && message.includes("does not exist")) {
+        firestoreCheckResult = {
+          available: false,
+          hasAdminAccess: false,
+          code: "DATABASE_NOT_CREATED",
+          error: `Cloud Firestore database '${FIREBASE_DATABASE_ID}' has not yet been created for project ${FIREBASE_PROJECT_ID}.`,
+          activationUrl,
+        };
+        return firestoreCheckResult;
+      }
+
+      // 3. Is Firestore active and enforcing rules, but unauthenticated read is rejected?
+      if (res.status === 403 && (statusText === "PERMISSION_DENIED" || message.includes("Missing or insufficient permissions"))) {
+        firestoreCheckResult = {
+          available: true,
+          hasAdminAccess: false,
+          code: "PERMISSION_DENIED",
+          error: "Cloud Firestore is active and enforcing security rules.",
+          activationUrl,
+        };
+        return firestoreCheckResult;
+      }
+
+      firestoreCheckResult = {
+        available: false,
+        hasAdminAccess: false,
+        code: "FIRESTORE_ERROR",
+        error: `Cloud Firestore: ${message}`,
+        activationUrl,
+      };
+      return firestoreCheckResult;
+    } catch (err: any) {
+      lastFirestoreCheckTime = Date.now();
+      firestoreCheckResult = {
+        available: false,
+        hasAdminAccess: false,
+        code: "NETWORK_ERROR",
+        error: err.message,
+        activationUrl,
+      };
+      return firestoreCheckResult;
+    } finally {
+      inflightFirestoreCheck = null;
+    }
+  })();
+
+  return inflightFirestoreCheck;
 }
 
 // --- Firestore Direct Document & Query Access ---
@@ -470,7 +497,17 @@ export async function deleteFirestoreDocument(collection: string, docId: string,
 
 // --- Local File Store Helpers (Strictly for Local Development Only) ---
 
+function canUseLocalDb(): boolean {
+  return process.env.NODE_ENV !== "production" && !isServerlessEnv();
+}
+
+function emptyLocalDb(): DatabaseSchema {
+  return { enquiries: [], users: [], login_logs: [], traffic_logs: [] };
+}
+
 function readLocalDb(): DatabaseSchema {
+  if (!canUseLocalDb()) return emptyLocalDb();
+
   try {
     if (fs.existsSync(LOCAL_DB_FILE)) {
       const raw = fs.readFileSync(LOCAL_DB_FILE, "utf-8");
@@ -479,12 +516,12 @@ function readLocalDb(): DatabaseSchema {
   } catch (e) {
     console.warn("Failed to read local database.json:", e);
   }
-  return { enquiries: [], users: [], login_logs: [], traffic_logs: [] };
+  return emptyLocalDb();
 }
 
 function writeLocalDb(data: DatabaseSchema): void {
-  // Never write to local disk if on serverless (prevent ephemeral useless IO)
-  if (isServerlessEnv()) return;
+  // Never read or write local data in production or serverless environments.
+  if (!canUseLocalDb()) return;
   try {
     if (!fs.existsSync(LOCAL_DB_DIR)) {
       fs.mkdirSync(LOCAL_DB_DIR, { recursive: true });
@@ -547,7 +584,7 @@ export async function migrateLocalDataToFirestore(): Promise<{ migratedEnquiries
  * Determines whether to read from persistent Firestore or local development file.
  * In production/serverless, Firestore is MANDATORY and will NOT fall back to ephemeral /tmp.
  */
-async function useFirestore(): Promise<boolean> {
+async function isFirestoreActive(): Promise<boolean> {
   const status = await checkFirestoreStatus();
   if (status.available) {
     // Auto-migrate local records once connected if admin access is available
@@ -587,7 +624,7 @@ async function useFirestore(): Promise<boolean> {
 export async function getAllEnquiries(filter?: { program?: string; status?: string; search?: string }): Promise<Enquiry[]> {
   let list: Enquiry[] = [];
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       list = await getFirestoreDocuments<Enquiry>("enquiries");
     } catch (e: any) {
@@ -644,7 +681,7 @@ export async function createEnquiry(
     createdAt: new Date().toISOString(),
   };
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     await setFirestoreDocument("enquiries", newEnquiry.id, newEnquiry);
   } else {
     const local = readLocalDb();
@@ -660,7 +697,7 @@ export async function updateEnquiryStatus(
   status: Enquiry["status"],
   notes?: string
 ): Promise<Enquiry | null> {
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       const target = await getFirestoreDocument<Enquiry>("enquiries", id);
       if (!target) return null;
@@ -690,7 +727,7 @@ export async function updateEnquiryStatus(
 }
 
 export async function deleteEnquiry(id: string): Promise<boolean> {
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       return await deleteFirestoreDocument("enquiries", id);
     } catch (e: any) {
@@ -713,7 +750,7 @@ export async function deleteEnquiry(id: string): Promise<boolean> {
 export async function getAllUsers(): Promise<UserAccount[]> {
   let users: UserAccount[] = [];
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       users = await getFirestoreDocuments<UserAccount>("users");
     } catch (e: any) {
@@ -734,7 +771,7 @@ export async function getAllUsers(): Promise<UserAccount[]> {
 }
 
 export async function getUserById(uid: string, userToken?: string): Promise<UserAccount | null> {
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       const doc = await getFirestoreDocument<UserAccount>("users", uid, userToken);
       if (doc) return doc;
@@ -754,7 +791,7 @@ export async function getUserByEmail(email: string, userToken?: string): Promise
   const normalized = String(email || "").trim().toLowerCase();
   if (!normalized) return null;
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       const results = await runFirestoreQuery<UserAccount>({
         from: [{ collectionId: "users" }],
@@ -808,7 +845,7 @@ export async function recordUser(user: {
     lastLogin: new Date().toISOString(),
   };
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       await setFirestoreDocument("users", updatedAccount.uid, updatedAccount, userToken);
     } catch (err: any) {
@@ -834,7 +871,7 @@ export async function recordUser(user: {
 export async function getLoginLogs(limit = 100): Promise<LoginLog[]> {
   let logs: LoginLog[] = [];
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       // Query recent logs ordered by timestamp DESC directly from Firestore
       logs = await runFirestoreQuery<LoginLog>({
@@ -866,7 +903,7 @@ export async function getLoginLogs(limit = 100): Promise<LoginLog[]> {
 }
 
 export async function clearLoginLogs(): Promise<void> {
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     const logs = await getFirestoreDocuments<LoginLog>("login_logs", 500);
     for (const l of logs) {
       await deleteFirestoreDocument("login_logs", l.id).catch(() => {});
@@ -925,7 +962,7 @@ export async function logLoginActivity(entry: {
   };
 
   try {
-    if (await useFirestore()) {
+    if (await isFirestoreActive()) {
       await setFirestoreDocument("login_logs", newLog.id, newLog);
     } else {
       const local = readLocalDb();
@@ -966,7 +1003,7 @@ export async function logTraffic(entry: {
   }
 
   try {
-    if (await useFirestore()) {
+    if (await isFirestoreActive()) {
       await setFirestoreDocument("traffic_logs", newLog.id, newLog);
     } else {
       const local = readLocalDb();
@@ -993,7 +1030,7 @@ export async function getTrafficCount(): Promise<number> {
     return cachedTrafficTotal.count;
   }
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       const count = await getFirestoreCollectionCount("traffic_logs");
       if (count >= 0) {
@@ -1019,7 +1056,7 @@ export async function getRecentTrafficCount(): Promise<number> {
   const sinceTime = Date.now() - 24 * 3600 * 1000;
   const iso24h = new Date(sinceTime).toISOString();
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       const count = await getFirestoreCollectionCount("traffic_logs", undefined, {
         fieldFilter: {
@@ -1054,7 +1091,7 @@ export async function getRecentTrafficCount(): Promise<number> {
 export async function getTrafficLogs(limit = 100): Promise<TrafficLog[]> {
   let traffic: TrafficLog[] = [];
 
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     try {
       // Query recent visitor stream ordered by timestamp DESCENDING
       traffic = await runFirestoreQuery<TrafficLog>({
@@ -1086,7 +1123,7 @@ export async function getTrafficLogs(limit = 100): Promise<TrafficLog[]> {
 }
 
 export async function clearTrafficLogs(): Promise<void> {
-  if (await useFirestore()) {
+  if (await isFirestoreActive()) {
     const traffic = await getFirestoreDocuments<TrafficLog>("traffic_logs", 500);
     for (const t of traffic) {
       await deleteFirestoreDocument("traffic_logs", t.id).catch(() => {});
@@ -1100,12 +1137,136 @@ export async function clearTrafficLogs(): Promise<void> {
 
 // --- Dashboard KPI Stats ---
 
+async function getUserAccountStats(): Promise<{
+  totalAccounts: number;
+  totalUsers: number;
+  totalAdmins: number;
+  totalStandardUsers: number;
+  googleUsersCount: number;
+  emailPasswordUsersCount: number;
+}> {
+  if (await isFirestoreActive()) {
+    try {
+      const [totalUsers, totalAdmins, googleUsersCount] = await Promise.all([
+        getFirestoreCollectionCount("users"),
+        getFirestoreCollectionCount("users", undefined, {
+          fieldFilter: {
+            field: { fieldPath: "role" },
+            op: "EQUAL",
+            value: { stringValue: "admin" },
+          },
+        }),
+        getFirestoreCollectionCount("users", undefined, {
+          fieldFilter: {
+            field: { fieldPath: "authProvider" },
+            op: "EQUAL",
+            value: { stringValue: "google.com" },
+          },
+        }),
+      ]);
+
+      return {
+        totalAccounts: totalUsers,
+        totalUsers,
+        totalAdmins,
+        totalStandardUsers: Math.max(0, totalUsers - totalAdmins),
+        googleUsersCount,
+        emailPasswordUsersCount: Math.max(0, totalUsers - googleUsersCount),
+      };
+    } catch (e) {
+      console.warn("Could not get user aggregation counts from Firestore, falling back to document scan:", e);
+    }
+  }
+
+  const users = await getAllUsers();
+  const totalAdmins = users.filter((u) => u.role === "admin").length;
+  const totalStandardUsers = users.filter((u) => u.role !== "admin").length;
+  const googleUsersCount = users.filter((u) => u.authProvider === "google.com").length;
+  const emailPasswordUsersCount = users.filter((u) => u.authProvider !== "google.com").length;
+
+  return {
+    totalAccounts: users.length,
+    totalUsers: users.length,
+    totalAdmins,
+    totalStandardUsers,
+    googleUsersCount,
+    emailPasswordUsersCount,
+  };
+}
+
+async function getLoginLogStats(): Promise<{
+  totalLogins: number;
+  successfulLogins: number;
+  failedLogins: number;
+  recentLoginsCount: number;
+}> {
+  if (await isFirestoreActive()) {
+    try {
+      const iso24h = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+      const [totalLogins, successfulLogins, failedLogins, recentLoginsCount] = await Promise.all([
+        getFirestoreCollectionCount("login_logs"),
+        getFirestoreCollectionCount("login_logs", undefined, {
+          fieldFilter: {
+            field: { fieldPath: "status" },
+            op: "EQUAL",
+            value: { stringValue: "success" },
+          },
+        }),
+        getFirestoreCollectionCount("login_logs", undefined, {
+          fieldFilter: {
+            field: { fieldPath: "status" },
+            op: "EQUAL",
+            value: { stringValue: "failed" },
+          },
+        }),
+        getFirestoreCollectionCount("login_logs", undefined, {
+          fieldFilter: {
+            field: { fieldPath: "timestamp" },
+            op: "GREATER_THAN",
+            value: { stringValue: iso24h },
+          },
+        }),
+      ]);
+
+      return {
+        totalLogins,
+        successfulLogins,
+        failedLogins,
+        recentLoginsCount,
+      };
+    } catch (e) {
+      console.warn("Could not get login log aggregation counts from Firestore, falling back to bounded query:", e);
+    }
+  }
+
+  const logs = await getLoginLogs(100);
+  const totalLogins = logs.length;
+  const successfulLogins = logs.filter((l) => l.status === "success").length;
+  const failedLogins = logs.filter((l) => l.status === "failed").length;
+  const recentLoginsCount = logs.filter(
+    (l) => l.timestamp && !isNaN(new Date(l.timestamp).getTime()) && new Date(l.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
+  ).length;
+
+  return {
+    totalLogins,
+    successfulLogins,
+    failedLogins,
+    recentLoginsCount,
+  };
+}
+
 export async function getAcademyStats() {
+  // Warm/verify Firestore availability once before launching parallel queries
+  await isFirestoreActive();
+
   // Execute independent metric requests concurrently via Promise.all
-  const [enquiries, users, logs, totalPageViews, recentPageViews] = await Promise.all([
+  // Note: getAllEnquiries() is intentionally retained because `(e.status || "new") === "new"`
+  // defaults missing/empty status fields to "new" (which Firestore fieldFilter cannot match if omitted)
+  // and derives 6 sub-metrics from a low-volume admissions collection.
+  const [enquiries, userStats, loginStats, totalPageViews, recentPageViews] = await Promise.all([
     getAllEnquiries(),
-    getAllUsers(),
-    getLoginLogs(100),
+    getUserAccountStats(),
+    getLoginLogStats(),
     getTrafficCount(),
     getRecentTrafficCount(),
   ]);
@@ -1117,20 +1278,6 @@ export async function getAcademyStats() {
   const orientationBookings = enquiries.filter((e) => e.source === "orientation_modal").length;
   const contactMessages = enquiries.filter((e) => e.source === "contact_page").length;
 
-  const totalAdmins = users.filter((u) => u.role === "admin").length;
-  const totalStandardUsers = users.filter((u) => u.role !== "admin").length;
-
-  const googleUsersCount = users.filter((u) => u.authProvider === "google.com").length;
-  const emailPasswordUsersCount = users.filter((u) => u.authProvider !== "google.com").length;
-
-  const totalLogins = logs.length;
-  const successfulLogins = logs.filter((l) => l.status === "success").length;
-  const failedLogins = logs.filter((l) => l.status === "failed").length;
-
-  const recentLoginsCount = logs.filter(
-    (l) => l.timestamp && !isNaN(new Date(l.timestamp).getTime()) && new Date(l.timestamp).getTime() > Date.now() - 24 * 3600 * 1000
-  ).length;
-
   return {
     totalEnquiries: enquiries.length,
     newEnquiries,
@@ -1138,16 +1285,16 @@ export async function getAcademyStats() {
     enrolledEnquiries,
     orientationBookings,
     contactMessages,
-    totalAccounts: users.length,
-    totalUsers: users.length,
-    totalAdmins,
-    totalStandardUsers,
-    googleUsersCount,
-    emailPasswordUsersCount,
-    totalLogins,
-    successfulLogins,
-    failedLogins,
-    recentLoginsCount,
+    totalAccounts: userStats.totalAccounts,
+    totalUsers: userStats.totalUsers,
+    totalAdmins: userStats.totalAdmins,
+    totalStandardUsers: userStats.totalStandardUsers,
+    googleUsersCount: userStats.googleUsersCount,
+    emailPasswordUsersCount: userStats.emailPasswordUsersCount,
+    totalLogins: loginStats.totalLogins,
+    successfulLogins: loginStats.successfulLogins,
+    failedLogins: loginStats.failedLogins,
+    recentLoginsCount: loginStats.recentLoginsCount,
     totalPageViews,
     recentPageViews,
   };

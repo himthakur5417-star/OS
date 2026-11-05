@@ -34,6 +34,10 @@ export default function SyllabusDossier({ initialTrack = "nda", initialSection =
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
 
+  React.useEffect(() => {
+    setActiveTrack(initialTrack);
+  }, [initialTrack]);
+
   const handleCopyLink = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(`${window.location.origin}/resources#syllabus-dossier`);

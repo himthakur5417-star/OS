@@ -6,11 +6,92 @@
   --font-inter: 'Inter', sans-serif;
   --font-oswald: 'Oswald', sans-serif;
   --font-fraunces: 'Fraunces', serif;
+
+  /* ------------------------------------------------------------------ */
+  /* Officium brand palette (RGB channels so Tailwind can apply alpha)   */
+  /* Burgundy #722F37 · Warm Cream #E8DCC6 · Taupe #B7A89A · Ink #211C1D */
+  /* ------------------------------------------------------------------ */
+  --os-burgundy: 114 47 55;
+  --os-cream: 232 220 198;
+  --os-taupe: 183 168 154;
+  --os-ink: 33 28 29;
+
+  /* Semantic tokens — default scope is the warm cream reading surface. */
+  --background: var(--os-cream);
+  --foreground: var(--os-ink);
+  --brand: var(--os-burgundy);
+  --surface: var(--os-cream);
+  --surface-muted: 222 209 189; /* cream deepened toward taupe (derived) */
+  --border: var(--os-ink);
+  --border-alpha: 0.14;
+  --accent: var(--os-burgundy);
+  --muted-text: var(--os-ink);
+  --muted-alpha: 0.74;
+  --glass: var(--os-cream);
+  --glass-alpha: 0.82;
+  --glass-border: var(--os-ink);
+  --glass-border-alpha: 0.1;
+  --glass-blur: 14px;
+  --focus-ring: var(--os-burgundy);
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Section theme scopes: re-map semantic tokens for colour rhythm. */
+.theme-cream {
+  --background: var(--os-cream);
+  --foreground: var(--os-ink);
+  --accent: var(--os-burgundy);
+  --muted-text: var(--os-ink);
+  --muted-alpha: 0.74;
+  --border: var(--os-ink);
+  --border-alpha: 0.14;
+  --glass: var(--os-cream);
+  --glass-alpha: 0.82;
+  --glass-border: var(--os-ink);
+  --glass-border-alpha: 0.1;
+  --focus-ring: var(--os-burgundy);
+}
+
+.theme-burgundy {
+  --background: var(--os-burgundy);
+  --foreground: var(--os-cream);
+  --accent: var(--os-cream);
+  --muted-text: var(--os-cream);
+  --muted-alpha: 0.84;
+  --border: var(--os-cream);
+  --border-alpha: 0.2;
+  --glass: var(--os-cream);
+  --glass-alpha: 0.08;
+  --glass-border: var(--os-cream);
+  --glass-border-alpha: 0.28;
+  --focus-ring: var(--os-cream);
+}
+
+.theme-ink {
+  --background: var(--os-ink);
+  --foreground: var(--os-cream);
+  --accent: var(--os-taupe);
+  --muted-text: var(--os-taupe);
+  --muted-alpha: 1;
+  --border: var(--os-cream);
+  --border-alpha: 0.14;
+  --glass: var(--os-cream);
+  --glass-alpha: 0.06;
+  --glass-border: var(--os-cream);
+  --glass-border-alpha: 0.18;
+  --focus-ring: var(--os-cream);
 }
 
 html {
   scroll-behavior: smooth;
   color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -22,8 +103,8 @@ body {
 }
 
 ::selection {
-  background-color: #C8A84E;
-  color: #FFFFFF;
+  background-color: rgb(var(--os-burgundy));
+  color: rgb(var(--os-cream));
 }
 
 /* Custom Scrollbar */
@@ -31,14 +112,212 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: rgb(var(--os-cream));
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: rgb(var(--os-taupe));
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #C8A84E;
+  background: rgb(var(--os-burgundy));
+}
+
+/* ------------------------------------------------------------------ */
+/* Officium design-system utilities                                   */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .os-surface {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+  }
+
+  /* Visible, palette-aware focus ring for every interactive element in
+     Officium-themed regions (navbar, homepage, footer). */
+  .os-theme :where(a, button, [role="button"], input, select, textarea, summary):focus-visible {
+    outline: 2px solid rgb(var(--focus-ring));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* --- Editorial type scale --- */
+  .type-display {
+    font-family: var(--font-fraunces), serif;
+    font-weight: 400;
+    font-size: clamp(3.4rem, 12.5vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+  }
+  .type-h1 {
+    font-family: var(--font-fraunces), serif;
+    font-weight: 400;
+    font-size: clamp(2.5rem, 6vw, 4.75rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .type-h2 {
+    font-family: var(--font-fraunces), serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    line-height: 1.06;
+    letter-spacing: -0.022em;
+  }
+  .type-h3 {
+    font-family: var(--font-fraunces), serif;
+    font-weight: 500;
+    font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+    line-height: 1.15;
+    letter-spacing: -0.012em;
+  }
+  .type-lead {
+    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+    line-height: 1.6;
+  }
+  .type-body {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .eyebrow {
+    font-family: var(--font-inter), sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .text-muted {
+    color: rgb(var(--muted-text) / var(--muted-alpha));
+  }
+  .hairline {
+    border-color: rgb(var(--border) / var(--border-alpha));
+  }
+
+  /* --- Glass (palette-only; prepares surfaces for the future shader CTA) --- */
+  .os-glass {
+    background-color: rgb(var(--glass) / var(--glass-alpha));
+    border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.1);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.1);
+  }
+
+  /* --- Buttons --- */
+  .os-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3.25rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    font-family: var(--font-inter), sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+    transition: background-color 0.35s var(--ease-editorial), color 0.35s var(--ease-editorial),
+      border-color 0.35s var(--ease-editorial), transform 0.35s var(--ease-editorial);
+  }
+  .os-btn:active {
+    transform: scale(0.98);
+  }
+  .os-btn-primary {
+    background-color: rgb(var(--os-burgundy));
+    color: rgb(var(--os-cream));
+  }
+  .os-btn-primary:hover {
+    background-color: rgb(var(--os-ink));
+  }
+  .os-btn-cream {
+    background-color: rgb(var(--os-cream));
+    color: rgb(var(--os-burgundy));
+  }
+  .os-btn-cream:hover {
+    background-color: rgb(255 250 240);
+    color: rgb(var(--os-ink));
+  }
+  .os-btn-ghost {
+    color: rgb(var(--foreground));
+  }
+  .os-btn-ghost:hover {
+    background-color: rgb(var(--glass) / calc(var(--glass-alpha) + 0.08));
+  }
+
+  .os-link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+    text-decoration-color: rgb(var(--accent) / 0.35);
+    transition: text-decoration-color 0.3s var(--ease-editorial), color 0.3s var(--ease-editorial);
+  }
+  .os-link-arrow:hover {
+    text-decoration-color: rgb(var(--accent));
+  }
+  .os-link-arrow svg {
+    transition: transform 0.3s var(--ease-editorial);
+  }
+  .os-link-arrow:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Homepage journey (hero + first scroll sequence)                    */
+/* Heights live in CSS so SSR markup is correct before hydration.     */
+/* ------------------------------------------------------------------ */
+.journey {
+  position: relative;
+  height: 170svh;
+}
+@media (min-width: 768px) {
+  .journey {
+    height: 210vh;
+  }
+}
+.journey-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .journey-stage {
+    height: 100vh;
+    min-height: 640px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No pinning, no cinematic states: every piece of copy is shown in flow. */
+  .journey {
+    height: auto;
+  }
+  .journey-stage {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+  }
+  .journey-motion {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .journey-statements {
+    position: relative !important;
+    inset: auto !important;
+  }
+  .journey-statement {
+    position: relative !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .journey-cue,
+  .journey-fade-to-cream {
+    display: none !important;
+  }
 }
 
 /* 3D Perspective Utilities */
@@ -101,4 +380,25 @@ body {
 /* Text Balance */
 .text-balance {
   text-wrap: balance;
+}
+
+/* Officium Signature Shader Glass CTA Container */
+.officium-glass-cta {
+  width: 270px;
+  height: 68px;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .officium-glass-cta {
+    width: 310px;
+    height: 76px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .officium-glass-cta {
+    width: 340px;
+    height: 82px;
+  }
 }

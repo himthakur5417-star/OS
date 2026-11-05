@@ -22,25 +22,55 @@ import {
   Download,
   Maximize2,
   Minimize2,
+  Lock,
 } from "lucide-react";
-import SyllabusDossier, { SyllabusTrack } from "./SyllabusDossier";
+import SyllabusDossier, { type SyllabusTrack } from "./SyllabusDossier";
 import {
   NDA_MATHS_CHAPTERS,
   CDS_MATHS_CHAPTERS,
   ENGLISH_CHAPTERS,
   PYQ_YEARS,
-  ChapterItem,
-} from "@/data/vaultManifest";
+} from "@/data/vaultManifestClient";
 import { useAuth } from "./AuthContext";
+import { auth, getFirebaseAuth } from "@/lib/firebase";
+import SubjectPurchasePanel, { type SubjectEntitlementInfo } from "@/components/SubjectPurchasePanel";
+import { subjectForDocumentRef, type PaidSubjectId } from "@/lib/paymentCatalog";
 
 export type VaultTab = "syllabus" | "nda-maths" | "cds-maths" | "english" | "pyq";
 
+function splitDocHash(pdfPath: string): { basePath: string; hash: string } {
+  const hashIndex = pdfPath.indexOf("#");
+  if (hashIndex === -1) return { basePath: pdfPath, hash: "" };
+  return {
+    basePath: pdfPath.slice(0, hashIndex),
+    hash: pdfPath.slice(hashIndex + 1),
+  };
+}
+
 function getDocStreamUrl(pdfPath: string): string {
   if (!pdfPath) return "";
-  if (pdfPath.startsWith("http://") || pdfPath.startsWith("https://")) return pdfPath;
-  if (pdfPath.startsWith("/api/vault/doc")) return pdfPath;
-  const cleanPath = pdfPath.startsWith("/") ? pdfPath.slice(1) : pdfPath;
+  const { basePath } = splitDocHash(pdfPath);
+  if (basePath.startsWith("http://") || basePath.startsWith("https://")) return basePath;
+  if (basePath.startsWith("/api/vault/doc")) return basePath;
+  if (basePath.startsWith("vault:")) {
+    return `/api/vault/doc?document=${encodeURIComponent(basePath.slice("vault:".length))}`;
+  }
+  const cleanPath = basePath.startsWith("/") ? basePath.slice(1) : basePath;
   return `/api/vault/doc?file=${encodeURIComponent(cleanPath)}`;
+}
+
+function isFreeDocument(pdfPath: string): boolean {
+  const root = pdfPath.replace(/^[/\\]+/, "").split(/[\\/]/)[0]?.toLowerCase();
+  return root === "pyq" || root === "syllabus" || pdfPath.startsWith("vault:pyq-") || pdfPath.startsWith("vault:syllabus-");
+}
+
+function isPaidDocument(pdfPath: string): boolean {
+  return pdfPath.startsWith("vault:") && !isFreeDocument(pdfPath);
+}
+
+function getPreviewStreamUrl(pdfPath: string): string {
+  if (!pdfPath.startsWith("vault:")) return "";
+  return `/api/vault/preview?document=${encodeURIComponent(pdfPath.slice("vault:".length))}`;
 }
 
 interface Props {
@@ -60,7 +90,7 @@ export default function AcademicVaultViewer({
   selectedDocTitle,
   onClearDoc,
 }: Props) {
-  const { requireAuth } = useAuth();
+  const { user, requireAuth } = useAuth();
   const [internalTab, setInternalTab] = useState<VaultTab>("syllabus");
   const activeTab = controlledTab || internalTab;
 
@@ -69,32 +99,178 @@ export default function AcademicVaultViewer({
     setInternalTab(tab);
   };
 
+  const [entitlements, setEntitlements] = useState<Partial<Record<PaidSubjectId, SubjectEntitlementInfo>>>({});
+  const [entitlementsLoading, setEntitlementsLoading] = useState(false);
+
+  const hasActiveEntitlement = React.useCallback(
+    (pdfPath: string): boolean => {
+      const subjectId = subjectForDocumentRef(pdfPath);
+      if (!subjectId) return false;
+      const ent = entitlements[subjectId];
+      if (!ent || !ent.active || !ent.expiresAt) return false;
+      const expiry = Date.parse(ent.expiresAt);
+      return Number.isFinite(expiry) && expiry > Date.now();
+    },
+    [entitlements]
+  );
+
+  const refreshEntitlements = React.useCallback(
+    async (immediateUpdate?: SubjectEntitlementInfo) => {
+      if (immediateUpdate) {
+        setEntitlements((prev) => ({
+          ...prev,
+          [immediateUpdate.subjectId]: immediateUpdate,
+        }));
+      }
+
+      const firebaseAuth = auth || getFirebaseAuth();
+      const currentUser = firebaseAuth?.currentUser;
+      if (!user || !currentUser) {
+        setEntitlements({});
+        return;
+      }
+
+      setEntitlementsLoading(true);
+      try {
+        const token = await currentUser.getIdToken();
+        const res = await fetch("/api/payment-entitlements", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data?.entitlements && typeof data.entitlements === "object") {
+          setEntitlements(data.entitlements);
+        }
+      } catch {
+        // Keep current entitlement state on transient network failure
+      } finally {
+        setEntitlementsLoading(false);
+      }
+    },
+    [user]
+  );
+
+  React.useEffect(() => {
+    refreshEntitlements();
+  }, [refreshEntitlements]);
+
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeModalDoc, setActiveModalDoc] = useState<{
     title: string;
     pdf: string;
     meta?: string;
+    preview?: boolean;
   } | null>(
-    selectedDocPdf ? { title: selectedDocTitle || "Document Viewer", pdf: selectedDocPdf } : null
+    selectedDocPdf
+      ? {
+          title: selectedDocTitle || "Document Viewer",
+          pdf: selectedDocPdf,
+          preview: isPaidDocument(selectedDocPdf),
+        }
+      : null
   );
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [documentObjectUrl, setDocumentObjectUrl] = useState<string | null>(null);
+  const [documentLoading, setDocumentLoading] = useState(false);
+  const [documentError, setDocumentError] = useState<string | null>(null);
+  const [syllabusTrack, setSyllabusTrack] = useState<SyllabusTrack>(
+    selectedDocPdf?.includes("CDS-Syllabus") ? "cds" : "nda"
+  );
 
-  // Open document in modal reader (prompts sign-in if guest, then opens)
+  // If a user already owns an active entitlement for the subject, open the
+  // complete chapter directly; otherwise open the restricted preview.
   const openDoc = (doc: { title: string; pdf: string; meta?: string }) => {
-    requireAuth(() => {
-      setActiveModalDoc(doc);
-    });
+    const openFull = () => {
+      setActiveModalDoc({ ...doc, preview: false });
+    };
+    if (isPaidDocument(doc.pdf)) {
+      if (hasActiveEntitlement(doc.pdf)) {
+        openFull();
+      } else {
+        setActiveModalDoc({ ...doc, preview: true });
+      }
+    } else if (isFreeDocument(doc.pdf)) {
+      openFull();
+    } else {
+      requireAuth(openFull);
+    }
   };
 
   // Sync incoming doc if passed from parent
   React.useEffect(() => {
     if (selectedDocPdf) {
+      if (selectedDocPdf.includes("CDS-Syllabus")) {
+        setSyllabusTrack("cds");
+      } else if (selectedDocPdf.includes("NDA-Syllabus")) {
+        setSyllabusTrack("nda");
+      }
+      const shouldPreview = isPaidDocument(selectedDocPdf) && !hasActiveEntitlement(selectedDocPdf);
       setActiveModalDoc({
         title: selectedDocTitle || "Official Document",
         pdf: selectedDocPdf,
+        preview: shouldPreview,
       });
     }
-  }, [selectedDocPdf, selectedDocTitle]);
+  }, [selectedDocPdf, selectedDocTitle, hasActiveEntitlement]);
+
+  // Automatically upgrade an open preview to full document when entitlement becomes active
+  React.useEffect(() => {
+    if (activeModalDoc?.preview && isPaidDocument(activeModalDoc.pdf) && hasActiveEntitlement(activeModalDoc.pdf)) {
+      setActiveModalDoc((prev) => (prev ? { ...prev, preview: false } : null));
+    }
+  }, [activeModalDoc, hasActiveEntitlement]);
+
+  React.useEffect(() => {
+    if (!activeModalDoc) {
+      setDocumentObjectUrl(null);
+      setDocumentError(null);
+      return;
+    }
+
+    let active = true;
+    let objectUrl: string | null = null;
+    setDocumentLoading(true);
+    setDocumentError(null);
+    setDocumentObjectUrl(null);
+
+    const loadDocument = async () => {
+      try {
+        const headers: HeadersInit = {};
+        if (!isFreeDocument(activeModalDoc.pdf) && !activeModalDoc.preview) {
+          const firebaseAuth = auth || getFirebaseAuth();
+          const token = await firebaseAuth?.currentUser?.getIdToken();
+          if (!token) throw new Error("Please sign in with Firebase again to access this subject.");
+          headers.Authorization = `Bearer ${token}`;
+        }
+        const documentUrl = activeModalDoc.preview
+          ? getPreviewStreamUrl(activeModalDoc.pdf)
+          : getDocStreamUrl(activeModalDoc.pdf);
+        const response = await fetch(documentUrl, { headers, cache: "no-store" });
+        if (!response.ok) {
+          if (response.status === 403) {
+            refreshEntitlements();
+            throw new Error("An active purchase is required for this subject.");
+          }
+          throw new Error("Document could not be loaded.");
+        }
+        const blob = await response.blob();
+        objectUrl = URL.createObjectURL(blob);
+        if (active) setDocumentObjectUrl(objectUrl);
+      } catch (error: any) {
+        if (active) setDocumentError(error?.message || "Document could not be loaded.");
+      } finally {
+        if (active) setDocumentLoading(false);
+      }
+    };
+
+    loadDocument();
+    return () => {
+      active = false;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [activeModalDoc, refreshEntitlements]);
 
   // Filtering for chapters
   const filteredNdaMaths = useMemo(() => {
@@ -172,6 +348,12 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
 };
 
   const currentInfo = TAB_INFO[activeTab] || TAB_INFO["syllabus"];
+  const activeDocHash = activeModalDoc ? splitDocHash(activeModalDoc.pdf).hash : "";
+  const iframeDocumentUrl = documentObjectUrl
+    ? activeDocHash
+      ? `${documentObjectUrl}#${activeDocHash}`
+      : documentObjectUrl
+    : null;
 
   return (
     <div id="academic-vault-viewer" className="w-full max-w-7xl mx-auto scroll-mt-24">
@@ -267,10 +449,35 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
         )}
       </div>
 
+      {activeTab === "nda-maths" && (
+        <SubjectPurchasePanel
+          subjectId="nda-mathematics"
+          entitlement={entitlements["nda-mathematics"] || null}
+          entitlementLoading={entitlementsLoading}
+          onEntitlementUpdated={refreshEntitlements}
+        />
+      )}
+      {activeTab === "cds-maths" && (
+        <SubjectPurchasePanel
+          subjectId="cds-mathematics"
+          entitlement={entitlements["cds-mathematics"] || null}
+          entitlementLoading={entitlementsLoading}
+          onEntitlementUpdated={refreshEntitlements}
+        />
+      )}
+      {activeTab === "english" && (
+        <SubjectPurchasePanel
+          subjectId="nda-cds-english"
+          entitlement={entitlements["nda-cds-english"] || null}
+          entitlementLoading={entitlementsLoading}
+          onEntitlementUpdated={refreshEntitlements}
+        />
+      )}
+
       {/* ========================================================================= */}
       {/* TAB 1: SYLLABUS DOSSIER                                                   */}
       {/* ========================================================================= */}
-      {activeTab === "syllabus" && <SyllabusDossier initialTrack="nda" />}
+      {activeTab === "syllabus" && <SyllabusDossier initialTrack={syllabusTrack} />}
 
       {/* ========================================================================= */}
       {/* TAB 2: NDA MATHEMATICS (30 CHAPTERS SERIALIZED)                           */}
@@ -320,7 +527,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                     onClick={() => {
                       openDoc({
                         title: `${ch.num}: ${ch.title}`,
-                        pdf: ch.pdf,
+                        pdf: `vault:${ch.documentKey}`,
                         meta: ch.meta,
                       });
                     }}
@@ -386,7 +593,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                     onClick={() => {
                       openDoc({
                         title: `${ch.num}: ${ch.title}`,
-                        pdf: ch.pdf,
+                        pdf: `vault:${ch.documentKey}`,
                         meta: ch.meta,
                       });
                     }}
@@ -452,7 +659,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                     onClick={() => {
                       openDoc({
                         title: `${ch.num}: ${ch.title}`,
-                        pdf: ch.pdf,
+                        pdf: `vault:${ch.documentKey}`,
                         meta: ch.meta,
                       });
                     }}
@@ -513,7 +720,7 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                         onClick={() => {
                           openDoc({
                             title: `${item.year} — ${paper.name}`,
-                            pdf: paper.pdf,
+                            pdf: `vault:${paper.documentKey}`,
                             meta: item.tag,
                           });
                         }}
@@ -567,17 +774,22 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                   <h4 className="font-heading font-semibold text-sm sm:text-base text-white truncate">
                     {activeModalDoc.title}
                   </h4>
-                  {activeModalDoc.meta && (
+                  {activeModalDoc.preview ? (
+                    <div className="text-[11px] font-sans text-[#E8DCC6] truncate">
+                      Free preview · first half of the first page
+                    </div>
+                  ) : activeModalDoc.meta ? (
                     <div className="text-[11px] font-sans text-slate-400 truncate">
                       {activeModalDoc.meta}
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <a
-                  href={getDocStreamUrl(activeModalDoc.pdf)}
+                  href={iframeDocumentUrl || undefined}
+                  aria-disabled={!iframeDocumentUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
@@ -586,7 +798,8 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                   <ExternalLink className="w-4 h-4" />
                 </a>
                 <a
-                  href={getDocStreamUrl(activeModalDoc.pdf)}
+                  href={documentObjectUrl || undefined}
+                  aria-disabled={!documentObjectUrl}
                   download
                   className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
                   title="Download File"
@@ -615,11 +828,9 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
 
             {/* Modal Body / Embedded Iframe Viewer */}
             <div className="flex-1 bg-slate-100 relative">
-              <iframe
-                src={getDocStreamUrl(activeModalDoc.pdf)}
-                title={activeModalDoc.title}
-                className="w-full h-full border-none"
-              />
+              {documentLoading && <div className="absolute inset-0 flex items-center justify-center text-sm text-slate-500">Loading document…</div>}
+              {documentError && <div className="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-rose-700">{documentError}</div>}
+              {iframeDocumentUrl && <iframe key={iframeDocumentUrl} src={iframeDocumentUrl} title={activeModalDoc.title} className="w-full h-full border-none" />}
             </div>
 
             {/* Modal Bottom Bar */}
@@ -628,18 +839,34 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
                 Officium Supremum Study Library • Verified Study Document
               </span>
               <div className="flex items-center gap-4">
+                {activeModalDoc.preview && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      requireAuth(() =>
+                        setActiveModalDoc({ ...activeModalDoc, preview: false })
+                      )
+                    }
+                    className="text-[#E8DCC6] hover:text-white font-label uppercase tracking-wider flex items-center gap-1 font-semibold"
+                  >
+                    <span>Unlock Full Chapter</span>
+                    <Lock className="w-3 h-3" />
+                  </button>
+                )}
                 <a
-                  href={getDocStreamUrl(activeModalDoc.pdf)}
-                  target="_blank"
+                    href={iframeDocumentUrl || undefined}
+                    aria-disabled={!iframeDocumentUrl}
+                    target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#C8A84E] hover:underline font-label uppercase tracking-wider flex items-center gap-1 font-semibold"
                 >
                   <span>Open in Full Browser Tab</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
-                <a
-                  href={getDocStreamUrl(activeModalDoc.pdf)}
-                  download
+                  <a
+                    href={documentObjectUrl || undefined}
+                    aria-disabled={!documentObjectUrl}
+                    download
                   className="text-slate-300 hover:text-white font-label uppercase tracking-wider flex items-center gap-1 font-semibold"
                 >
                   <span>Download Copy</span>
@@ -653,4 +880,3 @@ const TAB_INFO: Record<VaultTab, { eyebrow: string; title: string; subtitle: str
     </div>
   );
 }
-

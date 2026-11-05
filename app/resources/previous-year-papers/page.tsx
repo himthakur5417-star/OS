@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { PYQ_YEARS } from "@/data/vaultManifest";
+import { PYQ_YEARS } from "@/data/vaultManifestClient";
 import ResourceLoginCta from "@/components/ResourceLoginCta";
 import { FileText, CheckCircle2, ShieldCheck, Compass, AlertCircle } from "lucide-react";
 

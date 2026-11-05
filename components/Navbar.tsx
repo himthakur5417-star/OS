@@ -18,12 +18,31 @@ import {
   LogOut,
   BookOpen,
   ArrowRight,
+  LayoutDashboard,
 } from "lucide-react";
 
 export function Navbar() {
   const pathname = usePathname();
   const { openOrientation } = useModals();
-  const { user, openAuthModal, logout } = useAuth();
+  const { user: authUser, openAuthModal, logout } = useAuth();
+  const [devStudentUser, setDevStudentUser] = useState<typeof authUser | null>(null);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get("preview") === "student") {
+        setDevStudentUser({
+          uid: "test_cadet_uid_8412",
+          email: "cadet.vikram@officiumsupremum.in",
+          displayName: "Cadet Vikram",
+          role: "user",
+          rollNumber: "OS-USR-8412",
+        });
+      }
+    }
+  }, []);
+
+  const user = authUser || devStudentUser;
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [programsDropdownOpen, setProgramsDropdownOpen] = useState(false);
@@ -53,53 +72,66 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const isHeroTop = pathname === "/" && !scrolled;
+
+  // Admin portal pages render their own dedicated command header
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   const programs = [
     {
       href: "/programs/juniors",
       icon: <Sparkles className="w-5 h-5" />,
-      iconBg: "bg-sky-100/80 text-sky-600",
+      iconBg: isHeroTop ? "bg-[#722F37]/30 text-[#E8DCC6]" : "bg-[#722F37]/10 text-[#722F37]",
       name: "Juniors Program",
       desc: "Class 7–10 • Build daily study habits & confidence early",
-      hoverBg: "hover:bg-sky-50/80",
+      hoverBg: isHeroTop ? "hover:bg-[#E8DCC6]/5" : "hover:bg-[#FAF7F2]",
     },
     {
       href: "/programs/scholars",
       icon: <GraduationCap className="w-5 h-5" />,
-      iconBg: "bg-amber-100/80 text-amber-700",
+      iconBg: isHeroTop ? "bg-[#B7A89A]/30 text-[#E8DCC6]" : "bg-[#B7A89A]/20 text-[#722F37]",
       name: "Scholars Program",
       desc: "Class 11–12 • Balance board exams & competitive tests",
-      hoverBg: "hover:bg-amber-50/60",
+      hoverBg: isHeroTop ? "hover:bg-[#E8DCC6]/5" : "hover:bg-[#FAF7F2]",
     },
     {
       href: "/programs/defence",
       icon: <Shield className="w-5 h-5" />,
-      iconBg: "bg-emerald-100/80 text-emerald-700",
+      iconBg: isHeroTop ? "bg-[#722F37]/30 text-[#E8DCC6]" : "bg-[#722F37]/15 text-[#722F37]",
       name: "Defence Leadership",
       desc: "NDA • CDS • AFCAT • Written Exam & SSB Guidance",
-      hoverBg: "hover:bg-emerald-50/60",
+      hoverBg: isHeroTop ? "hover:bg-[#E8DCC6]/5" : "hover:bg-[#FAF7F2]",
     },
   ];
 
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/90 backdrop-blur-xl border-b border-slate-200/70 shadow-sm py-2.5"
-          : "bg-white/70 backdrop-blur-sm border-b border-slate-200/40 py-3.5"
+        isHeroTop
+          ? "bg-[#211C1D]/65 backdrop-blur-md border-b border-[#E8DCC6]/10 text-[#E8DCC6] py-3.5"
+          : "bg-[#FAF7F2]/95 backdrop-blur-xl border-b border-[#211C1D]/10 text-[#211C1D] shadow-sm py-2.5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo Lockup */}
         <Link href="/" className="flex items-center">
-          <Logo variant="light" size="md" />
+          <Logo variant={isHeroTop ? "cream" : "burgundy"} size="md" />
         </Link>
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-7">
           <Link
             href="/"
-            className={`font-label text-xs tracking-widest uppercase transition-colors hover:text-[#C8A84E] ${
-              pathname === "/" ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
+            className={`font-label text-xs tracking-widest uppercase transition-colors ${
+              isHeroTop
+                ? pathname === "/"
+                  ? "text-[#E8DCC6] font-semibold border-b-2 border-[#722F37] pb-0.5"
+                  : "text-[#E8DCC6]/75 hover:text-[#E8DCC6]"
+                : pathname === "/"
+                ? "text-[#211C1D] font-semibold border-b-2 border-[#722F37] pb-0.5"
+                : "text-[#211C1D]/75 hover:text-[#722F37]"
             }`}
           >
             Home
@@ -113,8 +145,12 @@ export function Navbar() {
             onMouseLeave={() => setProgramsDropdownOpen(false)}
           >
             <button
-              className={`font-label text-xs tracking-widest uppercase flex items-center gap-1.5 transition-colors hover:text-[#C8A84E] py-2 ${
-                pathname.startsWith("/programs") ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
+              className={`font-label text-xs tracking-widest uppercase flex items-center gap-1.5 transition-colors py-2 ${
+                isHeroTop
+                  ? "text-[#E8DCC6]/75 hover:text-[#E8DCC6]"
+                  : pathname.startsWith("/programs")
+                  ? "text-[#211C1D] font-semibold border-b-2 border-[#722F37] pb-0.5"
+                  : "text-[#211C1D]/75 hover:text-[#722F37]"
               }`}
             >
               <span>Programs</span>
@@ -122,12 +158,22 @@ export function Navbar() {
             </button>
 
             {programsDropdownOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[420px] bg-white border border-slate-200/90 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] p-2 z-50 mt-1">
+              <div
+                className={`absolute top-full left-1/2 -translate-x-1/2 w-[420px] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] p-2 z-50 mt-1 border ${
+                  isHeroTop
+                    ? "bg-[#211C1D] border-[#E8DCC6]/20 text-[#E8DCC6]"
+                    : "bg-[#FAF7F2] border-[#211C1D]/10 text-[#211C1D]"
+                }`}
+              >
                 {/* Mega Menu Header */}
-                <div className="px-4 pt-3 pb-2 border-b border-slate-100/80 mb-1">
+                <div
+                  className={`px-4 pt-3 pb-2 border-b mb-1 ${
+                    isHeroTop ? "border-[#E8DCC6]/10 text-[#B7A89A]" : "border-[#211C1D]/10 text-[#211C1D]/60"
+                  }`}
+                >
                   <div className="flex items-center gap-2">
-                    <BookOpen className="w-3.5 h-3.5 text-[#C8A84E]" />
-                    <span className="font-label text-[10px] uppercase tracking-[0.2em] text-slate-500 font-semibold">
+                    <BookOpen className="w-3.5 h-3.5 text-[#722F37]" />
+                    <span className="font-label text-[10px] uppercase tracking-[0.2em] font-semibold">
                       Our Programs
                     </span>
                   </div>
@@ -146,26 +192,48 @@ export function Navbar() {
                         {prog.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="font-heading font-semibold text-sm text-[#0B192C] group-hover/item:text-[#C8A84E] transition-colors">
+                        <div
+                          className={`font-heading font-semibold text-sm transition-colors ${
+                            isHeroTop
+                              ? "text-[#E8DCC6] group-hover/item:text-[#B7A89A]"
+                              : "text-[#211C1D] group-hover/item:text-[#722F37]"
+                          }`}
+                        >
                           {prog.name}
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                        <div
+                          className={`text-xs mt-0.5 leading-relaxed ${
+                            isHeroTop ? "text-[#B7A89A]" : "text-[#211C1D]/70"
+                          }`}
+                        >
                           {prog.desc}
                         </div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-slate-300 group-hover/item:text-[#C8A84E] group-hover/item:translate-x-0.5 transition-all shrink-0" />
+                      <ArrowRight
+                        className={`w-4 h-4 group-hover/item:translate-x-0.5 transition-all shrink-0 ${
+                          isHeroTop ? "text-[#B7A89A] group-hover/item:text-[#E8DCC6]" : "text-[#211C1D]/40 group-hover/item:text-[#722F37]"
+                        }`}
+                      />
                     </Link>
                   ))}
                 </div>
 
                 {/* Mega Menu Footer */}
-                <div className="px-4 pt-2 pb-3 mt-1 border-t border-slate-100/80">
+                <div
+                  className={`px-4 pt-2 pb-3 mt-1 border-t ${
+                    isHeroTop ? "border-[#E8DCC6]/10" : "border-[#211C1D]/10"
+                  }`}
+                >
                   <button
                     onClick={() => {
                       setProgramsDropdownOpen(false);
                       openOrientation("general");
                     }}
-                    className="w-full text-center py-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs font-label uppercase tracking-wider text-slate-600 hover:text-[#0B192C] transition-colors"
+                    className={`w-full text-center py-2 rounded-lg text-xs font-label uppercase tracking-wider transition-colors ${
+                      isHeroTop
+                        ? "bg-[#E8DCC6]/5 hover:bg-[#E8DCC6]/10 text-[#E8DCC6]/80 hover:text-[#E8DCC6]"
+                        : "bg-white hover:bg-[#E8DCC6]/40 text-[#211C1D]/80 hover:text-[#722F37]"
+                    }`}
                   >
                     Not sure which program to pick? Book a Free Call →
                   </button>
@@ -176,8 +244,12 @@ export function Navbar() {
 
           <Link
             href="/resources"
-            className={`font-label text-xs tracking-widest uppercase transition-colors hover:text-[#C8A84E] ${
-              pathname === "/resources" ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
+            className={`font-label text-xs tracking-widest uppercase transition-colors ${
+              isHeroTop
+                ? "text-[#E8DCC6]/75 hover:text-[#E8DCC6]"
+                : pathname === "/resources"
+                ? "text-[#211C1D] font-semibold border-b-2 border-[#722F37] pb-0.5"
+                : "text-[#211C1D]/75 hover:text-[#722F37]"
             }`}
           >
             Study Materials
@@ -185,8 +257,12 @@ export function Navbar() {
 
           <Link
             href="/about"
-            className={`font-label text-xs tracking-widest uppercase transition-colors hover:text-[#C8A84E] ${
-              pathname === "/about" ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
+            className={`font-label text-xs tracking-widest uppercase transition-colors ${
+              isHeroTop
+                ? "text-[#E8DCC6]/75 hover:text-[#E8DCC6]"
+                : pathname === "/about"
+                ? "text-[#211C1D] font-semibold border-b-2 border-[#722F37] pb-0.5"
+                : "text-[#211C1D]/75 hover:text-[#722F37]"
             }`}
           >
             About Us
@@ -194,8 +270,12 @@ export function Navbar() {
 
           <Link
             href="/contact"
-            className={`font-label text-xs tracking-widest uppercase transition-colors hover:text-[#C8A84E] ${
-              pathname === "/contact" ? "text-[#0B192C] font-semibold border-b-2 border-[#C8A84E] pb-0.5" : "text-slate-600"
+            className={`font-label text-xs tracking-widest uppercase transition-colors ${
+              isHeroTop
+                ? "text-[#E8DCC6]/75 hover:text-[#E8DCC6]"
+                : pathname === "/contact"
+                ? "text-[#211C1D] font-semibold border-b-2 border-[#722F37] pb-0.5"
+                : "text-[#211C1D]/75 hover:text-[#722F37]"
             }`}
           >
             Contact Us
@@ -209,22 +289,32 @@ export function Navbar() {
             <div className="relative" ref={userDropdownRef}>
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-2 bg-slate-50 border border-slate-200 hover:border-slate-300 px-3 py-1.5 rounded-xl transition-colors shadow-sm"
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl transition-colors shadow-sm border ${
+                  isHeroTop
+                    ? "bg-[#E8DCC6]/10 border-[#E8DCC6]/20 text-[#E8DCC6]"
+                    : "bg-white border-[#211C1D]/15 text-[#211C1D]"
+                }`}
               >
-                <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-200 to-orange-100 border border-amber-300 text-[#0B192C] font-bold text-xs flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-[#722F37] text-[#E8DCC6] font-bold text-xs flex items-center justify-center">
                   {user.displayName?.[0] || "C"}
                 </div>
-                <span className="text-xs font-heading font-medium text-slate-800">
+                <span className="text-xs font-heading font-medium">
                   {user.displayName || "Cadet"}
                 </span>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
+                <ChevronDown className="w-3 h-3 opacity-60" />
               </button>
 
               {userDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 z-50 text-xs space-y-1">
-                  <div className="px-3 py-2 border-b border-slate-100">
-                    <div className="font-heading font-semibold text-slate-900">{user.displayName || "Account"}</div>
-                    <div className="text-[10px] text-slate-500 font-label uppercase">
+                <div
+                  className={`absolute right-0 top-full mt-2 w-56 rounded-2xl shadow-xl p-2 z-50 text-xs space-y-1 border ${
+                    isHeroTop
+                      ? "bg-[#211C1D] border-[#E8DCC6]/20 text-[#E8DCC6]"
+                      : "bg-[#FAF7F2] border-[#211C1D]/15 text-[#211C1D]"
+                  }`}
+                >
+                  <div className={`px-3 py-2 border-b ${isHeroTop ? "border-[#E8DCC6]/10" : "border-[#211C1D]/10"}`}>
+                    <div className="font-heading font-semibold">{user.displayName || "Account"}</div>
+                    <div className="text-[10px] opacity-70 font-label uppercase">
                       {user.role === "admin" ? "Academy Administrator" : (user.email || "Member")}
                     </div>
                   </div>
@@ -232,10 +322,20 @@ export function Navbar() {
                     <Link
                       href="/admin"
                       onClick={() => setUserDropdownOpen(false)}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-[#0B192C] font-semibold hover:bg-amber-50/80 rounded-lg transition-colors font-label uppercase tracking-wider"
+                      className="w-full flex items-center gap-2 px-3 py-2 font-semibold hover:bg-[#722F37]/15 rounded-lg transition-colors font-label uppercase tracking-wider text-[#722F37]"
                     >
-                      <Shield className="w-3.5 h-3.5 text-[#C8A84E]" />
+                      <Shield className="w-3.5 h-3.5" />
                       <span>Admin Dashboard</span>
+                    </Link>
+                  )}
+                  {user.role !== "admin" && (
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="w-full flex items-center gap-2 px-3 py-2 font-semibold hover:bg-[#722F37]/15 rounded-lg transition-colors font-label uppercase tracking-wider text-[#722F37]"
+                    >
+                      <LayoutDashboard className="w-3.5 h-3.5" />
+                      <span>Student Dashboard</span>
                     </Link>
                   )}
                   <button
@@ -243,7 +343,7 @@ export function Navbar() {
                       setUserDropdownOpen(false);
                       logout();
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors font-label uppercase tracking-wider"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-rose-600 hover:bg-rose-500/10 rounded-lg transition-colors font-label uppercase tracking-wider"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>Sign Out</span>
@@ -254,17 +354,21 @@ export function Navbar() {
           ) : (
             <button
               onClick={() => openAuthModal("signin")}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-label uppercase tracking-wider text-slate-700 hover:text-[#0B192C] border border-slate-200/80 hover:bg-slate-50 rounded-xl transition-all shadow-sm"
+              className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-label uppercase tracking-wider rounded-xl transition-all shadow-sm border ${
+                isHeroTop
+                  ? "text-[#E8DCC6] border-[#E8DCC6]/25 hover:bg-[#E8DCC6]/10"
+                  : "text-[#211C1D] border-[#211C1D]/20 hover:bg-[#211C1D]/5"
+              }`}
             >
-              <LogIn className="w-3.5 h-3.5 text-[#C8A84E]" />
+              <LogIn className="w-3.5 h-3.5 text-[#722F37]" />
               <span>Student Login</span>
             </button>
           )}
 
-          {/* Book Orientation Primary CTA */}
+          {/* Book Free Call Primary CTA */}
           <button
             onClick={() => openOrientation("general")}
-            className="inline-flex items-center justify-center px-4 py-2 text-xs font-label uppercase tracking-widest font-bold text-white bg-[#0B192C] hover:bg-[#1E293B] rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95"
+            className="inline-flex items-center justify-center px-4 py-2 text-xs font-label uppercase tracking-widest font-bold text-[#E8DCC6] bg-[#722F37] hover:bg-[#8B3A44] rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95"
           >
             Book a Free Call
           </button>
@@ -274,7 +378,11 @@ export function Navbar() {
         <div className="flex lg:hidden items-center gap-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl bg-slate-100 text-slate-700 border border-slate-200"
+            className={`p-2 rounded-xl border ${
+              isHeroTop
+                ? "bg-[#211C1D] text-[#E8DCC6] border-[#E8DCC6]/20"
+                : "bg-white text-[#211C1D] border-[#211C1D]/15"
+            }`}
             aria-label="Toggle Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -284,32 +392,40 @@ export function Navbar() {
 
       {/* Mobile drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white/98 backdrop-blur-xl border-b border-slate-200 px-5 pt-4 pb-7 space-y-4">
-          <div className="flex flex-col space-y-3 font-label text-xs uppercase tracking-wider text-slate-700">
+        <div
+          className={`lg:hidden border-b px-5 pt-4 pb-7 space-y-4 ${
+            isHeroTop
+              ? "bg-[#211C1D] text-[#E8DCC6] border-[#E8DCC6]/20"
+              : "bg-[#FAF7F2] text-[#211C1D] border-[#211C1D]/15"
+          }`}
+        >
+          <div className="flex flex-col space-y-3 font-label text-xs uppercase tracking-wider">
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-[#C8A84E] py-1 border-b border-slate-100"
+              className="hover:text-[#722F37] py-1 border-b border-black/5"
             >
               Home
             </Link>
 
-            <div className="py-1 border-b border-slate-100 space-y-3">
-              <span className="text-slate-400 text-[10px]">Programs</span>
+            <div className="py-1 border-b border-black/5 space-y-3">
+              <span className="opacity-60 text-[10px]">Programs</span>
               <div className="space-y-2">
                 {programs.map((prog) => (
                   <Link
                     key={prog.href}
                     href={prog.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-slate-50/80 hover:bg-slate-100 transition-colors"
+                    className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${
+                      isHeroTop ? "bg-[#E8DCC6]/5 hover:bg-[#E8DCC6]/10" : "bg-white/80 hover:bg-white"
+                    }`}
                   >
                     <div className={`w-9 h-9 rounded-lg ${prog.iconBg} flex items-center justify-center shrink-0`}>
                       {React.cloneElement(prog.icon, { className: "w-4 h-4" })}
                     </div>
                     <div>
-                      <div className="font-heading font-semibold text-xs text-[#0B192C]">{prog.name}</div>
-                      <div className="text-[10px] text-slate-500 normal-case tracking-normal">{prog.desc}</div>
+                      <div className="font-heading font-semibold text-xs">{prog.name}</div>
+                      <div className="text-[10px] opacity-70 normal-case tracking-normal">{prog.desc}</div>
                     </div>
                   </Link>
                 ))}
@@ -319,7 +435,7 @@ export function Navbar() {
             <Link
               href="/resources"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-[#C8A84E] py-1 border-b border-slate-100"
+              className="hover:text-[#722F37] py-1 border-b border-black/5"
             >
               Study Materials
             </Link>
@@ -327,14 +443,14 @@ export function Navbar() {
             <Link
               href="/about"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-[#C8A84E] py-1 border-b border-slate-100"
+              className="hover:text-[#722F37] py-1 border-b border-black/5"
             >
               About Us
             </Link>
             <Link
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-[#C8A84E] py-1 border-b border-slate-100"
+              className="hover:text-[#722F37] py-1 border-b border-black/5"
             >
               Contact Us
             </Link>
@@ -342,18 +458,31 @@ export function Navbar() {
 
           <div className="pt-2 flex flex-col gap-2.5">
             {user ? (
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <div
+                className={`p-3 rounded-xl border space-y-2 ${
+                  isHeroTop ? "bg-[#E8DCC6]/5 border-[#E8DCC6]/15" : "bg-white border-[#211C1D]/10"
+                }`}
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-700 font-heading">Logged in as {user.displayName}</span>
-                  <button onClick={logout} className="text-xs text-rose-600 font-label uppercase">Sign Out</button>
+                  <span className="text-xs font-heading">Logged in as {user.displayName}</span>
+                  <button onClick={logout} className="text-xs text-rose-500 font-label uppercase">Sign Out</button>
                 </div>
                 {user.role === "admin" && (
                   <Link
                     href="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-center py-2 bg-amber-100/70 text-[#0B192C] font-semibold text-xs rounded-lg font-label uppercase tracking-wider"
+                    className="block text-center py-2 bg-[#722F37]/20 text-[#722F37] font-semibold text-xs rounded-lg font-label uppercase tracking-wider"
                   >
                     Go to Admin Dashboard
+                  </Link>
+                )}
+                {user.role !== "admin" && (
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block text-center py-2 bg-[#722F37]/20 text-[#722F37] font-semibold text-xs rounded-lg font-label uppercase tracking-wider"
+                  >
+                    Go to Student Dashboard
                   </Link>
                 )}
               </div>
@@ -363,7 +492,11 @@ export function Navbar() {
                   setMobileMenuOpen(false);
                   openAuthModal("signin");
                 }}
-                className="w-full py-2.5 text-center text-xs font-label uppercase tracking-wider text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50"
+                className={`w-full py-2.5 text-center text-xs font-label uppercase tracking-wider rounded-xl border ${
+                  isHeroTop
+                    ? "border-[#E8DCC6]/30 text-[#E8DCC6] hover:bg-[#E8DCC6]/10"
+                    : "border-[#211C1D]/20 text-[#211C1D] hover:bg-[#211C1D]/5"
+                }`}
               >
                 Student Login
               </button>
@@ -374,7 +507,7 @@ export function Navbar() {
                 setMobileMenuOpen(false);
                 openOrientation("general");
               }}
-              className="w-full py-3 text-center text-xs font-label uppercase tracking-widest font-bold text-white bg-[#0B192C] rounded-xl shadow-md"
+              className="w-full py-3 text-center text-xs font-label uppercase tracking-widest font-bold text-[#E8DCC6] bg-[#722F37] hover:bg-[#8B3A44] rounded-xl shadow-md"
             >
               Book a Free Call
             </button>

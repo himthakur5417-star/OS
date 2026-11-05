@@ -4,10 +4,26 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
+        /* Officium brand system — see styles/globals.css for the source tokens */
+        burgundy: "rgb(var(--os-burgundy) / <alpha-value>)",
+        cream: "rgb(var(--os-cream) / <alpha-value>)",
+        taupe: "rgb(var(--os-taupe) / <alpha-value>)",
+        ink: "rgb(var(--os-ink) / <alpha-value>)",
+        os: {
+          bg: "rgb(var(--background) / <alpha-value>)",
+          fg: "rgb(var(--foreground) / <alpha-value>)",
+          brand: "rgb(var(--brand) / <alpha-value>)",
+          surface: "rgb(var(--surface) / <alpha-value>)",
+          "surface-muted": "rgb(var(--surface-muted) / <alpha-value>)",
+          accent: "rgb(var(--accent) / <alpha-value>)",
+          line: "rgb(var(--border) / <alpha-value>)",
+        },
+        /* Legacy palette — still used by program, resource, about and admin pages */
         academy: {
           white: "#FFFFFF",
           soft: "#FAFAF9",

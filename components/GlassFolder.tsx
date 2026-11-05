@@ -60,6 +60,8 @@ export type FolderFile = {
   href?: string
   /** Direct link to PDF document for viewing. */
   pdf?: string
+  /** Stable server-resolved document key; keeps protected paths out of the client. */
+  documentKey?: string
 }
 
 export type FolderMenuItem = {

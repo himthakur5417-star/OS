@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { useAuth } from "@/components/AuthContext";
 import {
   Users,
   Shield,
@@ -153,6 +154,10 @@ export default function AdminDashboardPage() {
   const [newMessage, setNewMessage] = useState("");
   const [newStatus, setNewStatus] = useState("new");
   const [leadCreatedSuccess, setLeadCreatedSuccess] = useState(false);
+  const { logout, verifyAdminSession } = useAuth();
+  const isMountedRef = useRef(true);
+  const initialDashboardLoadRef = useRef<Promise<void> | null>(null);
+  const inFlightTabLoadRef = useRef<Record<string, boolean>>({});
 
   const getAdminHeaders = (extra: Record<string, string> = {}) => {
     const token = typeof window !== "undefined" ? localStorage.getItem("os_admin_token") : null;
@@ -166,17 +171,16 @@ export default function AdminDashboardPage() {
 
   const loadDashboardData = async () => {
     try {
-      // 1. Verify session immediately
-      const authRes = await fetch("/api/admin/auth", {
-        headers: getAdminHeaders(),
-      });
-      if (!authRes.ok) {
+      // 1. Verify session immediately (coalesced across Strict Mode & AuthContext)
+      const authResult = await verifyAdminSession();
+      if (!isMountedRef.current) return;
+
+      if (!authResult.authenticated) {
         router.push("/admin/login");
         return;
       }
-      const authData = await authRes.json();
-      if (authData.admin?.email) {
-        setActiveAdminEmail(authData.admin.email);
+      if (authResult.admin?.email) {
+        setActiveAdminEmail(authResult.admin.email);
       }
 
       // Session verified: Reveal admin shell immediately for progressive UX
@@ -184,73 +188,102 @@ export default function AdminDashboardPage() {
 
       // 2. Concurrently fetch high-level stats and default active tab (enquiries)
       const [statsRes, enqRes] = await Promise.all([
-        fetch("/api/admin/stats", { headers: getAdminHeaders() }),
-        fetch("/api/admin/enquiries", { headers: getAdminHeaders() }),
+        fetch("/api/admin/stats", { headers: getAdminHeaders(), credentials: "include" }),
+        fetch("/api/admin/enquiries", { headers: getAdminHeaders(), credentials: "include" }),
       ]);
+      if (!isMountedRef.current) return;
 
       if (statsRes.ok) {
         const statsData = await statsRes.json();
-        setStats(statsData.stats);
+        if (isMountedRef.current) {
+          setStats(statsData.stats);
+        }
       }
 
       if (enqRes.ok) {
         const enqData = await enqRes.json();
-        setEnquiries(enqData.enquiries || []);
-        setLoadedTabs((prev) => ({ ...prev, enquiries: true }));
+        if (isMountedRef.current) {
+          setEnquiries(enqData.enquiries || []);
+          setLoadedTabs((prev) => ({ ...prev, enquiries: true }));
+        }
       }
     } catch (e) {
-      router.push("/admin/login");
+      if (isMountedRef.current) {
+        router.push("/admin/login");
+      }
     }
   };
 
   const loadTabData = async (tab: string) => {
+    if (inFlightTabLoadRef.current[tab]) return;
+
     if (tab === "logins" && !loadedTabs.logins) {
+      inFlightTabLoadRef.current[tab] = true;
       setTabLoading(true);
       try {
-        const logsRes = await fetch("/api/admin/logs?limit=100", { headers: getAdminHeaders() });
+        const logsRes = await fetch("/api/admin/logs?limit=100", { headers: getAdminHeaders(), credentials: "include" });
         if (logsRes.ok) {
           const logsData = await logsRes.json();
-          setLogs(logsData.logs || []);
-          setLoadedTabs((prev) => ({ ...prev, logins: true }));
+          if (isMountedRef.current) {
+            setLogs(logsData.logs || []);
+            setLoadedTabs((prev) => ({ ...prev, logins: true }));
+          }
         }
       } catch (e) {
         console.error("Failed to load logins tab:", e);
       } finally {
-        setTabLoading(false);
+        inFlightTabLoadRef.current[tab] = false;
+        if (isMountedRef.current) setTabLoading(false);
       }
     } else if (tab === "users" && !loadedTabs.users) {
+      inFlightTabLoadRef.current[tab] = true;
       setTabLoading(true);
       try {
-        const usersRes = await fetch("/api/admin/users", { headers: getAdminHeaders() });
+        const usersRes = await fetch("/api/admin/users", { headers: getAdminHeaders(), credentials: "include" });
         if (usersRes.ok) {
           const usersData = await usersRes.json();
-          setUsers(usersData.users || []);
-          setLoadedTabs((prev) => ({ ...prev, users: true }));
+          if (isMountedRef.current) {
+            setUsers(usersData.users || []);
+            setLoadedTabs((prev) => ({ ...prev, users: true }));
+          }
         }
       } catch (e) {
         console.error("Failed to load users tab:", e);
       } finally {
-        setTabLoading(false);
+        inFlightTabLoadRef.current[tab] = false;
+        if (isMountedRef.current) setTabLoading(false);
       }
     } else if (tab === "traffic" && !loadedTabs.traffic) {
+      inFlightTabLoadRef.current[tab] = true;
       setTabLoading(true);
       try {
-        const trfRes = await fetch("/api/admin/traffic?limit=100", { headers: getAdminHeaders() });
+        const trfRes = await fetch("/api/admin/traffic?limit=100", { headers: getAdminHeaders(), credentials: "include" });
         if (trfRes.ok) {
           const trfData = await trfRes.json();
-          setTrafficLogs(trfData.traffic || []);
-          setLoadedTabs((prev) => ({ ...prev, traffic: true }));
+          if (isMountedRef.current) {
+            setTrafficLogs(trfData.traffic || []);
+            setLoadedTabs((prev) => ({ ...prev, traffic: true }));
+          }
         }
       } catch (e) {
         console.error("Failed to load traffic tab:", e);
       } finally {
-        setTabLoading(false);
+        inFlightTabLoadRef.current[tab] = false;
+        if (isMountedRef.current) setTabLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    loadDashboardData();
+    isMountedRef.current = true;
+    if (!initialDashboardLoadRef.current) {
+      initialDashboardLoadRef.current = loadDashboardData().finally(() => {
+        initialDashboardLoadRef.current = null;
+      });
+    }
+    return () => {
+      isMountedRef.current = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -301,17 +334,7 @@ export default function AdminDashboardPage() {
   };
 
   const handleLogout = async () => {
-    try {
-      await fetch("/api/admin/auth", {
-        method: "DELETE",
-        headers: getAdminHeaders(),
-      });
-    } catch (e) {}
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("os_admin_token");
-      localStorage.removeItem("os_active_user");
-    }
-    router.push("/admin/login");
+    await logout("/admin/login");
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {

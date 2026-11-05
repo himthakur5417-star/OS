@@ -72,7 +72,7 @@ export function MotivationalDispatch() {
           <Quote className="w-8 h-8 text-[#C8A84E]/40 shrink-0 mt-1" />
           <div>
             <p className="font-heading italic text-lg sm:text-xl text-zinc-100 leading-snug">
-              "{dispatch.quote}"
+              &ldquo;{dispatch.quote}&rdquo;
             </p>
             <div className="font-label text-xs uppercase tracking-widest text-[#C8A84E] mt-2 font-semibold">
               — {dispatch.author}
@@ -87,7 +87,7 @@ export function MotivationalDispatch() {
         <div className="mt-4 p-3.5 rounded-xl bg-[#0F1115] border border-[#2A2F3A] flex items-center gap-3">
           <ShieldAlert className="w-4 h-4 text-[#C8A84E] shrink-0" />
           <div className="text-xs text-zinc-300">
-            <strong className="text-white font-label uppercase tracking-wider mr-1">Today's Action:</strong>
+            <strong className="text-white font-label uppercase tracking-wider mr-1">Today&apos;s Action:</strong>
             {dispatch.focusDirective}
           </div>
         </div>

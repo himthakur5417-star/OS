@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ENGLISH_CHAPTERS } from "@/data/vaultManifest";
+import { ENGLISH_CHAPTERS } from "@/data/vaultManifestClient";
 import ResourceLoginCta from "@/components/ResourceLoginCta";
 import { BookOpen, CheckCircle2, HelpCircle } from "lucide-react";
 

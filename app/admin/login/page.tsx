@@ -15,7 +15,7 @@ export default function AdminLoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { signInGoogle } = useAuth();
+  const { signInGoogle, syncAdminSession } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +27,7 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email: cleanEmail, password }),
       });
 
@@ -39,6 +40,14 @@ export default function AdminLoginPage() {
       if (data.token) {
         localStorage.setItem("os_admin_token", data.token);
       }
+
+      syncAdminSession(
+        {
+          email: data.admin?.email || cleanEmail,
+          displayName: data.admin?.displayName,
+        },
+        data.token
+      );
 
       // Successful login -> go to admin dashboard
       router.push("/admin");

@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import { verifyAdminSession } from "@/lib/adminAuth";
+import { verifyAdminRequest } from "@/lib/adminAuth";
 
 export async function GET(req: NextRequest) {
-  if (!verifyAdminSession(req)) {
+  const authCheck = await verifyAdminRequest(req);
+  if (!authCheck.authorized) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 

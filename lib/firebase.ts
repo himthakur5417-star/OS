@@ -1,8 +1,9 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
+import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { 
   getAuth, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
+  updateProfile,
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
@@ -11,6 +12,7 @@ import {
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
+  type Auth,
   type User
 } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
@@ -24,22 +26,35 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:754661334425:web:0279cb6123fa8dc4974708",
 };
 
+// Client-side instances
+var app: FirebaseApp | null = null;
+var auth: Auth | null = null;
+var googleProvider: GoogleAuthProvider | null = null;
+var db: Firestore | null = null;
+
 // Safe lazy getter functions (prevents lexical TDZ and SSR crashes)
-export function getFirebaseApp() {
+export function getFirebaseApp(): FirebaseApp | null {
   try {
-    return getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    if (app) return app;
+    const instance = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    if (typeof window !== "undefined") {
+      app = instance;
+    }
+    return instance;
   } catch (e) {
     console.warn("Firebase App init warning:", e);
     return null;
   }
 }
 
-export function getFirebaseAuth() {
+export function getFirebaseAuth(): Auth | null {
   try {
+    if (auth) return auth;
     const a = getFirebaseApp();
     if (!a) return null;
     const aAuth = getAuth(a);
     if (typeof window !== "undefined") {
+      auth = aAuth;
       setPersistence(aAuth, browserLocalPersistence).catch(() => {});
     }
     return aAuth;
@@ -51,31 +66,34 @@ export function getFirebaseAuth() {
 
 export function getFirestoreDb(): Firestore | null {
   try {
+    if (db) return db;
     const a = getFirebaseApp();
-    return a ? getFirestore(a) : null;
+    const instance = a ? getFirestore(a) : null;
+    if (typeof window !== "undefined" && instance) {
+      db = instance;
+    }
+    return instance;
   } catch (e) {
     console.warn("Firestore init warning:", e);
     return null;
   }
 }
 
-export function getGoogleProvider() {
+export function getGoogleProvider(): GoogleAuthProvider | null {
   try {
+    if (googleProvider) return googleProvider;
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
     provider.addScope("email");
     provider.addScope("profile");
+    if (typeof window !== "undefined") {
+      googleProvider = provider;
+    }
     return provider;
   } catch (e) {
     return null;
   }
 }
-
-// Client-side instances
-var auth: any = null;
-var googleProvider: any = null;
-var app: any = null;
-var db: any = null;
 
 if (typeof window !== "undefined") {
   try {
@@ -95,10 +113,12 @@ export {
   googleProvider,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile,
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
   signOut,
   onAuthStateChanged,
+  type Auth,
   type User
 };

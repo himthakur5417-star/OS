@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { getVerifiedPaymentUser } from "@/lib/paymentAuth";
+import { isEntitlementActive, getPaymentEntitlement } from "@/lib/purchases";
+import { FREE_VAULT_ROOTS, subjectForVaultRoot } from "@/lib/paymentCatalog";
+import { CDS_MATHS_CHAPTERS, ENGLISH_CHAPTERS, NDA_MATHS_CHAPTERS, PYQ_YEARS } from "@/data/vaultManifest";
 
 export const dynamic = "force-dynamic";
 
@@ -25,10 +29,44 @@ const MIME_TYPES: Record<string, string> = {
   ".json": "application/json",
 };
 
+function normalizeYear(year: string): string {
+  return year.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function resolveDocumentKey(documentKey: string): string | null {
+  const chapterMatch = documentKey.match(/^(nda-mathematics|cds-mathematics|nda-cds-english)-chapter-(\d+)$/);
+  if (chapterMatch) {
+    const chapterNumber = `Chapter ${chapterMatch[2]}`;
+    const chapters =
+      chapterMatch[1] === "nda-mathematics"
+        ? NDA_MATHS_CHAPTERS
+        : chapterMatch[1] === "cds-mathematics"
+        ? CDS_MATHS_CHAPTERS
+        : ENGLISH_CHAPTERS;
+    return chapters.find((chapter) => chapter.num === chapterNumber)?.pdf || null;
+  }
+
+  const pyqMatch = documentKey.match(/^pyq-([a-z0-9-]+)-(\d+)$/);
+  if (pyqMatch) {
+    const year = PYQ_YEARS.find((item) => normalizeYear(item.year) === pyqMatch[1]);
+    const paperIndex = Number(pyqMatch[2]) - 1;
+    return year?.papers[paperIndex]?.pdf || null;
+  }
+
+  return null;
+}
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     let relPath = searchParams.get("file") || "";
+    const documentKey = searchParams.get("document") || "";
+
+    if (documentKey) {
+      const resolved = resolveDocumentKey(documentKey);
+      if (!resolved) return NextResponse.json({ error: "Document not found" }, { status: 404 });
+      relPath = resolved;
+    }
 
     if (!relPath) {
       return NextResponse.json({ error: "Missing file parameter" }, { status: 400 });
@@ -41,6 +79,12 @@ export async function GET(req: NextRequest) {
 
     // Normalize and remove leading slash
     relPath = relPath.replace(/^[/\\]+/, "").trim();
+
+    // Reject traversal segments before normalization so a path cannot switch
+    // from one allowed vault root to another.
+    if (relPath.split(/[\\/]/).some((segment) => segment === "..")) {
+      return NextResponse.json({ error: "Invalid file path" }, { status: 403 });
+    }
 
     // Prevent path traversal
     const normalized = path.normalize(relPath);
@@ -56,6 +100,21 @@ export async function GET(req: NextRequest) {
 
     if (!isAllowed) {
       return NextResponse.json({ error: "Unauthorized directory" }, { status: 403 });
+    }
+
+    const paidSubject = subjectForVaultRoot(rootFolder);
+    if (paidSubject) {
+      const user = await getVerifiedPaymentUser(req);
+      if (!user) {
+        return NextResponse.json({ error: "Authentication is required to access this document." }, { status: 401 });
+      }
+
+      const entitlement = await getPaymentEntitlement(user.uid, paidSubject.id);
+      if (!isEntitlementActive(entitlement)) {
+        return NextResponse.json({ error: "An active subject purchase is required to access this document." }, { status: 403 });
+      }
+    } else if (!FREE_VAULT_ROOTS.has(rootFolder)) {
+      return NextResponse.json({ error: "This document collection is not available." }, { status: 403 });
     }
 
     // Try finding the file across project root, public, and serverless bundle locations
@@ -147,9 +206,29 @@ export async function GET(req: NextRequest) {
     const range = req.headers.get("range");
 
     if (range && ext === ".pdf") {
-      const parts = range.replace(/bytes=/, "").split("-");
-      const start = parseInt(parts[0], 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : finalStat.size - 1;
+      const match = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+      if (!match || (!match[1] && !match[2])) {
+        return new NextResponse(null, {
+          status: 416,
+          headers: { "Content-Range": `bytes */${finalStat.size}` },
+        });
+      }
+
+      let start = match[1] ? Number(match[1]) : Math.max(finalStat.size - Number(match[2]), 0);
+      let end = match[1] && match[2] ? Number(match[2]) : finalStat.size - 1;
+      if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 0 || start >= finalStat.size) {
+        return new NextResponse(null, {
+          status: 416,
+          headers: { "Content-Range": `bytes */${finalStat.size}` },
+        });
+      }
+      end = Math.min(end, finalStat.size - 1);
+      if (end < start) {
+        return new NextResponse(null, {
+          status: 416,
+          headers: { "Content-Range": `bytes */${finalStat.size}` },
+        });
+      }
       const chunkSize = end - start + 1;
 
       const fileStream = fs.createReadStream(fullPath, { start, end });
@@ -169,6 +248,7 @@ export async function GET(req: NextRequest) {
           "Content-Length": String(chunkSize),
           "Content-Type": contentType,
           "Content-Disposition": `inline; filename="${encodeURIComponent(fileName)}"`,
+          "Cache-Control": paidSubject ? "private, no-store" : "public, max-age=86400, stale-while-revalidate=604800",
         },
       });
     }
@@ -183,6 +263,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    const isProtectedDocument = Boolean(paidSubject);
     return new NextResponse(webStream, {
       status: 200,
       headers: {
@@ -190,7 +271,7 @@ export async function GET(req: NextRequest) {
         "Content-Type": contentType,
         "Content-Disposition": `inline; filename="${encodeURIComponent(fileName)}"`,
         "Accept-Ranges": "bytes",
-        "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
+        "Cache-Control": isProtectedDocument ? "private, no-store" : "public, max-age=86400, stale-while-revalidate=604800",
       },
     });
   } catch (err: any) {

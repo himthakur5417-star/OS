@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { CDS_MATHS_CHAPTERS } from "@/data/vaultManifest";
+import { CDS_MATHS_CHAPTERS } from "@/data/vaultManifestClient";
 import ResourceLoginCta from "@/components/ResourceLoginCta";
 import { Calculator, CheckCircle2, HelpCircle } from "lucide-react";
 

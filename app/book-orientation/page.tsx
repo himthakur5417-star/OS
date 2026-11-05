@@ -79,40 +79,58 @@ export default function BookOrientationPage() {
   };
 
   return (
-    <div className="bg-[#FAFAF9] text-[#0F172A] min-h-screen py-16 sm:py-24">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-[#211C1D] text-[#E8DCC6] min-h-screen relative overflow-hidden selection:bg-[#722F37] selection:text-[#E8DCC6] py-16 sm:py-24">
+
+      {/* Subtle Ambient Radial Accents */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[min(600px,100vw)] h-[min(600px,100vw)] bg-[#722F37]/15 rounded-full blur-[140px]" />
+        <div className="absolute top-1/3 left-0 w-[min(450px,100vw)] h-[min(450px,100vw)] bg-[#B7A89A]/10 rounded-full blur-[120px]" />
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        {/* Header Briefing */}
         <div className="text-center space-y-4 mb-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-soft-sm text-xs font-label uppercase tracking-widest text-[#C8A84E]">
-            <Calendar className="w-3.5 h-3.5 text-[#C8A84E]" />
-            <span>Free Mentorship Consultation</span>
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#E8DCC6]/10 border border-[#E8DCC6]/20 shadow-sm">
+            <Calendar className="w-3.5 h-3.5 text-[#E8DCC6]" />
+            <span className="font-label text-xs uppercase tracking-[0.2em] text-[#E8DCC6] font-semibold">
+              Free Mentorship Consultation • 1-on-1 Guidance
+            </span>
           </div>
 
-          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[#0B192C]">
-            Book a Free 20-Minute Guidance Call
+          <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-[#E8DCC6] leading-[1.08]">
+            Book a Free 20-Minute <br />
+            <span className="text-[#E8DCC6] italic font-normal">
+              Guidance Call.
+            </span>
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-600 font-sans max-w-xl mx-auto leading-relaxed">
-            Speak directly with an Officium Supremum mentor to discuss your goals, study routine, and the right preparation plan.
+          <p className="text-sm sm:text-base text-[#E8DCC6]/80 font-sans max-w-xl mx-auto leading-relaxed">
+            Speak directly with an Officium Supremum mentor to discuss your goals, daily study routine, and structured academic preparation plan.
           </p>
         </div>
 
-        <div className="p-7 sm:p-10 rounded-3xl bg-white/95 backdrop-blur-xl border border-slate-200/80 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.08)] relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#C8A84E] via-amber-300 to-[#C8A84E]" />
+        {/* Form Container Card */}
+        <div className="p-7 sm:p-10 rounded-3xl bg-[#282224] border border-[#E8DCC6]/15 shadow-soft-md relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#722F37] via-[#B7A89A] to-[#722F37]" />
 
           {submitted ? (
-            <div className="text-center py-10 space-y-4">
-              <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mx-auto shadow-sm">
-                <CheckCircle2 className="w-9 h-9" />
+            <div className="text-center py-10 space-y-5">
+              <div className="w-16 h-16 rounded-2xl bg-[#722F37]/25 border border-[#722F37]/50 flex items-center justify-center text-[#E8DCC6] mx-auto shadow-sm">
+                <CheckCircle2 className="w-9 h-9 text-[#E8DCC6]" />
               </div>
-              <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Call Request Received</h3>
-              
+
+              <h2 className="font-heading font-semibold text-2xl sm:text-3xl text-[#E8DCC6]">
+                Call Request Received
+              </h2>
+
               {enquiryRef && (
-                <div className="inline-block px-4 py-1.5 rounded-lg bg-amber-50 border border-amber-200/70 font-mono text-xs font-semibold text-amber-900">
+                <div className="inline-block px-4 py-1.5 rounded-lg bg-[#211C1D] border border-[#E8DCC6]/20 font-mono text-xs font-semibold text-[#E8DCC6]">
                   Booking Reference: {enquiryRef}
                 </div>
               )}
 
-              <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#E8DCC6]/80 max-w-md mx-auto leading-relaxed font-sans">
                 We have received your request. An Officium Supremum mentor will review your details and confirm your call slot within 6 hours.
               </p>
 
@@ -131,32 +149,33 @@ export default function BookOrientationPage() {
                 </div>
               )}
 
-              <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#0B192C] font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all"
+                  className="w-full sm:w-auto px-6 py-3 bg-[#211C1D] hover:bg-[#282224] border border-[#E8DCC6]/20 text-[#E8DCC6] font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all"
                 >
                   Submit Another Request
                 </button>
                 <Link
                   href="/"
-                  className="px-6 py-2.5 bg-[#0B192C] text-white hover:bg-[#1E293B] font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all"
+                  className="w-full sm:w-auto px-6 py-3 bg-[#722F37] hover:bg-[#853741] text-[#E8DCC6] font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all border border-[#E8DCC6]/20"
                 >
                   Return to Home
                 </Link>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-6">
+
               {/* User Type Selector */}
-              <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-xl text-xs font-label uppercase tracking-wider">
+              <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-[#211C1D] rounded-2xl border border-[#E8DCC6]/15 text-xs font-label uppercase tracking-wider">
                 <button
                   type="button"
                   onClick={() => setUserType("student")}
-                  className={`py-2.5 rounded-lg transition-all ${
+                  className={`py-3 rounded-xl transition-all ${
                     userType === "student"
-                      ? "bg-white text-[#0B192C] font-bold shadow-sm"
-                      : "text-slate-500 hover:text-slate-900"
+                      ? "bg-[#722F37] text-[#E8DCC6] font-bold shadow-md border border-[#E8DCC6]/20"
+                      : "text-[#B7A89A] hover:text-[#E8DCC6]"
                   }`}
                 >
                   I am the Student
@@ -164,20 +183,21 @@ export default function BookOrientationPage() {
                 <button
                   type="button"
                   onClick={() => setUserType("parent")}
-                  className={`py-2.5 rounded-lg transition-all ${
+                  className={`py-3 rounded-xl transition-all ${
                     userType === "parent"
-                      ? "bg-white text-[#0B192C] font-bold shadow-sm"
-                      : "text-slate-500 hover:text-slate-900"
+                      ? "bg-[#722F37] text-[#E8DCC6] font-bold shadow-md border border-[#E8DCC6]/20"
+                      : "text-[#B7A89A] hover:text-[#E8DCC6]"
                   }`}
                 >
                   I am a Parent
                 </button>
               </div>
 
+              {/* Full Name & Phone Number */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                    Full Name
+                  <label className="block text-xs font-label uppercase tracking-widest text-[#B7A89A] mb-1.5 font-semibold">
+                    Full Name <span className="text-[#722F37]">*</span>
                   </label>
                   <input
                     type="text"
@@ -185,13 +205,13 @@ export default function BookOrientationPage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Rahul Sharma"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                    className="w-full bg-[#211C1D] border border-[#E8DCC6]/20 rounded-xl px-4 py-3 text-sm text-[#E8DCC6] placeholder:text-[#B7A89A]/40 outline-none focus:border-[#722F37] focus:ring-1 focus:ring-[#722F37] transition-all font-sans"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                    WhatsApp / Contact Number
+                  <label className="block text-xs font-label uppercase tracking-widest text-[#B7A89A] mb-1.5 font-semibold">
+                    WhatsApp / Contact Number <span className="text-[#722F37]">*</span>
                   </label>
                   <input
                     type="tel"
@@ -199,49 +219,51 @@ export default function BookOrientationPage() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98765 43210"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                    className="w-full bg-[#211C1D] border border-[#E8DCC6]/20 rounded-xl px-4 py-3 text-sm text-[#E8DCC6] placeholder:text-[#B7A89A]/40 outline-none focus:border-[#722F37] focus:ring-1 focus:ring-[#722F37] transition-all font-sans"
                   />
                 </div>
               </div>
 
+              {/* Target Program & Preferred Slot */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
+                  <label className="block text-xs font-label uppercase tracking-widest text-[#B7A89A] mb-1.5 font-semibold">
                     Target Program Track
                   </label>
                   <select
                     value={program}
                     onChange={(e) => setProgram(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                    className="w-full bg-[#211C1D] border border-[#E8DCC6]/20 rounded-xl px-4 py-3 text-xs text-[#E8DCC6] outline-none focus:border-[#722F37] focus:ring-1 focus:ring-[#722F37] transition-all font-sans"
                   >
-                    <option value="defence">Defence Leadership (NDA / CDS / AFCAT)</option>
-                    <option value="nda">NDA (National Defence Academy)</option>
-                    <option value="cds">CDS (Combined Defence Services)</option>
-                    <option value="afcat">AFCAT (Air Force Common Admission)</option>
-                    <option value="juniors">Juniors Program (Class 7–10)</option>
-                    <option value="scholars">Scholars Program (Class 11–12)</option>
-                    <option value="general">General Guidance &amp; Consultation</option>
+                    <option value="defence" className="bg-[#211C1D] text-[#E8DCC6]">Defence Leadership (NDA / CDS / AFCAT)</option>
+                    <option value="nda" className="bg-[#211C1D] text-[#E8DCC6]">NDA (National Defence Academy)</option>
+                    <option value="cds" className="bg-[#211C1D] text-[#E8DCC6]">CDS (Combined Defence Services)</option>
+                    <option value="afcat" className="bg-[#211C1D] text-[#E8DCC6]">AFCAT (Air Force Common Admission)</option>
+                    <option value="juniors" className="bg-[#211C1D] text-[#E8DCC6]">Juniors Program (Class 7–10)</option>
+                    <option value="scholars" className="bg-[#211C1D] text-[#E8DCC6]">Scholars Program (Class 11–12)</option>
+                    <option value="general" className="bg-[#211C1D] text-[#E8DCC6]">General Guidance &amp; Consultation</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
+                  <label className="block text-xs font-label uppercase tracking-widest text-[#B7A89A] mb-1.5 font-semibold">
                     Preferred Time Slot
                   </label>
                   <select
                     value={preferredSlot}
                     onChange={(e) => setPreferredSlot(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                    className="w-full bg-[#211C1D] border border-[#E8DCC6]/20 rounded-xl px-4 py-3 text-xs text-[#E8DCC6] outline-none focus:border-[#722F37] focus:ring-1 focus:ring-[#722F37] transition-all font-sans"
                   >
-                    <option value="morning">Morning (10:00 AM – 1:00 PM)</option>
-                    <option value="afternoon">Afternoon (2:00 PM – 5:00 PM)</option>
-                    <option value="evening">Evening (6:00 PM – 9:00 PM)</option>
+                    <option value="morning" className="bg-[#211C1D] text-[#E8DCC6]">Morning (10:00 AM – 1:00 PM)</option>
+                    <option value="afternoon" className="bg-[#211C1D] text-[#E8DCC6]">Afternoon (2:00 PM – 5:00 PM)</option>
+                    <option value="evening" className="bg-[#211C1D] text-[#E8DCC6]">Evening (6:00 PM – 9:00 PM)</option>
                   </select>
                 </div>
               </div>
 
+              {/* Email Address */}
               <div>
-                <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
+                <label className="block text-xs font-label uppercase tracking-widest text-[#B7A89A] mb-1.5 font-semibold">
                   Email Address (Optional)
                 </label>
                 <input
@@ -249,31 +271,33 @@ export default function BookOrientationPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="student@example.com"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                  className="w-full bg-[#211C1D] border border-[#E8DCC6]/20 rounded-xl px-4 py-3 text-sm text-[#E8DCC6] placeholder:text-[#B7A89A]/40 outline-none focus:border-[#722F37] focus:ring-1 focus:ring-[#722F37] transition-all font-sans"
                 />
               </div>
 
+              {/* Submit CTA */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 bg-[#0B192C] hover:bg-[#1E293B] disabled:opacity-70 text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+                className="w-full py-4 bg-[#722F37] hover:bg-[#853741] disabled:opacity-60 text-[#E8DCC6] font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg hover:shadow-xl active:scale-98 flex items-center justify-center gap-2 border border-[#E8DCC6]/20 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin text-[#C8A84E]" />
+                    <Loader2 className="w-4 h-4 animate-spin text-[#E8DCC6]" />
                     <span>Sending Request...</span>
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4 text-[#C8A84E]" />
+                    <Send className="w-4 h-4 text-[#E8DCC6]" />
                     <span>Confirm &amp; Book Free Call</span>
                   </>
                 )}
               </button>
 
-              <p className="text-[11px] text-slate-500 text-center leading-relaxed font-sans pt-1">
+              {/* Privacy Acknowledgement */}
+              <p className="text-[11px] text-[#B7A89A] text-center leading-relaxed font-sans pt-1">
                 By submitting this form, you acknowledge that your information will be used to respond to your enquiry and arrange mentorship-related communication. Please review our{" "}
-                <Link href="/privacy" className="text-[#C8A84E] underline hover:text-[#0B192C] transition-colors">
+                <Link href="/privacy" className="text-[#E8DCC6] underline hover:text-white transition-colors">
                   Privacy Policy
                 </Link>
                 .
@@ -281,6 +305,7 @@ export default function BookOrientationPage() {
             </form>
           )}
         </div>
+
       </div>
     </div>
   );
