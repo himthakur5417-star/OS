@@ -3,24 +3,24 @@
 import React, { useState } from "react";
 import { useAuth } from "./AuthContext";
 import { Logo } from "./Logo";
-import { 
-  X, 
-  Mail, 
-  User, 
-  ArrowRight, 
-  KeyRound,
-  AlertCircle
-} from "lucide-react";
+import {
+  X,
+  EnvelopeSimple,
+  User,
+  ArrowRight,
+  Key,
+  WarningCircle
+} from "@phosphor-icons/react";
 
 export function AuthModal() {
-  const { 
-    isAuthModalOpen, 
-    closeAuthModal, 
-    authMode, 
-    setAuthMode, 
-    signInEmail, 
-    signUpEmail, 
-    signInGoogle 
+  const {
+    isAuthModalOpen,
+    closeAuthModal,
+    authMode,
+    setAuthMode,
+    signInEmail,
+    signUpEmail,
+    signInGoogle
   } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -55,52 +55,48 @@ export function AuthModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#252923]/60 backdrop-blur-sm animate-in fade-in duration-200">
       {/* Container */}
-      <div 
-        className="relative w-full max-w-md bg-white/95 backdrop-blur-xl border border-white/80 rounded-3xl shadow-[0_25px_60px_-15px_rgba(15,23,42,0.18)] p-7 sm:p-9 text-[#0F172A] overflow-hidden"
+      <div
+        className="relative w-full max-w-md bg-[#F3EFE6] border border-[#D8D5C8] rounded-2xl shadow-soft-xl p-6 sm:p-8 text-[#252923] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Subtle Decorative Accents */}
-        <div className="absolute -top-20 -right-20 w-48 h-48 bg-amber-100/40 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-slate-100/60 rounded-full blur-2xl pointer-events-none" />
-
         {/* Close Button */}
         <button
           onClick={closeAuthModal}
-          className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1.5 rounded-full hover:bg-slate-100/70 transition-colors"
+          className="absolute top-5 right-5 text-[#252923]/60 hover:text-[#252923] p-1.5 rounded-lg hover:bg-[#D8D5C8]/40 transition-colors"
           aria-label="Close modal"
         >
-          <X className="w-5 h-5" />
+          <X className="w-5 h-5" weight="bold" />
         </button>
 
         {/* Modal Header */}
-        <div className="flex items-center gap-3.5 mb-6">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/60 flex items-center justify-center text-[#C8A84E] shadow-sm p-2">
-            <Logo size="xs" showText={false} variant="gold" />
+        <div className="flex items-center gap-3.5 mb-5">
+          <div className="w-10 h-10 rounded-xl bg-white border border-[#D8D5C8] flex items-center justify-center shadow-soft-sm p-1.5">
+            <Logo size="xs" showText={false} variant="sage" />
           </div>
           <div>
-            <h3 className="font-heading font-semibold text-xl text-[#0B192C]">
-              {authMode === "signin" ? "Student Sign In" : "Create Student Account"}
+            <h3 className="heading-3 text-[#252923]">
+              {authMode === "signin" ? "Student Sign In" : "Create Account"}
             </h3>
-            <p className="text-xs text-slate-500 font-label uppercase tracking-wider">
+            <p className="caption-3 text-[#B18A58] uppercase tracking-wider font-semibold">
               Officium Supremum Academy
             </p>
           </div>
         </div>
 
-        {/* Mode Selector (Sign In vs Register) */}
-        <div className="grid grid-cols-2 gap-1 p-1 bg-slate-100/80 rounded-xl mb-5 text-xs font-label uppercase tracking-wider">
+        {/* Mode Selector */}
+        <div className="grid grid-cols-2 gap-1 p-1 bg-white rounded-xl border border-[#D8D5C8] mb-4 caption-3 uppercase tracking-wider">
           <button
             type="button"
             onClick={() => {
               setAuthMode("signin");
               setError("");
             }}
-            className={`py-2 rounded-lg transition-all ${
+            className={`py-2 rounded-lg transition-all font-semibold ${
               authMode === "signin"
-                ? "bg-white text-[#0B192C] font-semibold shadow-sm"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-[#34483C] text-[#F3EFE6] shadow-soft-sm"
+                : "text-[#252923]/70 hover:text-[#252923]"
             }`}
           >
             Sign In
@@ -111,10 +107,10 @@ export function AuthModal() {
               setAuthMode("signup");
               setError("");
             }}
-            className={`py-2 rounded-lg transition-all ${
+            className={`py-2 rounded-lg transition-all font-semibold ${
               authMode === "signup"
-                ? "bg-white text-[#0B192C] font-semibold shadow-sm"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-[#34483C] text-[#F3EFE6] shadow-soft-sm"
+                : "text-[#252923]/70 hover:text-[#252923]"
             }`}
           >
             Create Account
@@ -122,63 +118,63 @@ export function AuthModal() {
         </div>
 
         {error && (
-          <div className="p-3 mb-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
+          <div className="p-3 mb-4 rounded-xl bg-white border border-rose-300 text-rose-800 text-xs flex items-center gap-2">
+            <WarningCircle className="w-4 h-4 shrink-0 text-rose-600" weight="bold" />
             <span>{error}</span>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-3.5">
+        <form onSubmit={handleSubmit} className="space-y-3">
           {authMode === "signup" && (
             <div>
-              <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
+              <label className="block caption-3 uppercase tracking-wider text-[#252923] font-semibold mb-1">
                 Full Name
               </label>
               <div className="relative">
-                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                <User className="w-4 h-4 text-[#252923]/50 absolute left-3.5 top-3" weight="bold" />
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter your full name"
-                  className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-all shadow-inner"
+                  className="w-full bg-white border border-[#D8D5C8] focus:border-[#34483C] focus:ring-1 focus:ring-[#34483C] rounded-xl pl-10 pr-3.5 py-2 text-sm text-[#252923] placeholder:text-[#252923]/40 outline-none transition-all"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
+            <label className="block caption-3 uppercase tracking-wider text-[#252923] font-semibold mb-1">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              <EnvelopeSimple className="w-4 h-4 text-[#252923]/50 absolute left-3.5 top-3" weight="bold" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="student@example.com"
-                className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-all shadow-inner"
+                className="w-full bg-white border border-[#D8D5C8] focus:border-[#34483C] focus:ring-1 focus:ring-[#34483C] rounded-xl pl-10 pr-3.5 py-2 text-sm text-[#252923] placeholder:text-[#252923]/40 outline-none transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
+            <label className="block caption-3 uppercase tracking-wider text-[#252923] font-semibold mb-1">
               Password
             </label>
             <div className="relative">
-              <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              <Key className="w-4 h-4 text-[#252923]/50 absolute left-3.5 top-3" weight="bold" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-slate-50/70 border border-slate-200 focus:border-[#C8A84E] focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-all shadow-inner"
+                className="w-full bg-white border border-[#D8D5C8] focus:border-[#34483C] focus:ring-1 focus:ring-[#34483C] rounded-xl pl-10 pr-3.5 py-2 text-sm text-[#252923] placeholder:text-[#252923]/40 outline-none transition-all"
               />
             </div>
           </div>
@@ -186,7 +182,7 @@ export function AuthModal() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 py-3 bg-[#0B192C] hover:bg-[#1E293B] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
+            className="w-full mt-2 py-3 bg-[#34483C] hover:bg-[#252923] disabled:opacity-70 text-[#F3EFE6] button-sm uppercase tracking-wider rounded-xl transition-all shadow-soft-sm flex items-center justify-center gap-2 cursor-pointer"
           >
             {loading
               ? authMode === "signin"
@@ -195,12 +191,12 @@ export function AuthModal() {
               : authMode === "signin"
               ? "Sign In to Library"
               : "Create Account & Continue"}
-            <ArrowRight className="w-4 h-4 text-[#C8A84E]" />
+            <ArrowRight className="w-4 h-4 text-[#F3EFE6]" weight="bold" />
           </button>
         </form>
 
         {/* Google Sign-in */}
-        <div className="mt-4 pt-4 border-t border-slate-100">
+        <div className="mt-4 pt-3.5 border-t border-[#D8D5C8]">
           <button
             type="button"
             disabled={loading}
@@ -215,7 +211,7 @@ export function AuthModal() {
                 setLoading(false);
               }
             }}
-            className="w-full py-2.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-label uppercase tracking-wider text-slate-700 transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50"
+            className="w-full py-2.5 bg-white hover:bg-[#F3EFE6] border border-[#D8D5C8] rounded-xl caption-3 uppercase tracking-wider text-[#252923] font-semibold transition-colors flex items-center justify-center gap-2 shadow-soft-sm disabled:opacity-50"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

@@ -20,10 +20,10 @@ export function GuidingThreadConnector({ className = "" }: GuidingThreadConnecto
       >
         <defs>
           <linearGradient id="connectorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#722F37" stopOpacity="0.8" />
-            <stop offset="40%" stopColor="#722F37" stopOpacity="0.4" />
-            <stop offset="85%" stopColor="#B7A89A" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#722F37" stopOpacity="0.9" />
+            <stop offset="0%" stopColor="#34483C" stopOpacity="0.8" />
+            <stop offset="40%" stopColor="#34483C" stopOpacity="0.4" />
+            <stop offset="85%" stopColor="#B18A58" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#34483C" stopOpacity="0.9" />
           </linearGradient>
         </defs>
 
@@ -39,8 +39,8 @@ export function GuidingThreadConnector({ className = "" }: GuidingThreadConnecto
         />
 
         {/* Small anchor node signaling arrival at disciplined study method */}
-        <circle cx="16" cy="88" r="3.5" fill="#722F37" opacity="0.85" />
-        <circle cx="16" cy="88" r="7" stroke="#722F37" strokeWidth="0.75" opacity="0.3" />
+        <circle cx="16" cy="88" r="3.5" fill="#34483C" opacity="0.85" />
+        <circle cx="16" cy="88" r="7" stroke="#B18A58" strokeWidth="0.75" opacity="0.4" />
       </svg>
     </div>
   );

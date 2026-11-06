@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import Script from "next/script";
-import { CheckCircle2, Lock, ShieldCheck } from "lucide-react";
+import { CheckCircle, Lock, ShieldCheck } from "@phosphor-icons/react";
 import { auth, getFirebaseAuth } from "@/lib/firebase";
 import { useAuth } from "@/components/AuthContext";
 import type { PaidSubjectId } from "@/lib/paymentCatalog";
@@ -208,7 +208,7 @@ export default function SubjectPurchasePanel({
         description: `${subject.title} — ${subject.accessDays}-day access`,
         order_id: order.orderId,
         prefill: { name: user.displayName || "", email: user.email || "" },
-        theme: { color: "#722F37" },
+        theme: { color: "#34483C" },
         modal: {
           ondismiss: () => {
             setBusy(false);
@@ -263,7 +263,7 @@ export default function SubjectPurchasePanel({
       <div className="mt-5 rounded-2xl border border-emerald-700/25 bg-emerald-50/70 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-start gap-3">
           <div className="w-9 h-9 rounded-xl bg-emerald-700/15 text-emerald-800 flex items-center justify-center shrink-0">
-            <CheckCircle2 className="w-4 h-4" />
+            <CheckCircle className="w-4 h-4" weight="bold" />
           </div>
           <div>
             <div className="text-xs font-label uppercase tracking-wider text-emerald-800 font-semibold">
@@ -278,8 +278,8 @@ export default function SubjectPurchasePanel({
             </div>
           </div>
         </div>
-        <div className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-800 text-white text-xs font-label uppercase tracking-wider font-bold shrink-0">
-          <CheckCircle2 className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#34483C] text-[#F3EFE6] text-xs font-label uppercase tracking-wider font-bold shrink-0">
+          <CheckCircle className="w-3.5 h-3.5" weight="bold" />
           <span>Access Active</span>
         </div>
       </div>
@@ -313,20 +313,20 @@ export default function SubjectPurchasePanel({
           setMessage("Razorpay Checkout could not be loaded. Please try again later.");
         }}
       />
-      <div className="mt-5 rounded-2xl border border-[#722F37]/20 bg-[#FAF7F2] p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mt-5 rounded-2xl border border-[#34483C]/20 bg-[#F3EFE6] p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-start gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#722F37]/10 text-[#722F37] flex items-center justify-center shrink-0">
-            <Lock className="w-4 h-4" />
+          <div className="w-9 h-9 rounded-xl bg-[#34483C]/10 text-[#34483C] flex items-center justify-center shrink-0">
+            <Lock className="w-4 h-4" weight="bold" />
           </div>
           <div>
-            <div className="text-xs font-label uppercase tracking-wider text-[#722F37] font-semibold">
+            <div className="text-xs font-label uppercase tracking-wider text-[#34483C] font-semibold">
               {isAccessExpired ? "Access Expired · Renew Subject Access" : "Full subject access"}
             </div>
-            <div className="text-sm font-heading font-semibold text-[#211C1D]">
+            <div className="text-sm font-heading font-semibold text-[#252923]">
               {formatAmount(subject.amountPaise, subject.currency)} · {subject.accessDays}-day access
             </div>
-            <div className="mt-1 text-[11px] text-[#211C1D]/65 font-sans flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5" />
+            <div className="mt-1 text-[11px] text-[#252923]/65 font-sans flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#34483C]" weight="bold" />
               <span>
                 {isAccessExpired
                   ? `Previous access expired on ${formatExpiryDate(effectiveEntitlement?.expiresAt)}. Purchase to unlock full chapters again.`
@@ -339,7 +339,7 @@ export default function SubjectPurchasePanel({
           type="button"
           onClick={startCheckout}
           disabled={busy || entitlementLoading || !subject.configured || !checkoutReady || !scriptReady || scriptError}
-          className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-[#722F37] hover:bg-[#8B3A44] disabled:opacity-45 disabled:cursor-not-allowed text-[#E8DCC6] text-xs font-label uppercase tracking-wider font-bold transition-colors"
+          className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-[#34483C] hover:bg-[#252923] disabled:opacity-45 disabled:cursor-not-allowed text-[#F3EFE6] text-xs font-label uppercase tracking-wider font-bold transition-colors shadow-sm"
         >
           {busy
             ? "Preparing Checkout…"
@@ -349,8 +349,8 @@ export default function SubjectPurchasePanel({
             ? "Price Not Configured"
             : "Checkout Unavailable"}
         </button>
-        {unavailableMessage && <p className="sm:basis-full text-xs text-[#722F37] font-sans" role="status">{unavailableMessage}</p>}
-        {message && !unavailableMessage && <p className="sm:basis-full text-xs text-[#722F37] font-sans" role="status">{message}</p>}
+        {unavailableMessage && <p className="sm:basis-full text-xs text-[#34483C] font-sans" role="status">{unavailableMessage}</p>}
+        {message && !unavailableMessage && <p className="sm:basis-full text-xs text-[#34483C] font-sans" role="status">{message}</p>}
       </div>
     </>
   );

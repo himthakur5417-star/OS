@@ -181,13 +181,13 @@ export function GuidingThread({
         height={height}
       >
         {/* Subtle background ambient paths */}
-        <g opacity="0.18">
+        <g opacity="0.25">
           {journey.ambient.map((d, i) => (
             <path
               key={`static-amb-${i}`}
               d={d}
               fill="none"
-              stroke="#B7A89A"
+              stroke="#D8D5C8"
               strokeWidth="0.8"
               strokeDasharray="4 6"
             />
@@ -198,9 +198,9 @@ export function GuidingThread({
         <path
           d={journey.thread}
           fill="none"
-          stroke="#E8DCC6"
-          strokeWidth="1.25"
-          opacity="0.85"
+          stroke="#B18A58"
+          strokeWidth="1.35"
+          opacity="0.9"
         />
 
         {/* Student node settled on the disciplined path */}
@@ -208,14 +208,14 @@ export function GuidingThread({
           cx={journey.student.x}
           cy={journey.student.y}
           r={journey.nodeRadius * 2.2}
-          fill="#E8DCC6"
-          opacity="0.18"
+          fill="#B18A58"
+          opacity="0.2"
         />
         <circle
           cx={journey.student.x}
           cy={journey.student.y}
           r={journey.nodeRadius}
-          fill="#E8DCC6"
+          fill="#F3EFE6"
         />
       </svg>
     );
@@ -232,10 +232,10 @@ export function GuidingThread({
       <defs>
         {/* Soft linear gradient for the Guiding Thread */}
         <linearGradient id="guidingThreadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#B7A89A" stopOpacity="0.3" />
-          <stop offset="35%" stopColor="#E8DCC6" stopOpacity="0.9" />
-          <stop offset="85%" stopColor="#E8DCC6" stopOpacity="0.95" />
-          <stop offset="100%" stopColor="#B7A89A" stopOpacity="0.6" />
+          <stop offset="0%" stopColor="#D8D5C8" stopOpacity="0.4" />
+          <stop offset="30%" stopColor="#B18A58" stopOpacity="0.95" />
+          <stop offset="70%" stopColor="#F3EFE6" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#B18A58" stopOpacity="0.75" />
         </linearGradient>
 
         {/* Soft glow filter for the student node */}
@@ -255,10 +255,10 @@ export function GuidingThread({
             key={`amb-${i}`}
             d={d}
             fill="none"
-            stroke="#B7A89A"
+            stroke="#D8D5C8"
             strokeWidth="0.75"
             strokeDasharray="3 5"
-            opacity="0.22"
+            opacity="0.3"
           />
         ))}
       </g>
@@ -270,7 +270,7 @@ export function GuidingThread({
             key={`unc-${i}`}
             d={u.d}
             fill="none"
-            stroke="#B7A89A"
+            stroke="#D8D5C8"
             strokeWidth="0.9"
             strokeDasharray={i % 2 === 0 ? "2 4" : "4 6"}
             opacity={u.opacity}
@@ -284,8 +284,8 @@ export function GuidingThread({
             cx={wp.x}
             cy={wp.y}
             r="1.8"
-            fill="#B7A89A"
-            opacity="0.35"
+            fill="#B18A58"
+            opacity="0.4"
           />
         ))}
       </g>
@@ -305,7 +305,7 @@ export function GuidingThread({
         d={journey.thread}
         fill="none"
         stroke="url(#guidingThreadGrad)"
-        strokeWidth="1.35"
+        strokeWidth="1.4"
         strokeLinecap="round"
         strokeLinejoin="round"
         style={{
@@ -320,8 +320,8 @@ export function GuidingThread({
         cx={journey.student.x}
         cy={journey.student.y}
         r={journey.nodeRadius * 2.8}
-        fill="#E8DCC6"
-        opacity="0.22"
+        fill="#B18A58"
+        opacity="0.25"
       />
       {/* Core student point */}
       <circle
@@ -329,7 +329,7 @@ export function GuidingThread({
         cx={journey.student.x}
         cy={journey.student.y}
         r={journey.nodeRadius}
-        fill="#E8DCC6"
+        fill="#F3EFE6"
         filter="url(#nodeGlow)"
       />
     </svg>

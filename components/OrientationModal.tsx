@@ -4,7 +4,15 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useModals } from "./ModalContext";
 import { useAuth } from "./AuthContext";
-import { X, Calendar, CheckCircle2, Send, MessageCircle, ArrowRight, Loader2 } from "lucide-react";
+import {
+  X,
+  Calendar,
+  CheckCircle,
+  PaperPlaneRight,
+  WhatsappLogo,
+  ArrowRight,
+  SpinnerGap
+} from "@phosphor-icons/react";
 
 export function OrientationModal() {
   const { isOrientationOpen, closeOrientation, orientationDefaultProgram } = useModals();
@@ -92,43 +100,41 @@ export function OrientationModal() {
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#252923]/60 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={handleClose}
     >
-      <div 
-        className="relative w-full max-w-lg bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl shadow-[0_25px_60px_-15px_rgba(15,23,42,0.18)] p-7 sm:p-9 text-[#0F172A] overflow-hidden"
+      <div
+        className="relative w-full max-w-lg bg-[#F3EFE6] border border-[#D8D5C8] rounded-2xl shadow-soft-xl p-6 sm:p-8 text-[#252923] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#C8A84E] via-amber-300 to-[#C8A84E]" />
-
         <button
           onClick={handleClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1.5 rounded-full hover:bg-slate-100 transition-colors"
+          className="absolute top-5 right-5 text-[#252923]/60 hover:text-[#252923] p-1.5 rounded-lg hover:bg-[#D8D5C8]/40 transition-colors"
           aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          <X className="w-5 h-5" weight="bold" />
         </button>
 
         {submitted ? (
           <div className="text-center py-6 space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mx-auto shadow-sm">
-              <CheckCircle2 className="w-8 h-8" />
+            <div className="w-14 h-14 rounded-2xl bg-[#34483C]/10 border border-[#34483C]/30 flex items-center justify-center text-[#34483C] mx-auto shadow-soft-sm">
+              <CheckCircle className="w-8 h-8" weight="fill" />
             </div>
             <div>
-              <h3 className="font-heading font-semibold text-2xl text-[#0B192C]">Call Request Received</h3>
-              <p className="text-xs text-slate-500 font-label uppercase tracking-widest mt-0.5">
+              <h3 className="heading-3 text-[#252923]">Call Request Received</h3>
+              <p className="caption-3 text-[#B18A58] uppercase tracking-wider mt-0.5 font-semibold">
                 Officium Supremum Mentorship Desk
               </p>
             </div>
 
             {enquiryRef && (
-              <div className="inline-block px-3.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200/70 font-mono text-xs font-semibold text-amber-900">
+              <div className="inline-block px-3.5 py-1.5 rounded-lg bg-white border border-[#D8D5C8] font-mono text-xs font-semibold text-[#34483C]">
                 Booking Reference: {enquiryRef}
               </div>
             )}
 
-            <p className="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed font-sans">
+            <p className="body-3 text-[#252923]/75 max-w-sm mx-auto leading-relaxed">
               We have received your request. We opened WhatsApp to connect you directly with an Officium Supremum mentor (+91 8969634656).
             </p>
 
@@ -138,46 +144,46 @@ export function OrientationModal() {
                   href={waLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] hover:bg-[#20ba5a] text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl shadow-md transition-all active:scale-98"
+                  className="inline-flex items-center justify-center gap-2 w-full py-3 bg-[#34483C] hover:bg-[#252923] text-[#F3EFE6] button-sm uppercase tracking-wider rounded-xl shadow-soft-sm transition-all"
                 >
-                  <MessageCircle className="w-4 h-4" />
+                  <WhatsappLogo className="w-4 h-4" weight="bold" />
                   <span>Open WhatsApp Now</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5" weight="bold" />
                 </a>
               </div>
             )}
 
             <button
               onClick={handleClose}
-              className="mt-2 px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#0B192C] font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all"
+              className="mt-2 px-6 py-2.5 bg-white hover:bg-[#D8D5C8]/30 border border-[#D8D5C8] text-[#252923] button-sm uppercase tracking-wider rounded-xl transition-all"
             >
               Return to Website
             </button>
           </div>
         ) : (
           <div>
-            <div className="flex items-center gap-3.5 mb-6">
-              <div className="w-11 h-11 rounded-2xl bg-amber-50 border border-amber-200/70 flex items-center justify-center text-[#C8A84E] shadow-sm">
-                <Calendar className="w-5 h-5" />
+            <div className="flex items-center gap-3.5 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-white border border-[#D8D5C8] flex items-center justify-center text-[#34483C] shadow-soft-sm">
+                <Calendar className="w-5 h-5" weight="bold" />
               </div>
               <div>
-                <h3 className="font-heading font-semibold text-xl text-[#0B192C]">Book a Free 20-Minute Guidance Call</h3>
-                <p className="text-xs text-slate-500 font-label uppercase tracking-widest">
-                  1-on-1 Consultation with an Academy Mentor
+                <h3 className="heading-3 text-[#252923]">Book a Free 20-Minute Call</h3>
+                <p className="caption-3 text-[#B18A58] uppercase tracking-wider font-semibold">
+                  1-on-1 Consultation with Lead Mentor
                 </p>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               {/* User Type Toggle */}
-              <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-xl text-xs font-label uppercase tracking-wider">
+              <div className="grid grid-cols-2 gap-1 p-1 bg-white rounded-xl border border-[#D8D5C8] caption-3 uppercase tracking-wider">
                 <button
                   type="button"
                   onClick={() => setUserType("student")}
-                  className={`py-2 rounded-lg transition-all ${
+                  className={`py-2 rounded-lg transition-all font-semibold ${
                     userType === "student"
-                      ? "bg-white text-[#0B192C] font-bold shadow-sm"
-                      : "text-slate-500 hover:text-slate-900"
+                      ? "bg-[#34483C] text-[#F3EFE6] shadow-soft-sm"
+                      : "text-[#252923]/70 hover:text-[#252923]"
                   }`}
                 >
                   I am the Student
@@ -185,10 +191,10 @@ export function OrientationModal() {
                 <button
                   type="button"
                   onClick={() => setUserType("parent")}
-                  className={`py-2 rounded-lg transition-all ${
+                  className={`py-2 rounded-lg transition-all font-semibold ${
                     userType === "parent"
-                      ? "bg-white text-[#0B192C] font-bold shadow-sm"
-                      : "text-slate-500 hover:text-slate-900"
+                      ? "bg-[#34483C] text-[#F3EFE6] shadow-soft-sm"
+                      : "text-[#252923]/70 hover:text-[#252923]"
                   }`}
                 >
                   I am a Parent
@@ -196,8 +202,8 @@ export function OrientationModal() {
               </div>
 
               <div>
-                <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                  Full Name
+                <label className="block caption-3 uppercase tracking-wider text-[#252923] font-semibold mb-1">
+                  Full Name <span className="text-[#B18A58]">*</span>
                 </label>
                 <input
                   type="text"
@@ -205,14 +211,14 @@ export function OrientationModal() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Rahul Sharma"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                  className="w-full bg-white border border-[#D8D5C8] rounded-xl px-3.5 py-2.5 text-sm text-[#252923] placeholder:text-[#252923]/40 outline-none focus:border-[#34483C] focus:ring-1 focus:ring-[#34483C] transition-all"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                    WhatsApp Number
+                  <label className="block caption-3 uppercase tracking-wider text-[#252923] font-semibold mb-1">
+                    WhatsApp Number <span className="text-[#B18A58]">*</span>
                   </label>
                   <input
                     type="tel"
@@ -220,66 +226,66 @@ export function OrientationModal() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98765 43210"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                    className="w-full bg-white border border-[#D8D5C8] rounded-xl px-3.5 py-2.5 text-sm text-[#252923] placeholder:text-[#252923]/40 outline-none focus:border-[#34483C] focus:ring-1 focus:ring-[#34483C] transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                    Target Program
+                  <label className="block caption-3 uppercase tracking-wider text-[#252923] font-semibold mb-1">
+                    Target Track
                   </label>
                   <select
                     value={program}
                     onChange={(e) => setProgram(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-[#0F172A] outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                    className="w-full bg-white border border-[#D8D5C8] rounded-xl px-3 py-2.5 text-xs text-[#252923] outline-none focus:border-[#34483C] focus:ring-1 focus:ring-[#34483C] transition-all cursor-pointer"
                   >
-                    <option value="defence">Defence Leadership (NDA / CDS / AFCAT)</option>
+                    <option value="defence">Defence Track (NDA / CDS / AFCAT)</option>
                     <option value="nda">NDA (National Defence Academy)</option>
                     <option value="cds">CDS (Combined Defence Services)</option>
                     <option value="afcat">AFCAT (Air Force Common Admission)</option>
-                    <option value="juniors">Juniors Program (Class 7–10)</option>
-                    <option value="scholars">Scholars Program (Class 11–12)</option>
-                    <option value="general">General Guidance &amp; Consultation</option>
+                    <option value="juniors">Juniors Track (Class 7–10)</option>
+                    <option value="scholars">Scholars Track (Class 11–12)</option>
+                    <option value="general">General Consultation</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-label uppercase tracking-wider text-slate-600 mb-1">
-                  Email Address (Optional)
+                <label className="block caption-3 uppercase tracking-wider text-[#252923] font-semibold mb-1">
+                  Email Address <span className="text-[#252923]/50 font-normal lowercase">(optional)</span>
                 </label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="student@example.com"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none focus:border-[#C8A84E] focus:bg-white transition-all"
+                  className="w-full bg-white border border-[#D8D5C8] rounded-xl px-3.5 py-2.5 text-sm text-[#252923] placeholder:text-[#252923]/40 outline-none focus:border-[#34483C] focus:ring-1 focus:ring-[#34483C] transition-all"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-2 py-3 bg-[#0B192C] hover:bg-[#1E293B] disabled:opacity-70 text-white font-label font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+                className="w-full mt-2 py-3 bg-[#34483C] hover:bg-[#252923] disabled:opacity-70 text-[#F3EFE6] button-sm uppercase tracking-wider rounded-xl transition-all shadow-soft-sm flex items-center justify-center gap-2 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin text-[#C8A84E]" />
+                    <SpinnerGap className="w-4 h-4 animate-spin text-[#F3EFE6]" weight="bold" />
                     <span>Sending Request...</span>
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4 text-[#C8A84E]" />
+                    <PaperPlaneRight className="w-4 h-4 text-[#F3EFE6]" weight="bold" />
                     <span>Confirm &amp; Book Free Call</span>
                   </>
                 )}
               </button>
 
-              <p className="text-[10px] text-slate-500 text-center leading-relaxed font-sans pt-1">
-                By submitting this form, you acknowledge that your information will be used to respond to your enquiry and arrange mentorship-related communication. Please review our{" "}
+              <p className="caption-3 text-[#252923]/60 text-center leading-relaxed pt-1">
+                By submitting this form, you acknowledge that your information will be used to respond to your enquiry. Review our{" "}
                 <Link
                   href="/privacy"
                   onClick={handleClose}
-                  className="text-[#C8A84E] underline hover:text-[#0B192C] transition-colors"
+                  className="text-[#34483C] underline hover:text-[#252923] transition-colors"
                 >
                   Privacy Policy
                 </Link>

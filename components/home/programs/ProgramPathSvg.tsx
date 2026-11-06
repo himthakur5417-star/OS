@@ -114,40 +114,40 @@ export function ProgramPathSvg({
 
     // Juniors styling
     if (juniorsPathRef.current) {
-      juniorsPathRef.current.style.stroke = isJuniors ? "#722F37" : "#B7A89A";
+      juniorsPathRef.current.style.stroke = isJuniors ? "#34483C" : "#D8D5C8";
       juniorsPathRef.current.style.strokeWidth = isJuniors ? "2.4" : "1.2";
-      juniorsPathRef.current.style.opacity = isJuniors ? "1.0" : "0.45";
+      juniorsPathRef.current.style.opacity = isJuniors ? "1.0" : "0.5";
     }
     if (juniorsDotRef.current && juniorsHaloRef.current) {
       const dotOpacity = p > 0.28 ? (isJuniors ? 1 : 0.6) : 0;
       juniorsDotRef.current.style.opacity = `${dotOpacity}`;
-      juniorsDotRef.current.setAttribute("fill", isJuniors ? "#722F37" : "#B7A89A");
+      juniorsDotRef.current.setAttribute("fill", isJuniors ? "#34483C" : "#D8D5C8");
       juniorsHaloRef.current.style.opacity = isJuniors && p > 0.28 ? "0.6" : "0";
     }
 
     // Scholars styling
     if (scholarsPathRef.current) {
-      scholarsPathRef.current.style.stroke = isScholars ? "#722F37" : "#B7A89A";
+      scholarsPathRef.current.style.stroke = isScholars ? "#34483C" : "#D8D5C8";
       scholarsPathRef.current.style.strokeWidth = isScholars ? "2.4" : "1.2";
-      scholarsPathRef.current.style.opacity = isScholars ? "1.0" : "0.45";
+      scholarsPathRef.current.style.opacity = isScholars ? "1.0" : "0.5";
     }
     if (scholarsDotRef.current && scholarsHaloRef.current) {
       const dotOpacity = p > 0.32 ? (isScholars ? 1 : 0.6) : 0;
       scholarsDotRef.current.style.opacity = `${dotOpacity}`;
-      scholarsDotRef.current.setAttribute("fill", isScholars ? "#722F37" : "#B7A89A");
+      scholarsDotRef.current.setAttribute("fill", isScholars ? "#34483C" : "#D8D5C8");
       scholarsHaloRef.current.style.opacity = isScholars && p > 0.32 ? "0.6" : "0";
     }
 
     // Defence styling
     if (defencePathRef.current) {
-      defencePathRef.current.style.stroke = isDefence ? "#722F37" : "#B7A89A";
+      defencePathRef.current.style.stroke = isDefence ? "#34483C" : "#D8D5C8";
       defencePathRef.current.style.strokeWidth = isDefence ? "2.4" : "1.2";
-      defencePathRef.current.style.opacity = isDefence ? "1.0" : "0.45";
+      defencePathRef.current.style.opacity = isDefence ? "1.0" : "0.5";
     }
     if (defenceDotRef.current && defenceHaloRef.current) {
       const dotOpacity = p > 0.36 ? (isDefence ? 1 : 0.6) : 0;
       defenceDotRef.current.style.opacity = `${dotOpacity}`;
-      defenceDotRef.current.setAttribute("fill", isDefence ? "#722F37" : "#B7A89A");
+      defenceDotRef.current.setAttribute("fill", isDefence ? "#34483C" : "#D8D5C8");
       defenceHaloRef.current.style.opacity = isDefence && p > 0.36 ? "0.6" : "0";
     }
   }, [progress, geo, activeTrack, reducedMotion]);
@@ -163,15 +163,15 @@ export function ProgramPathSvg({
         width={width}
         height={height}
       >
-        <path d={geo.entryD} fill="none" stroke="#722F37" strokeWidth="1.5" opacity="0.8" />
-        <circle cx={geo.decisionNode.x} cy={geo.decisionNode.y} r="6" fill="#722F37" />
-        <circle cx={geo.decisionNode.x} cy={geo.decisionNode.y} r="14" fill="#722F37" opacity="0.2" />
-        <path d={geo.juniorsD} fill="none" stroke="#722F37" strokeWidth="1.6" opacity="0.8" />
-        <path d={geo.scholarsD} fill="none" stroke="#722F37" strokeWidth="1.6" opacity="0.8" />
-        <path d={geo.defenceD} fill="none" stroke="#722F37" strokeWidth="1.6" opacity="0.8" />
-        <circle cx={geo.juniorsWaypoint.x} cy={geo.juniorsWaypoint.y} r="5" fill="#722F37" />
-        <circle cx={geo.scholarsWaypoint.x} cy={geo.scholarsWaypoint.y} r="5" fill="#722F37" />
-        <circle cx={geo.defenceWaypoint.x} cy={geo.defenceWaypoint.y} r="5" fill="#722F37" />
+        <path d={geo.entryD} fill="none" stroke="#34483C" strokeWidth="1.6" opacity="0.8" />
+        <circle cx={geo.decisionNode.x} cy={geo.decisionNode.y} r="6" fill="#B18A58" />
+        <circle cx={geo.decisionNode.x} cy={geo.decisionNode.y} r="14" fill="#B18A58" opacity="0.2" />
+        <path d={geo.juniorsD} fill="none" stroke="#34483C" strokeWidth="1.6" opacity="0.8" />
+        <path d={geo.scholarsD} fill="none" stroke="#34483C" strokeWidth="1.6" opacity="0.8" />
+        <path d={geo.defenceD} fill="none" stroke="#34483C" strokeWidth="1.6" opacity="0.8" />
+        <circle cx={geo.juniorsWaypoint.x} cy={geo.juniorsWaypoint.y} r="5" fill="#34483C" />
+        <circle cx={geo.scholarsWaypoint.x} cy={geo.scholarsWaypoint.y} r="5" fill="#34483C" />
+        <circle cx={geo.defenceWaypoint.x} cy={geo.defenceWaypoint.y} r="5" fill="#34483C" />
       </svg>
     );
   }
@@ -186,15 +186,15 @@ export function ProgramPathSvg({
     >
       <defs>
         <linearGradient id="progEntryGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#E8DCC6" stopOpacity="0.95" />
-          <stop offset="60%" stopColor="#722F37" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#722F37" stopOpacity="1" />
+          <stop offset="0%" stopColor="#F3EFE6" stopOpacity="0.95" />
+          <stop offset="60%" stopColor="#B18A58" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#34483C" stopOpacity="1" />
         </linearGradient>
 
         <radialGradient id="nodePulseGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#722F37" stopOpacity="0.8" />
-          <stop offset="60%" stopColor="#722F37" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#722F37" stopOpacity="0" />
+          <stop offset="0%" stopColor="#B18A58" stopOpacity="0.8" />
+          <stop offset="60%" stopColor="#B18A58" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#B18A58" stopOpacity="0" />
         </radialGradient>
 
         <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
@@ -212,10 +212,10 @@ export function ProgramPathSvg({
           key={`amb-${i}`}
           d={d}
           fill="none"
-          stroke="#B7A89A"
+          stroke="#D8D5C8"
           strokeWidth="0.8"
           strokeDasharray="4 6"
-          opacity="0.25"
+          opacity="0.3"
         />
       ))}
 
@@ -243,7 +243,7 @@ export function ProgramPathSvg({
         cx={geo.decisionNode.x}
         cy={geo.decisionNode.y}
         r="6"
-        fill="#722F37"
+        fill="#34483C"
         opacity="0"
         filter="url(#softGlow)"
       />
@@ -251,7 +251,7 @@ export function ProgramPathSvg({
         cx={geo.decisionNode.x}
         cy={geo.decisionNode.y}
         r="2"
-        fill="#E8DCC6"
+        fill="#F3EFE6"
         opacity="0.9"
       />
 
@@ -261,7 +261,7 @@ export function ProgramPathSvg({
         ref={juniorsPathRef}
         d={geo.juniorsD}
         fill="none"
-        stroke="#B7A89A"
+        stroke="#D8D5C8"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -272,7 +272,7 @@ export function ProgramPathSvg({
         cx={geo.juniorsWaypoint.x}
         cy={geo.juniorsWaypoint.y}
         r="12"
-        fill="#722F37"
+        fill="#B18A58"
         opacity="0"
         style={{ transition: "opacity 0.3s ease" }}
       />
@@ -281,7 +281,7 @@ export function ProgramPathSvg({
         cx={geo.juniorsWaypoint.x}
         cy={geo.juniorsWaypoint.y}
         r="4.5"
-        fill="#B7A89A"
+        fill="#34483C"
         opacity="0"
         style={{ transition: "fill 0.3s ease, opacity 0.3s ease" }}
       />
@@ -291,7 +291,7 @@ export function ProgramPathSvg({
         ref={scholarsPathRef}
         d={geo.scholarsD}
         fill="none"
-        stroke="#B7A89A"
+        stroke="#D8D5C8"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -302,7 +302,7 @@ export function ProgramPathSvg({
         cx={geo.scholarsWaypoint.x}
         cy={geo.scholarsWaypoint.y}
         r="12"
-        fill="#722F37"
+        fill="#B18A58"
         opacity="0"
         style={{ transition: "opacity 0.3s ease" }}
       />
@@ -311,7 +311,7 @@ export function ProgramPathSvg({
         cx={geo.scholarsWaypoint.x}
         cy={geo.scholarsWaypoint.y}
         r="4.5"
-        fill="#B7A89A"
+        fill="#34483C"
         opacity="0"
         style={{ transition: "fill 0.3s ease, opacity 0.3s ease" }}
       />
@@ -321,7 +321,7 @@ export function ProgramPathSvg({
         ref={defencePathRef}
         d={geo.defenceD}
         fill="none"
-        stroke="#B7A89A"
+        stroke="#D8D5C8"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -332,7 +332,7 @@ export function ProgramPathSvg({
         cx={geo.defenceWaypoint.x}
         cy={geo.defenceWaypoint.y}
         r="12"
-        fill="#722F37"
+        fill="#B18A58"
         opacity="0"
         style={{ transition: "opacity 0.3s ease" }}
       />
@@ -341,7 +341,7 @@ export function ProgramPathSvg({
         cx={geo.defenceWaypoint.x}
         cy={geo.defenceWaypoint.y}
         r="4.5"
-        fill="#B7A89A"
+        fill="#34483C"
         opacity="0"
         style={{ transition: "fill 0.3s ease, opacity 0.3s ease" }}
       />

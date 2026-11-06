@@ -2,85 +2,60 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@phosphor-icons/react";
 import { PROGRAMS_DATA } from "./programData";
 
 export function ProgramJourneyStatic() {
   return (
     <section
       id="programs"
-      className="relative w-full bg-[#FAF7F2] text-[#211C1D] py-20 px-6 sm:px-8 lg:px-12"
+      className="relative w-full bg-[#F3EFE6] text-[#252923] py-20 px-6 sm:px-8 lg:px-12"
       aria-label="Officium Supremum Mentorship Tracks"
     >
-      {/* Top Atmospheric Dissolve: Hero Near Black (#211C1D) softly releasing into Warm Cream (#FAF7F2) */}
-      <div
-        className="absolute top-0 inset-x-0 h-32 pointer-events-none z-0"
-        style={{
-          background:
-            "linear-gradient(to bottom, #211C1D 0%, #382E30 35%, rgba(183, 168, 154, 0.35) 70%, transparent 100%)",
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute top-0 inset-x-0 h-36 pointer-events-none z-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 135% 75% at 50% 0%, rgba(33, 28, 29, 0.8) 0%, transparent 85%)",
-        }}
-        aria-hidden="true"
-      />
-
       <div className="max-w-7xl mx-auto space-y-16 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#722F37]" />
-            <span className="eyebrow text-[#722F37] tracking-[0.2em] text-xs font-semibold">
-              Three Paths. One Foundation.
-            </span>
-          </div>
-          <h2 className="type-h2 text-[#211C1D] leading-tight font-serif text-3xl sm:text-4xl font-normal">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-[#252923] leading-tight font-semibold text-balance">
             Different Destinations. <br />
-            <span className="italic font-light">One Disciplined Origin.</span>
+            <span className="font-serif italic font-normal text-[#34483C]">One Disciplined Origin.</span>
           </h2>
-          <p className="type-lead text-sm sm:text-base text-[#211C1D]/75 font-sans max-w-xl mx-auto leading-relaxed">
+          <p className="body-4 sm:body-2 text-[#252923]/75 max-w-xl mx-auto leading-relaxed text-pretty">
             Different students have different goals, but daily structure, individual guidance, and steady accountability form the common foundation.
           </p>
         </div>
 
-        {/* Static 3-Track Editorial Trajectory (No Cards) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 pt-4">
+        {/* Static 3-Track Editorial Trajectory */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 pt-4">
           {PROGRAMS_DATA.map((prog) => (
             <div
               key={prog.id}
-              className="relative space-y-4 flex flex-col justify-between text-left"
+              className="p-6 rounded-2xl bg-white border border-[#252923]/8 space-y-4 flex flex-col justify-between text-left shadow-[0_4px_16px_rgba(37,41,35,0.03)]"
             >
-              {/* Burgundy Trajectory Lead-in */}
               <div className="flex items-center gap-2" aria-hidden="true">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#722F37]" />
-                <div className="w-10 h-[1.5px] bg-[#722F37]" />
-                <span className="eyebrow text-[11px] font-semibold text-[#722F37] tracking-[0.2em] uppercase">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#34483C]" />
+                <div className="w-10 h-[1.5px] bg-[#34483C]" />
+                <span className="caption-3 font-semibold text-[#34483C] tracking-[0.2em] uppercase">
                   {prog.subtitle}
                 </span>
               </div>
 
               <div className="space-y-2">
-                <h3 className="font-serif text-3xl font-normal text-[#211C1D] tracking-tight">
+                <h3 className="heading-4 font-semibold text-[#252923] tracking-tight">
                   {prog.title}
                 </h3>
-                <p className="font-sans text-xs sm:text-sm text-[#211C1D]/75 leading-relaxed">
+                <p className="body-4 text-[#252923]/75 leading-relaxed text-pretty">
                   {prog.copy}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-[#722F37]/20">
+              <div className="pt-3 border-t border-[#D8D5C8]/60">
                 <Link
                   href={prog.href}
-                  className="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-wider font-semibold text-[#722F37] hover:text-[#211C1D] transition-colors group"
+                  className="inline-flex items-center gap-2 button-sm uppercase tracking-wider font-semibold text-[#34483C] hover:text-[#252923] transition-colors group"
                   aria-label={`${prog.ctaLabel} — View detailed track information`}
                 >
                   <span>{prog.ctaLabel}</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" weight="bold" />
                 </Link>
               </div>
             </div>

@@ -3,84 +3,111 @@
 @tailwind utilities;
 
 :root {
-  --font-inter: 'Inter', sans-serif;
-  --font-oswald: 'Oswald', sans-serif;
-  --font-fraunces: 'Fraunces', serif;
+  --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+  --font-jakarta: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-tiro-devanagari: 'Tiro Devanagari Hindi', serif;
+  --font-manrope: var(--font-jakarta);
+  --font-devanagari: var(--font-tiro-devanagari);
+  --font-inter: var(--font-jakarta);
+  --font-oswald: var(--font-jakarta);
+  --font-fraunces: var(--font-cormorant);
 
   /* ------------------------------------------------------------------ */
-  /* Officium brand palette (RGB channels so Tailwind can apply alpha)   */
-  /* Burgundy #722F37 · Warm Cream #E8DCC6 · Taupe #B7A89A · Ink #211C1D */
+  /* Officium Supremum Master Colour Palette                            */
+  /* Ivory Mist: #F3EFE6 · Forest Sage: #34483C · Antique Sand: #B18A58 */
+  /* Charcoal: #252923   · Stone Grey: #D8D5C8                          */
   /* ------------------------------------------------------------------ */
-  --os-burgundy: 114 47 55;
-  --os-cream: 232 220 198;
-  --os-taupe: 183 168 154;
-  --os-ink: 33 28 29;
+  --os-ivory: 243 239 230;
+  --os-sage: 52 72 60;
+  --os-sand: 177 138 88;
+  --os-charcoal: 37 41 35;
+  --os-stone: 216 213 200;
 
-  /* Semantic tokens — default scope is the warm cream reading surface. */
-  --background: var(--os-cream);
-  --foreground: var(--os-ink);
-  --brand: var(--os-burgundy);
-  --surface: var(--os-cream);
-  --surface-muted: 222 209 189; /* cream deepened toward taupe (derived) */
-  --border: var(--os-ink);
-  --border-alpha: 0.14;
-  --accent: var(--os-burgundy);
-  --muted-text: var(--os-ink);
-  --muted-alpha: 0.74;
-  --glass: var(--os-cream);
-  --glass-alpha: 0.82;
-  --glass-border: var(--os-ink);
-  --glass-border-alpha: 0.1;
-  --glass-blur: 14px;
-  --focus-ring: var(--os-burgundy);
+  /* Backward-compatible channel fallbacks */
+  --os-burgundy: var(--os-sage);
+  --os-cream: var(--os-ivory);
+  --os-taupe: var(--os-stone);
+  --os-ink: var(--os-charcoal);
+
+  /* Semantic tokens — Ivory Mist reading surface by default */
+  --background: var(--os-ivory);
+  --foreground: var(--os-charcoal);
+  --brand: var(--os-sage);
+  --surface: var(--os-ivory);
+  --surface-muted: var(--os-stone);
+  --border: var(--os-stone);
+  --border-alpha: 0.4;
+  --accent: var(--os-sand);
+  --muted-text: var(--os-charcoal);
+  --muted-alpha: 0.72;
+  --glass: var(--os-ivory);
+  --glass-alpha: 0.85;
+  --glass-border: var(--os-charcoal);
+  --glass-border-alpha: 0.08;
+  --glass-blur: 16px;
+  --focus-ring: var(--os-sage);
 
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Section theme scopes: re-map semantic tokens for colour rhythm. */
+/* Section theme scopes for peaceful editorial rhythm */
+.theme-ivory,
 .theme-cream {
-  --background: var(--os-cream);
-  --foreground: var(--os-ink);
-  --accent: var(--os-burgundy);
-  --muted-text: var(--os-ink);
-  --muted-alpha: 0.74;
-  --border: var(--os-ink);
-  --border-alpha: 0.14;
-  --glass: var(--os-cream);
-  --glass-alpha: 0.82;
-  --glass-border: var(--os-ink);
-  --glass-border-alpha: 0.1;
-  --focus-ring: var(--os-burgundy);
+  --background: var(--os-ivory);
+  --foreground: var(--os-charcoal);
+  --accent: var(--os-sand);
+  --muted-text: var(--os-charcoal);
+  --muted-alpha: 0.72;
+  --border: var(--os-stone);
+  --border-alpha: 0.45;
+  --glass: var(--os-ivory);
+  --glass-alpha: 0.88;
+  --glass-border: var(--os-charcoal);
+  --glass-border-alpha: 0.08;
+  --focus-ring: var(--os-sage);
 }
 
+.theme-sage,
 .theme-burgundy {
-  --background: var(--os-burgundy);
-  --foreground: var(--os-cream);
-  --accent: var(--os-cream);
-  --muted-text: var(--os-cream);
-  --muted-alpha: 0.84;
-  --border: var(--os-cream);
+  --background: var(--os-sage);
+  --foreground: var(--os-ivory);
+  --accent: var(--os-sand);
+  --muted-text: var(--os-ivory);
+  --muted-alpha: 0.82;
+  --border: var(--os-ivory);
   --border-alpha: 0.2;
-  --glass: var(--os-cream);
+  --glass: var(--os-ivory);
   --glass-alpha: 0.08;
-  --glass-border: var(--os-cream);
-  --glass-border-alpha: 0.28;
-  --focus-ring: var(--os-cream);
+  --glass-border: var(--os-ivory);
+  --glass-border-alpha: 0.22;
+  --focus-ring: var(--os-sand);
 }
 
+.theme-charcoal,
 .theme-ink {
-  --background: var(--os-ink);
-  --foreground: var(--os-cream);
-  --accent: var(--os-taupe);
-  --muted-text: var(--os-taupe);
-  --muted-alpha: 1;
-  --border: var(--os-cream);
-  --border-alpha: 0.14;
-  --glass: var(--os-cream);
+  --background: var(--os-charcoal);
+  --foreground: var(--os-ivory);
+  --accent: var(--os-sand);
+  --muted-text: var(--os-stone);
+  --muted-alpha: 0.88;
+  --border: var(--os-stone);
+  --border-alpha: 0.2;
+  --glass: var(--os-ivory);
   --glass-alpha: 0.06;
-  --glass-border: var(--os-cream);
-  --glass-border-alpha: 0.18;
-  --focus-ring: var(--os-cream);
+  --glass-border: var(--os-stone);
+  --glass-border-alpha: 0.16;
+  --focus-ring: var(--os-sand);
+}
+
+.theme-stone {
+  --background: var(--os-stone);
+  --foreground: var(--os-charcoal);
+  --accent: var(--os-sage);
+  --muted-text: var(--os-charcoal);
+  --muted-alpha: 0.75;
+  --border: var(--os-charcoal);
+  --border-alpha: 0.15;
+  --focus-ring: var(--os-sage);
 }
 
 html {
@@ -95,31 +122,57 @@ html {
 }
 
 body {
-  background-color: #FAFAF9;
-  color: #0F172A;
-  font-family: var(--font-inter), sans-serif;
+  background-color: #F3EFE6;
+  color: #252923;
+  font-family: var(--font-jakarta), -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background-color: rgb(var(--os-burgundy));
-  color: rgb(var(--os-cream));
+  background-color: #34483C;
+  color: #F3EFE6;
 }
 
-/* Custom Scrollbar */
+/* Custom Editorial Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: rgb(var(--os-cream));
+  background: #F3EFE6;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--os-taupe));
+  background: #D8D5C8;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--os-burgundy));
+  background: #34483C;
+}
+
+/* Typewriter animation cursor */
+@keyframes blinkCursor {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background-color: currentColor;
+  margin-left: 3px;
+  vertical-align: -0.1em;
+  animation: blinkCursor 0.9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-cursor {
+    display: none;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -139,48 +192,131 @@ body {
     border-radius: 6px;
   }
 
-  /* --- Editorial type scale --- */
+  /* --- Expressive Editorial Headings (Cormorant Garamond) --- */
+  .heading-1 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: clamp(2.75rem, 5vw, 4.25rem);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .heading-2 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: clamp(2.25rem, 4vw, 3.25rem);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .heading-3 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .heading-4 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    line-height: 1.2;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .heading-5 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: 1.5rem; /* 24px */
+    line-height: 1.25;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .heading-6 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.3;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  .title-1 { font-family: var(--font-jakarta), sans-serif; font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; }
+  .title-2 { font-family: var(--font-jakarta), sans-serif; font-size: 1.125rem; line-height: 1.75rem; font-weight: 600; }
+  .title-3 { font-family: var(--font-jakarta), sans-serif; font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
+  .title-4 { font-family: var(--font-jakarta), sans-serif; font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; }
+  .title-5 { font-family: var(--font-jakarta), sans-serif; font-size: 0.75rem; line-height: 1rem; font-weight: 600; }
+
+  .body-1 { font-family: var(--font-jakarta), sans-serif; font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; text-wrap: pretty; }
+  .body-2 { font-family: var(--font-jakarta), sans-serif; font-size: 1rem; line-height: 1.625rem; font-weight: 400; text-wrap: pretty; }
+  .body-3 { font-family: var(--font-jakarta), sans-serif; font-size: 0.9375rem; line-height: 1.5rem; font-weight: 400; text-wrap: pretty; }
+  .body-4 { font-family: var(--font-jakarta), sans-serif; font-size: 0.875rem; line-height: 1.375rem; font-weight: 500; text-wrap: pretty; }
+  .body-5 { font-family: var(--font-jakarta), sans-serif; font-size: 0.875rem; line-height: 1.375rem; font-weight: 400; text-wrap: pretty; }
+  .body-6 { font-family: var(--font-jakarta), sans-serif; font-size: 0.8125rem; line-height: 1.25rem; font-weight: 400; text-wrap: pretty; }
+
+  .button-lg { font-family: var(--font-jakarta), sans-serif; font-size: 1rem; line-height: 1.5rem; font-weight: 600; letter-spacing: 0.05em; }
+  .button-md { font-family: var(--font-jakarta), sans-serif; font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; letter-spacing: 0.05em; }
+  .button-sm { font-family: var(--font-jakarta), sans-serif; font-size: 0.8125rem; line-height: 1.125rem; font-weight: 600; letter-spacing: 0.05em; }
+  .button-Xsm { font-family: var(--font-jakarta), sans-serif; font-size: 0.75rem; line-height: 1rem; font-weight: 600; letter-spacing: 0.05em; }
+
+  .caption-1 { font-family: var(--font-jakarta), sans-serif; font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
+  .caption-2 { font-family: var(--font-jakarta), sans-serif; font-size: 0.8125rem; line-height: 1.125rem; font-weight: 500; }
+  .caption-3 { font-family: var(--font-jakarta), sans-serif; font-size: 0.75rem; line-height: 1rem; font-weight: 600; letter-spacing: 0.08em; }
+  .caption-4 { font-family: var(--font-jakarta), sans-serif; font-size: 0.75rem; line-height: 1rem; font-weight: 500; }
+  .caption-5 { font-family: var(--font-jakarta), sans-serif; font-size: 0.6875rem; line-height: 0.875rem; font-weight: 500; }
+
+  .font-devanagari,
+  .font-hindi,
+  .font-tiro {
+    font-family: var(--font-tiro-devanagari), 'Tiro Devanagari Hindi', serif;
+  }
+
+  /* --- Editorial type scale fallbacks --- */
   .type-display {
-    font-family: var(--font-fraunces), serif;
-    font-weight: 400;
-    font-size: clamp(3.4rem, 12.5vw, 9rem);
-    line-height: 0.9;
-    letter-spacing: -0.035em;
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(3rem, 10vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
   }
   .type-h1 {
-    font-family: var(--font-fraunces), serif;
-    font-weight: 400;
-    font-size: clamp(2.5rem, 6vw, 4.75rem);
-    line-height: 1;
-    letter-spacing: -0.03em;
+    font-family: var(--font-manrope), sans-serif;
+    font-weight: 600;
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
   }
   .type-h2 {
-    font-family: var(--font-fraunces), serif;
-    font-weight: 400;
-    font-size: clamp(2rem, 4.2vw, 3.4rem);
-    line-height: 1.06;
-    letter-spacing: -0.022em;
+    font-family: var(--font-manrope), sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.875rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
   }
   .type-h3 {
-    font-family: var(--font-fraunces), serif;
-    font-weight: 500;
-    font-size: clamp(1.5rem, 2.2vw, 1.875rem);
-    line-height: 1.15;
-    letter-spacing: -0.012em;
+    font-family: var(--font-manrope), sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2vw, 1.875rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
   }
   .type-lead {
-    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+    font-size: clamp(1rem, 1.25vw, 1.125rem);
     line-height: 1.6;
+    text-wrap: pretty;
   }
   .type-body {
     font-size: 1rem;
-    line-height: 1.7;
+    line-height: 1.6;
+    text-wrap: pretty;
   }
   .eyebrow {
-    font-family: var(--font-inter), sans-serif;
+    font-family: var(--font-jakarta), sans-serif;
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     line-height: 1.2;
   }

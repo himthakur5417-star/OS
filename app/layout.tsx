@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Oswald, Inter } from "next/font/google";
+import { Cormorant_Garamond, Plus_Jakarta_Sans, Tiro_Devanagari_Hindi } from "next/font/google";
 import "@/styles/globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -9,24 +9,27 @@ import { AuthModal } from "@/components/AuthModal";
 import { OrientationModal } from "@/components/OrientationModal";
 import { TrafficTracker } from "@/components/TrafficTracker";
 
-
-const fraunces = Fraunces({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-});
-
-const oswald = Oswald({
-  subsets: ["latin"],
-  variable: "--font-oswald",
+  variable: "--font-cormorant",
   display: "swap",
   weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-jakarta",
   display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const tiroHindi = Tiro_Devanagari_Hindi({
+  subsets: ["devanagari"],
+  variable: "--font-tiro-devanagari",
+  display: "swap",
+  weight: "400",
+  style: "normal",
 });
 
 export const metadata: Metadata = {
@@ -80,8 +83,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${oswald.variable} ${inter.variable}`}>
-      <body className="bg-[#FAF7F2] text-[#211C1D] font-sans antialiased min-h-screen flex flex-col selection:bg-[#722F37] selection:text-[#E8DCC6]">
+    <html lang="en" className={`${cormorant.variable} ${jakarta.variable} ${tiroHindi.variable}`}>
+      <body className="bg-[#F3EFE6] text-[#252923] font-sans antialiased min-h-screen flex flex-col selection:bg-[#34483C] selection:text-[#F3EFE6]">
         <AuthProvider>
           <ModalProvider>
             <Navbar />
@@ -90,7 +93,6 @@ export default function RootLayout({
             <AuthModal />
             <OrientationModal />
             <TrafficTracker />
-
           </ModalProvider>
         </AuthProvider>
       </body>

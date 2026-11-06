@@ -71,7 +71,7 @@ export function MotivationalDispatch() {
         <div className="flex items-start gap-3">
           <Quote className="w-8 h-8 text-[#C8A84E]/40 shrink-0 mt-1" />
           <div>
-            <p className="font-heading italic text-lg sm:text-xl text-zinc-100 leading-snug">
+            <p className="font-heading text-lg sm:text-xl text-zinc-100 leading-snug">
               &ldquo;{dispatch.quote}&rdquo;
             </p>
             <div className="font-label text-xs uppercase tracking-widest text-[#C8A84E] mt-2 font-semibold">

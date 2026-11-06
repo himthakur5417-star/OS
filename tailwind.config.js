@@ -9,7 +9,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        /* Officium brand system — see styles/globals.css for the source tokens */
+        /* Officium editorial brand palette */
+        ivory: "#F3EFE6",
+        sage: "#34483C",
+        sand: "#B18A58",
+        charcoal: "#252923",
+        stone: {
+          DEFAULT: "#D8D5C8",
+          grey: "#D8D5C8",
+        },
+        /* Semantic tokens */
         burgundy: "rgb(var(--os-burgundy) / <alpha-value>)",
         cream: "rgb(var(--os-cream) / <alpha-value>)",
         taupe: "rgb(var(--os-taupe) / <alpha-value>)",
@@ -63,9 +72,15 @@ module.exports = {
         }
       },
       fontFamily: {
-        heading: ["var(--font-fraunces)", "serif"],
-        label: ["var(--font-oswald)", "sans-serif"],
-        sans: ["var(--font-inter)", "sans-serif"],
+        serif: ["var(--font-cormorant)", "Georgia", "serif"],
+        heading: ["var(--font-cormorant)", "Georgia", "serif"],
+        cormorant: ["var(--font-cormorant)", "Georgia", "serif"],
+        sans: ["var(--font-jakarta)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        jakarta: ["var(--font-jakarta)", "sans-serif"],
+        label: ["var(--font-jakarta)", "sans-serif"],
+        hindi: ["var(--font-tiro-devanagari)", "serif"],
+        devanagari: ["var(--font-tiro-devanagari)", "serif"],
+        tiro: ["var(--font-tiro-devanagari)", "serif"],
       },
       boxShadow: {
         'soft-sm': '0 2px 8px -2px rgba(15, 23, 42, 0.04)',

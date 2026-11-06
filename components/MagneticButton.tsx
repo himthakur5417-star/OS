@@ -6,7 +6,7 @@ import { usePrefersReducedMotion } from "@/lib/hooks/useMediaQuery";
 
 export interface MagneticButtonProps {
   children: React.ReactNode;
-  variant?: "burgundy" | "cream";
+  variant?: "burgundy" | "cream" | "sage" | "sand" | "ivory";
   href?: string;
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   className?: string;
@@ -76,14 +76,24 @@ export function MagneticButton({
     setOffset({ x: 0, y: 0 });
   };
 
-  const isBurgundy = variant === "burgundy";
+  const isSage = variant === "sage" || variant === "burgundy";
+  const isSand = variant === "sand";
 
-  // Base styling per variant
-  const variantStyles = isBurgundy
-    ? "text-[#FAF7F2] border border-white/20 bg-gradient-to-b from-[#7A3038] to-[#5C2329] shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.28),0_10px_24px_-4px_rgba(114,47,55,0.45),0_3px_8px_-2px_rgba(114,47,55,0.3)] hover:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.38),0_16px_32px_-4px_rgba(114,47,55,0.55),0_5px_12px_-2px_rgba(114,47,55,0.38)] active:shadow-[inset_0_2px_4px_0_rgba(0,0,0,0.25),0_4px_12px_-2px_rgba(114,47,55,0.35)] focus-visible:ring-offset-[#211C1D]"
-    : "text-[#722F37] border border-[#722F37]/20 bg-gradient-to-b from-[#FAF7F2] to-[#EFE8DD] shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.75),0_10px_22px_-4px_rgba(0,0,0,0.25),0_3px_8px_-2px_rgba(0,0,0,0.16)] hover:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.9),0_14px_28px_-4px_rgba(0,0,0,0.32),0_4px_10px_-2px_rgba(0,0,0,0.22)] active:shadow-[inset_0_2px_4px_0_rgba(0,0,0,0.1),0_4px_12px_-2px_rgba(0,0,0,0.18)] focus-visible:ring-offset-[#FAF7F2]";
+  // Flat high-contrast editorial styling adhering to B4 (no background gradients)
+  let variantStyles = "";
+  if (isSage) {
+    variantStyles =
+      "text-[#F3EFE6] bg-[#34483C] hover:bg-[#252923] border border-[#F3EFE6]/20 shadow-[0_4px_14px_-2px_rgba(52,72,60,0.35)] hover:shadow-[0_8px_20px_-2px_rgba(52,72,60,0.45)] focus-visible:ring-[#B18A58] focus-visible:ring-offset-[#F3EFE6]";
+  } else if (isSand) {
+    variantStyles =
+      "text-[#252923] bg-[#B18A58] hover:bg-[#9d7747] border border-[#252923]/15 shadow-[0_4px_14px_-2px_rgba(177,138,88,0.35)] hover:shadow-[0_8px_20px_-2px_rgba(177,138,88,0.45)] focus-visible:ring-[#34483C] focus-visible:ring-offset-[#F3EFE6]";
+  } else {
+    // Ivory / Cream
+    variantStyles =
+      "text-[#34483C] bg-[#F3EFE6] hover:bg-[#EAE4D7] border border-[#D8D5C8] hover:border-[#34483C]/40 shadow-[0_2px_8px_-2px_rgba(37,41,35,0.08)] hover:shadow-[0_6px_16px_-2px_rgba(37,41,35,0.12)] focus-visible:ring-[#34483C] focus-visible:ring-offset-[#F3EFE6]";
+  }
 
-  const sharedClasses = `relative inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full font-sans text-xs font-semibold uppercase tracking-[0.16em] select-none cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#722F37] focus-visible:ring-offset-2 active:scale-[0.98] ${variantStyles} ${className}`;
+  const sharedClasses = `relative inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3 rounded-full font-sans text-xs font-semibold uppercase tracking-[0.16em] select-none cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] ${variantStyles} ${className}`;
 
   const transformStyle = {
     transform:

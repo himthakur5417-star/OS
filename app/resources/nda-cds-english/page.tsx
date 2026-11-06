@@ -277,7 +277,7 @@ export default function NdaCdsEnglishPage() {
               <p className="text-sm sm:text-base font-medium text-[#0B192C] leading-relaxed">
                 Identify which part of the sentence contains a grammatical error:
                 <br />
-                <span className="block mt-2 font-serif italic text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                <span className="block mt-2 font-serif text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-100">
                   &ldquo;Neither the mentor nor the students (A) / was present in the study hall (B) / when the morning inspection began. (C) / No error (D)&rdquo;
                 </span>
               </p>
@@ -305,7 +305,7 @@ export default function NdaCdsEnglishPage() {
               <p className="text-sm sm:text-base font-medium text-[#0B192C] leading-relaxed">
                 Choose the correct preposition to complete the sentence:
                 <br />
-                <span className="block mt-2 font-serif italic text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                <span className="block mt-2 font-serif text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-100">
                   &ldquo;The commanding officer congratulated the young cadet _______ winning the prestigious academy gold medal.&rdquo;
                 </span>
                 <span className="block mt-2 font-sans text-xs text-slate-600">

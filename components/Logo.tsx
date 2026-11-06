@@ -3,7 +3,7 @@
 import React, { useId } from "react";
 
 export interface LogoProps {
-  variant?: "light" | "dark" | "tactical" | "gold" | "monochrome" | "burgundy" | "cream";
+  variant?: "light" | "dark" | "tactical" | "gold" | "monochrome" | "burgundy" | "cream" | "sage" | "charcoal" | "ivory";
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero";
   showText?: boolean;
   goldAccent?: boolean;
@@ -35,37 +35,52 @@ export function Logo({
   // Aspect ratio is 260:100 (2.6) for full lockup to give ample room for "OFFICIUM SUPREMUM", 1:1 for monogram
   const currentWidth = showText ? Math.round(currentHeight * 2.6) : currentHeight;
 
-  // Color mapping based on variant
+  // Color mapping based on variant (Officium New Colour System)
   const colorMap = {
     light: {
-      primary: "#0F1115", // Deep academy obsidian ink
-      accent: goldAccent ? "#722F37" : "#0F1115",
-      hoverAccent: "#722F37",
+      primary: "#252923", // Charcoal
+      accent: goldAccent ? "#B18A58" : "#34483C", // Antique Sand or Forest Sage
+      hoverAccent: "#34483C",
     },
     dark: {
-      primary: "#FFFFFF",
-      accent: "#E8DCC6",
-      hoverAccent: "#E8DCC6",
+      primary: "#F3EFE6", // Ivory Mist
+      accent: "#B18A58", // Antique Sand
+      hoverAccent: "#D8D5C8",
+    },
+    sage: {
+      primary: "#34483C", // Forest Sage
+      accent: "#34483C",
+      hoverAccent: "#252923",
+    },
+    charcoal: {
+      primary: "#252923",
+      accent: "#34483C",
+      hoverAccent: "#B18A58",
+    },
+    ivory: {
+      primary: "#F3EFE6",
+      accent: "#B18A58",
+      hoverAccent: "#D8D5C8",
     },
     burgundy: {
-      primary: "#722F37",
-      accent: "#722F37",
-      hoverAccent: "#211C1D",
+      primary: "#34483C", // Re-mapped to Forest Sage
+      accent: "#34483C",
+      hoverAccent: "#252923",
     },
     cream: {
-      primary: "#E8DCC6",
-      accent: "#E8DCC6",
-      hoverAccent: "#FFFFFF",
+      primary: "#F3EFE6", // Re-mapped to Ivory Mist
+      accent: "#B18A58",
+      hoverAccent: "#D8D5C8",
     },
     tactical: {
-      primary: "#F7F5F0",
-      accent: "#C8A84E",
-      hoverAccent: "#E5C875",
+      primary: "#F3EFE6",
+      accent: "#B18A58",
+      hoverAccent: "#D8D5C8",
     },
     gold: {
-      primary: "#722F37",
-      accent: "#722F37",
-      hoverAccent: "#211C1D",
+      primary: "#34483C",
+      accent: "#B18A58",
+      hoverAccent: "#252923",
     },
     monochrome: {
       primary: "currentColor",
@@ -160,9 +175,9 @@ export function Logo({
       <text
         x="108"
         y="66"
-        fontFamily="var(--font-oswald), 'Oswald', sans-serif"
+        fontFamily="var(--font-manrope), sans-serif"
         fontWeight="700"
-        fontSize="46"
+        fontSize="44"
         fill={colors.primary}
         className="transition-colors duration-200 select-none"
       >
@@ -173,10 +188,10 @@ export function Logo({
       <text
         x="88"
         y="86"
-        fontFamily="var(--font-oswald), 'Oswald', sans-serif"
+        fontFamily="var(--font-manrope), sans-serif"
         fontWeight="600"
-        fontSize="14.5"
-        letterSpacing="0.05em"
+        fontSize="13.5"
+        letterSpacing="0.08em"
         fill={colors.accent}
         className="transition-colors duration-200 select-none"
       >

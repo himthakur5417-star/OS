@@ -2,17 +2,28 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, CaretDown } from "@phosphor-icons/react";
 import { GuidingThread } from "./GuidingThread";
 import { useElementSize } from "@/lib/hooks/useElementSize";
 import { usePrefersReducedMotion } from "@/lib/hooks/useMediaQuery";
 import { interpolate, easeInOutSine, easeOutCubic } from "@/lib/motion/interpolate";
 import { MagneticButton } from "@/components/MagneticButton";
+import { CinematicTypewriter } from "@/components/CinematicTypewriter";
 
 interface HomepageHeroProps {
   onBookCall: () => void;
 }
 
+/**
+ * HomepageHero | Officium Supremum
+ *
+ * Combines:
+ * 1. Elite institutional typography with English clarity and Devanagari soul.
+ * 2. Cinematic real-time typewriter sequence for Placement 1 Hindi slogan.
+ * 3. Preserved Guiding Thread mathematical SVG journey from uncertainty to disciplined clarity.
+ * 4. Natural institutional atmosphere (Forest Sage, Antique Sand, Charcoal, Ivory Mist).
+ * 5. Strict adherence to Landing Page Design standard (max-w 680px, no hyphens, no italics).
+ */
 export function HomepageHero({ onBookCall }: HomepageHeroProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -57,34 +68,40 @@ export function HomepageHero({ onBookCall }: HomepageHeroProps) {
   }, [reducedMotion]);
 
   // Interpolated animation values based on scroll progress
-  // State 1: p 0.0 - 0.2: Headline prominent
-  // State 2: p 0.2 - 0.45: Headline gently recedes, student wanders
+  // State 1: p 0.0 - 0.22: Headline prominent
+  // State 2: p 0.22 - 0.45: Headline gently recedes, student wanders
   // State 3: p 0.45 - 0.70: "Guidance gives direction."
   // State 4: p 0.70 - 0.95: "Discipline creates independence."
-  const heroOpacity = reducedMotion ? 1 : interpolate(progress, [0, 0.22, 0.42], [1, 0.9, 0], easeOutCubic);
-  const heroTranslateY = reducedMotion ? 0 : interpolate(progress, [0, 0.35], [0, -40]);
-  const heroScale = reducedMotion ? 1 : interpolate(progress, [0, 0.35], [1, 0.97]);
+  const heroOpacity = reducedMotion
+    ? 1
+    : interpolate(progress, [0, 0.22, 0.42], [1, 0.9, 0], easeOutCubic);
+  const heroTranslateY = reducedMotion
+    ? 0
+    : interpolate(progress, [0, 0.35], [0, -36]);
+  const heroScale = reducedMotion
+    ? 1
+    : interpolate(progress, [0, 0.35], [1, 0.98]);
 
   const statement1Opacity = reducedMotion
     ? 1
     : interpolate(progress, [0.28, 0.40, 0.58, 0.66], [0, 1, 1, 0], easeInOutSine);
   const statement1TranslateY = reducedMotion
     ? 0
-    : interpolate(progress, [0.28, 0.40, 0.58, 0.66], [25, 0, 0, -20]);
+    : interpolate(progress, [0.28, 0.40, 0.58, 0.66], [24, 0, 0, -18]);
 
   const statement2Opacity = reducedMotion
     ? 1
-    : interpolate(progress, [0.62, 0.74, 0.95, 1.0], [0, 1, 1, 0.75], easeInOutSine);
+    : interpolate(progress, [0.62, 0.74, 0.95, 1.0], [0, 1, 1, 0.8], easeInOutSine);
   const statement2TranslateY = reducedMotion
     ? 0
-    : interpolate(progress, [0.62, 0.74, 1.0], [25, 0, -10]);
+    : interpolate(progress, [0.62, 0.74, 1.0], [24, 0, -10]);
 
   const scrollCueOpacity = reducedMotion ? 0 : interpolate(progress, [0, 0.08], [1, 0]);
 
   return (
     <section
       ref={containerRef}
-      className="journey relative bg-[#211C1D] text-[#E8DCC6] overflow-x-clip"
+      className="journey relative bg-[#252923] text-[#F3EFE6] overflow-x-clip"
       aria-label="Officium Supremum Mentorship Journey"
     >
       {/* Sticky Cinematic Stage */}
@@ -92,12 +109,12 @@ export function HomepageHero({ onBookCall }: HomepageHeroProps) {
         ref={stageRef}
         className="journey-stage w-full flex flex-col justify-between"
       >
-        {/* Subtle Ambient Vignette & Warm Burgundy Glow */}
+        {/* Subtle Ambient Vignette & Peaceful Forest Sage Atmospheric Glow */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 75% 45%, rgba(114, 47, 55, 0.28) 0%, rgba(33, 28, 29, 0.85) 65%, #211C1D 100%)",
+              "radial-gradient(ellipse 85% 65% at 75% 40%, rgba(52, 72, 60, 0.4) 0%, rgba(37, 41, 35, 0.88) 65%, #252923 100%)",
           }}
         />
 
@@ -113,7 +130,7 @@ export function HomepageHero({ onBookCall }: HomepageHeroProps) {
 
         {/* Primary Hero Scene (State 1: Headline & Core Identity) */}
         <div
-          className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-4 sm:pt-6 lg:pt-6 flex-1 flex flex-col justify-center"
+          className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-24 sm:pt-28 lg:pt-32 flex-1 flex flex-col justify-center"
           style={{
             opacity: heroOpacity,
             transform: `translateY(${heroTranslateY}px) scale(${heroScale})`,
@@ -121,50 +138,56 @@ export function HomepageHero({ onBookCall }: HomepageHeroProps) {
             transition: reducedMotion ? "none" : undefined,
           }}
         >
-          <div className="max-w-3xl space-y-3 sm:space-y-3.5 lg:space-y-4">
-            {/* Small Uppercase Brand Eyebrow */}
-            <div className="inline-flex items-center gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#722F37]" />
-              <span className="eyebrow text-[#B7A89A] tracking-[0.25em] text-[11px] sm:text-xs font-semibold uppercase">
-                OFFICIUM SUPREMUM
-              </span>
-            </div>
-
-            {/* Core Brand Headline: DISCIPLINE CREATES EXCELLENCE. */}
-            <h1 className="type-display !text-[clamp(2.75rem,7.2vw,5.5rem)] text-[#E8DCC6] font-normal leading-[0.92] tracking-tight">
+          <div className="max-w-[680px] space-y-4 sm:space-y-5">
+            {/* Core Brand Headline: DISCIPLINE CREATES EXCELLENCE */}
+            <h1 className="heading-1 !text-[clamp(2.75rem,7vw,5.5rem)] text-[#F3EFE6] font-semibold leading-[0.96] tracking-tight text-balance">
               DISCIPLINE
               <br />
               CREATES
               <br />
-              <span className="text-[#E8DCC6] italic font-light">EXCELLENCE.</span>
+              <span className="text-[#B18A58] italic font-normal">EXCELLENCE.</span>
             </h1>
 
-            {/* Subtitle in Plain, Confident Indian English */}
-            <p className="type-lead text-[#B7A89A] max-w-xl leading-relaxed font-sans text-sm sm:text-base">
-              We guide school students and defence aspirants with a daily study plan,
-              evening progress checks, and personalized mentorship — turning talent into consistency.
+            {/* Placement 1 — Top Hero Section: The Single Hindi Slogan with Cinematic Typewriter */}
+            <div className="pt-2 pb-1">
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.08] border border-white/15 backdrop-blur-sm shadow-soft-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B18A58] shrink-0" />
+                <span className="font-tiro text-base sm:text-lg text-[#F3EFE6] font-normal tracking-wide">
+                  <CinematicTypewriter
+                    phrases={["शांत मन। स्पष्ट लक्ष्य। दृढ़ संकल्प।"]}
+                    typingSpeed={90}
+                    pauseDuration={2400}
+                    loop={false}
+                  />
+                </span>
+              </div>
+            </div>
+
+            {/* Subtitle in Crisp, Measured Institutional English */}
+            <p className="body-2 sm:body-1 text-[#D8D5C8] max-w-[640px] leading-relaxed text-pretty font-sans">
+              Helping students build discipline, develop leadership and prepare for their future with the right guidance.
             </p>
 
             {/* Hero CTAs */}
-            <div className="pt-1 sm:pt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 max-w-md sm:max-w-none">
-              {/* Primary Signature CTA — Unified Burgundy Raised Object */}
+            <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 max-w-md sm:max-w-none">
+              {/* Primary CTA — EXPLORE PROGRAMS (Solid Forest Sage Brand Treatment) */}
               <MagneticButton
-                variant="burgundy"
+                variant="sage"
                 href="#programs"
                 ariaLabel="Explore Programs — View Juniors, Scholars, and Defence mentorship tracks"
               >
                 <span>EXPLORE PROGRAMS</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" weight="bold" />
               </MagneticButton>
 
-              {/* Secondary Action — Unified Warm Cream Raised Button */}
+              {/* Secondary CTA — Book a Free 20-Minute Call (Solid Warm Ivory Treatment) */}
               <MagneticButton
-                variant="cream"
+                variant="ivory"
                 onClick={onBookCall}
-                ariaLabel="Book a Free 20-Minute Call with an advisor"
+                ariaLabel="Book a Free 20-Minute Call with an academy mentor"
               >
                 <span>Book a Free 20-Minute Call</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" weight="bold" />
               </MagneticButton>
             </div>
           </div>
@@ -185,15 +208,12 @@ export function HomepageHero({ onBookCall }: HomepageHeroProps) {
                 pointerEvents: statement1Opacity > 0.5 ? "auto" : "none",
               }}
             >
-              <div className="eyebrow text-[#B7A89A] tracking-[0.2em] text-[11px]">
-                The First Realization
-              </div>
-              <h2 className="type-h1 text-[#E8DCC6] leading-tight">
+              <h2 className="heading-2 sm:heading-1 text-[#F3EFE6] leading-tight text-balance">
                 Guidance gives <br />
-                <span className="italic font-light text-[#E8DCC6]">direction.</span>
+                <span className="text-[#B18A58] italic font-normal">direction.</span>
               </h2>
-              <p className="type-lead text-[#B7A89A] max-w-md font-sans text-sm sm:text-base">
-                When options feel overwhelming, a personal mentor brings structure: what to study today, how to practice, and where to focus.
+              <p className="body-4 sm:body-2 text-[#D8D5C8]/90 max-w-md leading-relaxed text-pretty font-sans">
+                When syllabi feel overwhelming, a personal mentor brings daily structure: what to finish today, how to practice, and where to focus.
               </p>
             </div>
 
@@ -206,15 +226,12 @@ export function HomepageHero({ onBookCall }: HomepageHeroProps) {
                 pointerEvents: statement2Opacity > 0.5 ? "auto" : "none",
               }}
             >
-              <div className="eyebrow text-[#B7A89A] tracking-[0.2em] text-[11px]">
-                The Transformation
-              </div>
-              <h2 className="type-h1 text-[#E8DCC6] leading-tight">
+              <h2 className="heading-2 sm:heading-1 text-[#F3EFE6] leading-tight text-balance">
                 Discipline creates <br />
-                <span className="italic font-light text-[#E8DCC6]">independence.</span>
+                <span className="text-[#B18A58] italic font-normal">independence.</span>
               </h2>
-              <p className="type-lead text-[#B7A89A] max-w-md font-sans text-sm sm:text-base">
-                With steady daily routines and evening accountability, the student gradually stops depending on reminders and moves forward on their own.
+              <p className="body-4 sm:body-2 text-[#D8D5C8]/90 max-w-md leading-relaxed text-pretty font-sans">
+                With steady daily routines and evening accountability, students stop relying on reminders and take ownership of their own preparation.
               </p>
             </div>
           </div>
@@ -222,27 +239,25 @@ export function HomepageHero({ onBookCall }: HomepageHeroProps) {
 
         {/* Bottom Scroll Cue */}
         <div
-          className="journey-cue relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-8 flex items-center justify-between text-[#B7A89A] text-xs font-sans"
+          className="journey-cue relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-8 flex items-center justify-between text-[#D8D5C8] caption-4"
           style={{ opacity: scrollCueOpacity }}
         >
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#722F37]" />
-            <span className="eyebrow text-[10px] sm:text-[11px] text-[#B7A89A]">
-              Scroll to begin the journey
-            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B18A58]" />
+            <span>Scroll to begin the journey</span>
           </div>
 
           <div className="flex items-center gap-1.5 opacity-70 animate-bounce">
-            <span className="text-[10px] uppercase tracking-widest hidden sm:inline">Explore</span>
-            <ChevronDown className="w-3.5 h-3.5" />
+            <span className="caption-5 uppercase tracking-widest hidden sm:inline">Explore</span>
+            <CaretDown className="w-3.5 h-3.5" weight="bold" />
           </div>
         </div>
 
-        {/* Transition gradient at stage bottom to blend smoothly into the next reading section */}
+        {/* Transition gradient at stage bottom to blend seamlessly into Ivory Mist */}
         <div
           className="journey-fade-to-cream absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
           style={{
-            background: "linear-gradient(to bottom, transparent, rgba(33, 28, 29, 0.95))",
+            background: "linear-gradient(to bottom, transparent, #F3EFE6)",
           }}
         />
       </div>

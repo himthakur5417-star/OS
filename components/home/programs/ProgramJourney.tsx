@@ -101,7 +101,7 @@ export function ProgramJourney() {
     <section
       id="programs"
       ref={containerRef}
-      className="relative w-full bg-[#211C1D] text-[#211C1D] overflow-x-clip"
+      className="relative w-full bg-[#252923] text-[#252923] overflow-x-clip"
       style={{ height: "250vh" }}
       aria-label="Officium Supremum Mentorship Tracks"
     >
@@ -110,22 +110,22 @@ export function ProgramJourney() {
         ref={stageRef}
         className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between"
       >
-        {/* Layer 1: Dark Near Black / Burgundy Atmosphere (blends with Hero bottom) */}
+        {/* Layer 1: Dark Atmosphere blending with Hero bottom */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 70% 50% at 50% 20%, rgba(114, 47, 55, 0.4) 0%, #211C1D 100%)",
+              "radial-gradient(ellipse 70% 50% at 50% 20%, rgba(52, 72, 60, 0.45) 0%, #252923 100%)",
           }}
         />
 
-        {/* Layer 2: The Light Reveal — Downward Sweeping Warm Cream Surface (#FAF7F2 / #E8DCC6) */}
+        {/* Layer 2: The Light Reveal — Downward Sweeping Ivory Mist Surface (#F3EFE6) */}
         <div
           className="absolute inset-0 pointer-events-none transition-none"
           style={{
-            backgroundColor: "#FAF7F2",
+            backgroundColor: "#F3EFE6",
             backgroundImage:
-              "radial-gradient(ellipse at 30% 50%, rgba(232, 220, 198, 0.5) 0%, #FAF7F2 70%)",
+              "radial-gradient(ellipse at 30% 50%, rgba(216, 213, 200, 0.4) 0%, #F3EFE6 70%)",
             clipPath: `inset(0 0 ${100 - revealPercent}% 0)`,
             WebkitClipPath: `inset(0 0 ${100 - revealPercent}% 0)`,
           }}
